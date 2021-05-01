@@ -791,7 +791,7 @@ namespace Intersect.Server.Entities
         public virtual float GetMovementTime()
         {
             var time = 1000f / (float)( 1 + Math.Log( Stat[(int)Stats.Speed].Value() ) );
-            if( Running )
+            if( Running == 1 )
             {
                 time *= 0.5f;
             }
