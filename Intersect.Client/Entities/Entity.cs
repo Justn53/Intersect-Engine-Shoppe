@@ -182,6 +182,8 @@ namespace Intersect.Client.Entities
 
         public byte Z;
 
+        //Running System
+        public byte Running = 0;
         public Entity(Guid id, EntityPacket packet, bool isEvent = false)
         {
             Id = id;
@@ -475,8 +477,12 @@ namespace Intersect.Client.Entities
         //Returns the amount of time required to traverse 1 tile
         public virtual float GetMovementTime()
         {
-            var time = 1000f / (float) (1 + Math.Log(Stat[(int) Stats.Speed]));
-            if (Blocking)
+            var time = 1000f / (float)(1 + Math.Log(Stat[(int)Stats.Speed]));
+            if( Running )
+            {
+                time *= 0.5f;
+            }
+            if(Blocking)
             {
                 time += time * (float) Options.BlockingSlow;
             }
