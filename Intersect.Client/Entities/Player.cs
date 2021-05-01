@@ -1475,6 +1475,9 @@ namespace Intersect.Client.Entities
         public bool TryInteractOrPickUpItem( Guid mapId, int tileIndex, int mouseTileIndex )
         {
             var map = MapInstance.Get( mapId );
+            if( !map.MapItems.Where( x => x.Key == mouseTileIndex ).Any() )
+                return false;
+
             foreach( var item in map.MapItems[mouseTileIndex] )
             {
                 var itemBase = ItemBase.Get( item.ItemId );
