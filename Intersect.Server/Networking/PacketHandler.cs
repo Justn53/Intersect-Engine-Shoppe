@@ -690,8 +690,9 @@ namespace Intersect.Server.Networking
             if (player.ClientMoveTimer <= clientTime &&
                 (Options.Instance.PlayerOpts.AllowCombatMovement || player.ClientAttackTimer <= clientTime))
             {
-                var canMove = player.CanMove(packet.Dir);
-                if ((canMove == -1 || canMove == -4) && client.Entity.MoveRoute == null)
+                player.Running = packet.Run;
+                var canMove = player.CanMove( packet.Dir );
+                if((canMove == -1 || canMove == -4) && client.Entity.MoveRoute == null)
                 {
                     player.Move(packet.Dir, player, false);
                     var utcDeltaMs = (Timing.Global.TicksUTC - packet.UTC) / TimeSpan.TicksPerMillisecond;
