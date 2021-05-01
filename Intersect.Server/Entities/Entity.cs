@@ -39,6 +39,8 @@ namespace Intersect.Server.Entities
 
         [NotMapped, JsonIgnore] public Entity Target { get; set; } = null;
 
+        [NotMapped, JsonIgnore] public byte Running = 0;
+
         public Entity() : this(Guid.NewGuid())
         {
         }
