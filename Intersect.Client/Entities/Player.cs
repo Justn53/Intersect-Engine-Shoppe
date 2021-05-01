@@ -1532,6 +1532,65 @@ namespace Intersect.Client.Entities
             }
         }
 
+        public bool TryInteractOrPickUpItem( Guid mapId, int tileIndex, int mouseTileIndex )
+        {
+            var map = MapInstance.Get( mapId );
+            if( !map.MapItems.Where( x => x.Key == mouseTileIndex ).Any() )
+                return false;
+
+            foreach( var item in map.MapItems[mouseTileIndex] )
+            {
+                var itemBase = ItemBase.Get( item.ItemId );
+                if( itemBase.InteractOnGround )
+                    return TryInteractItem( mapId, tileIndex, mouseTileIndex, item.UniqueId );
+                else
+                    return TryPickupItem( mapId, mouseTileIndex, item.UniqueId );
+            }
+
+            return false;
+        }
+
+        //TODO : Might need to get rid of first only.
+        public bool TryInteractItem( Guid mapId, int tileIndex, int mouseTileIndex, Guid uniqueId = new Guid(), bool firstOnly = false )
+        {
+            var map = MapInstance.Get( mapId );
+            if( map == null || tileIndex < 0 || tileIndex >= Options.MapWidth * Options.MapHeight )
+            {
+                return false;
+            }
+
+            // Are we trying to pick up anything in particular, or everything?
+            if( uniqueId != Guid.Empty || firstOnly )
+            {
+                if( !map.MapItems.ContainsKey( mouseTileIndex ) || map.MapItems[mouseTileIndex].Count < 1 )
+                {
+                    return false;
+                }
+
+                foreach( var item in map.MapItems[mouseTileIndex] )
+                {
+                    // Check if we are trying to pick up a specific item, and if this is the one.
+                    if( uniqueId != Guid.Empty && item.UniqueId != uniqueId )
+                    {
+                        continue;
+                    }
+
+                    PacketSender.SendInteractItem( mapId, tileIndex, mouseTileIndex, item.UniqueId );
+
+                    return true;
+                }
+            }
+            else
+            {
+                // Let the server worry about what we can and can not pick up.
+                PacketSender.SendInteractItem( mapId, tileIndex, mouseTileIndex, uniqueId );
+
+                return true;
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Attempts to pick up an item at the specified location.
         /// </summary>
