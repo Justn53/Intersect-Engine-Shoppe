@@ -323,8 +323,9 @@ namespace Intersect.Client.Core
                 return;
             }
 
-            var mouseTileIndex = Globals.InputManager.GetTileIndexOfMousePosition();
-            if(Globals.Me.TryInteractOrPickUpItem(Globals.Me.MapInstance.Id, Globals.Me.Y * Options.MapWidth + Globals.Me.X, mouseTileIndex))
+            var mouseX = (int)(Math.Floor(((Globals.InputManager.GetMousePosition().X + Graphics.CurrentView.Left) / Options.TileWidth)));
+            var mouseY = (int)(Math.Floor((Globals.InputManager.GetMousePosition().Y + Graphics.CurrentView.Top)) / Options.TileHeight);
+            if (Globals.Me.TryInteractOrPickUpItem(Globals.Me.MapInstance.Id, Globals.Me.Y * Options.MapWidth + Globals.Me.X, mouseY * Options.TileWidth + mouseX))
             {
                 return;
             }
