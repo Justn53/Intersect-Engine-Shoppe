@@ -30,6 +30,7 @@ namespace Intersect.Network.Packets
             Quantity = quantity;
         }
 
+
         [Key( 1 )]
         public int Slot { get; set; }
 
@@ -48,7 +49,6 @@ namespace Intersect.Network.Packets
 
             return sanitizer.Sanitized;
         }
-
     }
 
 }
