@@ -1694,15 +1694,15 @@ namespace Intersect.Server.Networking
                 return;
             }
 
-            // Is our user within range of the space they are trying to drop the item on?
-            var map = MapInstance.Get( packet.MapId );
-            var distance = player.GetDistanceTo( map, packet.MouseIndex % Options.TileWidth, (int)Math.Floor( packet.MouseIndex / (float)Options.TileWidth ) );
-            if( distance > Options.Loot.MaximumDropDistance )
-            {
-                return;
-            }
+            // TODO : Is our user within range of the space they are trying to drop the item on?
+            //var map = MapInstance.Get( packet.MapId );
+            //var distance = player.GetDistanceTo( map, packet.MouseIndex % Options.MapWidth, (int)Math.Floor( packet.MouseIndex / (float)Options.MapWidth ) );
+            //if( distance > Options.Loot.MaximumDropDistance )
+            //{
+            //    return;
+            //}
 
-            player?.DropItemFrom( packet.Slot, packet.Quantity, packet.MouseIndex );
+            player?.DropItemFrom( packet.Slot, packet.Quantity, packet.XLocation, packet.YLocation );
         }
 
         //UseItemPacket
