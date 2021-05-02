@@ -462,6 +462,12 @@ namespace Intersect.Client.Interface.Game.Inventory
                             }
                         }
                     }
+                    //TODO : May need to check if its a ground tile we just dropped on.
+                    else
+                    {
+                        var tileIndex = Globals.InputManager.GetTileIndexOfMousePosition();
+                        PacketSender.SendDropItem( mMySlot, 1, tileIndex );
+                    }
 
                     mDragIcon.Dispose();
                 }
