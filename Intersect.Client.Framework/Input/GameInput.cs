@@ -40,8 +40,6 @@ namespace Intersect.Client.Framework.Input
 
         public abstract Pointf GetMousePosition();
 
-        public abstract int GetTileIndexOfMousePosition();
-
         public abstract void Update();
 
         public abstract void OpenKeyboard(

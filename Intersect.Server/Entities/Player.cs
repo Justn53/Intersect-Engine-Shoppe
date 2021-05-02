@@ -1790,7 +1790,7 @@ namespace Intersect.Server.Entities
         /// <param name="slotIndex">the slot to drop from</param>
         /// <param name="amount">the amount to drop</param>
         /// <returns>if an item was dropped</returns>
-        public bool TryDropItemFrom( int slotIndex, int amount, int tileIndex = 0 )
+        public bool TryDropItemFrom( int slotIndex, int amount, int dropX, int dropY )
         {
             if( !TryGetItemAt( slotIndex, out var itemInSlot ) )
             {
@@ -1835,15 +1835,13 @@ namespace Intersect.Server.Entities
                 return false;
             }
 
-            if( tileIndex == 0 )
+            if( dropX == 0 && dropY == 0 )
             {
                 map.SpawnItem( X, Y, itemInSlot, itemDescriptor.IsStackable ? amount : 1, Id );
             }
             else
             {
-                var mapX = tileIndex % Options.TileHeight;
-                var mapY = (int)Math.Floor( tileIndex / (float)Options.TileWidth );
-                map.SpawnItem( mapX, mapY, itemInSlot, itemDescriptor.IsStackable ? amount : 1, Id );
+                map.SpawnItem( dropX, dropY, itemInSlot, itemDescriptor.IsStackable ? amount : 1, Id );
             }
 
             itemInSlot.Quantity = Math.Max( 0, itemInSlot.Quantity - amount );
@@ -1868,7 +1866,7 @@ namespace Intersect.Server.Entities
         /// <param name="tileIndex">tile index to drop the item on if provided.</param>
         /// <see cref="TryDropItemFrom(int, int)"/>
         [Obsolete( "Use TryDropItemFrom(int, int)." )]
-        public void DropItemFrom( int slotIndex, int amount, int tileIndex = 0 ) => TryDropItemFrom( slotIndex, amount, tileIndex );
+        public void DropItemFrom( int slotIndex, int amount, int dropX = 0, int dropY = 0 ) => TryDropItemFrom( slotIndex, amount, dropX, dropY );
 
         /// <summary>
         /// This is for interacting with items directly from the map rather than from the inventory. If only works for event items.

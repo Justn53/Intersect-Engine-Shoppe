@@ -11,22 +11,21 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public DropItemPacket( int slot, int quantity, Guid mapId, int tileIndex, int mouseIndex ) : base( slot, quantity )
+        public DropItemPacket( int slot, int quantity, Guid mapId, int xLocation, int yLocation ) : base( slot, quantity )
         {
             MapId = mapId;
-            TileIndex = tileIndex;
-            MouseIndex = mouseIndex;
+            XLocation = xLocation;
+            YLocation = yLocation;
         }
 
         [Key( 4 )]
         public Guid MapId { get; set; }
 
         [Key( 5 )]
-        public int TileIndex { get; set; }
+        public int XLocation { get; set; }
 
         [Key( 6 )]
-        public int MouseIndex { get; set; }
-
+        public int YLocation { get; set; }
     }
 
 }
