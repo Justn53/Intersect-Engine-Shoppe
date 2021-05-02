@@ -1658,7 +1658,15 @@ namespace Intersect.Server.Networking
                 return;
             }
 
-            player?.DropItemFrom(packet.Slot, packet.Quantity);
+            // Is our user within range of the space they are trying to drop the item on?
+            var map = MapInstance.Get(packet.MapId);
+            var distance = player.GetDistanceTo(map, packet.MouseIndex % Options.TileWidth, (int)Math.Floor(packet.MouseIndex / (float)Options.TileWidth));
+            if (distance > Options.Loot.MaximumDropDistance)
+            {
+                return;
+            }
+
+            player?.DropItemFrom(packet.Slot, packet.Quantity, packet.MouseIndex);
         }
 
         //UseItemPacket
