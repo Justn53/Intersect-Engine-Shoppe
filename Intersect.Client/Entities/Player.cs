@@ -848,7 +848,14 @@ namespace Intersect.Client.Entities
             {
                 movex = 1;
             }
-
+            if( Controls.KeyDown( Control.Running ))
+            {
+                Running = 1;
+            }
+            else
+            {
+                Running = 0;
+            }
 
             Globals.Me.MoveDir = -1;
             if( movex != 0f || movey != 0f )

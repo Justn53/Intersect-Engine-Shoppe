@@ -179,6 +179,9 @@ namespace Intersect.Client.Entities
 
         public byte Z;
 
+        //Running System
+        public byte Running = 0;
+        
         public Entity( Guid id, EntityPacket packet, bool isEvent = false )
         {
             Id = id;
@@ -462,6 +465,10 @@ namespace Intersect.Client.Entities
         public virtual float GetMovementTime()
         {
             var time = 1000f / (float)( 1 + Math.Log( Stat[(int)Stats.Speed] ) );
+            if( Running == 1 )
+            {
+                time *= 0.5f;
+            }
             if( Blocking )
             {
                 time += time * (float)Options.BlockingSlow;
