@@ -1838,12 +1838,11 @@ namespace Intersect.Server.Entities
             if( tileIndex == 0 )
             {
                 map.SpawnItem( X, Y, itemInSlot, itemDescriptor.IsStackable ? amount : 1, Id );
-
             }
             else
             {
-                var mapX = tileIndex % Options.MapWidth;
-                var mapY = (int)Math.Floor( tileIndex / (float)Options.MapWidth );
+                var mapX = tileIndex % Options.TileHeight;
+                var mapY = (int)Math.Floor( tileIndex / (float)Options.TileWidth );
                 map.SpawnItem( mapX, mapY, itemInSlot, itemDescriptor.IsStackable ? amount : 1, Id );
             }
 
@@ -1866,9 +1865,10 @@ namespace Intersect.Server.Entities
         /// </summary>
         /// <param name="slotIndex">the slot to drop from</param>
         /// <param name="amount">the amount to drop</param>
+        /// <param name="tileIndex">tile index to drop the item on if provided.</param>
         /// <see cref="TryDropItemFrom(int, int)"/>
         [Obsolete( "Use TryDropItemFrom(int, int)." )]
-        public void DropItemFrom( int slotIndex, int amount ) => TryDropItemFrom( slotIndex, amount );
+        public void DropItemFrom( int slotIndex, int amount, int tileIndex = 0 ) => TryDropItemFrom( slotIndex, amount, tileIndex );
 
         /// <summary>
         /// This is for interacting with items directly from the map rather than from the inventory. If only works for event items.

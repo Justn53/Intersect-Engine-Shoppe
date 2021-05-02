@@ -140,9 +140,9 @@ namespace Intersect.Client.MonoGame.Input
 
         public override int GetTileIndexOfMousePosition()
         {
-            var mouseX = (int)( Math.Floor( ( ( GetMousePosition().X + Core.Graphics.CurrentView.Left ) / Options.MapWidth ) ) );
-            var mouseY = (int)( Math.Floor( ( GetMousePosition().Y + Core.Graphics.CurrentView.Top ) ) / Options.MapWidth );
-            return mouseY * Options.MapWidth + mouseX;
+            var mouseX = (int)( Math.Floor( ( GetMousePosition().X + Core.Graphics.CurrentView.Left ) / Options.TileWidth ) );
+            var mouseY = (int)( Math.Floor( ( GetMousePosition().Y + Core.Graphics.CurrentView.Top ) ) / Options.TileHeight );
+            return mouseY * Options.TileWidth + mouseX;
         }
 
         private void CheckMouseButton( ButtonState bs, MouseButtons mb )
