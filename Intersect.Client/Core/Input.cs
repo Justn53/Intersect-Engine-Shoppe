@@ -323,7 +323,8 @@ namespace Intersect.Client.Core
                 return;
             }
 
-            if (Globals.Me == null)
+            var mouseTileIndex = Globals.InputManager.GetTileIndexOfMousePosition();
+            if(Globals.Me.TryInteractOrPickUpItem(Globals.Me.MapInstance.Id, Globals.Me.Y * Options.MapWidth + Globals.Me.X, mouseTileIndex))
             {
                 return;
             }

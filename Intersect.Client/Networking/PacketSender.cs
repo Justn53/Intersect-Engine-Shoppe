@@ -126,9 +126,9 @@ namespace Intersect.Client.Networking
             Network.SendPacket(new DropItemPacket(slot, amount));
         }
 
-        public static void SendUseItem(int slot, Guid targetId)
+        public static void SendDropItem(int slot, int amount, int tileIndex = 0)
         {
-            Network.SendPacket(new UseItemPacket(slot, targetId));
+            Network.SendPacket(new DropItemPacket(slot, amount, tileIndex));
         }
 
         public static void SendSwapSpells(int spell1, int spell2)

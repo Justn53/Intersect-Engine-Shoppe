@@ -6,11 +6,11 @@ namespace Intersect.Network.Packets.Client
     public class DropItemPacket : SlotQuantityPacket
     {
         //Parameterless Constructor for MessagePack
-        public DropItemPacket() : base(0, 0)
+        public DropItemPacket() : base(0, 0, 0)
         {
         }
 
-        public DropItemPacket(int slot, int quantity) : base(slot, quantity)
+        public DropItemPacket(int slot, int quantity, int tileIndex = 0) : base(slot, quantity, tileIndex)
         {
         }
 

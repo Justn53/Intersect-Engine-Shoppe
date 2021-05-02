@@ -24,10 +24,11 @@ namespace Intersect.Network.Packets
 
         }
 
-        public SlotQuantityPacket(int slot, int quantity)
+        public SlotQuantityPacket(int slot, int quantity, int tileIndex = 0)
         {
             Slot = slot;
             Quantity = quantity;
+            TileIndex = tileIndex;
         }
 
         [Key(1)]
@@ -48,6 +49,9 @@ namespace Intersect.Network.Packets
 
             return sanitizer.Sanitized;
         }
+
+        [Key( 4 )]
+        public int TileIndex { get; set; }
 
     }
 
