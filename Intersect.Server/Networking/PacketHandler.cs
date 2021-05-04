@@ -1537,7 +1537,7 @@ namespace Intersect.Server.Networking
         public void HandlePacket( Client client, InteractItemPacket packet )
         {
             var player = client.Entity;
-            if( player == null || packet.MouseIndex < 0 || packet.MouseIndex >= Options.MapWidth * Options.MapHeight )
+            if( player == null || packet.TileIndex < 0 || packet.TileIndex >= Options.MapWidth * Options.MapHeight )
             {
                 return;
             }
@@ -1551,14 +1551,13 @@ namespace Intersect.Server.Networking
             }
 
             // Is our user within range of the item they are trying to interact with?
-            var distance = player.GetDistanceTo( map, packet.MouseIndex % Options.MapWidth, (int)Math.Floor( packet.MouseIndex / (float)Options.MapWidth ) );
-            if( distance > Options.Loot.MaximumInteractDistance )
+            if( player.GetDistanceTo( map, packet.TileIndex % Options.MapWidth, (int)Math.Floor( packet.TileIndex / (float)Options.MapWidth ) ) > Options.Loot.MaximumInteractDistance )
             {
                 return;
             }
 
             //Unlike pickup item packet, we are going to treat this as only picking up a single item.
-            var item = map.FindItemsAt( packet.MouseIndex ).FirstOrDefault();
+            var item = map.FindItemsAt( packet.TileIndex ).FirstOrDefault();
 
             player.InteractWithMapItem( item );
         }

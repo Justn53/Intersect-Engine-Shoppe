@@ -1835,9 +1835,29 @@ namespace Intersect.Server.Entities
                 return false;
             }
 
+
+
             if( dropX == 0 && dropY == 0 )
             {
-                map.SpawnItem( X, Y, itemInSlot, itemDescriptor.IsStackable ? amount : 1, Id );
+                var xModifier = 0;
+                var yModifier = 0;
+
+                switch( Dir )
+                {
+                    case 0:
+                        yModifier--;
+                        break;
+                    case 1:
+                        yModifier++;
+                        break;
+                    case 2:
+                        xModifier--;
+                        break;
+                    case 3:
+                        xModifier++;
+                        break;
+                }
+                map.SpawnItem( X + xModifier, Y + yModifier, itemInSlot, itemDescriptor.IsStackable ? amount : 1, Id );
             }
             else
             {

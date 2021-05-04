@@ -166,6 +166,9 @@ namespace Intersect.Client.Entities
 
                 if( Controls.KeyDown( Control.AttackInteract ) )
                 {
+                    if( Globals.Me.TryInteractOrPickUpItem( Globals.Me.MapInstance.Id ) )
+                        return false;
+
                     if( !Globals.Me.TryAttack() )
                     {
                         if( Globals.Me.AttackTimer < Timing.Global.Ticks / TimeSpan.TicksPerMillisecond )
@@ -848,7 +851,7 @@ namespace Intersect.Client.Entities
             {
                 movex = 1;
             }
-            if( Controls.KeyDown( Control.Running ))
+            if( Controls.KeyDown( Control.Running ) )
             {
                 Running = 1;
             }
@@ -1479,26 +1482,47 @@ namespace Intersect.Client.Entities
             }
         }
 
-        public bool TryInteractOrPickUpItem( Guid mapId, int tileIndex, int mouseTileIndex )
+        public bool TryInteractOrPickUpItem( Guid mapId )
         {
             var map = MapInstance.Get( mapId );
-            if( !map.MapItems.Where( x => x.Key == mouseTileIndex ).Any() )
+
+            var xModifier = 0;
+            var yModifier = 0;
+
+            switch( Dir )
+            {
+                case 0:
+                    yModifier--;
+                    break;
+                case 1:
+                    yModifier++;
+                    break;
+                case 2:
+                    xModifier--;
+                    break;
+                case 3:
+                    xModifier++;
+                    break;
+            }
+
+            var tileIndex = ( Y + yModifier ) * Options.MapWidth + ( X + xModifier );
+            if( !map.MapItems.Where( x => x.Key == tileIndex ).Any() )
                 return false;
 
-            foreach( var item in map.MapItems[mouseTileIndex] )
+            foreach( var item in map.MapItems[tileIndex] )
             {
                 var itemBase = ItemBase.Get( item.ItemId );
                 if( itemBase.InteractOnGround )
-                    return TryInteractItem( mapId, tileIndex, mouseTileIndex, item.UniqueId );
+                    return TryInteractItem( mapId, tileIndex, item.UniqueId );
                 else
-                    return TryPickupItem( mapId, mouseTileIndex, item.UniqueId );
+                    return TryPickupItem( mapId, tileIndex, item.UniqueId );
             }
 
             return false;
         }
 
         //TODO : Might need to get rid of first only.
-        public bool TryInteractItem( Guid mapId, int tileIndex, int mouseTileIndex, Guid uniqueId = new Guid(), bool firstOnly = false )
+        public bool TryInteractItem( Guid mapId, int tileIndex, Guid uniqueId = new Guid(), bool firstOnly = false )
         {
             var map = MapInstance.Get( mapId );
             if( map == null || tileIndex < 0 || tileIndex >= Options.MapWidth * Options.MapHeight )
@@ -1509,12 +1533,12 @@ namespace Intersect.Client.Entities
             // Are we trying to pick up anything in particular, or everything?
             if( uniqueId != Guid.Empty || firstOnly )
             {
-                if( !map.MapItems.ContainsKey( mouseTileIndex ) || map.MapItems[mouseTileIndex].Count < 1 )
+                if( !map.MapItems.ContainsKey( tileIndex ) || map.MapItems[tileIndex].Count < 1 )
                 {
                     return false;
                 }
 
-                foreach( var item in map.MapItems[mouseTileIndex] )
+                foreach( var item in map.MapItems[tileIndex] )
                 {
                     // Check if we are trying to pick up a specific item, and if this is the one.
                     if( uniqueId != Guid.Empty && item.UniqueId != uniqueId )
@@ -1522,7 +1546,7 @@ namespace Intersect.Client.Entities
                         continue;
                     }
 
-                    PacketSender.SendInteractItem( mapId, tileIndex, mouseTileIndex, item.UniqueId );
+                    PacketSender.SendInteractItem( mapId, tileIndex, item.UniqueId );
 
                     return true;
                 }
@@ -1530,7 +1554,7 @@ namespace Intersect.Client.Entities
             else
             {
                 // Let the server worry about what we can and can not pick up.
-                PacketSender.SendInteractItem( mapId, tileIndex, mouseTileIndex, uniqueId );
+                PacketSender.SendInteractItem( mapId, tileIndex, uniqueId );
 
                 return true;
             }

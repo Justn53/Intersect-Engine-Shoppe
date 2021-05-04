@@ -10,12 +10,11 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public InteractItemPacket( Guid mapId, int tileIndex, int mouseIndex, Guid uniqueId )
+        public InteractItemPacket( Guid mapId, int tileIndex, Guid uniqueId )
         {
             MapId = mapId;
             UniqueId = uniqueId;
             TileIndex = tileIndex;
-            MouseIndex = mouseIndex;
         }
 
         [Key( 0 )]
@@ -26,8 +25,5 @@ namespace Intersect.Network.Packets.Client
 
         [Key( 2 )]
         public int TileIndex { get; set; }
-
-        [Key( 3 )]
-        public int MouseIndex { get; set; }
     }
 }
