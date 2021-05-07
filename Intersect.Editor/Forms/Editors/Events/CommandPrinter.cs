@@ -1122,6 +1122,16 @@ namespace Intersect.Editor.Forms.Editors.Events
             return Strings.EventCommandList.ChangePlayerColor.ToString( command.Color.R, command.Color.G, command.Color.B, command.Color.A );
         }
 
+        private static string GetCommandText( RemoveItemCommand command, MapInstance map )
+        {
+            return Strings.EventCommandList.removeitem;
+        }
+
+        private static string GetCommandText( ReplaceItemCommand command, MapInstance map )
+        {
+            return Strings.EventCommandList.replaceitemdesc.ToString( command.NewItem.Name );
+        }
+
         //Set Variable Modification Texts
         private static string GetVariableModText( SetVariableCommand command, VariableMod mod )
         {

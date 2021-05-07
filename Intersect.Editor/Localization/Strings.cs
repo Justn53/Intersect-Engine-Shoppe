@@ -1737,6 +1737,10 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString whenoption = @"When [{00}]";
 
+            public static LocalizedString removeitem = @"Remove Item";
+
+            public static LocalizedString replaceitemdesc = @"Item Replaced with {00}";
+
             [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
             public static LocalizedString ChangePlayerColor = @"Change Player Color to: R: {00} G: {01} B: {02} A: {03}";
 
@@ -1832,6 +1836,9 @@ Tick timer saved in server config.json.";
                 {"changeplayerlabel", @"Change Player Label"},
                 {"changeplayercolor", @"Change Player Color" },
                 {"changename", @"Change Player Name" },
+                {"itemcontrol", @"Item Control" },
+                {"removeitem", @"Remove Item" },
+                {"replaceitem", @"Replace Item" },
             };
 
         }
@@ -2828,6 +2835,17 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString title = @"Wait";
 
+        }
+
+        public struct EventRemoveItem
+        {
+            public static LocalizedString cancel = @"Cancel";
+
+            public static LocalizedString label = @"Replace With:";
+
+            public static LocalizedString okay = @"Ok";
+
+            public static LocalizedString title = @"Remove Item";
         }
 
         public struct EventWaitForRouteCompletion

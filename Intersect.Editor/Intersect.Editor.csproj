@@ -106,6 +106,12 @@
     <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_ChangeName.Designer.cs">
       <DependentUpon>EventCommand_ChangeName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_ReplaceItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_ReplaceItem.Designer.cs">
+      <DependentUpon>EventCommand_ReplaceItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmUpdate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -640,6 +646,9 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ReplaceItem.resx">
+      <DependentUpon>EventCommand_ReplaceItem.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Shaders\radialgradient_editor.xnb" />
   </ItemGroup>
   <ItemGroup>
