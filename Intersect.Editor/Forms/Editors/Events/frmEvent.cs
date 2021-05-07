@@ -730,6 +730,15 @@ namespace Intersect.Editor.Forms.Editors.Events
                     tmpCommand = new ChangeNameCommand( CurrentPage.CommandLists );
 
                     break;
+                case EventCommandType.RemoveItem:
+                    tmpCommand = new RemoveItemCommand();
+
+                    break;
+
+                case EventCommandType.ReplaceItem:
+                    tmpCommand = new ReplaceItemCommand();
+
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -1316,6 +1325,12 @@ namespace Intersect.Editor.Forms.Editors.Events
                     cmdWindow = new EventCommandChangeName( (ChangeNameCommand)command, CurrentPage, this );
 
                     break;
+                case EventCommandType.RemoveItem:
+                    break;
+
+                case EventCommandType.ReplaceItem:
+                    cmdWindow = new EventCommandReplaceItem( (ReplaceItemCommand)command, this );
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -1804,7 +1819,6 @@ namespace Intersect.Editor.Forms.Editors.Events
         }
 
         #endregion
-
     }
 
     public class CommandListProperties

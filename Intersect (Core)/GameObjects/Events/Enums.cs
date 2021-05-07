@@ -219,6 +219,11 @@
         ChangePlayerColor,
 
         ChangeName,
+
+        //Item Control
+        ReplaceItem,
+
+        RemoveItem,
     }
 
 }
