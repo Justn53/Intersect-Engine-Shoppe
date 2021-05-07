@@ -123,6 +123,13 @@
     </Compile>
     <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_CreateGuild.Designer.cs">
       <DependentUpon>EventCommand_CreateGuild.cs</DependentUpon>
+	 <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_ReplaceItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Editors\Events\Event Commands\EventCommand_ReplaceItem.Designer.cs">
+      <DependentUpon>EventCommand_ReplaceItem.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmUpdate.cs">
       <SubType>Form</SubType>
@@ -658,11 +665,16 @@
     <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
+
     <EmbeddedResource Include="Forms\Controls\GameObjectList.resx">
       <DependentUpon>GameObjectList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ConditionalBranch.resx">
       <DependentUpon>EventCommand_ConditionalBranch.cs</DependentUpon>
+</EmbeddedResource>
+    <EmbeddedResource Include="Forms\Editors\Events\Event Commands\EventCommand_ReplaceItem.resx">
+      <DependentUpon>EventCommand_ReplaceItem.cs</DependentUpon>
+
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Shaders\radialgradient_editor.xnb" />
   </ItemGroup>
