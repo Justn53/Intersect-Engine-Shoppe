@@ -1903,6 +1903,8 @@ namespace Intersect.Server.Entities
             if( itemBase.InteractOnGround )
             {
                 var evt = EventBase.Get( itemBase.EventId );
+                //EventPreProcessor.PreProcessEvent( evt );
+
                 if( evt == null || !StartCommonEvent( evt ) )
                 {
                     return;
@@ -5388,6 +5390,7 @@ namespace Intersect.Server.Entities
                             stackInfo.WaitingOnCommand.Type == EventCommandType.ShowOptions )
                         {
                             var tmpStack = new CommandInstance( stackInfo.Page, stackInfo.BranchIds[responseId - 1] );
+                            EventPreProcessor.RemovedProcessedEventsExceptForCommandsInStack( tmpStack );
                             evt.Value.CallStack.Push( tmpStack );
                         }
 
@@ -5669,6 +5672,7 @@ namespace Intersect.Server.Entities
 
                 if( newEvent != null )
                 {
+                    EventPreProcessor.PreProcessEvent( newEvent, this );
                     EventLookup.AddOrUpdate( evtId, newEvent, ( key, oldValue ) => newEvent );
                     EventBaseIdLookup.AddOrUpdate( baseEvent.Id, newEvent, ( key, oldvalue ) => newEvent );
                     return true;
