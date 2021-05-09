@@ -294,7 +294,7 @@ namespace Intersect.Server.Entities.Events
             var xModifier = 0;
             var yModifier = 0;
 
-            switch( player.Dir )
+            switch( command.StoredDirection )
             {
                 case 0:
                     yModifier--;
@@ -309,13 +309,14 @@ namespace Intersect.Server.Entities.Events
                     xModifier++;
                     break;
             }
-            var tileIndex = ( player.Y + yModifier ) * Options.MapWidth + ( player.X + xModifier );
-            var mapInstance = player.Map;
+            var tileIndex = ( command.StoredPlayerY + yModifier ) * Options.MapWidth + ( command.StoredPlayerX + xModifier );
+            var mapInstance = MapInstance.Get( command.MapId );
             var mapItem = mapInstance.FindItemsAt( tileIndex ).FirstOrDefault();
             mapInstance.RemoveItem( mapItem, false );
             var itemToSpawn = new Item( command.NewItem.Id, 1 );
             mapInstance.SpawnItem( mapItem.X, mapItem.Y, itemToSpawn, 1 );
         }
+
         //Remove Item
         private static void ProcessCommand(
             RemoveItemCommand command,
@@ -344,8 +345,8 @@ namespace Intersect.Server.Entities.Events
                     xModifier++;
                     break;
             }
-            var tileIndex = ( player.Y + yModifier ) * Options.MapWidth + ( player.X + xModifier );
-            var mapInstance = player.Map;
+            var tileIndex = ( command.StoredPlayerY + yModifier ) * Options.MapWidth + ( command.StoredPlayerX + xModifier );
+            var mapInstance = MapInstance.Get( command.MapId );
             var mapItem = mapInstance.FindItemsAt( tileIndex ).FirstOrDefault();
             mapInstance.RemoveItem( mapItem, false );
         }

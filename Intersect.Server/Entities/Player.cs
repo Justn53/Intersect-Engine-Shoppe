@@ -5656,6 +5656,7 @@ namespace Intersect.Server.Entities
 
                 if (newEvent != null)
                 {
+                    EventPreProcessor.PreProcessEvent(newEvent, this);
                     EventLookup.AddOrUpdate(evtId, newEvent, (key, oldValue) => newEvent);
                     EventBaseIdLookup.AddOrUpdate(baseEvent.Id, newEvent, (key, oldvalue) => newEvent);
                     return true;
