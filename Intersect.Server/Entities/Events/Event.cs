@@ -122,7 +122,10 @@ namespace Intersect.Server.Entities.Events
                     //Check to see if we should process event commands
                     if( CallStack.Count > 0 )
                     {
+                        //EventPreProcessor.PreProcessCallStack( CallStack, Player );
+
                         var curStack = CallStack.Peek();
+
                         if( curStack == null )
                         {
                             Log.Error( "Curstack variable in event update is null.. not sure how nor how to recover so just gonna let this crash now.." );
@@ -218,6 +221,8 @@ namespace Intersect.Server.Entities.Events
                                     {
                                         CommandProcessing.ProcessCommand( curStack.Command, Player, this );
                                         commandsExecuted++;
+
+                                        EventPreProcessor.RemovedProcessedEvent( curStack.Command );
                                     }
                                     else
                                     {
