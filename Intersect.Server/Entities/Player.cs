@@ -5372,7 +5372,7 @@ namespace Intersect.Server.Entities
                         if (stackInfo.WaitingForResponse != CommandInstance.EventResponse.Picture)
                         {
                             var tmpStack = new CommandInstance( stackInfo.Page, stackInfo.BranchIds[responseId - 1] );
-                            EventPreProcessor.RemovedProcessedEventsExceptForCommandsInStack( tmpStack );
+                            EventPreProcessor.RemovedProcessedEventsExceptForCommandsInStack( tmpStack, this );
                             evt.Value.CallStack.Push( tmpStack );
                         }
 

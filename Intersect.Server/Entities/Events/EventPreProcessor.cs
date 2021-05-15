@@ -28,6 +28,7 @@ namespace Intersect.Server.Entities.Events
                     if( commandInstance.GetType() == typeof( ReplaceItemCommand ) )
                     {
                         var replaceItemCommand = (ReplaceItemCommand)commandInstance;
+                        replaceItemCommand.StoredPlayerId = player.Id;
                         replaceItemCommand.StoredPlayerX = player.X;
                         replaceItemCommand.StoredPlayerY = player.Y;
                         replaceItemCommand.StoredDirection = player.Dir;
@@ -38,6 +39,7 @@ namespace Intersect.Server.Entities.Events
                     if( commandInstance.GetType() == typeof( RemoveItemCommand ) )
                     {
                         var removeItemCommand = (RemoveItemCommand)commandInstance;
+                        removeItemCommand.StoredPlayerId = player.Id;
                         removeItemCommand.StoredPlayerX = player.X;
                         removeItemCommand.StoredPlayerY = player.Y;
                         removeItemCommand.StoredDirection = player.Dir;
@@ -48,23 +50,25 @@ namespace Intersect.Server.Entities.Events
             }
         }
 
-        public static void RemovedProcessedEvent( EventCommand commandInstance )
+        public static void RemovedProcessedEvent( EventCommand commandInstance, Player player )
         {
             if( commandInstance != null && commandInstance.GetType() == typeof( ReplaceItemCommand ) )
             {
                 var replaceItemCommand = (ReplaceItemCommand)commandInstance;
-                PreProcessedEvents.Remove( replaceItemCommand );
+                if( replaceItemCommand.StoredPlayerId == player.Id )
+                    PreProcessedEvents.Remove( replaceItemCommand );
             }
 
             if( commandInstance != null && commandInstance.GetType() == typeof( RemoveItemCommand ) )
             {
                 var removeItemCommand = (RemoveItemCommand)commandInstance;
-                PreProcessedEvents.Remove( removeItemCommand );
+                if( removeItemCommand.StoredPlayerId == player.Id )
+                    PreProcessedEvents.Remove( removeItemCommand );
 
             }
         }
 
-        public static void RemovedProcessedEventsExceptForCommandsInStack( CommandInstance tmpStack )
+        public static void RemovedProcessedEventsExceptForCommandsInStack( CommandInstance tmpStack, Player player )
         {
             var commandsToKeep = new List<EventCommand>();
             foreach( var commandInstance in tmpStack.CommandList )
@@ -72,7 +76,23 @@ namespace Intersect.Server.Entities.Events
                 foreach( var preProcessedEvent in PreProcessedEvents )
                 {
                     if( preProcessedEvent.Type == commandInstance.Type )
-                        commandsToKeep.Add( preProcessedEvent );
+                    {
+                        if( commandInstance != null && commandInstance.GetType() == typeof( ReplaceItemCommand ) )
+                        {
+                            var replaceItemCommand = (ReplaceItemCommand)commandInstance;
+                            if( replaceItemCommand.StoredPlayerId == player.Id )
+                                commandsToKeep.Add( preProcessedEvent );
+                        }
+
+                        if( commandInstance != null && commandInstance.GetType() == typeof( RemoveItemCommand ) )
+                        {
+                            var removeItemCommand = (RemoveItemCommand)commandInstance;
+                            if( removeItemCommand.StoredPlayerId == player.Id )
+                                commandsToKeep.Add( preProcessedEvent );
+                        }
+
+                    }
+
                 }
             }
 

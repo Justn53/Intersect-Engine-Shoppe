@@ -48,10 +48,7 @@
         /// </summary>
         public byte MaximumInteractDistance = 1;
 
-        /// <summary>
-        /// Configures the maximum amount of tiles around you that you drop an item on.
-        /// </summary>
-        public byte MaximumDropDistance = 1;
+      
         public bool IndividualizedLootAutoIncludePartyMembers { get; set; } = false;
     }
 }
