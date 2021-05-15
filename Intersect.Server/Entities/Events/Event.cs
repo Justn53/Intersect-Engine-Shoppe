@@ -222,7 +222,7 @@ namespace Intersect.Server.Entities.Events
                                         CommandProcessing.ProcessCommand( curStack.Command, Player, this );
                                         commandsExecuted++;
 
-                                        EventPreProcessor.RemovedProcessedEvent( curStack.Command );
+                                        EventPreProcessor.RemovedProcessedEvent( curStack.Command, Player );
                                     }
                                     else
                                     {
