@@ -312,6 +312,7 @@ namespace Intersect.GameObjects.Events.Commands
     {
         public override EventCommandType Type { get; } = EventCommandType.ReplaceItem;
 
+        public Guid StoredPlayerId { get; set; }
         public int StoredPlayerX { get; set; }
         public int StoredPlayerY { get; set; }
         public int StoredDirection { get; set; }
@@ -324,6 +325,7 @@ namespace Intersect.GameObjects.Events.Commands
     {
         public override EventCommandType Type { get; } = EventCommandType.RemoveItem;
 
+        public Guid StoredPlayerId { get; set; }
         public int StoredPlayerX { get; set; }
         public int StoredPlayerY { get; set; }
         public int StoredDirection { get; set; }

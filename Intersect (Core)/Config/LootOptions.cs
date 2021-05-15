@@ -47,10 +47,5 @@
         /// Configures the maximum amount of tiles around you that you can interact with objects with.
         /// </summary>
         public byte MaximumInteractDistance = 1;
-
-        /// <summary>
-        /// Configures the maximum amount of tiles around you that you drop an item on.
-        /// </summary>
-        public byte MaximumDropDistance = 1;
     }
 }
