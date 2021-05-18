@@ -915,7 +915,9 @@ namespace Intersect.Server.Maps
                     // Do we need to delete this item?
                     if (mapItem.DespawnTime != -1 && mapItem.DespawnTime < timeMs)
                     {
-                        RemoveItem(mapItem);
+                        var itemBase = ItemBase.Get( mapItem.ItemId );
+                        if( !itemBase.DoesNotDespawn )
+                            RemoveItem( mapItem );
                     }
                 }
 

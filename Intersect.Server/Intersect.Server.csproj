@@ -583,6 +583,10 @@
     <Compile Include="Migrations\Game\20210513080440_AddItemStackCaps.designer.cs">
       <DependentUpon>20210513080440_AddItemStackCaps.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Game\20210518020808_AddDoesNotDespawnToItemBase.cs" />
+    <Compile Include="Migrations\Game\20210518020808_AddDoesNotDespawnToItemBase.designer.cs">
+      <DependentUpon>20210518020808_AddDoesNotDespawnToItemBase.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Logging\20201119230003_AddUserActivityHistory.cs" />
     <Compile Include="Migrations\Logging\20201119230003_AddUserActivityHistory.Designer.cs">
       <DependentUpon>20201119230003_AddUserActivityHistory.cs</DependentUpon>

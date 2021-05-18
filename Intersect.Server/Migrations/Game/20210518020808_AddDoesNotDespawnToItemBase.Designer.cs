@@ -3,14 +3,16 @@ using System;
 using Intersect.Server.Database.GameData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Intersect.Server.Migrations.Game
 {
     [DbContext(typeof(GameContext))]
-    partial class GameContextModelSnapshot : ModelSnapshot
+    [Migration("20210518020808_AddDoesNotDespawnToItemBase")]
+    partial class AddDoesNotDespawnToItemBase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -207,16 +209,7 @@ namespace Intersect.Server.Migrations.Game
 
                     b.Property<int>("AttackSpeedValue");
 
-                    b.Property<bool>("CanBag");
-
-                    b.Property<bool>("CanBank");
-
-                    b.Property<bool>("CanDrop")
-                        .HasColumnName("Bound");
-
-                    b.Property<bool>("CanSell");
-
-                    b.Property<bool>("CanTrade");
+                    b.Property<bool>("Bound");
 
                     b.Property<int>("Cooldown");
 
@@ -225,8 +218,6 @@ namespace Intersect.Server.Migrations.Game
                     b.Property<int>("CritChance");
 
                     b.Property<double>("CritMultiplier");
-                    b.Property<bool>("DoesNotDespawn")
-                        .HasColumnName("DoesNotDespawn");
 
                     b.Property<int>("Damage");
 
@@ -234,7 +225,8 @@ namespace Intersect.Server.Migrations.Game
 
                     b.Property<string>("Description");
 
-                    b.Property<int>("DropChanceOnDeath");
+                    b.Property<bool>("DoesNotDespawn")
+                        .HasColumnName("DoesNotDespawn");
 
                     b.Property<Guid>("EquipmentAnimationId")
                         .HasColumnName("EquipmentAnimation");
@@ -245,16 +237,15 @@ namespace Intersect.Server.Migrations.Game
                         .HasColumnName("Event");
 
                     b.Property<string>("FemalePaperdoll");
-                    b.Property<bool>("InteractOnGround")
-                        .HasColumnName("InteractOnGround");
 
                     b.Property<string>("Folder");
 
                     b.Property<string>("Icon");
 
-                    b.Property<bool>("IgnoreCooldownReduction");
-
                     b.Property<bool>("IgnoreGlobalCooldown");
+
+                    b.Property<bool>("InteractOnGround")
+                        .HasColumnName("InteractOnGround");
 
                     b.Property<int>("ItemType");
 
@@ -265,10 +256,6 @@ namespace Intersect.Server.Migrations.Game
                         .HasColumnName("UsageRequirements");
 
                     b.Property<string>("MalePaperdoll");
-
-                    b.Property<int>("MaxBankStack");
-
-                    b.Property<int>("MaxInventoryStack");
 
                     b.Property<string>("Name");
 
@@ -375,8 +362,6 @@ namespace Intersect.Server.Migrations.Game
                     b.Property<bool>("FocusHighestDamageDealer");
 
                     b.Property<string>("Folder");
-
-                    b.Property<bool>("IndividualizedLoot");
 
                     b.Property<string>("JsonAggroList")
                         .HasColumnName("AggroList");
@@ -518,18 +503,12 @@ namespace Intersect.Server.Migrations.Game
 
                     b.Property<string>("BeforeDescription");
 
-                    b.Property<string>("CompletedCategory");
-
-                    b.Property<bool>("DoNotShowUnlessRequirementsMet");
-
                     b.Property<string>("EndDescription");
 
                     b.Property<Guid>("EndEventId")
                         .HasColumnName("EndEvent");
 
                     b.Property<string>("Folder");
-
-                    b.Property<string>("InProgressCategory");
 
                     b.Property<string>("InProgressDescription");
 
@@ -541,8 +520,6 @@ namespace Intersect.Server.Migrations.Game
                     b.Property<bool>("LogBeforeOffer");
 
                     b.Property<string>("Name");
-
-                    b.Property<int>("OrderValue");
 
                     b.Property<bool>("Quitable");
 
@@ -557,8 +534,6 @@ namespace Intersect.Server.Migrations.Game
                         .HasColumnName("Tasks");
 
                     b.Property<long>("TimeCreated");
-
-                    b.Property<string>("UnstartedCategory");
 
                     b.HasKey("Id");
 
@@ -684,8 +659,6 @@ namespace Intersect.Server.Migrations.Game
                         .HasColumnName("HitAnimation");
 
                     b.Property<string>("Icon");
-
-                    b.Property<bool>("IgnoreCooldownReduction");
 
                     b.Property<bool>("IgnoreGlobalCooldown");
 

@@ -3243,9 +3243,12 @@ Tick timer saved in server config.json.";
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString InventoryStackLimit = @"Inventory Stack Limit:";
+            
+            public static LocalizedString InteractOnGroundEvent = @"Interact On Ground";
 
-            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-            public static LocalizedString BankStackLimit = @"Bank Stack Limit:";
+            public static LocalizedString DoesNotDespawn = @"Does Not Despawn";
+
+           
 
             public static LocalizedString title = @"Item Editor";
 
