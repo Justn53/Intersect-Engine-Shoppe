@@ -255,6 +255,7 @@ namespace Intersect.Editor.Forms.Editors
             grpEvent.Text = Strings.ItemEditor.eventpanel;
             chkSingleUseEvent.Text = Strings.ItemEditor.SingleUseEvent;
             chkInteractOnGround.Text = Strings.ItemEditor.InteractOnGroundEvent;
+            chkDoesNotDespawn.Text = Strings.ItemEditor.DoesNotDespawn;
 
             grpConsumable.Text = Strings.ItemEditor.consumeablepanel;
             lblVital.Text = Strings.ItemEditor.vital;
@@ -323,6 +324,7 @@ namespace Intersect.Editor.Forms.Editors
                 nudRange.Value = mEditorItem.StatGrowth;
                 chkBound.Checked = Convert.ToBoolean( mEditorItem.Bound );
                 chkStackable.Checked = Convert.ToBoolean( mEditorItem.Stackable );
+                chkDoesNotDespawn.Checked = Convert.ToBoolean( mEditorItem.DoesNotDespawn );
                 cmbToolType.SelectedIndex = mEditorItem.Tool + 1;
                 cmbAttackAnimation.SelectedIndex = AnimationBase.ListIndex( mEditorItem.AttackAnimationId ) + 1;
                 RefreshExtendedData();
@@ -914,6 +916,11 @@ namespace Intersect.Editor.Forms.Editors
             mEditorItem.InteractOnGround = chkInteractOnGround.Checked;
         }
 
+        private void chkDoesNotDespawn_CheckedChanged( object sender, EventArgs e )
+        {
+            mEditorItem.DoesNotDespawn = chkDoesNotDespawn.Checked;
+        }
+
         private void cmbRarity_SelectedIndexChanged( object sender, EventArgs e )
         {
             mEditorItem.Rarity = cmbRarity.SelectedIndex;
@@ -1352,9 +1359,8 @@ namespace Intersect.Editor.Forms.Editors
         }
 
 
+
         #endregion
-
-
     }
 
 }

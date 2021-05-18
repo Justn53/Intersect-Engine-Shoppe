@@ -3074,6 +3074,8 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString InteractOnGroundEvent = @"Interact On Ground";
 
+            public static LocalizedString DoesNotDespawn = @"Does Not Despawn";
+
             public static LocalizedString stackable = @"Stackable?";
 
             public static LocalizedString title = @"Item Editor";
