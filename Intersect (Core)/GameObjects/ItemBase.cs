@@ -121,6 +121,9 @@ namespace Intersect.GameObjects
         [Column( "InteractOnGround" )]
         public bool InteractOnGround { get; set; } = true;
 
+        [Column( "DoesNotDespawn" )]
+        public bool DoesNotDespawn { get; set; } = false;
+
         [Column( "Event" )]
         [JsonProperty]
         public Guid EventId { get; set; }

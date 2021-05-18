@@ -163,6 +163,7 @@ namespace Intersect.Editor.Forms.Editors
             this.lblProjectile = new System.Windows.Forms.Label();
             this.lblDamage = new System.Windows.Forms.Label();
             this.grpEvent = new DarkUI.Controls.DarkGroupBox();
+            this.chkInteractOnGround = new DarkUI.Controls.DarkCheckBox();
             this.chkSingleUseEvent = new DarkUI.Controls.DarkCheckBox();
             this.cmbEvent = new DarkUI.Controls.DarkComboBox();
             this.grpConsumable = new DarkUI.Controls.DarkGroupBox();
@@ -193,7 +194,7 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripItemPaste = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripItemUndo = new System.Windows.Forms.ToolStripButton();
-            this.chkInteractOnGround = new DarkUI.Controls.DarkCheckBox();
+            this.chkDoesNotDespawn = new DarkUI.Controls.DarkCheckBox();
             this.grpItems.SuspendLayout();
             this.grpGeneral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudRgbaA)).BeginInit();
@@ -335,6 +336,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.grpGeneral.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpGeneral.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpGeneral.Controls.Add(this.chkDoesNotDespawn);
             this.grpGeneral.Controls.Add(this.chkIgnoreGlobalCooldown);
             this.grpGeneral.Controls.Add(this.btnAddCooldownGroup);
             this.grpGeneral.Controls.Add(this.cmbCooldownGroup);
@@ -655,7 +657,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             // btnEditRequirements
             // 
-            this.btnEditRequirements.Location = new System.Drawing.Point(13, 275);
+            this.btnEditRequirements.Location = new System.Drawing.Point(13, 283);
             this.btnEditRequirements.Name = "btnEditRequirements";
             this.btnEditRequirements.Padding = new System.Windows.Forms.Padding(5);
             this.btnEditRequirements.Size = new System.Drawing.Size(171, 23);
@@ -666,7 +668,7 @@ namespace Intersect.Editor.Forms.Editors
             // chkStackable
             // 
             this.chkStackable.AutoSize = true;
-            this.chkStackable.Location = new System.Drawing.Point(82, 241);
+            this.chkStackable.Location = new System.Drawing.Point(74, 241);
             this.chkStackable.Name = "chkStackable";
             this.chkStackable.Size = new System.Drawing.Size(80, 17);
             this.chkStackable.TabIndex = 27;
@@ -2171,6 +2173,18 @@ namespace Intersect.Editor.Forms.Editors
             this.grpEvent.Text = "Event";
             this.grpEvent.Visible = false;
             // 
+            // chkInteractOnGround
+            // 
+            this.chkInteractOnGround.AutoSize = true;
+            this.chkInteractOnGround.Checked = true;
+            this.chkInteractOnGround.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkInteractOnGround.Location = new System.Drawing.Point(9, 67);
+            this.chkInteractOnGround.Name = "chkInteractOnGround";
+            this.chkInteractOnGround.Size = new System.Drawing.Size(117, 17);
+            this.chkInteractOnGround.TabIndex = 30;
+            this.chkInteractOnGround.Text = "Interact On Ground";
+            this.chkInteractOnGround.CheckedChanged += new System.EventHandler(this.chkInteractOnGround_CheckedChanged);
+            // 
             // chkSingleUseEvent
             // 
             this.chkSingleUseEvent.AutoSize = true;
@@ -2584,17 +2598,15 @@ namespace Intersect.Editor.Forms.Editors
             this.toolStripItemUndo.Text = "Undo";
             this.toolStripItemUndo.Click += new System.EventHandler(this.toolStripItemUndo_Click);
             // 
-            // chkInteractOnGround
+            // chkDoesNotDespawn
             // 
-            this.chkInteractOnGround.AutoSize = true;
-            this.chkInteractOnGround.Checked = true;
-            this.chkInteractOnGround.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkInteractOnGround.Location = new System.Drawing.Point(9, 67);
-            this.chkInteractOnGround.Name = "chkInteractOnGround";
-            this.chkInteractOnGround.Size = new System.Drawing.Size(117, 17);
-            this.chkInteractOnGround.TabIndex = 30;
-            this.chkInteractOnGround.Text = "Interact On Ground";
-            this.chkInteractOnGround.CheckedChanged += new System.EventHandler(this.chkInteractOnGround_CheckedChanged);
+            this.chkDoesNotDespawn.AutoSize = true;
+            this.chkDoesNotDespawn.Location = new System.Drawing.Point(13, 261);
+            this.chkDoesNotDespawn.Name = "chkDoesNotDespawn";
+            this.chkDoesNotDespawn.Size = new System.Drawing.Size(119, 17);
+            this.chkDoesNotDespawn.TabIndex = 87;
+            this.chkDoesNotDespawn.Text = "Does Not Despawn";
+            this.chkDoesNotDespawn.CheckedChanged += new System.EventHandler(this.chkDoesNotDespawn_CheckedChanged);
             // 
             // FrmItem
             // 
@@ -2845,5 +2857,6 @@ namespace Intersect.Editor.Forms.Editors
         private DarkNumericUpDown nudRgbaG;
         private DarkNumericUpDown nudRgbaR;
         private DarkCheckBox chkInteractOnGround;
+        private DarkCheckBox chkDoesNotDespawn;
     }
 }
