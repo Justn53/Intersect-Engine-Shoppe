@@ -3243,7 +3243,10 @@ Tick timer saved in server config.json.";
 
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString InventoryStackLimit = @"Inventory Stack Limit:";
-            
+
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public static LocalizedString BankStackLimit = @"Bank Stack Limit:";
+
             public static LocalizedString InteractOnGroundEvent = @"Interact On Ground";
 
             public static LocalizedString DoesNotDespawn = @"Does Not Despawn";

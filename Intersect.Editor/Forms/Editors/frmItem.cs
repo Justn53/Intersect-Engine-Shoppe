@@ -358,7 +358,6 @@ namespace Intersect.Editor.Forms.Editors
                 nudInvStackLimit.Value = mEditorItem.MaxInventoryStack;
                 nudBankStackLimit.Value = mEditorItem.MaxBankStack;
                 nudDeathDropChance.Value = mEditorItem.DropChanceOnDeath;
-                chkBound.Checked = Convert.ToBoolean( mEditorItem.Bound );
                 chkStackable.Checked = Convert.ToBoolean( mEditorItem.Stackable );
                 chkDoesNotDespawn.Checked = Convert.ToBoolean( mEditorItem.DoesNotDespawn );
                 cmbToolType.SelectedIndex = mEditorItem.Tool + 1;
@@ -459,27 +458,31 @@ namespace Intersect.Editor.Forms.Editors
                 mEditorItem.Event = null;
             }
 
-            if (cmbType.SelectedIndex == (int) ItemTypes.Consumable)
+            if (cmbType.SelectedIndex == (int)ItemTypes.Consumable)
             {
-                cmbConsume.SelectedIndex = (int) mEditorItem.Consumable.Type;
+                cmbConsume.SelectedIndex = (int)mEditorItem.Consumable.Type;
                 nudInterval.Value = mEditorItem.Consumable.Value;
                 nudIntervalPercentage.Value = mEditorItem.Consumable.Percentage;
                 grpConsumable.Visible = true;
             }
-            else if (cmbType.SelectedIndex == (int) ItemTypes.Spell)
+            else if (cmbType.SelectedIndex == (int)ItemTypes.Spell)
             {
                 cmbTeachSpell.SelectedIndex = SpellBase.ListIndex(mEditorItem.SpellId) + 1;
                 chkQuickCast.Checked = mEditorItem.QuickCast;
                 chkSingleUseSpell.Checked = mEditorItem.SingleUse;
+
+                chkInteractOnGround.Visible = false;
+                chkInteractOnGround.Checked = false;
                 grpSpell.Visible = true;
             }
-            else if (cmbType.SelectedIndex == (int) ItemTypes.Event)
+            else if (cmbType.SelectedIndex == (int)ItemTypes.Event)
             {
                 cmbEvent.SelectedIndex = EventBase.ListIndex(mEditorItem.EventId) + 1;
                 chkSingleUseEvent.Checked = mEditorItem.SingleUse;
+                chkInteractOnGround.Checked = mEditorItem.InteractOnGround;
                 grpEvent.Visible = true;
             }
-            else if (cmbType.SelectedIndex == (int) ItemTypes.Equipment)
+            else if (cmbType.SelectedIndex == (int)ItemTypes.Equipment)
             {
                 grpEquipment.Visible = true;
                 if (mEditorItem.EquipmentSlot < -1 || mEditorItem.EquipmentSlot >= cmbEquipmentSlot.Items.Count)
@@ -488,13 +491,13 @@ namespace Intersect.Editor.Forms.Editors
                 }
 
                 cmbEquipmentSlot.SelectedIndex = mEditorItem.EquipmentSlot;
-                cmbEquipmentBonus.SelectedIndex = (int) mEditorItem.Effect.Type;
+                cmbEquipmentBonus.SelectedIndex = (int)mEditorItem.Effect.Type;
 
                 // Whether this item type is stackable is not up for debate.
                 chkStackable.Checked = false;
                 chkStackable.Enabled = false;
             }
-            else if (cmbType.SelectedIndex == (int) ItemTypes.Bag)
+            else if (cmbType.SelectedIndex == (int)ItemTypes.Bag)
             {
                 // Cant have no space or negative space.
                 mEditorItem.SlotCount = Math.Max(1, mEditorItem.SlotCount);
@@ -948,6 +951,11 @@ namespace Intersect.Editor.Forms.Editors
                     mEditorItem.SingleUse = chkSingleUseEvent.Checked;
                     break;
             }
+        }
+
+        private void chkInteractOnGround_CheckedChanged(object sender, EventArgs e)
+        {
+            mEditorItem.InteractOnGround = chkInteractOnGround.Checked;
         }
 
         private void chkDoesNotDespawn_CheckedChanged(object sender, EventArgs e)
