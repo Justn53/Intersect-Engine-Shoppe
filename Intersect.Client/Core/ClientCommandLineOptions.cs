@@ -25,28 +25,28 @@ namespace Intersect.Client.Core
             ScreenHeight = screenHeight;
             Server = server;
             WorkingDirectory = workingDirectory;
-            PluginDirectories = pluginDirectories?.Select( Path.GetFullPath ).ToArray();
+            PluginDirectories = pluginDirectories?.Select(Path.GetFullPath).ToArray();
         }
 
-        [Option( "borderless", Default = false, Required = false )]
+        [Option("borderless", Default = false, Required = false)]
         public bool BorderlessWindow { get; }
 
-        [Option( "screen-width", Default = 0, Required = false )]
+        [Option("screen-width", Default = 0, Required = false)]
         public int ScreenWidth { get; }
 
-        [Option( "screen-height", Default = 0, Required = false )]
+        [Option("screen-height", Default = 0, Required = false)]
         public int ScreenHeight { get; }
 
-        [Option( 'S', "server", Default = null, Required = false )]
+        [Option('S', "server", Default = null, Required = false)]
         public string Server { get; }
 
-        [Option( "working-directory", Default = null, Required = false )]
+        [Option("working-directory", Default = null, Required = false)]
         public string WorkingDirectory { get; }
 
-        [Option( 'p', "plugin-directory", Default = null, Required = false )]
+        [Option('p', "plugin-directory", Default = null, Required = false)]
         public IEnumerable<string> PluginDirectories { get; }
 
-        public Resolution ScreenResolution => new Resolution( ScreenWidth, ScreenHeight );
+        public Resolution ScreenResolution => new Resolution(ScreenWidth, ScreenHeight);
 
     }
 }

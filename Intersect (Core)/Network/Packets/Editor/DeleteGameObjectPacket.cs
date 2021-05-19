@@ -13,16 +13,16 @@ namespace Intersect.Network.Packets.Editor
         {
         }
 
-        public DeleteGameObjectPacket( GameObjectType type, Guid id )
+        public DeleteGameObjectPacket(GameObjectType type, Guid id)
         {
             Type = type;
             Id = id;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public GameObjectType Type { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public Guid Id { get; set; }
 
     }

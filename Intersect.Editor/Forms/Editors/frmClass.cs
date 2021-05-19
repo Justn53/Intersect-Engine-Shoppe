@@ -39,12 +39,12 @@ namespace Intersect.Editor.Forms.Editors
             lstClasses.GotFocus += itemList_FocusChanged;
         }
 
-        protected override void GameObjectUpdatedDelegate( GameObjectType type )
+        protected override void GameObjectUpdatedDelegate(GameObjectType type)
         {
-            if( type == GameObjectType.Class )
+            if (type == GameObjectType.Class)
             {
                 InitEditor();
-                if( mEditorItem != null && !ClassBase.Lookup.Values.Contains( mEditorItem ) )
+                if (mEditorItem != null && !ClassBase.Lookup.Values.Contains(mEditorItem))
                 {
                     mEditorItem = null;
                     UpdateEditor();
@@ -52,9 +52,9 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
-            foreach( var item in mChanged )
+            foreach (var item in mChanged)
             {
                 item.RestoreBackup();
                 item.DeleteBackup();
@@ -65,12 +65,12 @@ namespace Intersect.Editor.Forms.Editors
             Dispose();
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
             //Send Changed items
-            foreach( var item in mChanged )
+            foreach (var item in mChanged)
             {
-                PacketSender.SendSaveObject( item );
+                PacketSender.SendSaveObject(item);
                 item.DeleteBackup();
             }
 
@@ -79,11 +79,11 @@ namespace Intersect.Editor.Forms.Editors
             Dispose();
         }
 
-        private void txtName_TextChanged( object sender, EventArgs e )
+        private void txtName_TextChanged(object sender, EventArgs e)
         {
             mChangingName = true;
             mEditorItem.Name = txtName.Text;
-            if( lstClasses.SelectedNode != null && lstClasses.SelectedNode.Tag != null )
+            if (lstClasses.SelectedNode != null && lstClasses.SelectedNode.Tag != null)
             {
                 lstClasses.SelectedNode.Text = txtName.Text;
             }
@@ -91,51 +91,51 @@ namespace Intersect.Editor.Forms.Editors
             mChangingName = false;
         }
 
-        private void UpdateSpellList( bool keepIndex = true )
+        private void UpdateSpellList(bool keepIndex = true)
         {
             // Refresh List
             var n = lstSpells.SelectedIndex;
             lstSpells.Items.Clear();
-            for( var i = 0; i < mEditorItem.Spells.Count; i++ )
+            for (var i = 0; i < mEditorItem.Spells.Count; i++)
             {
                 lstSpells.Items.Add(
                     Strings.ClassEditor.spellitem.ToString(
-                        i + 1, SpellBase.GetName( mEditorItem.Spells[i].Id ), mEditorItem.Spells[i].Level
+                        i + 1, SpellBase.GetName(mEditorItem.Spells[i].Id), mEditorItem.Spells[i].Level
                     )
                 );
             }
 
-            if( keepIndex )
+            if (keepIndex)
             {
                 lstSpells.SelectedIndex = n;
             }
         }
 
-        private void btnAddSpell_Click( object sender, EventArgs e )
+        private void btnAddSpell_Click(object sender, EventArgs e)
         {
             var n = new ClassSpell
             {
-                Id = SpellBase.IdFromList( cmbSpell.SelectedIndex ),
+                Id = SpellBase.IdFromList(cmbSpell.SelectedIndex),
                 Level = (int)nudLevel.Value
             };
 
-            mEditorItem.Spells.Add( n );
-            UpdateSpellList( false );
+            mEditorItem.Spells.Add(n);
+            UpdateSpellList(false);
         }
 
-        private void btnRemoveSpell_Click( object sender, EventArgs e )
+        private void btnRemoveSpell_Click(object sender, EventArgs e)
         {
-            if( lstSpells.SelectedIndex == -1 )
+            if (lstSpells.SelectedIndex == -1)
             {
                 return;
             }
 
-            mEditorItem.Spells.RemoveAt( lstSpells.SelectedIndex );
-            lstSpells.Items.RemoveAt( lstSpells.SelectedIndex );
+            mEditorItem.Spells.RemoveAt(lstSpells.SelectedIndex);
+            lstSpells.Items.RemoveAt(lstSpells.SelectedIndex);
 
-            UpdateSpellList( false );
+            UpdateSpellList(false);
 
-            if( lstSpells.Items.Count > 0 )
+            if (lstSpells.Items.Count > 0)
             {
                 lstSpells.SelectedIndex = 0;
             }
@@ -143,7 +143,7 @@ namespace Intersect.Editor.Forms.Editors
 
         private void UpdateEditor()
         {
-            if( mEditorItem != null )
+            if (mEditorItem != null)
             {
                 pnlContainer.Show();
                 txtName.Text = mEditorItem.Name;
@@ -153,12 +153,12 @@ namespace Intersect.Editor.Forms.Editors
                 nudMR.Value = mEditorItem.BaseStat[(int)Stats.MagicResist];
                 nudSpd.Value = mEditorItem.BaseStat[(int)Stats.Speed];
                 nudBaseHP.Value = Math.Max(
-                    Math.Min( mEditorItem.BaseVital[(int)Vitals.Health], nudBaseHP.Maximum ), nudBaseHP.Minimum
+                    Math.Min(mEditorItem.BaseVital[(int)Vitals.Health], nudBaseHP.Maximum), nudBaseHP.Minimum
                 );
 
                 nudBaseMana.Value = mEditorItem.BaseVital[(int)Vitals.Mana];
                 nudPoints.Value = mEditorItem.BasePoints;
-                chkLocked.Checked = Convert.ToBoolean( mEditorItem.Locked );
+                chkLocked.Checked = Convert.ToBoolean(mEditorItem.Locked);
 
                 cmbFolder.Text = mEditorItem.Folder;
 
@@ -169,7 +169,7 @@ namespace Intersect.Editor.Forms.Editors
                 nudScaling.Value = mEditorItem.Scaling;
                 cmbDamageType.SelectedIndex = mEditorItem.DamageType;
                 cmbScalingStat.SelectedIndex = mEditorItem.ScalingStat;
-                cmbAttackAnimation.SelectedIndex = AnimationBase.ListIndex( mEditorItem.AttackAnimationId ) + 1;
+                cmbAttackAnimation.SelectedIndex = AnimationBase.ListIndex(mEditorItem.AttackAnimationId) + 1;
                 cmbAttackSpeedModifier.SelectedIndex = mEditorItem.AttackSpeedModifier;
                 nudAttackSpeedValue.Value = mEditorItem.AttackSpeedValue;
 
@@ -182,7 +182,7 @@ namespace Intersect.Editor.Forms.Editors
                 nudExpIncrease.Value = mEditorItem.ExpIncrease;
 
                 //Stat Increases
-                if( !mEditorItem.IncreasePercentage )
+                if (!mEditorItem.IncreasePercentage)
                 {
                     rdoStaticIncrease.Checked = true;
                 }
@@ -193,15 +193,15 @@ namespace Intersect.Editor.Forms.Editors
 
                 UpdateIncreases();
 
-                UpdateSpellList( false );
+                UpdateSpellList(false);
 
                 cmbSpell.SelectedIndex = -1;
 
                 // Don't select if there are no Spells, to avoid crashes.
-                if( lstSpells.Items.Count > 0 )
+                if (lstSpells.Items.Count > 0)
                 {
                     lstSpells.SelectedIndex = 0;
-                    cmbSpell.SelectedIndex = SpellBase.ListIndex( mEditorItem.Spells[lstSpells.SelectedIndex].Id );
+                    cmbSpell.SelectedIndex = SpellBase.ListIndex(mEditorItem.Spells[lstSpells.SelectedIndex].Id);
                     nudLevel.Value = mEditorItem.Spells[lstSpells.SelectedIndex].Level;
                 }
                 else
@@ -210,17 +210,17 @@ namespace Intersect.Editor.Forms.Editors
                     nudLevel.Value = 0;
                 }
 
-                RefreshSpriteList( false );
+                RefreshSpriteList(false);
 
                 // Don't select if there are no Spells, to avoid crashes.
-                if( lstSprites.Items.Count > 0 )
+                if (lstSprites.Items.Count > 0)
                 {
                     lstSprites.SelectedIndex = 0;
                     cmbSprite.SelectedIndex = cmbSprite.FindString(
-                        TextUtils.NullToNone( mEditorItem.Sprites[lstSprites.SelectedIndex].Sprite )
+                        TextUtils.NullToNone(mEditorItem.Sprites[lstSprites.SelectedIndex].Sprite)
                     );
 
-                    if( mEditorItem.Sprites[lstSprites.SelectedIndex].Gender == 0 )
+                    if (mEditorItem.Sprites[lstSprites.SelectedIndex].Gender == 0)
                     {
                         rbMale.Checked = true;
                     }
@@ -232,9 +232,9 @@ namespace Intersect.Editor.Forms.Editors
 
                 var mapIndex = -1;
 
-                for( var i = 0; i < MapList.OrderedMaps.Count; i++ )
+                for (var i = 0; i < MapList.OrderedMaps.Count; i++)
                 {
-                    if( MapList.OrderedMaps[i].MapId == mEditorItem.SpawnMapId )
+                    if (MapList.OrderedMaps[i].MapId == mEditorItem.SpawnMapId)
                     {
                         mapIndex = i;
 
@@ -242,7 +242,7 @@ namespace Intersect.Editor.Forms.Editors
                     }
                 }
 
-                if( mapIndex == -1 )
+                if (mapIndex == -1)
                 {
                     cmbWarpMap.SelectedIndex = 0;
                     mEditorItem.SpawnMapId = MapList.OrderedMaps[0].MapId;
@@ -258,9 +258,9 @@ namespace Intersect.Editor.Forms.Editors
 
                 UpdateSpawnItemValues();
                 DrawSprite();
-                if( mChanged.IndexOf( mEditorItem ) == -1 )
+                if (mChanged.IndexOf(mEditorItem) == -1)
                 {
-                    mChanged.Add( mEditorItem );
+                    mChanged.Add(mEditorItem);
                     mEditorItem.MakeBackup();
                 }
 
@@ -274,30 +274,30 @@ namespace Intersect.Editor.Forms.Editors
             UpdateToolStripItems();
         }
 
-        private void frmClass_Load( object sender, EventArgs e )
+        private void frmClass_Load(object sender, EventArgs e)
         {
             cmbSprite.Items.Clear();
-            cmbSprite.Items.Add( Strings.General.none );
+            cmbSprite.Items.Add(Strings.General.none);
             cmbSprite.Items.AddRange(
-                GameContentManager.GetSmartSortedTextureNames( GameContentManager.TextureType.Entity )
+                GameContentManager.GetSmartSortedTextureNames(GameContentManager.TextureType.Entity)
             );
 
             cmbFace.Items.Clear();
-            cmbFace.Items.Add( Strings.General.none );
-            cmbFace.Items.AddRange( GameContentManager.GetSmartSortedTextureNames( GameContentManager.TextureType.Face ) );
+            cmbFace.Items.Add(Strings.General.none);
+            cmbFace.Items.AddRange(GameContentManager.GetSmartSortedTextureNames(GameContentManager.TextureType.Face));
             cmbSpawnItem.Items.Clear();
-            cmbSpawnItem.Items.Add( Strings.General.none );
-            cmbSpawnItem.Items.AddRange( ItemBase.Names );
+            cmbSpawnItem.Items.Add(Strings.General.none);
+            cmbSpawnItem.Items.AddRange(ItemBase.Names);
             cmbSpell.Items.Clear();
-            cmbSpell.Items.AddRange( SpellBase.Names );
+            cmbSpell.Items.AddRange(SpellBase.Names);
             nudLevel.Maximum = Options.MaxLevel;
             cmbAttackAnimation.Items.Clear();
-            cmbAttackAnimation.Items.Add( Strings.General.none );
-            cmbAttackAnimation.Items.AddRange( AnimationBase.Names );
+            cmbAttackAnimation.Items.Add(Strings.General.none);
+            cmbAttackAnimation.Items.AddRange(AnimationBase.Names);
             cmbScalingStat.Items.Clear();
-            for( var x = 0; x < ( (int)Stats.Speed ) + 1; x++ )
+            for (var x = 0; x < ((int)Stats.Speed) + 1; x++)
             {
-                cmbScalingStat.Items.Add( Globals.GetStatName( x ) );
+                cmbScalingStat.Items.Add(Globals.GetStatName(x));
             }
 
             nudAttack.Maximum = Options.MaxStatValue;
@@ -326,14 +326,14 @@ namespace Intersect.Editor.Forms.Editors
             chkLocked.Text = Strings.ClassEditor.locked;
 
             grpSpawnPoint.Text = Strings.ClassEditor.spawnpoint;
-            lblMap.Text = Strings.Warping.map.ToString( "" );
-            lblX.Text = Strings.Warping.x.ToString( "" );
+            lblMap.Text = Strings.Warping.map.ToString("");
+            lblX.Text = Strings.Warping.x.ToString("");
             lblY.Text = Strings.Warping.y;
-            lblDir.Text = Strings.Warping.direction.ToString( "" );
+            lblDir.Text = Strings.Warping.direction.ToString("");
             cmbDirection.Items.Clear();
-            for( var i = 0; i < 4; i++ )
+            for (var i = 0; i < 4; i++)
             {
-                cmbDirection.Items.Add( Strings.Directions.dir[i] );
+                cmbDirection.Items.Add(Strings.Directions.dir[i]);
             }
 
             btnVisualMapSelector.Text = Strings.Warping.visual;
@@ -381,9 +381,9 @@ namespace Intersect.Editor.Forms.Editors
             lblCritMultiplier.Text = Strings.ClassEditor.critmultiplier;
             lblDamageType.Text = Strings.ClassEditor.damagetype;
             cmbDamageType.Items.Clear();
-            for( var i = 0; i < Strings.Combat.damagetypes.Count; i++ )
+            for (var i = 0; i < Strings.Combat.damagetypes.Count; i++)
             {
-                cmbDamageType.Items.Add( Strings.Combat.damagetypes[i] );
+                cmbDamageType.Items.Add(Strings.Combat.damagetypes[i]);
             }
 
             lblScalingStat.Text = Strings.ClassEditor.scalingstat;
@@ -394,9 +394,9 @@ namespace Intersect.Editor.Forms.Editors
             lblAttackSpeedModifier.Text = Strings.NpcEditor.attackspeedmodifier;
             lblAttackSpeedValue.Text = Strings.NpcEditor.attackspeedvalue;
             cmbAttackSpeedModifier.Items.Clear();
-            foreach( var val in Strings.NpcEditor.attackspeedmodifiers.Values )
+            foreach (var val in Strings.NpcEditor.attackspeedmodifiers.Values)
             {
-                cmbAttackSpeedModifier.Items.Add( val.ToString() );
+                cmbAttackSpeedModifier.Items.Add(val.ToString());
             }
 
             grpLeveling.Text = Strings.ClassEditor.leveling;
@@ -458,9 +458,9 @@ namespace Intersect.Editor.Forms.Editors
             totalCol.SortMode = DataGridViewColumnSortMode.NotSortable;
 
             expGrid.Columns.Clear();
-            expGrid.Columns.Add( levelCol );
-            expGrid.Columns.Add( tnlCol );
-            expGrid.Columns.Add( totalCol );
+            expGrid.Columns.Add(levelCol);
+            expGrid.Columns.Add(tnlCol);
+            expGrid.Columns.Add(totalCol);
 
             //Searching/Sorting
             btnChronological.ToolTipText = Strings.ClassEditor.sortchronologically;
@@ -475,7 +475,7 @@ namespace Intersect.Editor.Forms.Editors
         {
             var selectedId = Guid.Empty;
             var folderNodes = new Dictionary<string, TreeNode>();
-            if( lstClasses.SelectedNode != null && lstClasses.SelectedNode.Tag != null )
+            if (lstClasses.SelectedNode != null && lstClasses.SelectedNode.Tag != null)
             {
                 selectedId = (Guid)lstClasses.SelectedNode.Tag;
             }
@@ -483,22 +483,22 @@ namespace Intersect.Editor.Forms.Editors
             lstClasses.Nodes.Clear();
 
             cmbWarpMap.Items.Clear();
-            for( var i = 0; i < MapList.OrderedMaps.Count; i++ )
+            for (var i = 0; i < MapList.OrderedMaps.Count; i++)
             {
-                cmbWarpMap.Items.Add( MapList.OrderedMaps[i].Name );
+                cmbWarpMap.Items.Add(MapList.OrderedMaps[i].Name);
             }
 
             //Collect folders
             var mFolders = new List<string>();
-            foreach( var itm in ClassBase.Lookup )
+            foreach (var itm in ClassBase.Lookup)
             {
-                if( !string.IsNullOrEmpty( ( (ClassBase)itm.Value ).Folder ) &&
-                    !mFolders.Contains( ( (ClassBase)itm.Value ).Folder ) )
+                if (!string.IsNullOrEmpty(((ClassBase)itm.Value).Folder) &&
+                    !mFolders.Contains(((ClassBase)itm.Value).Folder))
                 {
-                    mFolders.Add( ( (ClassBase)itm.Value ).Folder );
-                    if( !mKnownFolders.Contains( ( (ClassBase)itm.Value ).Folder ) )
+                    mFolders.Add(((ClassBase)itm.Value).Folder);
+                    if (!mKnownFolders.Contains(((ClassBase)itm.Value).Folder))
                     {
-                        mKnownFolders.Add( ( (ClassBase)itm.Value ).Folder );
+                        mKnownFolders.Add(((ClassBase)itm.Value).Folder);
                     }
                 }
             }
@@ -506,53 +506,53 @@ namespace Intersect.Editor.Forms.Editors
             mFolders.Sort();
             mKnownFolders.Sort();
             cmbFolder.Items.Clear();
-            cmbFolder.Items.Add( "" );
-            cmbFolder.Items.AddRange( mKnownFolders.ToArray() );
+            cmbFolder.Items.Add("");
+            cmbFolder.Items.AddRange(mKnownFolders.ToArray());
 
             lstClasses.Sorted = !btnChronological.Checked;
 
-            if( !btnChronological.Checked && !CustomSearch() )
+            if (!btnChronological.Checked && !CustomSearch())
             {
-                foreach( var folder in mFolders )
+                foreach (var folder in mFolders)
                 {
-                    var node = lstClasses.Nodes.Add( folder );
+                    var node = lstClasses.Nodes.Add(folder);
                     node.ImageIndex = 0;
                     node.SelectedImageIndex = 0;
-                    folderNodes.Add( folder, node );
+                    folderNodes.Add(folder, node);
                 }
             }
 
-            foreach( var itm in ClassBase.ItemPairs )
+            foreach (var itm in ClassBase.ItemPairs)
             {
-                var node = new TreeNode( itm.Value );
+                var node = new TreeNode(itm.Value);
                 node.Tag = itm.Key;
                 node.ImageIndex = 1;
                 node.SelectedImageIndex = 1;
 
-                var folder = ClassBase.Get( itm.Key ).Folder;
-                if( !string.IsNullOrEmpty( folder ) && !btnChronological.Checked && !CustomSearch() )
+                var folder = ClassBase.Get(itm.Key).Folder;
+                if (!string.IsNullOrEmpty(folder) && !btnChronological.Checked && !CustomSearch())
                 {
                     var folderNode = folderNodes[folder];
-                    folderNode.Nodes.Add( node );
-                    if( itm.Key == selectedId )
+                    folderNode.Nodes.Add(node);
+                    if (itm.Key == selectedId)
                     {
                         folderNode.Expand();
                     }
                 }
                 else
                 {
-                    lstClasses.Nodes.Add( node );
+                    lstClasses.Nodes.Add(node);
                 }
 
-                if( CustomSearch() )
+                if (CustomSearch())
                 {
-                    if( !node.Text.ToLower().Contains( txtSearch.Text.ToLower() ) )
+                    if (!node.Text.ToLower().Contains(txtSearch.Text.ToLower()))
                     {
                         node.Remove();
                     }
                 }
 
-                if( itm.Key == selectedId )
+                if (itm.Key == selectedId)
                 {
                     lstClasses.SelectedNode = node;
                 }
@@ -560,34 +560,34 @@ namespace Intersect.Editor.Forms.Editors
 
             var selectedNode = lstClasses.SelectedNode;
 
-            if( !btnChronological.Checked )
+            if (!btnChronological.Checked)
             {
                 lstClasses.Sort();
             }
 
             lstClasses.SelectedNode = selectedNode;
-            foreach( var node in mExpandedFolders )
+            foreach (var node in mExpandedFolders)
             {
-                if( folderNodes.ContainsKey( node ) )
+                if (folderNodes.ContainsKey(node))
                 {
                     folderNodes[node].Expand();
                 }
             }
         }
 
-        private void lstSprites_Click( object sender, EventArgs e )
+        private void lstSprites_Click(object sender, EventArgs e)
         {
-            if( lstSprites.Items.Count > 0 )
+            if (lstSprites.Items.Count > 0)
             {
                 cmbSprite.SelectedIndex = cmbSprite.FindString(
-                    TextUtils.NullToNone( mEditorItem.Sprites[lstSprites.SelectedIndex].Sprite )
+                    TextUtils.NullToNone(mEditorItem.Sprites[lstSprites.SelectedIndex].Sprite)
                 );
 
                 cmbFace.SelectedIndex = cmbFace.FindString(
-                    TextUtils.NullToNone( mEditorItem.Sprites[lstSprites.SelectedIndex].Face )
+                    TextUtils.NullToNone(mEditorItem.Sprites[lstSprites.SelectedIndex].Face)
                 );
 
-                if( mEditorItem.Sprites[lstSprites.SelectedIndex].Gender == 0 )
+                if (mEditorItem.Sprites[lstSprites.SelectedIndex].Gender == 0)
                 {
                     rbMale.Checked = true;
                 }
@@ -598,9 +598,9 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void rbMale_Click( object sender, EventArgs e )
+        private void rbMale_Click(object sender, EventArgs e)
         {
-            if( lstSprites.Items.Count > 0 )
+            if (lstSprites.Items.Count > 0)
             {
                 mEditorItem.Sprites[lstSprites.SelectedIndex].Gender = Gender.Male;
 
@@ -608,9 +608,9 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void rbFemale_Click( object sender, EventArgs e )
+        private void rbFemale_Click(object sender, EventArgs e)
         {
-            if( lstSprites.Items.Count > 0 )
+            if (lstSprites.Items.Count > 0)
             {
                 mEditorItem.Sprites[lstSprites.SelectedIndex].Gender = Gender.Female;
 
@@ -618,11 +618,11 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void cmbSprite_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbSprite_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if( lstSprites.SelectedIndex >= 0 )
+            if (lstSprites.SelectedIndex >= 0)
             {
-                mEditorItem.Sprites[lstSprites.SelectedIndex].Sprite = TextUtils.SanitizeNone( cmbSprite?.Text );
+                mEditorItem.Sprites[lstSprites.SelectedIndex].Sprite = TextUtils.SanitizeNone(cmbSprite?.Text);
 
                 RefreshSpriteList();
             }
@@ -630,18 +630,18 @@ namespace Intersect.Editor.Forms.Editors
             DrawSprite();
         }
 
-        private void RefreshSpriteList( bool saveSpot = true )
+        private void RefreshSpriteList(bool saveSpot = true)
         {
             // Refresh List
             var n = lstSprites.SelectedIndex;
             lstSprites.Items.Clear();
-            for( var i = 0; i < mEditorItem.Sprites.Count; i++ )
+            for (var i = 0; i < mEditorItem.Sprites.Count; i++)
             {
-                if( mEditorItem.Sprites[i].Gender == 0 )
+                if (mEditorItem.Sprites[i].Gender == 0)
                 {
                     lstSprites.Items.Add(
                         Strings.ClassEditor.spriteitemmale.ToString(
-                            i + 1, TextUtils.NullToNone( mEditorItem.Sprites[i].Sprite )
+                            i + 1, TextUtils.NullToNone(mEditorItem.Sprites[i].Sprite)
                         )
                     );
                 }
@@ -649,19 +649,19 @@ namespace Intersect.Editor.Forms.Editors
                 {
                     lstSprites.Items.Add(
                         Strings.ClassEditor.spriteitemfemale.ToString(
-                            i + 1, TextUtils.NullToNone( mEditorItem.Sprites[i].Sprite )
+                            i + 1, TextUtils.NullToNone(mEditorItem.Sprites[i].Sprite)
                         )
                     );
                 }
             }
 
-            if( saveSpot )
+            if (saveSpot)
             {
                 lstSprites.SelectedIndex = n;
             }
         }
 
-        private void btnAdd_Click( object sender, EventArgs e )
+        private void btnAdd_Click(object sender, EventArgs e)
         {
             var n = new ClassSprite
             {
@@ -670,13 +670,13 @@ namespace Intersect.Editor.Forms.Editors
                 Gender = 0
             };
 
-            mEditorItem.Sprites.Add( n );
+            mEditorItem.Sprites.Add(n);
 
-            if( n.Gender == 0 )
+            if (n.Gender == 0)
             {
                 lstSprites.Items.Add(
                     Strings.ClassEditor.spriteitemmale.ToString(
-                        mEditorItem.Sprites.Count, TextUtils.NullToNone( n.Sprite )
+                        mEditorItem.Sprites.Count, TextUtils.NullToNone(n.Sprite)
                     )
                 );
             }
@@ -684,28 +684,28 @@ namespace Intersect.Editor.Forms.Editors
             {
                 lstSprites.Items.Add(
                     Strings.ClassEditor.spriteitemfemale.ToString(
-                        mEditorItem.Sprites.Count, TextUtils.NullToNone( n.Sprite )
+                        mEditorItem.Sprites.Count, TextUtils.NullToNone(n.Sprite)
                     )
                 );
             }
 
             lstSprites.SelectedIndex = lstSprites.Items.Count - 1;
-            lstSprites_Click( null, null );
+            lstSprites_Click(null, null);
         }
 
-        private void btnRemove_Click( object sender, EventArgs e )
+        private void btnRemove_Click(object sender, EventArgs e)
         {
-            if( lstSprites.SelectedIndex == -1 )
+            if (lstSprites.SelectedIndex == -1)
             {
                 return;
             }
 
-            mEditorItem.Sprites.RemoveAt( lstSprites.SelectedIndex );
-            lstSprites.Items.RemoveAt( lstSprites.SelectedIndex );
+            mEditorItem.Sprites.RemoveAt(lstSprites.SelectedIndex);
+            lstSprites.Items.RemoveAt(lstSprites.SelectedIndex);
 
-            RefreshSpriteList( false );
+            RefreshSpriteList(false);
 
-            if( lstSprites.Items.Count > 0 )
+            if (lstSprites.Items.Count > 0)
             {
                 lstSprites.SelectedIndex = 0;
             }
@@ -713,17 +713,17 @@ namespace Intersect.Editor.Forms.Editors
 
         private void DrawSprite()
         {
-            var picSpriteBmp = new Bitmap( picSprite.Width, picSprite.Height );
-            var gfx = Graphics.FromImage( picSpriteBmp );
-            gfx.FillRectangle( Brushes.Black, new Rectangle( 0, 0, picSprite.Width, picSprite.Height ) );
-            if( cmbSprite.SelectedIndex > 0 )
+            var picSpriteBmp = new Bitmap(picSprite.Width, picSprite.Height);
+            var gfx = Graphics.FromImage(picSpriteBmp);
+            gfx.FillRectangle(Brushes.Black, new Rectangle(0, 0, picSprite.Width, picSprite.Height));
+            if (cmbSprite.SelectedIndex > 0)
             {
-                if( File.Exists( "resources/entities/" + cmbSprite.Text ) )
+                if (File.Exists("resources/entities/" + cmbSprite.Text))
                 {
-                    var img = Image.FromFile( "resources/entities/" + cmbSprite.Text );
+                    var img = Image.FromFile("resources/entities/" + cmbSprite.Text);
                     gfx.DrawImage(
-                        img, new Rectangle( 0, 0, img.Width / Options.Instance.Sprites.NormalFrames, img.Height / Options.Instance.Sprites.Directions ),
-                        new Rectangle( 0, 0, img.Width / Options.Instance.Sprites.NormalFrames, img.Height / Options.Instance.Sprites.Directions ), GraphicsUnit.Pixel
+                        img, new Rectangle(0, 0, img.Width / Options.Instance.Sprites.NormalFrames, img.Height / Options.Instance.Sprites.Directions),
+                        new Rectangle(0, 0, img.Width / Options.Instance.Sprites.NormalFrames, img.Height / Options.Instance.Sprites.Directions), GraphicsUnit.Pixel
                     );
 
                     img.Dispose();
@@ -733,16 +733,16 @@ namespace Intersect.Editor.Forms.Editors
             gfx.Dispose();
             picSprite.BackgroundImage = picSpriteBmp;
 
-            var picFaceBmp = new Bitmap( picFace.Width, picFace.Height );
-            gfx = Graphics.FromImage( picFaceBmp );
-            gfx.FillRectangle( Brushes.Black, new Rectangle( 0, 0, picSprite.Width, picSprite.Height ) );
-            if( cmbFace.SelectedIndex > 0 )
+            var picFaceBmp = new Bitmap(picFace.Width, picFace.Height);
+            gfx = Graphics.FromImage(picFaceBmp);
+            gfx.FillRectangle(Brushes.Black, new Rectangle(0, 0, picSprite.Width, picSprite.Height));
+            if (cmbFace.SelectedIndex > 0)
             {
-                if( File.Exists( "resources/faces/" + cmbFace.Text ) )
+                if (File.Exists("resources/faces/" + cmbFace.Text))
                 {
-                    var img = Image.FromFile( "resources/faces/" + cmbFace.Text );
+                    var img = Image.FromFile("resources/faces/" + cmbFace.Text);
                     gfx.DrawImage(
-                        img, new Rectangle( 0, 0, img.Width, img.Height ), new Rectangle( 0, 0, img.Width, img.Height ),
+                        img, new Rectangle(0, 0, img.Width, img.Height), new Rectangle(0, 0, img.Width, img.Height),
                         GraphicsUnit.Pixel
                     );
 
@@ -754,7 +754,7 @@ namespace Intersect.Editor.Forms.Editors
             picFace.BackgroundImage = picFaceBmp;
         }
 
-        private void btnVisualMapSelector_Click( object sender, EventArgs e )
+        private void btnVisualMapSelector_Click(object sender, EventArgs e)
         {
             var frmWarpSelection = new FrmWarpSelection();
             frmWarpSelection.SelectTile(
@@ -762,11 +762,11 @@ namespace Intersect.Editor.Forms.Editors
             );
 
             frmWarpSelection.ShowDialog();
-            if( frmWarpSelection.GetResult() )
+            if (frmWarpSelection.GetResult())
             {
-                for( var i = 0; i < MapList.OrderedMaps.Count; i++ )
+                for (var i = 0; i < MapList.OrderedMaps.Count; i++)
                 {
-                    if( MapList.OrderedMaps[i].MapId == frmWarpSelection.GetMap() )
+                    if (MapList.OrderedMaps[i].MapId == frmWarpSelection.GetMap())
                     {
                         cmbWarpMap.SelectedIndex = i;
 
@@ -782,9 +782,9 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void cmbWarpMap_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbWarpMap_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if( mEditorItem == null )
+            if (mEditorItem == null)
             {
                 return;
             }
@@ -792,9 +792,9 @@ namespace Intersect.Editor.Forms.Editors
             mEditorItem.SpawnMapId = MapList.OrderedMaps[cmbWarpMap.SelectedIndex].MapId;
         }
 
-        private void cmbDirection_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbDirection_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if( mEditorItem == null )
+            if (mEditorItem == null)
             {
                 return;
             }
@@ -802,11 +802,11 @@ namespace Intersect.Editor.Forms.Editors
             mEditorItem.SpawnDir = (byte)cmbDirection.SelectedIndex;
         }
 
-        private void cmbFace_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbFace_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if( lstSprites.SelectedIndex >= 0 )
+            if (lstSprites.SelectedIndex >= 0)
             {
-                mEditorItem.Sprites[lstSprites.SelectedIndex].Face = TextUtils.SanitizeNone( cmbFace?.Text );
+                mEditorItem.Sprites[lstSprites.SelectedIndex].Face = TextUtils.SanitizeNone(cmbFace?.Text);
 
                 RefreshSpriteList();
             }
@@ -814,14 +814,14 @@ namespace Intersect.Editor.Forms.Editors
             DrawSprite();
         }
 
-        private void chkLocked_CheckedChanged( object sender, EventArgs e )
+        private void chkLocked_CheckedChanged(object sender, EventArgs e)
         {
             mEditorItem.Locked = chkLocked.Checked;
         }
 
         private void UpdateIncreases()
         {
-            if( rdoStaticIncrease.Checked )
+            if (rdoStaticIncrease.Checked)
             {
                 nudHpIncrease.Maximum = 10000;
                 nudMpIncrease.Maximum = 10000;
@@ -842,14 +842,14 @@ namespace Intersect.Editor.Forms.Editors
                 nudSpeedIncrease.Maximum = 100;
             }
 
-            nudHpIncrease.Value = Math.Min( nudHpIncrease.Maximum, mEditorItem.VitalIncrease[(int)Vitals.Health] );
-            nudMpIncrease.Value = Math.Min( nudMpIncrease.Maximum, mEditorItem.VitalIncrease[(int)Vitals.Mana] );
+            nudHpIncrease.Value = Math.Min(nudHpIncrease.Maximum, mEditorItem.VitalIncrease[(int)Vitals.Health]);
+            nudMpIncrease.Value = Math.Min(nudMpIncrease.Maximum, mEditorItem.VitalIncrease[(int)Vitals.Mana]);
 
             nudStrengthIncrease.Value = Math.Min(
                 nudStrengthIncrease.Maximum, mEditorItem.StatIncrease[(int)Stats.Attack]
             );
 
-            nudArmorIncrease.Value = Math.Min( nudArmorIncrease.Maximum, mEditorItem.StatIncrease[(int)Stats.Defense] );
+            nudArmorIncrease.Value = Math.Min(nudArmorIncrease.Maximum, mEditorItem.StatIncrease[(int)Stats.Defense]);
             nudMagicIncrease.Value = Math.Min(
                 nudMagicIncrease.Maximum, mEditorItem.StatIncrease[(int)Stats.AbilityPower]
             );
@@ -858,7 +858,7 @@ namespace Intersect.Editor.Forms.Editors
                 nudMagicResistIncrease.Maximum, mEditorItem.StatIncrease[(int)Stats.MagicResist]
             );
 
-            nudSpeedIncrease.Value = Math.Min( nudSpeedIncrease.Maximum, mEditorItem.StatIncrease[(int)Stats.Speed] );
+            nudSpeedIncrease.Value = Math.Min(nudSpeedIncrease.Maximum, mEditorItem.StatIncrease[(int)Stats.Speed]);
 
             lblHpIncrease.Text = Strings.ClassEditor.hpboost.ToString(
                 rdoStaticIncrease.Checked ? "" : Strings.ClassEditor.boostpercent.ToString()
@@ -891,65 +891,65 @@ namespace Intersect.Editor.Forms.Editors
             nudPointsIncrease.Value = mEditorItem.PointIncrease;
         }
 
-        private void rdoPercentageIncrease_CheckedChanged( object sender, EventArgs e )
+        private void rdoPercentageIncrease_CheckedChanged(object sender, EventArgs e)
         {
             mEditorItem.IncreasePercentage = rdoPercentageIncrease.Checked;
             UpdateIncreases();
         }
 
-        private void rdoStaticIncrease_CheckedChanged( object sender, EventArgs e )
+        private void rdoStaticIncrease_CheckedChanged(object sender, EventArgs e)
         {
             mEditorItem.IncreasePercentage = rdoPercentageIncrease.Checked;
             UpdateIncreases();
         }
 
-        private void toolStripItemNew_Click( object sender, EventArgs e )
+        private void toolStripItemNew_Click(object sender, EventArgs e)
         {
-            PacketSender.SendCreateObject( GameObjectType.Class );
+            PacketSender.SendCreateObject(GameObjectType.Class);
         }
 
-        private void toolStripItemDelete_Click( object sender, EventArgs e )
+        private void toolStripItemDelete_Click(object sender, EventArgs e)
         {
-            if( mEditorItem != null && lstClasses.Focused )
+            if (mEditorItem != null && lstClasses.Focused)
             {
-                if( DarkMessageBox.ShowWarning(
+                if (DarkMessageBox.ShowWarning(
                         Strings.ClassEditor.deleteprompt, Strings.ClassEditor.deletetitle, DarkDialogButton.YesNo,
                         Properties.Resources.Icon
                     ) ==
-                    DialogResult.Yes )
+                    DialogResult.Yes)
                 {
-                    PacketSender.SendDeleteObject( mEditorItem );
+                    PacketSender.SendDeleteObject(mEditorItem);
                 }
             }
         }
 
-        private void toolStripItemCopy_Click( object sender, EventArgs e )
+        private void toolStripItemCopy_Click(object sender, EventArgs e)
         {
-            if( mEditorItem != null && lstClasses.Focused )
+            if (mEditorItem != null && lstClasses.Focused)
             {
                 mCopiedItem = mEditorItem.JsonData;
                 toolStripItemPaste.Enabled = true;
             }
         }
 
-        private void toolStripItemPaste_Click( object sender, EventArgs e )
+        private void toolStripItemPaste_Click(object sender, EventArgs e)
         {
-            if( mEditorItem != null && mCopiedItem != null && lstClasses.Focused )
+            if (mEditorItem != null && mCopiedItem != null && lstClasses.Focused)
             {
-                mEditorItem.Load( mCopiedItem, true );
+                mEditorItem.Load(mCopiedItem, true);
                 UpdateEditor();
             }
         }
 
-        private void toolStripItemUndo_Click( object sender, EventArgs e )
+        private void toolStripItemUndo_Click(object sender, EventArgs e)
         {
-            if( mChanged.Contains( mEditorItem ) && mEditorItem != null )
+            if (mChanged.Contains(mEditorItem) && mEditorItem != null)
             {
-                if( DarkMessageBox.ShowWarning(
+                if (DarkMessageBox.ShowWarning(
                         Strings.ClassEditor.undoprompt, Strings.ClassEditor.undotitle, DarkDialogButton.YesNo,
                         Properties.Resources.Icon
                     ) ==
-                    DialogResult.Yes )
+                    DialogResult.Yes)
                 {
                     mEditorItem.RestoreBackup();
                     UpdateEditor();
@@ -957,28 +957,28 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void itemList_KeyDown( object sender, KeyEventArgs e )
+        private void itemList_KeyDown(object sender, KeyEventArgs e)
         {
-            if( e.Control )
+            if (e.Control)
             {
-                if( e.KeyCode == Keys.Z )
+                if (e.KeyCode == Keys.Z)
                 {
-                    toolStripItemUndo_Click( null, null );
+                    toolStripItemUndo_Click(null, null);
                 }
-                else if( e.KeyCode == Keys.V )
+                else if (e.KeyCode == Keys.V)
                 {
-                    toolStripItemPaste_Click( null, null );
+                    toolStripItemPaste_Click(null, null);
                 }
-                else if( e.KeyCode == Keys.C )
+                else if (e.KeyCode == Keys.C)
                 {
-                    toolStripItemCopy_Click( null, null );
+                    toolStripItemCopy_Click(null, null);
                 }
             }
             else
             {
-                if( e.KeyCode == Keys.Delete )
+                if (e.KeyCode == Keys.Delete)
                 {
-                    toolStripItemDelete_Click( null, null );
+                    toolStripItemDelete_Click(null, null);
                 }
             }
         }
@@ -991,104 +991,104 @@ namespace Intersect.Editor.Forms.Editors
             toolStripItemUndo.Enabled = mEditorItem != null && lstClasses.Focused;
         }
 
-        private void itemList_FocusChanged( object sender, EventArgs e )
+        private void itemList_FocusChanged(object sender, EventArgs e)
         {
             UpdateToolStripItems();
         }
 
-        private void form_KeyDown( object sender, KeyEventArgs e )
+        private void form_KeyDown(object sender, KeyEventArgs e)
         {
-            if( e.Control )
+            if (e.Control)
             {
-                if( e.KeyCode == Keys.N )
+                if (e.KeyCode == Keys.N)
                 {
-                    toolStripItemNew_Click( null, null );
+                    toolStripItemNew_Click(null, null);
                 }
             }
         }
 
-        private void cmbAttackAnimation_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbAttackAnimation_SelectedIndexChanged(object sender, EventArgs e)
         {
             mEditorItem.AttackAnimation =
-                AnimationBase.Get( AnimationBase.IdFromList( cmbAttackAnimation.SelectedIndex - 1 ) );
+                AnimationBase.Get(AnimationBase.IdFromList(cmbAttackAnimation.SelectedIndex - 1));
         }
 
-        private void cmbDamageType_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbDamageType_SelectedIndexChanged(object sender, EventArgs e)
         {
             mEditorItem.DamageType = cmbDamageType.SelectedIndex;
         }
 
-        private void cmbScalingStat_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbScalingStat_SelectedIndexChanged(object sender, EventArgs e)
         {
             mEditorItem.ScalingStat = cmbScalingStat.SelectedIndex;
         }
 
-        private void cmbSpell_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbSpell_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if( lstSpells.SelectedIndex > -1 && cmbSpell.SelectedIndex > -1 )
+            if (lstSpells.SelectedIndex > -1 && cmbSpell.SelectedIndex > -1)
             {
-                mEditorItem.Spells[lstSpells.SelectedIndex].Id = SpellBase.IdFromList( cmbSpell.SelectedIndex );
+                mEditorItem.Spells[lstSpells.SelectedIndex].Id = SpellBase.IdFromList(cmbSpell.SelectedIndex);
                 UpdateSpellList();
             }
         }
 
-        private void lstSpells_SelectedIndexChanged( object sender, EventArgs e )
+        private void lstSpells_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if( lstSpells.SelectedIndex > -1 )
+            if (lstSpells.SelectedIndex > -1)
             {
-                cmbSpell.SelectedIndex = SpellBase.ListIndex( mEditorItem.Spells[lstSpells.SelectedIndex].Id );
+                cmbSpell.SelectedIndex = SpellBase.ListIndex(mEditorItem.Spells[lstSpells.SelectedIndex].Id);
                 nudLevel.Value = mEditorItem.Spells[lstSpells.SelectedIndex].Level;
             }
         }
 
-        private void nudScaling_ValueChanged( object sender, EventArgs e )
+        private void nudScaling_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Scaling = (int)nudScaling.Value;
         }
 
-        private void nudX_ValueChanged( object sender, EventArgs e )
+        private void nudX_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.SpawnX = (byte)nudX.Value;
         }
 
-        private void nudY_ValueChanged( object sender, EventArgs e )
+        private void nudY_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.SpawnY = (byte)nudY.Value;
         }
 
-        private void nudStr_ValueChanged( object sender, EventArgs e )
+        private void nudStr_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.BaseStat[(int)Stats.Attack] = (int)nudAttack.Value;
         }
 
-        private void nudMag_ValueChanged( object sender, EventArgs e )
+        private void nudMag_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.BaseStat[(int)Stats.AbilityPower] = (int)nudMag.Value;
         }
 
-        private void nudDef_ValueChanged( object sender, EventArgs e )
+        private void nudDef_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.BaseStat[(int)Stats.Defense] = (int)nudDef.Value;
         }
 
-        private void nudMR_ValueChanged( object sender, EventArgs e )
+        private void nudMR_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.BaseStat[(int)Stats.MagicResist] = (int)nudMR.Value;
         }
 
-        private void nudPoints_ValueChanged( object sender, EventArgs e )
+        private void nudPoints_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.BasePoints = (int)nudPoints.Value;
         }
 
-        private void nudSpd_ValueChanged( object sender, EventArgs e )
+        private void nudSpd_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.BaseStat[(int)Stats.Speed] = (int)nudSpd.Value;
         }
 
-        private void nudLevel_ValueChanged( object sender, EventArgs e )
+        private void nudLevel_ValueChanged(object sender, EventArgs e)
         {
-            if( lstSpells.SelectedIndex >= 0 )
+            if (lstSpells.SelectedIndex >= 0)
             {
                 mEditorItem.Spells[lstSpells.SelectedIndex].Level = (int)nudLevel.Value;
 
@@ -1096,353 +1096,353 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void nudHPRegen_ValueChanged( object sender, EventArgs e )
+        private void nudHPRegen_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.VitalRegen[(int)Vitals.Health] = (int)nudHPRegen.Value;
             UpdateIncreases();
         }
 
-        private void nudMpRegen_ValueChanged( object sender, EventArgs e )
+        private void nudMpRegen_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.VitalRegen[(int)Vitals.Mana] = (int)nudMpRegen.Value;
             UpdateIncreases();
         }
 
-        private void nudDamage_ValueChanged( object sender, EventArgs e )
+        private void nudDamage_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Damage = (int)nudDamage.Value;
         }
 
-        private void nudCritChance_ValueChanged( object sender, EventArgs e )
+        private void nudCritChance_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.CritChance = (int)nudCritChance.Value;
         }
 
-        private void nudExpIncrease_ValueChanged( object sender, EventArgs e )
+        private void nudExpIncrease_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.ExpIncrease = (int)nudExpIncrease.Value;
         }
 
-        private void nudHpIncrease_ValueChanged( object sender, EventArgs e )
+        private void nudHpIncrease_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.VitalIncrease[(int)Vitals.Health] = (int)nudHpIncrease.Value;
         }
 
-        private void nudMpIncrease_ValueChanged( object sender, EventArgs e )
+        private void nudMpIncrease_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.VitalIncrease[(int)Vitals.Mana] = (int)nudMpIncrease.Value;
         }
 
-        private void nudArmorIncrease_ValueChanged( object sender, EventArgs e )
+        private void nudArmorIncrease_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.StatIncrease[(int)Stats.Defense] = (int)nudArmorIncrease.Value;
             UpdateIncreases();
         }
 
-        private void nudMagicResistIncrease_ValueChanged( object sender, EventArgs e )
+        private void nudMagicResistIncrease_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.StatIncrease[(int)Stats.MagicResist] = (int)nudMagicResistIncrease.Value;
             UpdateIncreases();
         }
 
-        private void nudStrengthIncrease_ValueChanged( object sender, EventArgs e )
+        private void nudStrengthIncrease_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.StatIncrease[(int)Stats.Attack] = (int)nudStrengthIncrease.Value;
             UpdateIncreases();
         }
 
-        private void nudMagicIncrease_ValueChanged( object sender, EventArgs e )
+        private void nudMagicIncrease_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.StatIncrease[(int)Stats.AbilityPower] = (int)nudMagicIncrease.Value;
             UpdateIncreases();
         }
 
-        private void nudSpeedIncrease_ValueChanged( object sender, EventArgs e )
+        private void nudSpeedIncrease_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.StatIncrease[(int)Stats.Speed] = (int)nudSpeedIncrease.Value;
             UpdateIncreases();
         }
 
-        private void nudPointsIncrease_ValueChanged( object sender, EventArgs e )
+        private void nudPointsIncrease_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.PointIncrease = (int)nudPointsIncrease.Value;
             UpdateIncreases();
         }
 
-        private void nudBaseExp_ValueChanged( object sender, EventArgs e )
+        private void nudBaseExp_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.BaseExp = (int)nudBaseExp.Value;
         }
 
-        private void nudBaseHP_ValueChanged( object sender, EventArgs e )
+        private void nudBaseHP_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.BaseVital[(int)Vitals.Health] = (int)nudBaseHP.Value;
         }
 
-        private void nudBaseMana_ValueChanged( object sender, EventArgs e )
+        private void nudBaseMana_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.BaseVital[(int)Vitals.Mana] = (int)nudBaseMana.Value;
         }
 
-        private void UpdateSpawnItemValues( bool keepIndex = false )
+        private void UpdateSpawnItemValues(bool keepIndex = false)
         {
             var index = lstSpawnItems.SelectedIndex;
             lstSpawnItems.Items.Clear();
 
             var spawnItems = mEditorItem.Items.ToArray();
-            foreach( var spawnItem in spawnItems )
+            foreach (var spawnItem in spawnItems)
             {
-                if( ItemBase.Get( spawnItem.Id ) == null )
+                if (ItemBase.Get(spawnItem.Id) == null)
                 {
-                    mEditorItem.Items.Remove( spawnItem );
+                    mEditorItem.Items.Remove(spawnItem);
                 }
             }
 
-            for( var i = 0; i < mEditorItem.Items.Count; i++ )
+            for (var i = 0; i < mEditorItem.Items.Count; i++)
             {
-                if( mEditorItem.Items[i].Id != Guid.Empty )
+                if (mEditorItem.Items[i].Id != Guid.Empty)
                 {
                     lstSpawnItems.Items.Add(
                         Strings.ClassEditor.spawnitemdisplay.ToString(
-                            ItemBase.GetName( mEditorItem.Items[i].Id ), mEditorItem.Items[i].Quantity
+                            ItemBase.GetName(mEditorItem.Items[i].Id), mEditorItem.Items[i].Quantity
                         )
                     );
                 }
                 else
                 {
-                    lstSpawnItems.Items.Add( TextUtils.None );
+                    lstSpawnItems.Items.Add(TextUtils.None);
                 }
             }
 
-            if( keepIndex && index < lstSpawnItems.Items.Count )
+            if (keepIndex && index < lstSpawnItems.Items.Count)
             {
                 lstSpawnItems.SelectedIndex = index;
             }
         }
 
-        private void cmbSpawnItem_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbSpawnItem_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if( lstSpawnItems.SelectedIndex > -1 && lstSpawnItems.SelectedIndex < mEditorItem.Items.Count )
+            if (lstSpawnItems.SelectedIndex > -1 && lstSpawnItems.SelectedIndex < mEditorItem.Items.Count)
             {
-                mEditorItem.Items[lstSpawnItems.SelectedIndex].Id = ItemBase.IdFromList( cmbSpawnItem.SelectedIndex - 1 );
+                mEditorItem.Items[lstSpawnItems.SelectedIndex].Id = ItemBase.IdFromList(cmbSpawnItem.SelectedIndex - 1);
             }
 
-            UpdateSpawnItemValues( true );
+            UpdateSpawnItemValues(true);
         }
 
-        private void nudSpawnItemAmount_ValueChanged( object sender, EventArgs e )
+        private void nudSpawnItemAmount_ValueChanged(object sender, EventArgs e)
         {
             // This should never be below 1. We shouldn't accept giving 0 items!
-            nudSpawnItemAmount.Value = Math.Max( 1, nudSpawnItemAmount.Value );
+            nudSpawnItemAmount.Value = Math.Max(1, nudSpawnItemAmount.Value);
 
-            if( lstSpawnItems.SelectedIndex < lstSpawnItems.Items.Count )
+            if (lstSpawnItems.SelectedIndex < lstSpawnItems.Items.Count)
             {
                 return;
             }
 
             mEditorItem.Items[(int)lstSpawnItems.SelectedIndex].Quantity = (int)nudSpawnItemAmount.Value;
-            UpdateSpawnItemValues( true );
+            UpdateSpawnItemValues(true);
         }
 
-        private void lstSpawnItems_SelectedIndexChanged( object sender, EventArgs e )
+        private void lstSpawnItems_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if( lstSpawnItems.SelectedIndex > -1 )
+            if (lstSpawnItems.SelectedIndex > -1)
             {
-                cmbSpawnItem.SelectedIndex = ItemBase.ListIndex( mEditorItem.Items[lstSpawnItems.SelectedIndex].Id ) + 1;
+                cmbSpawnItem.SelectedIndex = ItemBase.ListIndex(mEditorItem.Items[lstSpawnItems.SelectedIndex].Id) + 1;
                 nudSpawnItemAmount.Value = mEditorItem.Items[lstSpawnItems.SelectedIndex].Quantity;
             }
         }
 
-        private void btnSpawnItemAdd_Click( object sender, EventArgs e )
+        private void btnSpawnItemAdd_Click(object sender, EventArgs e)
         {
-            mEditorItem.Items.Add( new ClassItem() );
-            mEditorItem.Items[mEditorItem.Items.Count - 1].Id = ItemBase.IdFromList( cmbSpawnItem.SelectedIndex - 1 );
+            mEditorItem.Items.Add(new ClassItem());
+            mEditorItem.Items[mEditorItem.Items.Count - 1].Id = ItemBase.IdFromList(cmbSpawnItem.SelectedIndex - 1);
             mEditorItem.Items[mEditorItem.Items.Count - 1].Quantity = (int)nudSpawnItemAmount.Value;
 
             UpdateSpawnItemValues();
         }
 
-        private void btnSpawnItemRemove_Click( object sender, EventArgs e )
+        private void btnSpawnItemRemove_Click(object sender, EventArgs e)
         {
-            if( lstSpawnItems.SelectedIndex > -1 )
+            if (lstSpawnItems.SelectedIndex > -1)
             {
                 var i = lstSpawnItems.SelectedIndex;
-                lstSpawnItems.Items.RemoveAt( i );
-                mEditorItem.Items.RemoveAt( i );
+                lstSpawnItems.Items.RemoveAt(i);
+                mEditorItem.Items.RemoveAt(i);
             }
 
-            UpdateSpawnItemValues( true );
+            UpdateSpawnItemValues(true);
         }
 
-        private void nudCritMultiplier_ValueChanged( object sender, EventArgs e )
+        private void nudCritMultiplier_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.CritMultiplier = (double)nudCritMultiplier.Value;
         }
 
-        private void cmbAttackSpeedModifier_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbAttackSpeedModifier_SelectedIndexChanged(object sender, EventArgs e)
         {
             mEditorItem.AttackSpeedModifier = cmbAttackSpeedModifier.SelectedIndex;
             nudAttackSpeedValue.Enabled = cmbAttackSpeedModifier.SelectedIndex > 0;
         }
 
-        private void nudAttackSpeedValue_ValueChanged( object sender, EventArgs e )
+        private void nudAttackSpeedValue_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.AttackSpeedValue = (int)nudAttackSpeedValue.Value;
         }
 
         #region "Exp Grid"
 
-        private void btnExpGrid_Click( object sender, EventArgs e )
+        private void btnExpGrid_Click(object sender, EventArgs e)
         {
             grpExpGrid.Show();
             grpExpGrid.BringToFront();
 
             expGrid.Rows.Clear();
 
-            for( var i = 1; i <= Options.MaxLevel; i++ )
+            for (var i = 1; i <= Options.MaxLevel; i++)
             {
-                var index = expGrid.Rows.Add( i.ToString(), "", "" );
+                var index = expGrid.Rows.Add(i.ToString(), "", "");
                 var row = expGrid.Rows[index];
                 row.Cells[0].Style.SelectionBackColor = row.Cells[0].Style.BackColor;
                 row.Cells[2].Style.SelectionBackColor = row.Cells[2].Style.BackColor;
             }
 
-            UpdateExpGridValues( 1 );
+            UpdateExpGridValues(1);
         }
 
-        private void UpdateExpGridValues( int start, int end = -1 )
+        private void UpdateExpGridValues(int start, int end = -1)
         {
-            if( end == -1 )
+            if (end == -1)
             {
                 end = Options.MaxLevel;
             }
 
-            if( start > end )
+            if (start > end)
             {
                 return;
             }
 
-            if( start < 1 )
+            if (start < 1)
             {
                 start = 1;
             }
 
-            for( var i = start; i <= end; i++ )
+            for (var i = start; i <= end; i++)
             {
-                if( i < Options.MaxLevel )
+                if (i < Options.MaxLevel)
                 {
-                    if( mEditorItem.ExperienceOverrides.ContainsKey( i ) )
+                    if (mEditorItem.ExperienceOverrides.ContainsKey(i))
                     {
                         expGrid.Rows[i - 1].Cells[1].Value = Convert.ChangeType(
                             mEditorItem.ExperienceOverrides[i], expGrid.Rows[i - 1].Cells[1].ValueType
                         );
 
                         var style = expGrid.Rows[i - 1].Cells[1].InheritedStyle;
-                        style.Font = new Font( style.Font, FontStyle.Bold );
-                        expGrid.Rows[i - 1].Cells[1].Style.ApplyStyle( style );
+                        style.Font = new Font(style.Font, FontStyle.Bold);
+                        expGrid.Rows[i - 1].Cells[1].Style.ApplyStyle(style);
                     }
                     else
                     {
                         expGrid.Rows[i - 1].Cells[1].Value = Convert.ChangeType(
-                            mEditorItem.ExperienceCurve.Calculate( i ), expGrid.Rows[i - 1].Cells[1].ValueType
+                            mEditorItem.ExperienceCurve.Calculate(i), expGrid.Rows[i - 1].Cells[1].ValueType
                         );
 
-                        expGrid.Rows[i - 1].Cells[1].Style.ApplyStyle( expGrid.Rows[i - 1].Cells[0].InheritedStyle );
+                        expGrid.Rows[i - 1].Cells[1].Style.ApplyStyle(expGrid.Rows[i - 1].Cells[0].InheritedStyle);
                     }
                 }
                 else
                 {
-                    expGrid.Rows[i - 1].Cells[1].Value = Convert.ChangeType( 0, expGrid.Rows[i - 1].Cells[1].ValueType );
+                    expGrid.Rows[i - 1].Cells[1].Value = Convert.ChangeType(0, expGrid.Rows[i - 1].Cells[1].ValueType);
                     expGrid.Rows[i - 1].Cells[1].ReadOnly = true;
                 }
 
-                if( i == 1 )
+                if (i == 1)
                 {
-                    expGrid.Rows[i - 1].Cells[2].Value = Convert.ChangeType( 0, expGrid.Rows[i - 1].Cells[1].ValueType );
+                    expGrid.Rows[i - 1].Cells[2].Value = Convert.ChangeType(0, expGrid.Rows[i - 1].Cells[1].ValueType);
                 }
                 else
                 {
                     expGrid.Rows[i - 1].Cells[2].Value = Convert.ChangeType(
-                        long.Parse( expGrid.Rows[i - 2].Cells[2].Value.ToString() ) +
-                        long.Parse( expGrid.Rows[i - 2].Cells[1].Value.ToString() ),
+                        long.Parse(expGrid.Rows[i - 2].Cells[2].Value.ToString()) +
+                        long.Parse(expGrid.Rows[i - 2].Cells[1].Value.ToString()),
                         expGrid.Rows[i - 1].Cells[2].ValueType
                     );
                 }
             }
         }
 
-        private void btnCloseExpGrid_Click( object sender, EventArgs e )
+        private void btnCloseExpGrid_Click(object sender, EventArgs e)
         {
             grpExpGrid.Hide();
         }
 
-        private void expGrid_CellMouseDown( object sender, DataGridViewCellMouseEventArgs e )
+        private void expGrid_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if( e.Button == MouseButtons.Right &&
+            if (e.Button == MouseButtons.Right &&
                 expGrid.CurrentCell != null &&
-                expGrid.CurrentCell.IsInEditMode == false )
+                expGrid.CurrentCell.IsInEditMode == false)
             {
                 var cell = expGrid.CurrentCell;
-                if( cell != null )
+                if (cell != null)
                 {
-                    var r = cell.DataGridView.GetCellDisplayRectangle( cell.ColumnIndex, cell.RowIndex, false );
-                    var p = new System.Drawing.Point( r.X + r.Width, r.Y + r.Height );
-                    mnuExpGrid.Show( (DataGridView)sender, p );
+                    var r = cell.DataGridView.GetCellDisplayRectangle(cell.ColumnIndex, cell.RowIndex, false);
+                    var p = new System.Drawing.Point(r.X + r.Width, r.Y + r.Height);
+                    mnuExpGrid.Show((DataGridView)sender, p);
                 }
             }
         }
 
-        private void expGrid_SelectionChanged( object sender, EventArgs e )
+        private void expGrid_SelectionChanged(object sender, EventArgs e)
         {
-            if( expGrid.Rows.Count <= 0 )
+            if (expGrid.Rows.Count <= 0)
             {
                 return;
             }
 
             var sel = expGrid.SelectedCells;
-            if( sel.Count == 0 )
+            if (sel.Count == 0)
             {
                 expGrid.Rows[0].Cells[1].Selected = true;
             }
             else
             {
                 var selection = sel[0];
-                if( selection.ColumnIndex != 1 )
+                if (selection.ColumnIndex != 1)
                 {
                     expGrid.Rows[selection.RowIndex].Cells[1].Selected = true;
                 }
             }
         }
 
-        private void btnPaste_Click( object sender, EventArgs e )
+        private void btnPaste_Click(object sender, EventArgs e)
         {
             try
             {
                 var s = Clipboard.GetText();
-                var lines = s.Split( '\n' );
+                var lines = s.Split('\n');
                 int iFail = 0, iRow = expGrid.CurrentCell.RowIndex;
                 var iCol = expGrid.CurrentCell.ColumnIndex;
                 DataGridViewCell oCell;
-                foreach( var line in lines )
+                foreach (var line in lines)
                 {
-                    if( iRow < expGrid.RowCount && line.Length > 0 )
+                    if (iRow < expGrid.RowCount && line.Length > 0)
                     {
-                        var sCells = line.Split( '\t' );
-                        for( var i = 0; i < 1; ++i )
+                        var sCells = line.Split('\t');
+                        for (var i = 0; i < 1; ++i)
                         {
-                            if( iCol + i < this.expGrid.ColumnCount )
+                            if (iCol + i < this.expGrid.ColumnCount)
                             {
                                 oCell = expGrid[iCol + i, iRow];
-                                if( !oCell.ReadOnly )
+                                if (!oCell.ReadOnly)
                                 {
-                                    if( oCell.Value.ToString() != sCells[i] )
+                                    if (oCell.Value.ToString() != sCells[i])
                                     {
                                         var val = 0;
-                                        if( int.TryParse( sCells[i], out val ) )
+                                        if (int.TryParse(sCells[i], out val))
                                         {
-                                            if( val > 0 )
+                                            if (val > 0)
                                             {
-                                                oCell.Value = Convert.ChangeType( val.ToString(), oCell.ValueType );
+                                                oCell.Value = Convert.ChangeType(val.ToString(), oCell.ValueType);
                                             }
                                         }
                                     }
@@ -1469,48 +1469,48 @@ namespace Intersect.Editor.Forms.Editors
                     }
                 }
             }
-            catch( Exception )
+            catch (Exception)
             {
                 return;
             }
         }
 
-        private void expGrid_EditingControlShowing( object sender, DataGridViewEditingControlShowingEventArgs e )
+        private void expGrid_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            e.Control.KeyPress -= new KeyPressEventHandler( expGrid_KeyPress );
+            e.Control.KeyPress -= new KeyPressEventHandler(expGrid_KeyPress);
             var tb = e.Control as TextBox;
-            if( tb != null )
+            if (tb != null)
             {
-                tb.KeyPress += new KeyPressEventHandler( expGrid_KeyPress );
+                tb.KeyPress += new KeyPressEventHandler(expGrid_KeyPress);
             }
         }
 
-        private void expGrid_KeyPress( object sender, KeyPressEventArgs e )
+        private void expGrid_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if( !char.IsControl( e.KeyChar ) && !char.IsDigit( e.KeyChar ) )
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
         }
 
-        private void expGrid_CellEndEdit( object sender, DataGridViewCellEventArgs e )
+        private void expGrid_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             var cell = expGrid.Rows[e.RowIndex].Cells[e.ColumnIndex];
             long val = 0;
-            if( long.TryParse( cell.Value.ToString(), out val ) )
+            if (long.TryParse(cell.Value.ToString(), out val))
             {
-                if( val == 0 || val == mEditorItem.ExperienceCurve.Calculate( e.RowIndex + 1 ) )
+                if (val == 0 || val == mEditorItem.ExperienceCurve.Calculate(e.RowIndex + 1))
                 {
-                    if( mEditorItem.ExperienceOverrides.ContainsKey( e.RowIndex + 1 ) )
+                    if (mEditorItem.ExperienceOverrides.ContainsKey(e.RowIndex + 1))
                     {
-                        mEditorItem.ExperienceOverrides.Remove( e.RowIndex + 1 );
+                        mEditorItem.ExperienceOverrides.Remove(e.RowIndex + 1);
                     }
                 }
                 else
                 {
-                    if( !mEditorItem.ExperienceOverrides.ContainsKey( e.RowIndex + 1 ) )
+                    if (!mEditorItem.ExperienceOverrides.ContainsKey(e.RowIndex + 1))
                     {
-                        mEditorItem.ExperienceOverrides.Add( e.RowIndex + 1, val );
+                        mEditorItem.ExperienceOverrides.Add(e.RowIndex + 1, val);
                     }
                     else
                     {
@@ -1518,35 +1518,35 @@ namespace Intersect.Editor.Forms.Editors
                     }
                 }
 
-                UpdateExpGridValues( e.RowIndex + 1 );
+                UpdateExpGridValues(e.RowIndex + 1);
             }
             else
             {
-                UpdateExpGridValues( e.RowIndex + 1, e.RowIndex + 2 );
+                UpdateExpGridValues(e.RowIndex + 1, e.RowIndex + 2);
             }
         }
 
-        private void btnResetExpGrid_Click( object sender, EventArgs e )
+        private void btnResetExpGrid_Click(object sender, EventArgs e)
         {
             mEditorItem.ExperienceOverrides.Clear();
-            UpdateExpGridValues( 1 );
+            UpdateExpGridValues(1);
         }
 
-        private void expGrid_KeyDown( object sender, KeyEventArgs e )
+        private void expGrid_KeyDown(object sender, KeyEventArgs e)
         {
-            if( e.KeyCode == Keys.Delete )
+            if (e.KeyCode == Keys.Delete)
             {
-                if( expGrid.CurrentCell != null )
+                if (expGrid.CurrentCell != null)
                 {
-                    if( !expGrid.CurrentCell.IsInEditMode && expGrid.CurrentCell.ReadOnly == false )
+                    if (!expGrid.CurrentCell.IsInEditMode && expGrid.CurrentCell.ReadOnly == false)
                     {
                         var level = expGrid.CurrentCell.RowIndex + 1;
-                        if( mEditorItem.ExperienceOverrides.ContainsKey( level ) )
+                        if (mEditorItem.ExperienceOverrides.ContainsKey(level))
                         {
-                            mEditorItem.ExperienceOverrides.Remove( level );
+                            mEditorItem.ExperienceOverrides.Remove(level);
                         }
 
-                        UpdateExpGridValues( level );
+                        UpdateExpGridValues(level);
                     }
                 }
             }
@@ -1556,7 +1556,7 @@ namespace Intersect.Editor.Forms.Editors
 
         #region "Item List - Folders, Searching, Sorting, Etc"
 
-        private void btnAddFolder_Click( object sender, EventArgs e )
+        private void btnAddFolder_Click(object sender, EventArgs e)
         {
             var folderName = "";
             var result = DarkInputBox.ShowInformation(
@@ -1564,37 +1564,37 @@ namespace Intersect.Editor.Forms.Editors
                 DarkDialogButton.OkCancel
             );
 
-            if( result == DialogResult.OK && !string.IsNullOrEmpty( folderName ) )
+            if (result == DialogResult.OK && !string.IsNullOrEmpty(folderName))
             {
-                if( !cmbFolder.Items.Contains( folderName ) )
+                if (!cmbFolder.Items.Contains(folderName))
                 {
                     mEditorItem.Folder = folderName;
-                    mExpandedFolders.Add( folderName );
+                    mExpandedFolders.Add(folderName);
                     InitEditor();
                     cmbFolder.Text = folderName;
                 }
             }
         }
 
-        private void lstClasses_NodeMouseClick( object sender, TreeNodeMouseClickEventArgs e )
+        private void lstClasses_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             var node = e.Node;
-            if( node != null )
+            if (node != null)
             {
-                if( e.Button == MouseButtons.Right )
+                if (e.Button == MouseButtons.Right)
                 {
-                    if( e.Node.Tag != null && e.Node.Tag.GetType() == typeof( Guid ) )
+                    if (e.Node.Tag != null && e.Node.Tag.GetType() == typeof(Guid))
                     {
-                        Clipboard.SetText( e.Node.Tag.ToString() );
+                        Clipboard.SetText(e.Node.Tag.ToString());
                     }
                 }
 
-                var hitTest = lstClasses.HitTest( e.Location );
-                if( hitTest.Location != TreeViewHitTestLocations.PlusMinus )
+                var hitTest = lstClasses.HitTest(e.Location);
+                if (hitTest.Location != TreeViewHitTestLocations.PlusMinus)
                 {
-                    if( node.Nodes.Count > 0 )
+                    if (node.Nodes.Count > 0)
                     {
-                        if( node.IsExpanded )
+                        if (node.IsExpanded)
                         {
                             node.Collapse();
                         }
@@ -1605,84 +1605,84 @@ namespace Intersect.Editor.Forms.Editors
                     }
                 }
 
-                if( node.IsExpanded )
+                if (node.IsExpanded)
                 {
-                    if( !mExpandedFolders.Contains( node.Text ) )
+                    if (!mExpandedFolders.Contains(node.Text))
                     {
-                        mExpandedFolders.Add( node.Text );
+                        mExpandedFolders.Add(node.Text);
                     }
                 }
                 else
                 {
-                    if( mExpandedFolders.Contains( node.Text ) )
+                    if (mExpandedFolders.Contains(node.Text))
                     {
-                        mExpandedFolders.Remove( node.Text );
+                        mExpandedFolders.Remove(node.Text);
                     }
                 }
             }
         }
 
-        private void lstClasses_AfterSelect( object sender, TreeViewEventArgs e )
+        private void lstClasses_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if( mChangingName )
+            if (mChangingName)
             {
                 return;
             }
 
-            if( lstClasses.SelectedNode == null || lstClasses.SelectedNode.Tag == null )
+            if (lstClasses.SelectedNode == null || lstClasses.SelectedNode.Tag == null)
             {
                 return;
             }
 
-            mEditorItem = ClassBase.Get( (Guid)lstClasses.SelectedNode.Tag );
+            mEditorItem = ClassBase.Get((Guid)lstClasses.SelectedNode.Tag);
             UpdateEditor();
         }
 
-        private void cmbFolder_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbFolder_SelectedIndexChanged(object sender, EventArgs e)
         {
             mEditorItem.Folder = cmbFolder.Text;
             InitEditor();
         }
 
-        private void btnChronological_Click( object sender, EventArgs e )
+        private void btnChronological_Click(object sender, EventArgs e)
         {
             btnChronological.Checked = !btnChronological.Checked;
             InitEditor();
         }
 
-        private void txtSearch_TextChanged( object sender, EventArgs e )
+        private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             InitEditor();
         }
 
-        private void txtSearch_Leave( object sender, EventArgs e )
+        private void txtSearch_Leave(object sender, EventArgs e)
         {
-            if( string.IsNullOrWhiteSpace( txtSearch.Text ) )
+            if (string.IsNullOrWhiteSpace(txtSearch.Text))
             {
                 txtSearch.Text = Strings.ClassEditor.searchplaceholder;
             }
         }
 
-        private void txtSearch_Enter( object sender, EventArgs e )
+        private void txtSearch_Enter(object sender, EventArgs e)
         {
             txtSearch.SelectAll();
             txtSearch.Focus();
         }
 
-        private void btnClearSearch_Click( object sender, EventArgs e )
+        private void btnClearSearch_Click(object sender, EventArgs e)
         {
             txtSearch.Text = Strings.ClassEditor.searchplaceholder;
         }
 
         private bool CustomSearch()
         {
-            return !string.IsNullOrWhiteSpace( txtSearch.Text ) &&
+            return !string.IsNullOrWhiteSpace(txtSearch.Text) &&
                    txtSearch.Text != Strings.ClassEditor.searchplaceholder;
         }
 
-        private void txtSearch_Click( object sender, EventArgs e )
+        private void txtSearch_Click(object sender, EventArgs e)
         {
-            if( txtSearch.Text == Strings.ClassEditor.searchplaceholder )
+            if (txtSearch.Text == Strings.ClassEditor.searchplaceholder)
             {
                 txtSearch.SelectAll();
             }

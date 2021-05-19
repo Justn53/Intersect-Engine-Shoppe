@@ -83,7 +83,7 @@ namespace Intersect.Client.Interface.Game.Hotbar
 
         public ImagePanel Pnl;
 
-        public HotbarItem( byte index, Base hotbarWindow )
+        public HotbarItem(byte index, Base hotbarWindow)
         {
             mYindex = index;
             mHotbarWindow = hotbarWindow;
@@ -93,88 +93,88 @@ namespace Intersect.Client.Interface.Game.Hotbar
         {
             //Content Panel is layered on top of the container.
             //Shows the Item or Spell Icon
-            mContentPanel = new ImagePanel( Pnl, "HotbarIcon" + mYindex );
+            mContentPanel = new ImagePanel(Pnl, "HotbarIcon" + mYindex);
             mContentPanel.HoverEnter += pnl_HoverEnter;
             mContentPanel.HoverLeave += pnl_HoverLeave;
             mContentPanel.RightClicked += pnl_RightClicked;
             mContentPanel.Clicked += pnl_Clicked;
 
-            EquipPanel = new ImagePanel( mContentPanel, "HotbarEquipedIcon" + mYindex );
+            EquipPanel = new ImagePanel(mContentPanel, "HotbarEquipedIcon" + mYindex);
             EquipPanel.Texture = Graphics.Renderer.GetWhiteTexture();
-            EquipLabel = new Label( Pnl, "HotbarEquippedLabel" + mYindex );
+            EquipLabel = new Label(Pnl, "HotbarEquippedLabel" + mYindex);
             EquipLabel.IsHidden = true;
             EquipLabel.Text = Strings.Inventory.equippedicon;
-            EquipLabel.TextColor = new Color( 0, 255, 255, 255 );
-            mCooldownLabel = new Label( Pnl, "HotbarCooldownLabel" + mYindex );
+            EquipLabel.TextColor = new Color(0, 255, 255, 255);
+            mCooldownLabel = new Label(Pnl, "HotbarCooldownLabel" + mYindex);
             mCooldownLabel.IsHidden = true;
-            mCooldownLabel.TextColor = new Color( 0, 255, 255, 255 );
+            mCooldownLabel.TextColor = new Color(0, 255, 255, 255);
         }
 
         public void Activate()
         {
-            if( mCurrentId != Guid.Empty )
+            if (mCurrentId != Guid.Empty)
             {
-                if( mCurrentItem != null )
+                if (mCurrentItem != null)
                 {
-                    if( mInventoryItemIndex > -1 )
+                    if (mInventoryItemIndex > -1)
                     {
-                        Globals.Me.TryUseItem( mInventoryItemIndex );
+                        Globals.Me.TryUseItem(mInventoryItemIndex);
                     }
                 }
-                else if( mCurrentSpell != null )
+                else if (mCurrentSpell != null)
                 {
-                    Globals.Me.TryUseSpell( mCurrentSpell.Id );
+                    Globals.Me.TryUseSpell(mCurrentSpell.Id);
                 }
             }
         }
 
-        void pnl_RightClicked( Base sender, ClickedEventArgs arguments )
+        void pnl_RightClicked(Base sender, ClickedEventArgs arguments)
         {
-            Globals.Me.AddToHotbar( mYindex, -1, -1 );
+            Globals.Me.AddToHotbar(mYindex, -1, -1);
         }
 
-        void pnl_Clicked( Base sender, ClickedEventArgs arguments )
+        void pnl_Clicked(Base sender, ClickedEventArgs arguments)
         {
             mClickTime = Globals.System.GetTimeMs() + 500;
         }
 
-        void pnl_HoverLeave( Base sender, EventArgs arguments )
+        void pnl_HoverLeave(Base sender, EventArgs arguments)
         {
             mMouseOver = false;
             mMouseX = -1;
             mMouseY = -1;
-            if( mItemDescWindow != null )
+            if (mItemDescWindow != null)
             {
                 mItemDescWindow.Dispose();
                 mItemDescWindow = null;
             }
 
-            if( mSpellDescWindow != null )
+            if (mSpellDescWindow != null)
             {
                 mSpellDescWindow.Dispose();
                 mSpellDescWindow = null;
             }
         }
 
-        void pnl_HoverEnter( Base sender, EventArgs arguments )
+        void pnl_HoverEnter(Base sender, EventArgs arguments)
         {
-            if( InputHandler.MouseFocus != null )
+            if (InputHandler.MouseFocus != null)
             {
                 return;
             }
 
             mMouseOver = true;
             mCanDrag = true;
-            if( Globals.InputManager.MouseButtonDown( GameInput.MouseButtons.Left ) )
+            if (Globals.InputManager.MouseButtonDown(GameInput.MouseButtons.Left))
             {
                 mCanDrag = false;
 
                 return;
             }
 
-            if( mCurrentItem != null )
+            if (mCurrentItem != null)
             {
-                if( mItemDescWindow != null )
+                if (mItemDescWindow != null)
                 {
                     mItemDescWindow.Dispose();
                     mItemDescWindow = null;
@@ -185,9 +185,9 @@ namespace Intersect.Client.Interface.Game.Hotbar
                     mInventoryItem?.StatBuffs, mCurrentItem.Name, "", true
                 );
             }
-            else if( mCurrentSpell != null )
+            else if (mCurrentSpell != null)
             {
-                if( mSpellDescWindow != null )
+                if (mSpellDescWindow != null)
                 {
                     mSpellDescWindow.Dispose();
                     mSpellDescWindow = null;
@@ -203,8 +203,8 @@ namespace Intersect.Client.Interface.Game.Hotbar
         {
             var rect = new FloatRect()
             {
-                X = Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).X,
-                Y = Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).Y,
+                X = Pnl.LocalPosToCanvas(new Point(0, 0)).X,
+                Y = Pnl.LocalPosToCanvas(new Point(0, 0)).Y,
                 Width = Pnl.Width,
                 Height = Pnl.Height
             };
@@ -214,18 +214,18 @@ namespace Intersect.Client.Interface.Game.Hotbar
 
         public void Update()
         {
-            if( Globals.Me == null )
+            if (Globals.Me == null)
             {
                 return;
             }
 
             //See if Label Should be changed
-            if( mHotKey != Controls.ActiveControls.ControlMapping[Control.Hotkey1 + mYindex].Key1 )
+            if (mHotKey != Controls.ActiveControls.ControlMapping[Control.Hotkey1 + mYindex].Key1)
             {
                 KeyLabel.SetText(
                     Strings.Keys.keydict[
                         Enum.GetName(
-                                typeof( Keys ), Controls.ActiveControls.ControlMapping[Control.Hotkey1 + mYindex].Key1
+                                typeof(Keys), Controls.ActiveControls.ControlMapping[Control.Hotkey1 + mYindex].Key1
                             )
                             .ToLower()]
                 );
@@ -239,18 +239,18 @@ namespace Intersect.Client.Interface.Game.Hotbar
                 mTexLoaded ==
                 false; //Update display if the hotbar item changes or we dont have a texture for the current item
 
-            if( mCurrentId != slot.ItemOrSpellId )
+            if (mCurrentId != slot.ItemOrSpellId)
             {
                 mCurrentItem = null;
                 mCurrentSpell = null;
-                var itm = ItemBase.Get( slot.ItemOrSpellId );
-                var spl = SpellBase.Get( slot.ItemOrSpellId );
-                if( itm != null )
+                var itm = ItemBase.Get(slot.ItemOrSpellId);
+                var spl = SpellBase.Get(slot.ItemOrSpellId);
+                if (itm != null)
                 {
                     mCurrentItem = itm;
                 }
 
-                if( spl != null )
+                if (spl != null)
                 {
                     mCurrentSpell = spl;
                 }
@@ -262,77 +262,77 @@ namespace Intersect.Client.Interface.Game.Hotbar
             mInventoryItem = null;
             mInventoryItemIndex = -1;
 
-            if( mCurrentItem != null )
+            if (mCurrentItem != null)
             {
-                var itmIndex = Globals.Me.FindHotbarItem( slot );
-                if( itmIndex > -1 )
+                var itmIndex = Globals.Me.FindHotbarItem(slot);
+                if (itmIndex > -1)
                 {
                     mInventoryItemIndex = itmIndex;
                     mInventoryItem = Globals.Me.Inventory[itmIndex];
                 }
             }
-            else if( mCurrentSpell != null )
+            else if (mCurrentSpell != null)
             {
-                var splIndex = Globals.Me.FindHotbarSpell( slot );
-                if( splIndex > -1 )
+                var splIndex = Globals.Me.FindHotbarSpell(slot);
+                if (splIndex > -1)
                 {
                     mSpellBookItem = Globals.Me.Spells[splIndex];
                 }
             }
 
-            if( mCurrentItem != null ) //When it's an item
+            if (mCurrentItem != null) //When it's an item
             {
                 //We don't have it, and the icon isn't faded
-                if( mInventoryItem == null && !mIsFaded )
+                if (mInventoryItem == null && !mIsFaded)
                 {
                     updateDisplay = true;
                 }
 
                 //We have it, and the equip icon doesn't match equipped status
-                if( mInventoryItem != null && Globals.Me.IsEquipped( mInventoryItemIndex ) != mIsEquipped )
+                if (mInventoryItem != null && Globals.Me.IsEquipped(mInventoryItemIndex) != mIsEquipped)
                 {
                     updateDisplay = true;
                 }
 
                 //We have it, and it's on cd
-                if( mInventoryItem != null && Globals.Me.ItemOnCd( mInventoryItemIndex ) )
+                if (mInventoryItem != null && Globals.Me.ItemOnCd(mInventoryItemIndex))
                 {
                     updateDisplay = true;
                 }
 
                 //We have it, and it's on cd, and the fade is incorrect
-                if( mInventoryItem != null && Globals.Me.ItemOnCd( mInventoryItemIndex ) != mIsFaded )
+                if (mInventoryItem != null && Globals.Me.ItemOnCd(mInventoryItemIndex) != mIsFaded)
                 {
                     updateDisplay = true;
                 }
             }
 
-            if( mCurrentSpell != null ) //When it's a spell
+            if (mCurrentSpell != null) //When it's a spell
             {
                 //We don't know it, and the icon isn't faded!
-                if( mSpellBookItem == null && !mIsFaded )
+                if (mSpellBookItem == null && !mIsFaded)
                 {
                     updateDisplay = true;
                 }
 
                 //Spell on cd
-                if( mSpellBookItem != null &&
-                    Globals.Me.GetSpellCooldown( mSpellBookItem.SpellId ) > Globals.System.GetTimeMs() )
+                if (mSpellBookItem != null &&
+                    Globals.Me.GetSpellCooldown(mSpellBookItem.SpellId) > Globals.System.GetTimeMs())
                 {
                     updateDisplay = true;
                 }
 
                 //Spell on cd and the fade is incorrect
-                if( mSpellBookItem != null &&
-                    Globals.Me.GetSpellCooldown( mSpellBookItem.SpellId ) > Globals.System.GetTimeMs() != mIsFaded )
+                if (mSpellBookItem != null &&
+                    Globals.Me.GetSpellCooldown(mSpellBookItem.SpellId) > Globals.System.GetTimeMs() != mIsFaded)
                 {
                     updateDisplay = true;
                 }
             }
 
-            if( updateDisplay ) //Item on cd and fade is incorrect
+            if (updateDisplay) //Item on cd and fade is incorrect
             {
-                if( mCurrentItem != null )
+                if (mCurrentItem != null)
                 {
                     mCooldownLabel.IsHidden = true;
                     mContentPanel.Show();
@@ -340,29 +340,29 @@ namespace Intersect.Client.Interface.Game.Hotbar
                         GameContentManager.TextureType.Item, mCurrentItem.Icon
                     );
 
-                    if( mInventoryItemIndex > -1 )
+                    if (mInventoryItemIndex > -1)
                     {
-                        EquipPanel.IsHidden = !Globals.Me.IsEquipped( mInventoryItemIndex );
-                        EquipLabel.IsHidden = !Globals.Me.IsEquipped( mInventoryItemIndex );
-                        mIsFaded = Globals.Me.ItemOnCd( mInventoryItemIndex );
-                        if( mIsFaded )
+                        EquipPanel.IsHidden = !Globals.Me.IsEquipped(mInventoryItemIndex);
+                        EquipLabel.IsHidden = !Globals.Me.IsEquipped(mInventoryItemIndex);
+                        mIsFaded = Globals.Me.ItemOnCd(mInventoryItemIndex);
+                        if (mIsFaded)
                         {
                             mCooldownLabel.IsHidden = false;
-                            var secondsRemaining = (float)Globals.Me.ItemCdRemainder( mInventoryItemIndex ) / 1000f;
-                            if( secondsRemaining > 10f )
+                            var secondsRemaining = (float)Globals.Me.ItemCdRemainder(mInventoryItemIndex) / 1000f;
+                            if (secondsRemaining > 10f)
                             {
                                 mCooldownLabel.Text =
-                                    Strings.Inventory.cooldown.ToString( secondsRemaining.ToString( "N0" ) );
+                                    Strings.Inventory.cooldown.ToString(secondsRemaining.ToString("N0"));
                             }
                             else
                             {
                                 mCooldownLabel.Text = Strings.Inventory.cooldown.ToString(
-                                    secondsRemaining.ToString( "N1" ).Replace( ".", Strings.Numbers.dec )
+                                    secondsRemaining.ToString("N1").Replace(".", Strings.Numbers.dec)
                                 );
                             }
                         }
 
-                        mIsEquipped = Globals.Me.IsEquipped( mInventoryItemIndex );
+                        mIsEquipped = Globals.Me.IsEquipped(mInventoryItemIndex);
                     }
                     else
                     {
@@ -374,7 +374,7 @@ namespace Intersect.Client.Interface.Game.Hotbar
 
                     mTexLoaded = true;
                 }
-                else if( mCurrentSpell != null )
+                else if (mCurrentSpell != null)
                 {
                     mContentPanel.Show();
                     mContentPanel.Texture = Globals.ContentManager.GetTexture(
@@ -384,25 +384,25 @@ namespace Intersect.Client.Interface.Game.Hotbar
                     EquipPanel.IsHidden = true;
                     EquipLabel.IsHidden = true;
                     mCooldownLabel.IsHidden = true;
-                    if( mSpellBookItem != null )
+                    if (mSpellBookItem != null)
                     {
-                        mIsFaded = Globals.Me.GetSpellCooldown( mSpellBookItem.SpellId ) > Globals.System.GetTimeMs();
-                        if( mIsFaded )
+                        mIsFaded = Globals.Me.GetSpellCooldown(mSpellBookItem.SpellId) > Globals.System.GetTimeMs();
+                        if (mIsFaded)
                         {
                             mCooldownLabel.IsHidden = false;
                             var secondsRemaining =
-                                (float)( Globals.Me.GetSpellCooldown( mSpellBookItem.SpellId ) -
-                                         Globals.System.GetTimeMs() ) /
+                                (float)(Globals.Me.GetSpellCooldown(mSpellBookItem.SpellId) -
+                                         Globals.System.GetTimeMs()) /
                                 1000f;
 
-                            if( secondsRemaining > 10f )
+                            if (secondsRemaining > 10f)
                             {
-                                mCooldownLabel.Text = Strings.Spells.cooldown.ToString( secondsRemaining.ToString( "N0" ) );
+                                mCooldownLabel.Text = Strings.Spells.cooldown.ToString(secondsRemaining.ToString("N0"));
                             }
                             else
                             {
                                 mCooldownLabel.Text = Strings.Spells.cooldown.ToString(
-                                    secondsRemaining.ToString( "N1" ).Replace( ".", Strings.Numbers.dec )
+                                    secondsRemaining.ToString("N1").Replace(".", Strings.Numbers.dec)
                                 );
                             }
                         }
@@ -425,44 +425,44 @@ namespace Intersect.Client.Interface.Game.Hotbar
                     mCooldownLabel.IsHidden = true;
                 }
 
-                if( mIsFaded )
+                if (mIsFaded)
                 {
-                    if( mCurrentSpell != null )
+                    if (mCurrentSpell != null)
                     {
-                        mContentPanel.RenderColor = new Color( 100, 255, 255, 255 );
+                        mContentPanel.RenderColor = new Color(100, 255, 255, 255);
                     }
 
-                    if( mCurrentItem != null )
+                    if (mCurrentItem != null)
                     {
-                        mContentPanel.RenderColor = new Color( 100, mCurrentItem.Color.R, mCurrentItem.Color.G, mCurrentItem.Color.B );
+                        mContentPanel.RenderColor = new Color(100, mCurrentItem.Color.R, mCurrentItem.Color.G, mCurrentItem.Color.B);
                     }
                 }
                 else
                 {
-                    if( mCurrentSpell != null )
+                    if (mCurrentSpell != null)
                     {
                         mContentPanel.RenderColor = Color.White;
                     }
 
-                    if( mCurrentItem != null )
+                    if (mCurrentItem != null)
                     {
                         mContentPanel.RenderColor = mCurrentItem.Color;
                     }
                 }
             }
 
-            if( mCurrentItem != null || mCurrentSpell != null )
+            if (mCurrentItem != null || mCurrentSpell != null)
             {
-                if( !IsDragging )
+                if (!IsDragging)
                 {
-                    if( mMouseOver )
+                    if (mMouseOver)
                     {
-                        if( !Globals.InputManager.MouseButtonDown( GameInput.MouseButtons.Left ) )
+                        if (!Globals.InputManager.MouseButtonDown(GameInput.MouseButtons.Left))
                         {
                             mCanDrag = true;
                             mMouseX = -1;
                             mMouseY = -1;
-                            if( Globals.System.GetTimeMs() < mClickTime )
+                            if (Globals.System.GetTimeMs() < mClickTime)
                             {
                                 Activate();
                                 mClickTime = 0;
@@ -470,29 +470,29 @@ namespace Intersect.Client.Interface.Game.Hotbar
                         }
                         else
                         {
-                            if( mCanDrag && Draggable.Active == null )
+                            if (mCanDrag && Draggable.Active == null)
                             {
-                                if( mMouseX == -1 || mMouseY == -1 )
+                                if (mMouseX == -1 || mMouseY == -1)
                                 {
-                                    mMouseX = InputHandler.MousePosition.X - Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).X;
-                                    mMouseY = InputHandler.MousePosition.Y - Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).Y;
+                                    mMouseX = InputHandler.MousePosition.X - Pnl.LocalPosToCanvas(new Point(0, 0)).X;
+                                    mMouseY = InputHandler.MousePosition.Y - Pnl.LocalPosToCanvas(new Point(0, 0)).Y;
                                 }
                                 else
                                 {
                                     var xdiff = mMouseX -
-                                                ( InputHandler.MousePosition.X -
-                                                 Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).X );
+                                                (InputHandler.MousePosition.X -
+                                                 Pnl.LocalPosToCanvas(new Point(0, 0)).X);
 
                                     var ydiff = mMouseY -
-                                                ( InputHandler.MousePosition.Y -
-                                                 Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).Y );
+                                                (InputHandler.MousePosition.Y -
+                                                 Pnl.LocalPosToCanvas(new Point(0, 0)).Y);
 
-                                    if( Math.Sqrt( Math.Pow( xdiff, 2 ) + Math.Pow( ydiff, 2 ) ) > 5 )
+                                    if (Math.Sqrt(Math.Pow(xdiff, 2) + Math.Pow(ydiff, 2)) > 5)
                                     {
                                         IsDragging = true;
                                         mDragIcon = new Draggable(
-                                            Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).X + mMouseX,
-                                            Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).X + mMouseY, mContentPanel.Texture
+                                            Pnl.LocalPosToCanvas(new Point(0, 0)).X + mMouseX,
+                                            Pnl.LocalPosToCanvas(new Point(0, 0)).X + mMouseY, mContentPanel.Texture
                                         );
 
                                         //SOMETHING SHOULD BE RENDERED HERE, RIGHT?
@@ -504,7 +504,7 @@ namespace Intersect.Client.Interface.Game.Hotbar
                 }
                 else
                 {
-                    if( mDragIcon.Update() )
+                    if (mDragIcon.Update())
                     {
                         mContentPanel.IsHidden = false;
 
@@ -518,17 +518,17 @@ namespace Intersect.Client.Interface.Game.Hotbar
                         float bestIntersect = 0;
                         var bestIntersectIndex = -1;
 
-                        if( Interface.GameUi.Hotbar.RenderBounds().IntersectsWith( dragRect ) )
+                        if (Interface.GameUi.Hotbar.RenderBounds().IntersectsWith(dragRect))
                         {
-                            for( var i = 0; i < Options.MaxHotbar; i++ )
+                            for (var i = 0; i < Options.MaxHotbar; i++)
                             {
-                                if( Interface.GameUi.Hotbar.Items[i].RenderBounds().IntersectsWith( dragRect ) )
+                                if (Interface.GameUi.Hotbar.Items[i].RenderBounds().IntersectsWith(dragRect))
                                 {
-                                    if( FloatRect.Intersect( Interface.GameUi.Hotbar.Items[i].RenderBounds(), dragRect )
+                                    if (FloatRect.Intersect(Interface.GameUi.Hotbar.Items[i].RenderBounds(), dragRect)
                                             .Width *
-                                        FloatRect.Intersect( Interface.GameUi.Hotbar.Items[i].RenderBounds(), dragRect )
+                                        FloatRect.Intersect(Interface.GameUi.Hotbar.Items[i].RenderBounds(), dragRect)
                                             .Height >
-                                        bestIntersect )
+                                        bestIntersect)
                                     {
                                         bestIntersect =
                                             FloatRect.Intersect(
@@ -545,9 +545,9 @@ namespace Intersect.Client.Interface.Game.Hotbar
                                 }
                             }
 
-                            if( bestIntersectIndex > -1 && bestIntersectIndex != mYindex )
+                            if (bestIntersectIndex > -1 && bestIntersectIndex != mYindex)
                             {
-                                Globals.Me.HotbarSwap( mYindex, (byte)bestIntersectIndex );
+                                Globals.Me.HotbarSwap(mYindex, (byte)bestIntersectIndex);
                             }
                         }
 

@@ -8,11 +8,11 @@ namespace Intersect.Crypto.Formats
     {
         private byte[] mData;
 
-        public AesKey() : this( null )
+        public AesKey() : this(null)
         {
         }
 
-        public AesKey( byte[] data ) : base( KeyFormat.Aes )
+        public AesKey(byte[] data) : base(KeyFormat.Aes)
         {
             Data = data;
         }
@@ -23,24 +23,24 @@ namespace Intersect.Crypto.Formats
             set => mData = value;
         }
 
-        protected override bool InternalRead( IBuffer buffer )
+        protected override bool InternalRead(IBuffer buffer)
         {
-            if( buffer == null )
+            if (buffer == null)
             {
                 throw new ArgumentNullException();
             }
 
-            return buffer.Read( out mData );
+            return buffer.Read(out mData);
         }
 
-        protected override bool InternalWrite( IBuffer buffer )
+        protected override bool InternalWrite(IBuffer buffer)
         {
-            if( buffer == null )
+            if (buffer == null)
             {
                 throw new ArgumentNullException();
             }
 
-            buffer.Write( mData );
+            buffer.Write(mData);
 
             return true;
         }

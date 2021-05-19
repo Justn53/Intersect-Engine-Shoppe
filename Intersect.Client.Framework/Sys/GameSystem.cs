@@ -10,9 +10,9 @@
 
         public abstract void Update();
 
-        public abstract void Log( string msg );
+        public abstract void Log(string msg);
 
-        public abstract void LogError( string error );
+        public abstract void LogError(string error);
 
     }
 

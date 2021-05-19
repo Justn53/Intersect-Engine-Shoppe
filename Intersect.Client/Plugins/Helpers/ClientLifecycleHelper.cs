@@ -11,14 +11,14 @@ namespace Intersect.Client.Plugins.Helpers
         /// <inheritdoc />
         public event LifecycleChangeStateHandler LifecycleChangeState;
 
-        internal ClientLifecycleHelper( IClientPluginContext context ) : base( context )
+        internal ClientLifecycleHelper(IClientPluginContext context) : base(context)
         {
-            Globals.ClientLifecycleHelpers.Add( this );
+            Globals.ClientLifecycleHelpers.Add(this);
         }
 
         ~ClientLifecycleHelper()
         {
-            Globals.ClientLifecycleHelpers.Remove( this );
+            Globals.ClientLifecycleHelpers.Remove(this);
         }
 
         /// <inheritdoc />
@@ -26,10 +26,10 @@ namespace Intersect.Client.Plugins.Helpers
             Client.Interface.Interface.MenuUi ?? Client.Interface.Interface.GameUi as IMutableInterface;
 
         /// <inheritdoc />
-        public void OnLifecycleChangeState( GameStates state )
+        public void OnLifecycleChangeState(GameStates state)
         {
-            var lifecycleChangeStateArgs = new LifecycleChangeStateArgs( state );
-            LifecycleChangeState?.Invoke( Context, lifecycleChangeStateArgs );
+            var lifecycleChangeStateArgs = new LifecycleChangeStateArgs(state);
+            LifecycleChangeState?.Invoke(Context, lifecycleChangeStateArgs);
         }
     }
 }

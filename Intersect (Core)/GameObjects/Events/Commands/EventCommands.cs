@@ -19,7 +19,7 @@ namespace Intersect.GameObjects.Events.Commands
         )
         {
             return JsonConvert.SerializeObject(
-                this, typeof( EventCommand ),
+                this, typeof(EventCommand),
                 new JsonSerializerSettings()
                 {
                     Formatting = Formatting.None,
@@ -30,7 +30,7 @@ namespace Intersect.GameObjects.Events.Commands
             );
         }
 
-        public virtual void FixBranchIds( Dictionary<Guid, Guid> idDict )
+        public virtual void FixBranchIds(Dictionary<Guid, Guid> idDict)
         {
         }
 
@@ -55,12 +55,12 @@ namespace Intersect.GameObjects.Events.Commands
         {
         }
 
-        public ShowOptionsCommand( Dictionary<Guid, List<EventCommand>> commandLists )
+        public ShowOptionsCommand(Dictionary<Guid, List<EventCommand>> commandLists)
         {
-            for( var i = 0; i < BranchIds.Length; i++ )
+            for (var i = 0; i < BranchIds.Length; i++)
             {
                 BranchIds[i] = Guid.NewGuid();
-                commandLists.Add( BranchIds[i], new List<EventCommand>() );
+                commandLists.Add(BranchIds[i], new List<EventCommand>());
             }
         }
 
@@ -80,26 +80,26 @@ namespace Intersect.GameObjects.Events.Commands
             Dictionary<Guid, List<EventCommand>> copyLists
         )
         {
-            foreach( var branch in BranchIds )
+            foreach (var branch in BranchIds)
             {
-                if( branch != Guid.Empty && commandLists.ContainsKey( branch ) )
+                if (branch != Guid.Empty && commandLists.ContainsKey(branch))
                 {
-                    copyLists.Add( branch, commandLists[branch] );
-                    foreach( var cmd in commandLists[branch] )
+                    copyLists.Add(branch, commandLists[branch]);
+                    foreach (var cmd in commandLists[branch])
                     {
-                        cmd.GetCopyData( commandLists, copyLists );
+                        cmd.GetCopyData(commandLists, copyLists);
                     }
                 }
             }
 
-            return base.GetCopyData( commandLists, copyLists );
+            return base.GetCopyData(commandLists, copyLists);
         }
 
-        public override void FixBranchIds( Dictionary<Guid, Guid> idDict )
+        public override void FixBranchIds(Dictionary<Guid, Guid> idDict)
         {
-            for( var i = 0; i < BranchIds.Length; i++ )
+            for (var i = 0; i < BranchIds.Length; i++)
             {
-                if( idDict.ContainsKey( BranchIds[i] ) )
+                if (idDict.ContainsKey(BranchIds[i]))
                 {
                     BranchIds[i] = idDict[BranchIds[i]];
                 }
@@ -116,12 +116,12 @@ namespace Intersect.GameObjects.Events.Commands
         {
         }
 
-        public InputVariableCommand( Dictionary<Guid, List<EventCommand>> commandLists )
+        public InputVariableCommand(Dictionary<Guid, List<EventCommand>> commandLists)
         {
-            for( var i = 0; i < BranchIds.Length; i++ )
+            for (var i = 0; i < BranchIds.Length; i++)
             {
                 BranchIds[i] = Guid.NewGuid();
-                commandLists.Add( BranchIds[i], new List<EventCommand>() );
+                commandLists.Add(BranchIds[i], new List<EventCommand>());
             }
         }
 
@@ -147,26 +147,26 @@ namespace Intersect.GameObjects.Events.Commands
             Dictionary<Guid, List<EventCommand>> copyLists
         )
         {
-            foreach( var branch in BranchIds )
+            foreach (var branch in BranchIds)
             {
-                if( branch != Guid.Empty && commandLists.ContainsKey( branch ) )
+                if (branch != Guid.Empty && commandLists.ContainsKey(branch))
                 {
-                    copyLists.Add( branch, commandLists[branch] );
-                    foreach( var cmd in commandLists[branch] )
+                    copyLists.Add(branch, commandLists[branch]);
+                    foreach (var cmd in commandLists[branch])
                     {
-                        cmd.GetCopyData( commandLists, copyLists );
+                        cmd.GetCopyData(commandLists, copyLists);
                     }
                 }
             }
 
-            return base.GetCopyData( commandLists, copyLists );
+            return base.GetCopyData(commandLists, copyLists);
         }
 
-        public override void FixBranchIds( Dictionary<Guid, Guid> idDict )
+        public override void FixBranchIds(Dictionary<Guid, Guid> idDict)
         {
-            for( var i = 0; i < BranchIds.Length; i++ )
+            for (var i = 0; i < BranchIds.Length; i++)
             {
-                if( idDict.ContainsKey( BranchIds[i] ) )
+                if (idDict.ContainsKey(BranchIds[i]))
                 {
                     BranchIds[i] = idDict[BranchIds[i]];
                 }
@@ -225,12 +225,12 @@ namespace Intersect.GameObjects.Events.Commands
         {
         }
 
-        public ConditionalBranchCommand( Dictionary<Guid, List<EventCommand>> commandLists )
+        public ConditionalBranchCommand(Dictionary<Guid, List<EventCommand>> commandLists)
         {
-            for( var i = 0; i < BranchIds.Length; i++ )
+            for (var i = 0; i < BranchIds.Length; i++)
             {
                 BranchIds[i] = Guid.NewGuid();
-                commandLists.Add( BranchIds[i], new List<EventCommand>() );
+                commandLists.Add(BranchIds[i], new List<EventCommand>());
             }
         }
 
@@ -246,26 +246,26 @@ namespace Intersect.GameObjects.Events.Commands
             Dictionary<Guid, List<EventCommand>> copyLists
         )
         {
-            foreach( var branch in BranchIds )
+            foreach (var branch in BranchIds)
             {
-                if( branch != Guid.Empty && commandLists.ContainsKey( branch ) )
+                if (branch != Guid.Empty && commandLists.ContainsKey(branch))
                 {
-                    copyLists.Add( branch, commandLists[branch] );
-                    foreach( var cmd in commandLists[branch] )
+                    copyLists.Add(branch, commandLists[branch]);
+                    foreach (var cmd in commandLists[branch])
                     {
-                        cmd.GetCopyData( commandLists, copyLists );
+                        cmd.GetCopyData(commandLists, copyLists);
                     }
                 }
             }
 
-            return base.GetCopyData( commandLists, copyLists );
+            return base.GetCopyData(commandLists, copyLists);
         }
 
-        public override void FixBranchIds( Dictionary<Guid, Guid> idDict )
+        public override void FixBranchIds(Dictionary<Guid, Guid> idDict)
         {
-            for( var i = 0; i < BranchIds.Length; i++ )
+            for (var i = 0; i < BranchIds.Length; i++)
             {
-                if( idDict.ContainsKey( BranchIds[i] ) )
+                if (idDict.ContainsKey(BranchIds[i]))
                 {
                     BranchIds[i] = idDict[BranchIds[i]];
                 }
@@ -399,12 +399,12 @@ namespace Intersect.GameObjects.Events.Commands
         {
         }
 
-        public ChangeSpellsCommand( Dictionary<Guid, List<EventCommand>> commandLists )
+        public ChangeSpellsCommand(Dictionary<Guid, List<EventCommand>> commandLists)
         {
-            for( var i = 0; i < BranchIds.Length; i++ )
+            for (var i = 0; i < BranchIds.Length; i++)
             {
                 BranchIds[i] = Guid.NewGuid();
-                commandLists.Add( BranchIds[i], new List<EventCommand>() );
+                commandLists.Add(BranchIds[i], new List<EventCommand>());
             }
         }
 
@@ -422,26 +422,26 @@ namespace Intersect.GameObjects.Events.Commands
             Dictionary<Guid, List<EventCommand>> copyLists
         )
         {
-            foreach( var branch in BranchIds )
+            foreach (var branch in BranchIds)
             {
-                if( branch != Guid.Empty && commandLists.ContainsKey( branch ) )
+                if (branch != Guid.Empty && commandLists.ContainsKey(branch))
                 {
-                    copyLists.Add( branch, commandLists[branch] );
-                    foreach( var cmd in commandLists[branch] )
+                    copyLists.Add(branch, commandLists[branch]);
+                    foreach (var cmd in commandLists[branch])
                     {
-                        cmd.GetCopyData( commandLists, copyLists );
+                        cmd.GetCopyData(commandLists, copyLists);
                     }
                 }
             }
 
-            return base.GetCopyData( commandLists, copyLists );
+            return base.GetCopyData(commandLists, copyLists);
         }
 
-        public override void FixBranchIds( Dictionary<Guid, Guid> idDict )
+        public override void FixBranchIds(Dictionary<Guid, Guid> idDict)
         {
-            for( var i = 0; i < BranchIds.Length; i++ )
+            for (var i = 0; i < BranchIds.Length; i++)
             {
-                if( idDict.ContainsKey( BranchIds[i] ) )
+                if (idDict.ContainsKey(BranchIds[i]))
                 {
                     BranchIds[i] = idDict[BranchIds[i]];
                 }
@@ -458,12 +458,12 @@ namespace Intersect.GameObjects.Events.Commands
         {
         }
 
-        public ChangeItemsCommand( Dictionary<Guid, List<EventCommand>> commandLists )
+        public ChangeItemsCommand(Dictionary<Guid, List<EventCommand>> commandLists)
         {
-            for( var i = 0; i < BranchIds.Length; i++ )
+            for (var i = 0; i < BranchIds.Length; i++)
             {
                 BranchIds[i] = Guid.NewGuid();
-                commandLists.Add( BranchIds[i], new List<EventCommand>() );
+                commandLists.Add(BranchIds[i], new List<EventCommand>());
             }
         }
 
@@ -503,26 +503,26 @@ namespace Intersect.GameObjects.Events.Commands
             Dictionary<Guid, List<EventCommand>> copyLists
         )
         {
-            foreach( var branch in BranchIds )
+            foreach (var branch in BranchIds)
             {
-                if( branch != Guid.Empty && commandLists.ContainsKey( branch ) )
+                if (branch != Guid.Empty && commandLists.ContainsKey(branch))
                 {
-                    copyLists.Add( branch, commandLists[branch] );
-                    foreach( var cmd in commandLists[branch] )
+                    copyLists.Add(branch, commandLists[branch]);
+                    foreach (var cmd in commandLists[branch])
                     {
-                        cmd.GetCopyData( commandLists, copyLists );
+                        cmd.GetCopyData(commandLists, copyLists);
                     }
                 }
             }
 
-            return base.GetCopyData( commandLists, copyLists );
+            return base.GetCopyData(commandLists, copyLists);
         }
 
-        public override void FixBranchIds( Dictionary<Guid, Guid> idDict )
+        public override void FixBranchIds(Dictionary<Guid, Guid> idDict)
         {
-            for( var i = 0; i < BranchIds.Length; i++ )
+            for (var i = 0; i < BranchIds.Length; i++)
             {
-                if( idDict.ContainsKey( BranchIds[i] ) )
+                if (idDict.ContainsKey(BranchIds[i]))
                 {
                     BranchIds[i] = idDict[BranchIds[i]];
                 }
@@ -823,12 +823,12 @@ namespace Intersect.GameObjects.Events.Commands
         {
         }
 
-        public StartQuestCommand( Dictionary<Guid, List<EventCommand>> commandLists )
+        public StartQuestCommand(Dictionary<Guid, List<EventCommand>> commandLists)
         {
-            for( var i = 0; i < BranchIds.Length; i++ )
+            for (var i = 0; i < BranchIds.Length; i++)
             {
                 BranchIds[i] = Guid.NewGuid();
-                commandLists.Add( BranchIds[i], new List<EventCommand>() );
+                commandLists.Add(BranchIds[i], new List<EventCommand>());
             }
         }
 
@@ -846,26 +846,26 @@ namespace Intersect.GameObjects.Events.Commands
             Dictionary<Guid, List<EventCommand>> copyLists
         )
         {
-            foreach( var branch in BranchIds )
+            foreach (var branch in BranchIds)
             {
-                if( branch != Guid.Empty && commandLists.ContainsKey( branch ) )
+                if (branch != Guid.Empty && commandLists.ContainsKey(branch))
                 {
-                    copyLists.Add( branch, commandLists[branch] );
-                    foreach( var cmd in commandLists[branch] )
+                    copyLists.Add(branch, commandLists[branch]);
+                    foreach (var cmd in commandLists[branch])
                     {
-                        cmd.GetCopyData( commandLists, copyLists );
+                        cmd.GetCopyData(commandLists, copyLists);
                     }
                 }
             }
 
-            return base.GetCopyData( commandLists, copyLists );
+            return base.GetCopyData(commandLists, copyLists);
         }
 
-        public override void FixBranchIds( Dictionary<Guid, Guid> idDict )
+        public override void FixBranchIds(Dictionary<Guid, Guid> idDict)
         {
-            for( var i = 0; i < BranchIds.Length; i++ )
+            for (var i = 0; i < BranchIds.Length; i++)
             {
-                if( idDict.ContainsKey( BranchIds[i] ) )
+                if (idDict.ContainsKey(BranchIds[i]))
                 {
                     BranchIds[i] = idDict[BranchIds[i]];
                 }
@@ -910,7 +910,7 @@ namespace Intersect.GameObjects.Events.Commands
         /// <summary>
         /// The <see cref="Color"/> to apply to the player.
         /// </summary>
-        public Color Color { get; set; } = new Color( 255, 255, 255, 255 );
+        public Color Color { get; set; } = new Color(255, 255, 255, 255);
 
     }
 
@@ -921,12 +921,12 @@ namespace Intersect.GameObjects.Events.Commands
         {
         }
 
-        public ChangeNameCommand( Dictionary<Guid, List<EventCommand>> commandLists )
+        public ChangeNameCommand(Dictionary<Guid, List<EventCommand>> commandLists)
         {
-            for( var i = 0; i < BranchIds.Length; i++ )
+            for (var i = 0; i < BranchIds.Length; i++)
             {
                 BranchIds[i] = Guid.NewGuid();
-                commandLists.Add( BranchIds[i], new List<EventCommand>() );
+                commandLists.Add(BranchIds[i], new List<EventCommand>());
             }
         }
 
@@ -942,27 +942,27 @@ namespace Intersect.GameObjects.Events.Commands
             Dictionary<Guid, List<EventCommand>> copyLists
         )
         {
-            foreach( var branch in BranchIds )
+            foreach (var branch in BranchIds)
             {
-                if( branch != Guid.Empty && commandLists.ContainsKey( branch ) )
+                if (branch != Guid.Empty && commandLists.ContainsKey(branch))
                 {
-                    copyLists.Add( branch, commandLists[branch] );
-                    foreach( var cmd in commandLists[branch] )
+                    copyLists.Add(branch, commandLists[branch]);
+                    foreach (var cmd in commandLists[branch])
                     {
-                        cmd.GetCopyData( commandLists, copyLists );
+                        cmd.GetCopyData(commandLists, copyLists);
                     }
                 }
             }
 
-            return base.GetCopyData( commandLists, copyLists );
+            return base.GetCopyData(commandLists, copyLists);
         }
 
 
-        public override void FixBranchIds( Dictionary<Guid, Guid> idDict )
+        public override void FixBranchIds(Dictionary<Guid, Guid> idDict)
         {
-            for( var i = 0; i < BranchIds.Length; i++ )
+            for (var i = 0; i < BranchIds.Length; i++)
             {
-                if( idDict.ContainsKey( BranchIds[i] ) )
+                if (idDict.ContainsKey(BranchIds[i]))
                 {
                     BranchIds[i] = idDict[BranchIds[i]];
                 }

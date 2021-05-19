@@ -13,16 +13,16 @@ namespace Intersect.Server.Core.Commands
             LocaleCommand command,
             LocaleArgument argument,
             params ICommandArgument[] arguments
-        ) : base( command, arguments.Prepend( new VariableArgument<string>( argument, RequiredIfNotHelp, true ) ) )
+        ) : base(command, arguments.Prepend(new VariableArgument<string>(argument, RequiredIfNotHelp, true)))
         {
         }
 
         protected VariableArgument<string> Target => FindArgumentOrThrow<VariableArgument<string>>();
 
-        protected override void HandleValue( ServerContext context, ParserResult result )
+        protected override void HandleValue(ServerContext context, ParserResult result)
         {
-            var target = FindTarget( context, result, result.Find( Target ) );
-            HandleTarget( context, result, target );
+            var target = FindTarget(context, result, result.Find(Target));
+            HandleTarget(context, result, target);
         }
 
         protected abstract TTarget FindTarget(

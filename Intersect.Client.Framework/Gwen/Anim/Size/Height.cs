@@ -17,7 +17,7 @@
             bool hide = false,
             float delay = 0.0f,
             float ease = 1.0f
-        ) : base( length, delay, ease )
+        ) : base(length, delay, ease)
         {
             mStartSize = startSize;
             mDelta = endSize - mStartSize;
@@ -30,10 +30,10 @@
             mControl.Height = mStartSize;
         }
 
-        protected override void Run( float delta )
+        protected override void Run(float delta)
         {
-            base.Run( delta );
-            mControl.Height = (int)( mStartSize + mDelta * delta );
+            base.Run(delta);
+            mControl.Height = (int)(mStartSize + mDelta * delta);
         }
 
         protected override void OnFinish()

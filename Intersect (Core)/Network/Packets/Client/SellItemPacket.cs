@@ -6,11 +6,11 @@ namespace Intersect.Network.Packets.Client
     public class SellItemPacket : SlotQuantityPacket
     {
         //Parameterless Constructor for MessagePack
-        public SellItemPacket() : base( 0, 0 )
+        public SellItemPacket() : base(0, 0)
         {
         }
 
-        public SellItemPacket( int slot, int quantity ) : base( slot, quantity )
+        public SellItemPacket(int slot, int quantity) : base(slot, quantity)
         {
         }
 

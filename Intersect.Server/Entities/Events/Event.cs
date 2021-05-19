@@ -53,7 +53,7 @@ namespace Intersect.Server.Entities.Events
 
         public int Y;
 
-        public Event( Guid instanceId, MapInstance map, Player player, EventBase baseEvent )
+        public Event(Guid instanceId, MapInstance map, Player player, EventBase baseEvent)
         {
             Id = instanceId;
             MapId = map?.Id ?? Guid.Empty;
@@ -65,7 +65,7 @@ namespace Intersect.Server.Entities.Events
             Y = baseEvent.SpawnY;
         }
 
-        public Event( Guid instanceId, EventBase baseEvent, MapInstance map ) //Global constructor
+        public Event(Guid instanceId, EventBase baseEvent, MapInstance map) //Global constructor
         {
             Id = instanceId;
             Global = true;
@@ -76,35 +76,35 @@ namespace Intersect.Server.Entities.Events
             GlobalPageInstance = new EventPageInstance[BaseEvent.Pages.Count];
             X = (byte)baseEvent.SpawnX;
             Y = baseEvent.SpawnY;
-            for( var i = 0; i < BaseEvent.Pages.Count; i++ )
+            for (var i = 0; i < BaseEvent.Pages.Count; i++)
             {
-                GlobalPageInstance[i] = new EventPageInstance( BaseEvent, BaseEvent.Pages[i], MapId, this, null );
+                GlobalPageInstance[i] = new EventPageInstance(BaseEvent, BaseEvent.Pages[i], MapId, this, null);
             }
         }
 
         public bool[] SelfSwitch { get; set; }
 
-        public void Update( long timeMs, MapInstance map )
+        public void Update(long timeMs, MapInstance map)
         {
             var sendLeave = false;
             var originalPageInstance = PageInstance;
-            if( PageInstance != null )
+            if (PageInstance != null)
             {
                 //Check for despawn
-                if( PageInstance.ShouldDespawn( map ) )
+                if (PageInstance.ShouldDespawn(map))
                 {
                     X = PageInstance.X;
                     Y = PageInstance.Y;
-                    if( PageInstance.GlobalClone != null )
+                    if (PageInstance.GlobalClone != null)
                     {
-                        Player.GlobalPageInstanceLookup.TryRemove( PageInstance.GlobalClone, out Event val );
+                        Player.GlobalPageInstanceLookup.TryRemove(PageInstance.GlobalClone, out Event val);
                     }
                     PageInstance = null;
                     CallStack.Clear();
                     PlayerHasDied = false;
-                    if( HoldingPlayer )
+                    if (HoldingPlayer)
                     {
-                        PacketSender.SendReleasePlayer( Player, Id );
+                        PacketSender.SendReleasePlayer(Player, Id);
                         HoldingPlayer = false;
                     }
 
@@ -112,7 +112,7 @@ namespace Intersect.Server.Entities.Events
                 }
                 else
                 {
-                    if( !Global )
+                    if (!Global)
                     {
                         PageInstance.Update(
                             CallStack.Count > 0, timeMs
@@ -120,59 +120,59 @@ namespace Intersect.Server.Entities.Events
                     }
 
                     //Check to see if we should process event commands
-                    if( CallStack.Count > 0 )
+                    if (CallStack.Count > 0)
                     {
                         //EventPreProcessor.PreProcessCallStack( CallStack, Player );
 
                         var curStack = CallStack.Peek();
 
-                        if( curStack == null )
+                        if (curStack == null)
                         {
-                            Log.Error( "Curstack variable in event update is null.. not sure how nor how to recover so just gonna let this crash now.." );
+                            Log.Error("Curstack variable in event update is null.. not sure how nor how to recover so just gonna let this crash now..");
                         }
-                        if( Player == null )
+                        if (Player == null)
                         {
-                            Log.Error( "Player variable in event update is null.. not sure how nor how to recover so just gonna let this crash now.." );
+                            Log.Error("Player variable in event update is null.. not sure how nor how to recover so just gonna let this crash now..");
                         }
-                        if( curStack.WaitingForResponse == CommandInstance.EventResponse.Shop && Player.InShop == null )
-                        {
-                            curStack.WaitingForResponse = CommandInstance.EventResponse.None;
-                        }
-
-                        if( curStack.WaitingForResponse == CommandInstance.EventResponse.Crafting &&
-                            Player.CraftingTableId == Guid.Empty )
+                        if (curStack.WaitingForResponse == CommandInstance.EventResponse.Shop && Player.InShop == null)
                         {
                             curStack.WaitingForResponse = CommandInstance.EventResponse.None;
                         }
 
-                        if( curStack.WaitingForResponse == CommandInstance.EventResponse.Bank && Player.InBank == false )
+                        if (curStack.WaitingForResponse == CommandInstance.EventResponse.Crafting &&
+                            Player.CraftingTableId == Guid.Empty)
                         {
                             curStack.WaitingForResponse = CommandInstance.EventResponse.None;
                         }
 
-                        if( curStack.WaitingForResponse == CommandInstance.EventResponse.Quest &&
-                            !Player.QuestOffers.Contains( ( (StartQuestCommand)curStack.WaitingOnCommand ).QuestId ) )
+                        if (curStack.WaitingForResponse == CommandInstance.EventResponse.Bank && Player.InBank == false)
                         {
                             curStack.WaitingForResponse = CommandInstance.EventResponse.None;
                         }
 
-                        if( curStack.WaitingForResponse == CommandInstance.EventResponse.Timer &&
-                            WaitTimer < Globals.Timing.Milliseconds )
+                        if (curStack.WaitingForResponse == CommandInstance.EventResponse.Quest &&
+                            !Player.QuestOffers.Contains(((StartQuestCommand)curStack.WaitingOnCommand).QuestId))
+                        {
+                            curStack.WaitingForResponse = CommandInstance.EventResponse.None;
+                        }
+
+                        if (curStack.WaitingForResponse == CommandInstance.EventResponse.Timer &&
+                            WaitTimer < Globals.Timing.Milliseconds)
                         {
                             curStack.WaitingForResponse = CommandInstance.EventResponse.None;
                         }
 
                         var commandsExecuted = 0;
-                        while( curStack != null && curStack.WaitingForResponse == CommandInstance.EventResponse.None &&
-                               !( PageInstance?.ShouldDespawn( map ) ?? false ) &&
-                               commandsExecuted < Options.EventWatchdogKillThreshhold )
+                        while (curStack != null && curStack.WaitingForResponse == CommandInstance.EventResponse.None &&
+                               !(PageInstance?.ShouldDespawn(map) ?? false) &&
+                               commandsExecuted < Options.EventWatchdogKillThreshhold)
                         {
-                            if( curStack.WaitingForRoute != Guid.Empty )
+                            if (curStack.WaitingForRoute != Guid.Empty)
                             {
-                                if( curStack.WaitingForRoute == Player.Id )
+                                if (curStack.WaitingForRoute == Player.Id)
                                 {
-                                    if( Player.MoveRoute == null ||
-                                        Player.MoveRoute.Complete && Player.MoveTimer < Globals.Timing.Milliseconds )
+                                    if (Player.MoveRoute == null ||
+                                        Player.MoveRoute.Complete && Player.MoveTimer < Globals.Timing.Milliseconds)
                                     {
                                         curStack.WaitingForRoute = Guid.Empty;
                                         curStack.WaitingForRouteMap = Guid.Empty;
@@ -181,17 +181,17 @@ namespace Intersect.Server.Entities.Events
                                 else
                                 {
                                     //Check if the exist exists && if the move route is completed.
-                                    foreach( var evt in Player.EventLookup )
+                                    foreach (var evt in Player.EventLookup)
                                     {
-                                        if( evt.Value.MapId == curStack.WaitingForRouteMap &&
-                                            evt.Value.BaseEvent.Id == curStack.WaitingForRoute )
+                                        if (evt.Value.MapId == curStack.WaitingForRouteMap &&
+                                            evt.Value.BaseEvent.Id == curStack.WaitingForRoute)
                                         {
-                                            if( evt.Value.PageInstance == null )
+                                            if (evt.Value.PageInstance == null)
                                             {
                                                 break;
                                             }
 
-                                            if( !evt.Value.PageInstance.MoveRoute.Complete )
+                                            if (!evt.Value.PageInstance.MoveRoute.Complete)
                                             {
                                                 break;
                                             }
@@ -204,25 +204,25 @@ namespace Intersect.Server.Entities.Events
                                     }
                                 }
 
-                                if( curStack.WaitingForRoute != Guid.Empty )
+                                if (curStack.WaitingForRoute != Guid.Empty)
                                 {
                                     break;
                                 }
                             }
                             else
                             {
-                                if( curStack.CommandIndex >= curStack.CommandList.Count )
+                                if (curStack.CommandIndex >= curStack.CommandList.Count)
                                 {
                                     CallStack.Pop();
                                 }
                                 else
                                 {
-                                    if( WaitTimer < Globals.Timing.Milliseconds )
+                                    if (WaitTimer < Globals.Timing.Milliseconds)
                                     {
-                                        CommandProcessing.ProcessCommand( curStack.Command, Player, this );
+                                        CommandProcessing.ProcessCommand(curStack.Command, Player, this);
                                         commandsExecuted++;
 
-                                        EventPreProcessor.RemovedProcessedEvent( curStack.Command, Player );
+                                        EventPreProcessor.RemovedProcessedEvent(curStack.Command, Player);
                                     }
                                     else
                                     {
@@ -230,7 +230,7 @@ namespace Intersect.Server.Entities.Events
                                     }
                                 }
 
-                                if( CallStack.Count == 0 )
+                                if (CallStack.Count == 0)
                                 {
                                     PlayerHasDied = false;
 
@@ -241,26 +241,26 @@ namespace Intersect.Server.Entities.Events
                             curStack = CallStack.Peek();
                         }
 
-                        if( commandsExecuted >= Options.EventWatchdogKillThreshhold )
+                        if (commandsExecuted >= Options.EventWatchdogKillThreshhold)
                         {
                             CallStack.Clear(); //Killing this event, we're over it.
-                            if( this.BaseEvent.MapId == Guid.Empty )
+                            if (this.BaseEvent.MapId == Guid.Empty)
                             {
-                                Log.Error( Strings.Events.watchdogkillcommon.ToString( BaseEvent.Name ) );
-                                if( Player.Power.IsModerator )
+                                Log.Error(Strings.Events.watchdogkillcommon.ToString(BaseEvent.Name));
+                                if (Player.Power.IsModerator)
                                 {
                                     PacketSender.SendChatMsg(
-                                        Player, Strings.Events.watchdogkillcommon.ToString( BaseEvent.Name ), ChatMessageType.Error, Color.Red
+                                        Player, Strings.Events.watchdogkillcommon.ToString(BaseEvent.Name), ChatMessageType.Error, Color.Red
                                     );
                                 }
                             }
                             else
                             {
-                                Log.Error( Strings.Events.watchdogkill.ToString( map.Name, BaseEvent.Name ) );
-                                if( Player.Power.IsModerator )
+                                Log.Error(Strings.Events.watchdogkill.ToString(map.Name, BaseEvent.Name));
+                                if (Player.Power.IsModerator)
                                 {
                                     PacketSender.SendChatMsg(
-                                        Player, Strings.Events.watchdogkill.ToString( map.Name, BaseEvent.Name ),
+                                        Player, Strings.Events.watchdogkill.ToString(map.Name, BaseEvent.Name),
                                         ChatMessageType.Error, Color.Red
                                     );
                                 }
@@ -269,35 +269,35 @@ namespace Intersect.Server.Entities.Events
                     }
                     else
                     {
-                        if( PageInstance.Trigger == EventTrigger.Autorun && WaitTimer < Globals.Timing.Milliseconds )
+                        if (PageInstance.Trigger == EventTrigger.Autorun && WaitTimer < Globals.Timing.Milliseconds)
                         {
-                            var newStack = new CommandInstance( PageInstance.MyPage );
-                            CallStack.Push( newStack );
+                            var newStack = new CommandInstance(PageInstance.MyPage);
+                            CallStack.Push(newStack);
                         }
                     }
                 }
             }
 
-            if( PageInstance == null )
+            if (PageInstance == null)
             {
                 //Try to Spawn a PageInstance.. if we can
-                for( var i = BaseEvent.Pages.Count - 1; i >= 0; i-- )
+                for (var i = BaseEvent.Pages.Count - 1; i >= 0; i--)
                 {
-                    if( Conditions.CanSpawnPage( BaseEvent.Pages[i], Player, this ) )
+                    if (Conditions.CanSpawnPage(BaseEvent.Pages[i], Player, this))
                     {
-                        if( Global )
+                        if (Global)
                         {
-                            var globalEvent = MapInstance.Get( MapId ).GetGlobalEventInstance( BaseEvent );
-                            if( globalEvent != null )
+                            var globalEvent = MapInstance.Get(MapId).GetGlobalEventInstance(BaseEvent);
+                            if (globalEvent != null)
                             {
                                 PageInstance = new EventPageInstance(
                                     BaseEvent, BaseEvent.Pages[i], BaseEvent.Id, MapId, this, Player,
                                     globalEvent.GlobalPageInstance[i]
                                 );
 
-                                if( PageInstance.GlobalClone != null )
+                                if (PageInstance.GlobalClone != null)
                                 {
-                                    Player.GlobalPageInstanceLookup.AddOrUpdate( globalEvent.GlobalPageInstance[i], this, ( key, oldValue ) => this );
+                                    Player.GlobalPageInstanceLookup.AddOrUpdate(globalEvent.GlobalPageInstance[i], this, (key, oldValue) => this);
                                 }
 
                                 sendLeave = false;
@@ -306,7 +306,7 @@ namespace Intersect.Server.Entities.Events
                         }
                         else
                         {
-                            PageInstance = new EventPageInstance( BaseEvent, BaseEvent.Pages[i], MapId, this, Player );
+                            PageInstance = new EventPageInstance(BaseEvent, BaseEvent.Pages[i], MapId, this, Player);
                             sendLeave = false;
                             PageIndex = i;
                         }
@@ -315,98 +315,98 @@ namespace Intersect.Server.Entities.Events
                     }
                 }
 
-                if( sendLeave && originalPageInstance != null )
+                if (sendLeave && originalPageInstance != null)
                 {
-                    PacketSender.SendEntityLeaveTo( Player, originalPageInstance );
+                    PacketSender.SendEntityLeaveTo(Player, originalPageInstance);
                 }
             }
         }
 
-        public Dictionary<string, string> GetParams( Player player )
+        public Dictionary<string, string> GetParams(Player player)
         {
             var prams = new Dictionary<string, string>();
 
-            foreach( var prm in mParams )
+            foreach (var prm in mParams)
             {
-                prams.Add( prm.Key, prm.Value );
+                prams.Add(prm.Key, prm.Value);
             }
 
-            prams.Add( "evtName", BaseEvent.Name );
+            prams.Add("evtName", BaseEvent.Name);
 
-            var map = MapInstance.Get( BaseEvent.MapId );
-            if( map != null )
+            var map = MapInstance.Get(BaseEvent.MapId);
+            if (map != null)
             {
-                prams.Add( "evtMap", map.Name );
+                prams.Add("evtMap", map.Name);
             }
 
-            if( MapId != Guid.Empty )
+            if (MapId != Guid.Empty)
             {
-                if( GlobalPageInstance != null )
+                if (GlobalPageInstance != null)
                 {
-                    prams.Add( "evtX", GlobalPageInstance[PageIndex].X.ToString() );
-                    prams.Add( "evtY", GlobalPageInstance[PageIndex].Y.ToString() );
+                    prams.Add("evtX", GlobalPageInstance[PageIndex].X.ToString());
+                    prams.Add("evtY", GlobalPageInstance[PageIndex].Y.ToString());
                 }
-                else if( PageInstance != null )
+                else if (PageInstance != null)
                 {
-                    prams.Add( "evtX", PageInstance.X.ToString() );
-                    prams.Add( "evtY", PageInstance.Y.ToString() );
+                    prams.Add("evtX", PageInstance.X.ToString());
+                    prams.Add("evtY", PageInstance.Y.ToString());
                 }
             }
 
-            if( player != null )
+            if (player != null)
             {
                 //Player Name, Map, X, Y, Z?
                 //Player Vitals, Player Stats, Player Sprite?
                 //More later.. good start now
-                prams.Add( "plyrName", player.Name );
-                prams.Add( "plyrMap", player.Map.Name );
-                prams.Add( "plyrX", player.X.ToString() );
-                prams.Add( "plyrY", player.Y.ToString() );
-                prams.Add( "plyrZ", player.Z.ToString() );
-                prams.Add( "plyrSprite", player.Sprite );
-                prams.Add( "plyrFace", player.Face );
-                prams.Add( "plyrLvl", player.Level.ToString() );
+                prams.Add("plyrName", player.Name);
+                prams.Add("plyrMap", player.Map.Name);
+                prams.Add("plyrX", player.X.ToString());
+                prams.Add("plyrY", player.Y.ToString());
+                prams.Add("plyrZ", player.Z.ToString());
+                prams.Add("plyrSprite", player.Sprite);
+                prams.Add("plyrFace", player.Face);
+                prams.Add("plyrLvl", player.Level.ToString());
 
                 //Vitals
-                for( var i = 0; i < player.GetVitals().Length; i++ )
+                for (var i = 0; i < player.GetVitals().Length; i++)
                 {
-                    prams.Add( "plyrVit" + i, player.GetVital( i ).ToString() );
-                    prams.Add( "plyrMaxVit" + i, player.GetMaxVital( i ).ToString() );
+                    prams.Add("plyrVit" + i, player.GetVital(i).ToString());
+                    prams.Add("plyrMaxVit" + i, player.GetMaxVital(i).ToString());
                 }
 
                 //Stats
                 var stats = player.GetStatValues();
-                for( var i = 0; i < stats.Length; i++ )
+                for (var i = 0; i < stats.Length; i++)
                 {
-                    prams.Add( "plyrStat" + i, stats[i].ToString() );
+                    prams.Add("plyrStat" + i, stats[i].ToString());
                 }
             }
 
             return prams;
         }
 
-        public void SetParam( string key, string value )
+        public void SetParam(string key, string value)
         {
             key = key.ToLower();
-            if( mParams.ContainsKey( key ) )
+            if (mParams.ContainsKey(key))
             {
                 mParams[key] = value;
             }
             else
             {
-                mParams.Add( key, value );
+                mParams.Add(key, value);
             }
         }
 
-        public string GetParam( Player player, string key )
+        public string GetParam(Player player, string key)
         {
             key = key.ToLower();
 
-            var prams = GetParams( player );
+            var prams = GetParams(player);
 
-            foreach( var pair in prams )
+            foreach (var pair in prams)
             {
-                if( string.Equals( pair.Key, key, StringComparison.OrdinalIgnoreCase ) )
+                if (string.Equals(pair.Key, key, StringComparison.OrdinalIgnoreCase))
                 {
                     return pair.Value;
                 }
@@ -415,11 +415,11 @@ namespace Intersect.Server.Entities.Events
             return "";
         }
 
-        public string FormatParameters( Player player )
+        public string FormatParameters(Player player)
         {
-            var prams = GetParams( player );
+            var prams = GetParams(player);
             var output = "{" + Environment.NewLine;
-            foreach( var p in prams )
+            foreach (var p in prams)
             {
                 output += "\t\t\t\"" + p.Key + "\":\t\t\"" + p.Value + "\"," + Environment.NewLine;
             }

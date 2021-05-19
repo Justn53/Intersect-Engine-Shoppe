@@ -52,14 +52,14 @@ namespace Intersect.Server.Networking
         //Sent Maps
         public Dictionary<Guid, Tuple<long, int>> SentMaps = new Dictionary<Guid, Tuple<long, int>>();
 
-        public Client( IApplicationContext applicationContext, IConnection connection = null )
+        public Client(IApplicationContext applicationContext, IConnection connection = null)
         {
             this.mConnection = connection;
             mConnectTime = Globals.Timing.Milliseconds;
             mConnectionTimeout = Globals.Timing.Milliseconds + mTimeout;
 
-            PacketSender.SendServerConfig( this );
-            PacketSender.SendPing( this );
+            PacketSender.SendServerConfig(this);
+            PacketSender.SendPing(this);
         }
 
         //Game Incorperation Variables
@@ -106,7 +106,7 @@ namespace Intersect.Server.Networking
             get => User?.Power ?? UserRights.None;
             set
             {
-                if( User == null )
+                if (User == null)
                 {
                     return;
                 }
@@ -123,27 +123,27 @@ namespace Intersect.Server.Networking
 
         public IApplicationContext ApplicationContext { get; }
 
-        public void SetUser( User user )
+        public void SetUser(User user)
         {
-            if( user == null )
+            if (user == null)
             {
                 User?.TryLogout();
             }
 
-            if( user != null && user != User )
+            if (user != null && user != User)
             {
-                User.Login( user );
+                User.Login(user);
             }
 
             User = user;
         }
 
-        public void LoadCharacter( Player character )
+        public void LoadCharacter(Player character)
         {
             //Entity = new Player(Id, this, character);
             Entity = character;
 
-            if( Entity == null )
+            if (Entity == null)
             {
                 return;
             }
@@ -155,23 +155,23 @@ namespace Intersect.Server.Networking
 
         public void Pinged()
         {
-            if( mConnection != null )
+            if (mConnection != null)
             {
                 mConnectionTimeout = Globals.Timing.Milliseconds + mTimeout;
             }
         }
 
-        public void Disconnect( string reason = "", bool shutdown = false )
+        public void Disconnect(string reason = "", bool shutdown = false)
         {
-            lock( Globals.ClientLock )
+            lock (Globals.ClientLock)
             {
-                if( mConnection != null )
+                if (mConnection != null)
                 {
-                    Logout( shutdown );
+                    Logout(shutdown);
 
-                    Globals.Clients.Remove( this );
+                    Globals.Clients.Remove(this);
                     Globals.ClientArray = Globals.Clients.ToArray();
-                    Globals.ClientLookup.Remove( mConnection.Guid );
+                    Globals.ClientLookup.Remove(mConnection.Guid);
 
                     mConnection.Dispose();
                     mConnection = null;
@@ -188,7 +188,7 @@ namespace Intersect.Server.Networking
 
         public string GetIp()
         {
-            if( !IsConnected() )
+            if (!IsConnected())
             {
                 return "";
             }
@@ -196,48 +196,48 @@ namespace Intersect.Server.Networking
             return mConnection?.Ip ?? "";
         }
 
-        public static Client CreateBeta4Client( IApplicationContext context, IConnection connection )
+        public static Client CreateBeta4Client(IApplicationContext context, IConnection connection)
         {
-            var client = new Client( context, connection );
-            lock( Globals.ClientLock )
+            var client = new Client(context, connection);
+            lock (Globals.ClientLock)
             {
-                Globals.Clients.Add( client );
+                Globals.Clients.Add(client);
                 Globals.ClientArray = Globals.Clients.ToArray();
-                Globals.ClientLookup.Add( connection.Guid, client );
+                Globals.ClientLookup.Add(connection.Guid, client);
             }
 
             return client;
         }
 
-        public void Logout( bool force = false )
+        public void Logout(bool force = false)
         {
             var entity = Entity;
             entity?.TryLogout();
             Entity = null;
 
-            if( !force )
+            if (!force)
             {
                 User?.Save();
             }
 
-            SetUser( null );
+            SetUser(null);
         }
 
-        public static void RemoveBeta4Client( IConnection connection )
+        public static void RemoveBeta4Client(IConnection connection)
         {
-            if( connection == null )
+            if (connection == null)
             {
                 return;
             }
 
-            var client = FindBeta4Client( connection );
-            if( client == null )
+            var client = FindBeta4Client(connection);
+            if (client == null)
             {
                 return;
             }
 
             Log.Debug(
-                string.IsNullOrWhiteSpace( client.Name )
+                string.IsNullOrWhiteSpace(client.Name)
 
                     //? $"Client disconnected ({(client.IsEditor ? "[editor]" : "[client]")})"
                     // TODO: Transmit client information on network start so we can determine editor vs client
@@ -248,11 +248,11 @@ namespace Intersect.Server.Networking
             client.Disconnect();
         }
 
-        public static Client FindBeta4Client( IConnection connection )
+        public static Client FindBeta4Client(IConnection connection)
         {
-            lock( Globals.ClientLock )
+            lock (Globals.ClientLock)
             {
-                return Globals.Clients.Find( client => client?.mConnection == connection );
+                return Globals.Clients.Find(client => client?.mConnection == connection);
             }
         }
 
@@ -265,7 +265,7 @@ namespace Intersect.Server.Networking
         public void ResetTimeout()
         {
             TimeoutMs = Globals.Timing.Milliseconds + 5000;
-            if( AccountAttempts > 3 )
+            if (AccountAttempts > 3)
             {
                 TimeoutMs += 1000 * AccountAttempts;
             }
@@ -273,48 +273,48 @@ namespace Intersect.Server.Networking
 
         public void SendPackets()
         {
-            while( mSendPacketQueue.TryDequeue( out Tuple<IPacket, TransmissionMode> tuple ) )
+            while (mSendPacketQueue.TryDequeue(out Tuple<IPacket, TransmissionMode> tuple))
             {
-                if( mConnection != null )
+                if (mConnection != null)
                 {
                     var packet = tuple.Item1;
                     var mode = tuple.Item2;
 
                     try
                     {
-                        if( packet is AbstractTimedPacket timedPacket )
+                        if (packet is AbstractTimedPacket timedPacket)
                         {
                             timedPacket.UpdateTiming();
                         }
-                        mConnection.Send( packet, mode );
+                        mConnection.Send(packet, mode);
                     }
-                    catch( Exception exception )
+                    catch (Exception exception)
                     {
                         var packetType = packet.GetType().Name;
                         var packetMessage =
                             $"Sending Packet Error! [Packet: {packetType} | User: {this.Name ?? ""} | Player: {this.Entity?.Name ?? ""} | IP {this.GetIp()}]";
 
                         // TODO: Re-combine these once we figure out how to prevent the OutOfMemoryException that happens occasionally
-                        Log.Error( packetMessage );
-                        Log.Error( new ExceptionInfo( exception ) );
-                        if( exception.InnerException != null )
+                        Log.Error(packetMessage);
+                        Log.Error(new ExceptionInfo(exception));
+                        if (exception.InnerException != null)
                         {
-                            Log.Error( new ExceptionInfo( exception.InnerException ) );
+                            Log.Error(new ExceptionInfo(exception.InnerException));
                         }
 
                         // Make the call that triggered the OOME in the first place so that we know when it stops happening
-                        Log.Error( exception, packetMessage );
+                        Log.Error(exception, packetMessage);
 
 #if DIAGNOSTIC
                             this.Disconnect($"Error processing packet type '{packetType}'.");
 #else
-                        this.Disconnect( $"Error sending packet." );
+                        this.Disconnect($"Error sending packet.");
 #endif
                         break;
                     }
                 }
             }
-            lock( mSendPacketQueue )
+            lock (mSendPacketQueue)
             {
                 PacketSendingQueued = false;
             }
@@ -323,58 +323,58 @@ namespace Intersect.Server.Networking
         public void HandlePackets()
         {
             var banned = false;
-            if( mConnection != null )
+            if (mConnection != null)
             {
-                if( !mBanChecked )
+                if (!mBanChecked)
                 {
-                    if( string.IsNullOrEmpty( mConnection?.Ip ) )
+                    if (string.IsNullOrEmpty(mConnection?.Ip))
                     {
                         banned = true;
                     }
-                    if( !banned && !string.IsNullOrEmpty( Database.PlayerData.Ban.CheckBan( mConnection.Ip.Trim() ) ) && Options.Instance.SecurityOpts.CheckIp( mConnection.Ip.Trim() ) )
+                    if (!banned && !string.IsNullOrEmpty(Database.PlayerData.Ban.CheckBan(mConnection.Ip.Trim())) && Options.Instance.SecurityOpts.CheckIp(mConnection.Ip.Trim()))
                     {
                         banned = true;
                     }
-                    if( banned )
+                    if (banned)
                     {
-                        Disconnect( "Banned" );
+                        Disconnect("Banned");
                     }
 
                     mBanChecked = true;
                 }
-                if( !banned )
+                if (!banned)
                 {
-                    while( HandlePacketQueue.TryDequeue( out IPacket packet ) )
+                    while (HandlePacketQueue.TryDequeue(out IPacket packet))
                     {
-                        if( mConnection != null )
+                        if (mConnection != null)
                         {
                             try
                             {
                                 packet.ProcessTime = Globals.Timing.Milliseconds;
-                                PacketHandler.Instance.ProcessPacket( packet, this );
+                                PacketHandler.Instance.ProcessPacket(packet, this);
 
                             }
-                            catch( Exception exception )
+                            catch (Exception exception)
                             {
                                 var packetType = packet.GetType().Name;
                                 var packetMessage =
                                     $"Client Packet Error! [Packet: {packetType} | User: {this.Name ?? ""} | Player: {this.Entity?.Name ?? ""} | IP {this.GetIp()}]";
 
                                 // TODO: Re-combine these once we figure out how to prevent the OutOfMemoryException that happens occasionally
-                                Log.Error( packetMessage );
-                                Log.Error( new ExceptionInfo( exception ) );
-                                if( exception.InnerException != null )
+                                Log.Error(packetMessage);
+                                Log.Error(new ExceptionInfo(exception));
+                                if (exception.InnerException != null)
                                 {
-                                    Log.Error( new ExceptionInfo( exception.InnerException ) );
+                                    Log.Error(new ExceptionInfo(exception.InnerException));
                                 }
 
                                 // Make the call that triggered the OOME in the first place so that we know when it stops happening
-                                Log.Error( exception, packetMessage );
+                                Log.Error(exception, packetMessage);
 
 #if DIAGNOSTIC
                                 this.Disconnect($"Error processing packet type '{packetType}'.");
 #else
-                                this.Disconnect( $"Error processing packet." );
+                                this.Disconnect($"Error processing packet.");
 #endif
                                 break;
                             }
@@ -382,7 +382,7 @@ namespace Intersect.Server.Networking
                     }
                 }
             }
-            lock( HandlePacketQueue )
+            lock (HandlePacketQueue)
             {
                 PacketHandlingQueued = false;
             }
@@ -391,20 +391,20 @@ namespace Intersect.Server.Networking
         #region Implementation of IPacketSender
 
         /// <inheritdoc />
-        public bool Send( IPacket packet ) => Send( packet, TransmissionMode.All );
+        public bool Send(IPacket packet) => Send(packet, TransmissionMode.All);
 
         /// <inheritdoc />
-        public bool Send( IPacket packet, TransmissionMode mode )
+        public bool Send(IPacket packet, TransmissionMode mode)
         {
-            if( mConnection != null )
+            if (mConnection != null)
             {
-                mSendPacketQueue.Enqueue( new Tuple<IPacket, TransmissionMode>( packet, mode ) );
-                lock( mSendPacketQueue )
+                mSendPacketQueue.Enqueue(new Tuple<IPacket, TransmissionMode>(packet, mode));
+                lock (mSendPacketQueue)
                 {
-                    if( !PacketSendingQueued )
+                    if (!PacketSendingQueued)
                     {
                         PacketSendingQueued = true;
-                        ServerNetwork.Pool.QueueWorkItem( SendPackets );
+                        ServerNetwork.Pool.QueueWorkItem(SendPackets);
                     }
                 }
                 return true;

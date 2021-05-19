@@ -14,14 +14,14 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private SetSelfSwitchCommand mMyCommand;
 
-        public EventCommandSelfSwitch( SetSelfSwitchCommand refCommand, FrmEvent editor )
+        public EventCommandSelfSwitch(SetSelfSwitchCommand refCommand, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
             mEventEditor = editor;
             InitLocalization();
             cmbSetSwitch.SelectedIndex = mMyCommand.SwitchId;
-            cmbSetSwitchVal.SelectedIndex = Convert.ToInt32( mMyCommand.Value );
+            cmbSetSwitchVal.SelectedIndex = Convert.ToInt32(mMyCommand.Value);
         }
 
         private void InitLocalization()
@@ -29,26 +29,26 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             grpSelfSwitch.Text = Strings.EventSelfSwitch.title;
             lblSelfSwitch.Text = Strings.EventSelfSwitch.label;
             cmbSetSwitch.Items.Clear();
-            for( var i = 0; i < Strings.EventSelfSwitch.selfswitches.Count; i++ )
+            for (var i = 0; i < Strings.EventSelfSwitch.selfswitches.Count; i++)
             {
-                cmbSetSwitch.Items.Add( Strings.EventSelfSwitch.selfswitches[i] );
+                cmbSetSwitch.Items.Add(Strings.EventSelfSwitch.selfswitches[i]);
             }
 
             cmbSetSwitchVal.Items.Clear();
-            cmbSetSwitchVal.Items.Add( Strings.EventSelfSwitch.False );
-            cmbSetSwitchVal.Items.Add( Strings.EventSelfSwitch.True );
+            cmbSetSwitchVal.Items.Add(Strings.EventSelfSwitch.False);
+            cmbSetSwitchVal.Items.Add(Strings.EventSelfSwitch.True);
             btnSave.Text = Strings.EventSelfSwitch.okay;
             btnCancel.Text = Strings.EventSelfSwitch.cancel;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
             mMyCommand.SwitchId = cmbSetSwitch.SelectedIndex;
-            mMyCommand.Value = Convert.ToBoolean( cmbSetSwitchVal.SelectedIndex );
+            mMyCommand.Value = Convert.ToBoolean(cmbSetSwitchVal.SelectedIndex);
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }

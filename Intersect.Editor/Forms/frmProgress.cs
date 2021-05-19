@@ -28,15 +28,15 @@ namespace Intersect.Editor.Forms
             btnCancel.Text = Strings.ProgressForm.cancel;
         }
 
-        public void SetTitle( string title )
+        public void SetTitle(string title)
         {
             Text = title;
         }
 
-        public void SetProgress( string label, int progress, bool showCancel )
+        public void SetProgress(string label, int progress, bool showCancel)
         {
             mStatusText = label;
-            if( progress < 0 )
+            if (progress < 0)
             {
                 mProgressVal = 0;
                 progressBar.Style = ProgressBarStyle.Marquee;
@@ -48,7 +48,7 @@ namespace Intersect.Editor.Forms
             }
 
             mShowCancelBtn = showCancel;
-            tmrUpdater_Tick( null, null );
+            tmrUpdater_Tick(null, null);
             Application.DoEvents();
         }
 
@@ -57,14 +57,14 @@ namespace Intersect.Editor.Forms
             mShouldClose = true;
         }
 
-        private void tmrUpdater_Tick( object sender, EventArgs e )
+        private void tmrUpdater_Tick(object sender, EventArgs e)
         {
-            if( !InvokeRequired )
+            if (!InvokeRequired)
             {
                 lblStatus.Text = mStatusText;
                 progressBar.Value = mProgressVal;
                 btnCancel.Visible = mShowCancelBtn;
-                if( mShouldClose )
+                if (mShouldClose)
                 {
                     Close();
                 }

@@ -11,12 +11,12 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public TradeRequestPacket( Guid targetId )
+        public TradeRequestPacket(Guid targetId)
         {
             TargetId = targetId;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid TargetId { get; set; }
 
     }

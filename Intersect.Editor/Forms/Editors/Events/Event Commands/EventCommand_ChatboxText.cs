@@ -16,7 +16,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private AddChatboxTextCommand mMyCommand;
 
-        public EventCommandChatboxText( AddChatboxTextCommand refCommand, FrmEvent editor )
+        public EventCommandChatboxText(AddChatboxTextCommand refCommand, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
@@ -24,13 +24,13 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             InitLocalization();
             txtAddText.Text = mMyCommand.Text;
             cmbColor.Items.Clear();
-            foreach( Color.ChatColor color in Enum.GetValues( typeof( Color.ChatColor ) ) )
+            foreach (Color.ChatColor color in Enum.GetValues(typeof(Color.ChatColor)))
             {
-                cmbColor.Items.Add( Globals.GetColorName( color ) );
+                cmbColor.Items.Add(Globals.GetColorName(color));
             }
 
-            cmbColor.SelectedIndex = cmbColor.Items.IndexOf( mMyCommand.Color );
-            if( cmbColor.SelectedIndex == -1 )
+            cmbColor.SelectedIndex = cmbColor.Items.IndexOf(mMyCommand.Color);
+            if (cmbColor.SelectedIndex == -1)
             {
                 cmbColor.SelectedIndex = 0;
             }
@@ -46,16 +46,16 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             lblChannel.Text = Strings.EventChatboxText.channel;
             lblCommands.Text = Strings.EventChatboxText.commands;
             cmbChannel.Items.Clear();
-            for( var i = 0; i < Strings.EventChatboxText.channels.Count; i++ )
+            for (var i = 0; i < Strings.EventChatboxText.channels.Count; i++)
             {
-                cmbChannel.Items.Add( Strings.EventChatboxText.channels[i] );
+                cmbChannel.Items.Add(Strings.EventChatboxText.channels[i]);
             }
 
             btnSave.Text = Strings.EventChatboxText.okay;
             btnCancel.Text = Strings.EventChatboxText.cancel;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
             mMyCommand.Text = txtAddText.Text;
             mMyCommand.Color = cmbColor.Text;
@@ -63,12 +63,12 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }
 
-        private void lblCommands_Click( object sender, EventArgs e )
+        private void lblCommands_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(
                 "http://www.ascensiongamedev.com/community/topic/749-event-text-variables/"

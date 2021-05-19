@@ -36,36 +36,36 @@ namespace Intersect.Server.Web.RestApi.Services
         }
 
         /// <inheritdoc />
-        public object GetService( Type serviceType )
+        public object GetService(Type serviceType)
         {
-            if( ResolvedDependencies.TryGetValue( serviceType, out var foundService ) )
+            if (ResolvedDependencies.TryGetValue(serviceType, out var foundService))
             {
                 return foundService;
             }
 
-            var thisType = typeof( IntersectServiceDependencyResolver );
+            var thisType = typeof(IntersectServiceDependencyResolver);
             var definitionType = serviceType;
-            if( serviceType.IsAbstract || serviceType.IsInterface )
+            if (serviceType.IsAbstract || serviceType.IsInterface)
             {
-                definitionType = Assembly.GetAssembly( thisType )
+                definitionType = Assembly.GetAssembly(thisType)
                     ?.DefinedTypes
-                    ?.Where( typeInfo => typeInfo?.Namespace?.StartsWith( thisType.Namespace ?? "" ) ?? false )
-                    .FirstOrDefault( typeInfo => serviceType.IsAssignableFrom( typeInfo.AsType() ) );
+                    ?.Where(typeInfo => typeInfo?.Namespace?.StartsWith(thisType.Namespace ?? "") ?? false)
+                    .FirstOrDefault(typeInfo => serviceType.IsAssignableFrom(typeInfo.AsType()));
             }
 
             var constructor =
-                definitionType?.GetConstructor( new[] { typeof( ApiConfiguration ), typeof( HttpConfiguration ) } );
+                definitionType?.GetConstructor(new[] { typeof(ApiConfiguration), typeof(HttpConfiguration) });
 
-            var constructedService = constructor?.Invoke( new object[] { ApiConfiguration, HttpConfiguration } );
+            var constructedService = constructor?.Invoke(new object[] { ApiConfiguration, HttpConfiguration });
             ResolvedDependencies[serviceType] = constructedService;
 
             return constructedService;
         }
 
         /// <inheritdoc />
-        public IEnumerable<object> GetServices( Type serviceType )
+        public IEnumerable<object> GetServices(Type serviceType)
         {
-            return new[] { GetService( serviceType ) };
+            return new[] { GetService(serviceType) };
         }
 
         /// <inheritdoc />

@@ -16,7 +16,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         /// </summary>
         /// <param name="parent">Parent control.</param>
         /// <param name="owner">Window that owns this button.</param>
-        public CloseButton( Base parent, WindowControl owner, string name = "" ) : base( parent, name )
+        public CloseButton(Base parent, WindowControl owner, string name = "") : base(parent, name)
         {
             mWindow = owner;
         }
@@ -25,9 +25,9 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawWindowCloseButton( this, IsDepressed && IsHovered, IsHovered && ShouldDrawHover, !mWindow.IsOnTop );
+            skin.DrawWindowCloseButton(this, IsDepressed && IsHovered, IsHovered && ShouldDrawHover, !mWindow.IsOnTop);
         }
 
     }

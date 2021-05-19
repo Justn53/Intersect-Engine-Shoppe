@@ -10,20 +10,20 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public ShowPicturePacket( string picture, int size, bool clickable )
+        public ShowPicturePacket(string picture, int size, bool clickable)
         {
             Picture = picture;
             Size = size;
             Clickable = clickable;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public string Picture { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public int Size { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public bool Clickable { get; set; }
 
     }

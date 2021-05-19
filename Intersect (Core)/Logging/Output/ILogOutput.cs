@@ -8,7 +8,7 @@ namespace Intersect.Logging.Output
 
         LogLevel LogLevel { get; set; }
 
-        void Write( LogConfiguration configuration, LogLevel logLevel, string message );
+        void Write(LogConfiguration configuration, LogLevel logLevel, string message);
 
         void Write(
             LogConfiguration configuration,

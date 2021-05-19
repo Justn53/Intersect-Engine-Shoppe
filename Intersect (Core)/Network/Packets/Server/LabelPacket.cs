@@ -11,12 +11,12 @@ namespace Intersect.Network.Packets.Server
         }
 
 
-        [Key( 0 )]
+        [Key(0)]
         public Color Color;
-        [Key( 1 )]
+        [Key(1)]
         public string Label;
 
-        public LabelPacket( string label, Color color )
+        public LabelPacket(string label, Color color)
         {
             Label = label;
             Color = color;

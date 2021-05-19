@@ -24,31 +24,31 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <param name="parent">Parent control.</param>
         /// <param name="text">Message to display.</param>
         /// <param name="caption">Window caption.</param>
-        public MessageBox( Base parent, string text, string caption = "" ) : base( parent, caption, true )
+        public MessageBox(Base parent, string text, string caption = "") : base(parent, caption, true)
         {
             DeleteOnClose = true;
 
-            mLabel = new Label( mInnerPanel );
+            mLabel = new Label(mInnerPanel);
             mLabel.Text = text;
             mLabel.Margin = Margin.Five;
             mLabel.Dock = Pos.Top;
             mLabel.Alignment = Pos.Center;
 
-            mButton = new Button( mInnerPanel );
+            mButton = new Button(mInnerPanel);
             mButton.Text = "OK"; // todo: parametrize buttons
             mButton.Clicked += CloseButtonPressed;
             mButton.Clicked += DismissedHandler;
             mButton.Margin = Margin.Five;
-            mButton.SetSize( 50, 20 );
+            mButton.SetSize(50, 20);
 
-            Align.Center( this );
+            Align.Center(this);
         }
 
-        private void DismissedHandler( Base control, EventArgs args )
+        private void DismissedHandler(Base control, EventArgs args)
         {
-            if( Dismissed != null )
+            if (Dismissed != null)
             {
-                Dismissed.Invoke( this, EventArgs.Empty );
+                Dismissed.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -56,20 +56,20 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout( Skin.Base skin )
+        protected override void Layout(Skin.Base skin)
         {
-            base.Layout( skin );
+            base.Layout(skin);
 
-            Align.PlaceDownLeft( mButton, mLabel, 10 );
-            Align.CenterHorizontally( mButton );
+            Align.PlaceDownLeft(mButton, mLabel, 10);
+            Align.CenterHorizontally(mButton);
             mInnerPanel.SizeToChildren();
             mInnerPanel.Height += 10;
             SizeToChildren();
         }
 
-        public void SetTextScale( float scale )
+        public void SetTextScale(float scale)
         {
-            mLabel.SetTextScale( scale );
+            mLabel.SetTextScale(scale);
         }
 
     }

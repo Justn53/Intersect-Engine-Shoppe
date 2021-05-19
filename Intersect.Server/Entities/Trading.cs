@@ -23,7 +23,7 @@ namespace Intersect.Server.Entities
 
         public Dictionary<Player, long> Requests;
 
-        public Trading( Player player )
+        public Trading(Player player)
         {
             mPlayer = player;
 

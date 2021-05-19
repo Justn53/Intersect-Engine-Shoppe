@@ -18,7 +18,7 @@ namespace Intersect.Core.ExperimentalFeatures
         where TExperiments : CommonExperiments<TExperiments>
     {
 
-        private static readonly Guid NamespaceId = Guid.Parse( "c68012b3-d666-4204-84eb-4976f2b570ab" );
+        private static readonly Guid NamespaceId = Guid.Parse("c68012b3-d666-4204-84eb-4976f2b570ab");
 
         private readonly IDictionary<Guid, PropertyInfo> mFlagsById;
 
@@ -32,73 +32,73 @@ namespace Intersect.Core.ExperimentalFeatures
             RegisterPropertiesAndAliases();
         }
 
-        public bool IsEnabled( Guid flagId )
+        public bool IsEnabled(Guid flagId)
         {
-            return mFlagsById.TryGetValue( flagId, out var property ) &&
-                   property.GetValue( this ) is IExperimentalFlag flag &&
+            return mFlagsById.TryGetValue(flagId, out var property) &&
+                   property.GetValue(this) is IExperimentalFlag flag &&
                    flag.Enabled;
         }
 
-        public bool IsEnabled( string flagName )
+        public bool IsEnabled(string flagName)
         {
-            return mFlagsByName.TryGetValue( flagName, out var property ) &&
-                   property.GetValue( this ) is IExperimentalFlag flag &&
+            return mFlagsByName.TryGetValue(flagName, out var property) &&
+                   property.GetValue(this) is IExperimentalFlag flag &&
                    flag.Enabled;
         }
 
-        public bool TryGet( Guid flagId, out IExperimentalFlag flag )
+        public bool TryGet(Guid flagId, out IExperimentalFlag flag)
         {
-            return ValueUtils.SetDefault( TryGetProperty( flagId, out var property ), out flag ) &&
-                   property.TryGetValue( this, out flag );
+            return ValueUtils.SetDefault(TryGetProperty(flagId, out var property), out flag) &&
+                   property.TryGetValue(this, out flag);
         }
 
-        public bool TryGet( string flagName, out IExperimentalFlag flag )
+        public bool TryGet(string flagName, out IExperimentalFlag flag)
         {
-            return ValueUtils.SetDefault( TryGetProperty( flagName, out var property ), out flag ) &&
-                   property.TryGetValue( this, out flag );
+            return ValueUtils.SetDefault(TryGetProperty(flagName, out var property), out flag) &&
+                   property.TryGetValue(this, out flag);
         }
 
         private void RegisterPropertiesAndAliases()
         {
             PropertyInfo existingFlag;
-            var experimentsType = typeof( TExperiments );
+            var experimentsType = typeof(TExperiments);
             var aliasProperties = new List<(PropertyInfo property, ExperimentalFlagAliasAttribute aliasAttribute)>();
             var properties =
-                experimentsType.GetProperties( BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic );
+                experimentsType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
             var flagProperties = properties
-                .Where( property => typeof( IExperimentalFlag ).IsAssignableFrom( property.PropertyType ) )
+                .Where(property => typeof(IExperimentalFlag).IsAssignableFrom(property.PropertyType))
                 .ToList();
 
             flagProperties.ForEach(
                 property =>
                 {
-                    var aliasAttribute = property?.GetCustomAttribute<ExperimentalFlagAliasAttribute>( true );
-                    if( aliasAttribute != null )
+                    var aliasAttribute = property?.GetCustomAttribute<ExperimentalFlagAliasAttribute>(true);
+                    if (aliasAttribute != null)
                     {
-                        aliasProperties.Add( (property, aliasAttribute) );
+                        aliasProperties.Add((property, aliasAttribute));
 
                         return;
                     }
 
-                    if( property?.DeclaringType == null )
+                    if (property?.DeclaringType == null)
                     {
                         throw new InvalidOperationException();
                     }
 
                     var flagName = property.Name.ToLowerInvariant();
-                    var namespaceId = GetNamespaceIdFor( property.DeclaringType );
-                    var flagId = GuidUtils.CreateNamed( namespaceId, property.Name );
+                    var namespaceId = GetNamespaceIdFor(property.DeclaringType);
+                    var flagId = GuidUtils.CreateNamed(namespaceId, property.Name);
 
-                    if( TryGetProperty( flagName, out existingFlag ) )
+                    if (TryGetProperty(flagName, out existingFlag))
                     {
                         throw new InvalidOperationException(
                             $@"Tried to add a flag with name '{flagName}' in '{property.DeclaringType?.FullName}' but there is already a flag with that name defined in '{existingFlag.DeclaringType?.FullName}'."
                         );
                     }
 
-                    mFlagsById.Add( flagId, property );
-                    mFlagsByName.Add( flagName, property );
+                    mFlagsById.Add(flagId, property);
+                    mFlagsByName.Add(flagName, property);
                 }
             );
 
@@ -108,115 +108,115 @@ namespace Intersect.Core.ExperimentalFeatures
                     var (property, aliasAttribute) = pair;
                     var aliasName = property.Name.ToLowerInvariant();
                     var targetName = aliasAttribute.Of;
-                    var alias = new ExperimentalFlagAlias( this, targetName, aliasName );
-                    property.SetValue( this, alias );
+                    var alias = new ExperimentalFlagAlias(this, targetName, aliasName);
+                    property.SetValue(this, alias);
 
-                    if( TryGetProperty( aliasName, out existingFlag ) )
+                    if (TryGetProperty(aliasName, out existingFlag))
                     {
                         throw new InvalidOperationException(
                             $@"Tried to add an alias with name '{aliasName}' in '{property.DeclaringType?.FullName}' but there is already a flag with that name defined in '{existingFlag.DeclaringType?.FullName}'."
                         );
                     }
 
-                    mFlagsByName.Add( aliasName, property );
+                    mFlagsByName.Add(aliasName, property);
                 }
             );
         }
 
-        public bool Disable( IExperimentalFlag flag )
+        public bool Disable(IExperimentalFlag flag)
         {
-            return TrySet( flag, false );
+            return TrySet(flag, false);
         }
 
-        public bool Disable( Guid flagId )
+        public bool Disable(Guid flagId)
         {
-            return TrySet( flagId, false );
+            return TrySet(flagId, false);
         }
 
-        public bool Disable( string flagName )
+        public bool Disable(string flagName)
         {
-            return TrySet( flagName, false );
+            return TrySet(flagName, false);
         }
 
-        public bool Enable( IExperimentalFlag flag )
+        public bool Enable(IExperimentalFlag flag)
         {
-            return TrySet( flag, true );
+            return TrySet(flag, true);
         }
 
-        public bool Enable( Guid flagId )
+        public bool Enable(Guid flagId)
         {
-            return TrySet( flagId, true );
+            return TrySet(flagId, true);
         }
 
-        public bool Enable( string flagName )
+        public bool Enable(string flagName)
         {
-            return TrySet( flagName, true );
+            return TrySet(flagName, true);
         }
 
-        protected bool TryGetProperty( IExperimentalFlag flag, out PropertyInfo flagPropertyInfo )
+        protected bool TryGetProperty(IExperimentalFlag flag, out PropertyInfo flagPropertyInfo)
         {
-            return mFlagsById.TryGetValue( flag.Guid, out flagPropertyInfo );
+            return mFlagsById.TryGetValue(flag.Guid, out flagPropertyInfo);
         }
 
-        protected bool TryGetProperty( Guid flagId, out PropertyInfo flagPropertyInfo )
+        protected bool TryGetProperty(Guid flagId, out PropertyInfo flagPropertyInfo)
         {
-            return mFlagsById.TryGetValue( flagId, out flagPropertyInfo );
+            return mFlagsById.TryGetValue(flagId, out flagPropertyInfo);
         }
 
-        protected bool TryGetProperty( string flagName, out PropertyInfo flagPropertyInfo )
+        protected bool TryGetProperty(string flagName, out PropertyInfo flagPropertyInfo)
         {
-            return ValueUtils.SetDefault( !string.IsNullOrWhiteSpace( flagName ), out flagPropertyInfo ) &&
-                   mFlagsByName.TryGetValue( flagName.ToLowerInvariant(), out flagPropertyInfo );
+            return ValueUtils.SetDefault(!string.IsNullOrWhiteSpace(flagName), out flagPropertyInfo) &&
+                   mFlagsByName.TryGetValue(flagName.ToLowerInvariant(), out flagPropertyInfo);
         }
 
-        private bool InternalTrySet( PropertyInfo property, IExperimentalFlag flag, bool enabled )
+        private bool InternalTrySet(PropertyInfo property, IExperimentalFlag flag, bool enabled)
         {
             /* Unwraps the flag */
-            if( flag is ExperimentalFlagAlias && !TryGet( flag.Guid, out flag ) )
+            if (flag is ExperimentalFlagAlias && !TryGet(flag.Guid, out flag))
             {
                 return false;
             }
 
-            if( property == null && !TryGetProperty( flag, out property ) )
+            if (property == null && !TryGetProperty(flag, out property))
             {
                 return false;
             }
 
-            property.SetValue( this, flag.With( enabled ) );
+            property.SetValue(this, flag.With(enabled));
             Save();
 
             return true;
         }
 
-        public bool TrySet( IExperimentalFlag flag, bool enabled )
+        public bool TrySet(IExperimentalFlag flag, bool enabled)
         {
-            return InternalTrySet( null, flag, enabled );
+            return InternalTrySet(null, flag, enabled);
         }
 
-        public bool TrySet( Guid flagId, bool enabled )
+        public bool TrySet(Guid flagId, bool enabled)
         {
-            return TryGetProperty( flagId, out var property ) &&
-                   property.GetValue( this ) is IExperimentalFlag flag &&
-                   InternalTrySet( property, flag, enabled );
+            return TryGetProperty(flagId, out var property) &&
+                   property.GetValue(this) is IExperimentalFlag flag &&
+                   InternalTrySet(property, flag, enabled);
         }
 
-        public bool TrySet( string flagName, bool enabled )
+        public bool TrySet(string flagName, bool enabled)
         {
-            return TryGetProperty( flagName, out var property ) &&
-                   property.GetValue( this ) is IExperimentalFlag flag &&
-                   InternalTrySet( property, flag, enabled );
+            return TryGetProperty(flagName, out var property) &&
+                   property.GetValue(this) is IExperimentalFlag flag &&
+                   InternalTrySet(property, flag, enabled);
         }
 
         protected virtual bool Load()
         {
-            if( !File.Exists( CONFIG_PATH ) )
+            if (!File.Exists(CONFIG_PATH))
             {
                 return false;
             }
 
             try
             {
-                var json = File.ReadAllText( CONFIG_PATH, Encoding.UTF8 );
+                var json = File.ReadAllText(CONFIG_PATH, Encoding.UTF8);
                 JsonConvert.PopulateObject(
                     json, Instance, new JsonSerializerSettings
                     {
@@ -229,9 +229,9 @@ namespace Intersect.Core.ExperimentalFeatures
 
                 return true;
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                Log.Error( exception );
+                Log.Error(exception);
 
                 return false;
             }
@@ -241,18 +241,18 @@ namespace Intersect.Core.ExperimentalFeatures
         {
             try
             {
-                var directory = Path.GetDirectoryName( CONFIG_PATH ) ?? "resources/config";
-                if( !Directory.Exists( directory ) )
+                var directory = Path.GetDirectoryName(CONFIG_PATH) ?? "resources/config";
+                if (!Directory.Exists(directory))
                 {
-                    Directory.CreateDirectory( directory );
+                    Directory.CreateDirectory(directory);
                 }
 
-                var json = JsonConvert.SerializeObject( Instance, Formatting.Indented );
-                File.WriteAllText( CONFIG_PATH, json, Encoding.UTF8 );
+                var json = JsonConvert.SerializeObject(Instance, Formatting.Indented);
+                File.WriteAllText(CONFIG_PATH, json, Encoding.UTF8);
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                Log.Error( exception );
+                Log.Error(exception);
             }
         }
 

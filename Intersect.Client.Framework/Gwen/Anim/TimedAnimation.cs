@@ -17,7 +17,7 @@ namespace Intersect.Client.Framework.Gwen.Anim
 
         private bool mStarted;
 
-        public TimedAnimation( float length, float delay = 0.0f, float ease = 1.0f )
+        public TimedAnimation(float length, float delay = 0.0f, float ease = 1.0f)
         {
             mStart = Platform.Neutral.GetTimeInSeconds() + delay;
             mEnd = mStart + length;
@@ -32,38 +32,38 @@ namespace Intersect.Client.Framework.Gwen.Anim
         {
             //base.Think();
 
-            if( mFinished )
+            if (mFinished)
             {
                 return;
             }
 
             var current = Platform.Neutral.GetTimeInSeconds();
             var secondsIn = current - mStart;
-            if( secondsIn < 0.0 )
+            if (secondsIn < 0.0)
             {
                 return;
             }
 
-            if( !mStarted )
+            if (!mStarted)
             {
                 mStarted = true;
                 OnStart();
             }
 
-            var delta = secondsIn / ( mEnd - mStart );
-            if( delta < 0.0f )
+            var delta = secondsIn / (mEnd - mStart);
+            if (delta < 0.0f)
             {
                 delta = 0.0f;
             }
 
-            if( delta > 1.0f )
+            if (delta > 1.0f)
             {
                 delta = 1.0f;
             }
 
-            Run( (float)Math.Pow( delta, mEase ) );
+            Run((float)Math.Pow(delta, mEase));
 
-            if( delta == 1.0f )
+            if (delta == 1.0f)
             {
                 mFinished = true;
                 OnFinish();
@@ -76,7 +76,7 @@ namespace Intersect.Client.Framework.Gwen.Anim
         {
         }
 
-        protected virtual void Run( float delta )
+        protected virtual void Run(float delta)
         {
         }
 

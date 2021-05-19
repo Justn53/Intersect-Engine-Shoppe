@@ -8,19 +8,19 @@ namespace Intersect.Memory
     public class MemoryBuffer : MemoryStream, IBuffer
     {
 
-        public MemoryBuffer() : this( 0 )
+        public MemoryBuffer() : this(0)
         {
         }
 
-        public MemoryBuffer( int capacity ) : base( capacity )
+        public MemoryBuffer(int capacity) : base(capacity)
         {
         }
 
-        public MemoryBuffer( IBuffer buffer ) : base( buffer?.ToBytes() ?? Array.Empty<byte>() )
+        public MemoryBuffer(IBuffer buffer) : base(buffer?.ToBytes() ?? Array.Empty<byte>())
         {
         }
 
-        public MemoryBuffer( byte[] data ) : base( data )
+        public MemoryBuffer(byte[] data) : base(data)
         {
         }
 
@@ -35,223 +35,223 @@ namespace Intersect.Memory
             return ToArray();
         }
 
-        public bool Has( long bytes )
+        public bool Has(long bytes)
         {
             return bytes <= Remaining;
         }
 
-        public bool Read( out bool value )
+        public bool Read(out bool value)
         {
-            if( !Has( sizeof( bool ) ) )
+            if (!Has(sizeof(bool)))
             {
-                value = default( bool );
+                value = default(bool);
 
                 return false;
             }
 
-            var bytes = new byte[sizeof( bool )];
-            base.Read( bytes, 0, sizeof( bool ) );
-            value = BitConverter.ToBoolean( bytes, 0 );
+            var bytes = new byte[sizeof(bool)];
+            base.Read(bytes, 0, sizeof(bool));
+            value = BitConverter.ToBoolean(bytes, 0);
 
             return true;
         }
 
-        public bool Read( out byte value )
+        public bool Read(out byte value)
         {
-            if( !Has( sizeof( byte ) ) )
+            if (!Has(sizeof(byte)))
             {
-                value = default( byte );
+                value = default(byte);
 
                 return false;
             }
 
-            value = (byte)( base.ReadByte() & 0xFF );
+            value = (byte)(base.ReadByte() & 0xFF);
 
             return true;
         }
 
-        public bool Read( out byte[] value )
+        public bool Read(out byte[] value)
         {
-            if( !Read( out int count ) )
+            if (!Read(out int count))
             {
-                value = default( byte[] );
+                value = default(byte[]);
 
                 return false;
             }
 
             value = new byte[count];
 
-            return Read( ref value, 0, count );
+            return Read(ref value, 0, count);
         }
 
-        public bool Read( out byte[] value, long count )
+        public bool Read(out byte[] value, long count)
         {
             value = new byte[count];
 
-            return Read( ref value, 0, count );
+            return Read(ref value, 0, count);
         }
 
-        public bool Read( ref byte[] value, long offset, long count )
+        public bool Read(ref byte[] value, long offset, long count)
         {
-            return count == base.Read( value, (int)offset, (int)count );
+            return count == base.Read(value, (int)offset, (int)count);
         }
 
-        public bool Read( out char value )
+        public bool Read(out char value)
         {
-            if( Has( sizeof( char ) ) && Read( out var bytes, sizeof( char ) ) )
+            if (Has(sizeof(char)) && Read(out var bytes, sizeof(char)))
             {
-                value = BitConverter.ToChar( bytes, 0 );
+                value = BitConverter.ToChar(bytes, 0);
 
                 return true;
             }
 
-            value = default( char );
+            value = default(char);
 
             return false;
         }
 
-        public bool Read( out decimal value )
+        public bool Read(out decimal value)
         {
-            value = default( decimal );
+            value = default(decimal);
 
             var bits = new int[4];
-            if( !Read( out bits[0] ) )
+            if (!Read(out bits[0]))
             {
                 return false;
             }
 
-            if( !Read( out bits[1] ) )
+            if (!Read(out bits[1]))
             {
                 return false;
             }
 
-            if( !Read( out bits[2] ) )
+            if (!Read(out bits[2]))
             {
                 return false;
             }
 
-            if( !Read( out bits[3] ) )
+            if (!Read(out bits[3]))
             {
                 return false;
             }
 
-            value = new decimal( bits );
+            value = new decimal(bits);
 
             return true;
         }
 
-        public bool Read( out double value )
+        public bool Read(out double value)
         {
-            if( !Has( sizeof( double ) ) )
+            if (!Has(sizeof(double)))
             {
-                value = default( double );
+                value = default(double);
 
                 return false;
             }
 
-            var bytes = new byte[sizeof( double )];
-            base.Read( bytes, 0, sizeof( double ) );
-            value = BitConverter.ToDouble( bytes, 0 );
+            var bytes = new byte[sizeof(double)];
+            base.Read(bytes, 0, sizeof(double));
+            value = BitConverter.ToDouble(bytes, 0);
 
             return true;
         }
 
-        public bool Read( out float value )
+        public bool Read(out float value)
         {
-            if( !Has( sizeof( float ) ) )
+            if (!Has(sizeof(float)))
             {
-                value = default( float );
+                value = default(float);
 
                 return false;
             }
 
-            var bytes = new byte[sizeof( float )];
-            base.Read( bytes, 0, sizeof( float ) );
-            value = BitConverter.ToSingle( bytes, 0 );
+            var bytes = new byte[sizeof(float)];
+            base.Read(bytes, 0, sizeof(float));
+            value = BitConverter.ToSingle(bytes, 0);
 
             return true;
         }
 
-        public bool Read( out int value )
+        public bool Read(out int value)
         {
-            if( !Has( sizeof( int ) ) )
+            if (!Has(sizeof(int)))
             {
-                value = default( int );
+                value = default(int);
 
                 return false;
             }
 
-            var bytes = new byte[sizeof( int )];
-            base.Read( bytes, 0, sizeof( int ) );
-            value = BitConverter.ToInt32( bytes, 0 );
+            var bytes = new byte[sizeof(int)];
+            base.Read(bytes, 0, sizeof(int));
+            value = BitConverter.ToInt32(bytes, 0);
 
             return true;
         }
 
-        public bool Read( out long value )
+        public bool Read(out long value)
         {
-            if( !Has( sizeof( long ) ) )
+            if (!Has(sizeof(long)))
             {
-                value = default( long );
+                value = default(long);
 
                 return false;
             }
 
-            var bytes = new byte[sizeof( long )];
-            base.Read( bytes, 0, sizeof( long ) );
-            value = BitConverter.ToInt64( bytes, 0 );
+            var bytes = new byte[sizeof(long)];
+            base.Read(bytes, 0, sizeof(long));
+            value = BitConverter.ToInt64(bytes, 0);
 
             return true;
         }
 
-        public bool Read( out sbyte value )
+        public bool Read(out sbyte value)
         {
-            if( !Has( sizeof( sbyte ) ) )
+            if (!Has(sizeof(sbyte)))
             {
-                value = default( sbyte );
+                value = default(sbyte);
 
                 return false;
             }
 
-            var bytes = new byte[sizeof( sbyte )];
-            base.Read( bytes, 0, sizeof( sbyte ) );
+            var bytes = new byte[sizeof(sbyte)];
+            base.Read(bytes, 0, sizeof(sbyte));
             value = (sbyte)bytes[0];
 
             return true;
         }
 
-        public bool Read( out short value )
+        public bool Read(out short value)
         {
-            if( !Has( sizeof( short ) ) )
+            if (!Has(sizeof(short)))
             {
-                value = default( short );
+                value = default(short);
 
                 return false;
             }
 
-            var bytes = new byte[sizeof( short )];
-            base.Read( bytes, 0, sizeof( short ) );
-            value = BitConverter.ToInt16( bytes, 0 );
+            var bytes = new byte[sizeof(short)];
+            base.Read(bytes, 0, sizeof(short));
+            value = BitConverter.ToInt16(bytes, 0);
 
             return true;
         }
 
-        public bool Read( out string value )
+        public bool Read(out string value)
         {
-            return Read( out value, Encoding.UTF8 );
+            return Read(out value, Encoding.UTF8);
         }
 
-        public bool Read( out string value, Encoding encoding, bool nullTerminated = false )
+        public bool Read(out string value, Encoding encoding, bool nullTerminated = false)
         {
-            if( encoding == null )
+            if (encoding == null)
             {
                 throw new ArgumentNullException();
             }
 
             int length;
-            if( nullTerminated )
+            if (nullTerminated)
             {
-                if( !CanSeek )
+                if (!CanSeek)
                 {
                     throw new InvalidOperationException(
                         "Unable to read null-terminated strings on a Stream without seek."
@@ -259,9 +259,9 @@ namespace Intersect.Memory
                 }
 
                 var originalPosition = base.Position;
-                while( Length - Position > 0 )
+                while (Length - Position > 0)
                 {
-                    if( base.ReadByte() == 0 )
+                    if (base.ReadByte() == 0)
                     {
                         break;
                     }
@@ -270,16 +270,16 @@ namespace Intersect.Memory
                 }
 
                 base.Position = originalPosition;
-                length = (int)( Length - originalPosition );
+                length = (int)(Length - originalPosition);
             }
-            else if( !Read( out length ) )
+            else if (!Read(out length))
             {
-                value = default( string );
+                value = default(string);
 
                 return false;
             }
 
-            switch( length )
+            switch (length)
             {
                 case 0:
                     value = "";
@@ -292,7 +292,7 @@ namespace Intersect.Memory
                     break;
 
                 default:
-                    value = Read( out var bytes, length ) ? encoding.GetString( bytes, 0, length ) : null;
+                    value = Read(out var bytes, length) ? encoding.GetString(bytes, 0, length) : null;
 
                     break;
             }
@@ -300,57 +300,57 @@ namespace Intersect.Memory
             return true;
         }
 
-        public bool Read( out uint value )
+        public bool Read(out uint value)
         {
-            if( !Has( sizeof( uint ) ) )
+            if (!Has(sizeof(uint)))
             {
-                value = default( uint );
+                value = default(uint);
 
                 return false;
             }
 
-            var bytes = new byte[sizeof( uint )];
-            base.Read( bytes, 0, sizeof( uint ) );
-            value = BitConverter.ToUInt32( bytes, 0 );
+            var bytes = new byte[sizeof(uint)];
+            base.Read(bytes, 0, sizeof(uint));
+            value = BitConverter.ToUInt32(bytes, 0);
 
             return true;
         }
 
-        public bool Read( out ulong value )
+        public bool Read(out ulong value)
         {
-            if( !Has( sizeof( ulong ) ) )
+            if (!Has(sizeof(ulong)))
             {
-                value = default( ulong );
+                value = default(ulong);
 
                 return false;
             }
 
-            var bytes = new byte[sizeof( ulong )];
-            base.Read( bytes, 0, sizeof( ulong ) );
-            value = BitConverter.ToUInt64( bytes, 0 );
+            var bytes = new byte[sizeof(ulong)];
+            base.Read(bytes, 0, sizeof(ulong));
+            value = BitConverter.ToUInt64(bytes, 0);
 
             return true;
         }
 
-        public bool Read( out ushort value )
+        public bool Read(out ushort value)
         {
-            if( !Has( sizeof( ushort ) ) )
+            if (!Has(sizeof(ushort)))
             {
-                value = default( ushort );
+                value = default(ushort);
 
                 return false;
             }
 
-            var bytes = new byte[sizeof( ushort )];
-            base.Read( bytes, 0, sizeof( ushort ) );
-            value = BitConverter.ToUInt16( bytes, 0 );
+            var bytes = new byte[sizeof(ushort)];
+            base.Read(bytes, 0, sizeof(ushort));
+            value = BitConverter.ToUInt16(bytes, 0);
 
             return true;
         }
 
         public bool ReadBool()
         {
-            if( Read( out bool value ) )
+            if (Read(out bool value))
             {
                 return value;
             }
@@ -360,7 +360,7 @@ namespace Intersect.Memory
 
         public bool ReadBoolean()
         {
-            if( Read( out bool value ) )
+            if (Read(out bool value))
             {
                 return value;
             }
@@ -370,12 +370,12 @@ namespace Intersect.Memory
 
         public new byte ReadByte()
         {
-            return (byte)( base.ReadByte() & 0xFF );
+            return (byte)(base.ReadByte() & 0xFF);
         }
 
         public byte ReadUInt8()
         {
-            if( Read( out byte value ) )
+            if (Read(out byte value))
             {
                 return value;
             }
@@ -385,7 +385,7 @@ namespace Intersect.Memory
 
         public byte[] ReadBytes()
         {
-            if( Read( out byte[] value ) )
+            if (Read(out byte[] value))
             {
                 return value;
             }
@@ -393,9 +393,9 @@ namespace Intersect.Memory
             throw new OutOfMemoryException();
         }
 
-        public byte[] ReadBytes( long count )
+        public byte[] ReadBytes(long count)
         {
-            if( Read( out var value, count ) )
+            if (Read(out var value, count))
             {
                 return value;
             }
@@ -403,9 +403,9 @@ namespace Intersect.Memory
             throw new OutOfMemoryException();
         }
 
-        public byte[] ReadBytes( ref byte[] bytes, long offset, long count )
+        public byte[] ReadBytes(ref byte[] bytes, long offset, long count)
         {
-            if( Read( ref bytes, offset, count ) )
+            if (Read(ref bytes, offset, count))
             {
                 return bytes;
             }
@@ -415,7 +415,7 @@ namespace Intersect.Memory
 
         public char ReadChar()
         {
-            if( Read( out char value ) )
+            if (Read(out char value))
             {
                 return value;
             }
@@ -425,7 +425,7 @@ namespace Intersect.Memory
 
         public char ReadCharacter()
         {
-            if( Read( out char value ) )
+            if (Read(out char value))
             {
                 return value;
             }
@@ -435,7 +435,7 @@ namespace Intersect.Memory
 
         public decimal ReadDecimal()
         {
-            if( Read( out decimal value ) )
+            if (Read(out decimal value))
             {
                 return value;
             }
@@ -445,7 +445,7 @@ namespace Intersect.Memory
 
         public double ReadDouble()
         {
-            if( Read( out double value ) )
+            if (Read(out double value))
             {
                 return value;
             }
@@ -455,7 +455,7 @@ namespace Intersect.Memory
 
         public float ReadFloat()
         {
-            if( Read( out float value ) )
+            if (Read(out float value))
             {
                 return value;
             }
@@ -465,7 +465,7 @@ namespace Intersect.Memory
 
         public float ReadSingle()
         {
-            if( Read( out float value ) )
+            if (Read(out float value))
             {
                 return value;
             }
@@ -475,7 +475,7 @@ namespace Intersect.Memory
 
         public int ReadInt()
         {
-            if( Read( out int value ) )
+            if (Read(out int value))
             {
                 return value;
             }
@@ -485,7 +485,7 @@ namespace Intersect.Memory
 
         public int ReadInt32()
         {
-            if( Read( out int value ) )
+            if (Read(out int value))
             {
                 return value;
             }
@@ -495,7 +495,7 @@ namespace Intersect.Memory
 
         public int ReadInteger()
         {
-            if( Read( out int value ) )
+            if (Read(out int value))
             {
                 return value;
             }
@@ -505,7 +505,7 @@ namespace Intersect.Memory
 
         public long ReadInt64()
         {
-            if( Read( out long value ) )
+            if (Read(out long value))
             {
                 return value;
             }
@@ -515,7 +515,7 @@ namespace Intersect.Memory
 
         public long ReadLong()
         {
-            if( Read( out long value ) )
+            if (Read(out long value))
             {
                 return value;
             }
@@ -525,7 +525,7 @@ namespace Intersect.Memory
 
         public sbyte ReadInt8()
         {
-            if( Read( out sbyte value ) )
+            if (Read(out sbyte value))
             {
                 return value;
             }
@@ -535,7 +535,7 @@ namespace Intersect.Memory
 
         public sbyte ReadSByte()
         {
-            if( Read( out sbyte value ) )
+            if (Read(out sbyte value))
             {
                 return value;
             }
@@ -545,7 +545,7 @@ namespace Intersect.Memory
 
         public short ReadInt16()
         {
-            if( Read( out short value ) )
+            if (Read(out short value))
             {
                 return value;
             }
@@ -555,7 +555,7 @@ namespace Intersect.Memory
 
         public short ReadShort()
         {
-            if( Read( out short value ) )
+            if (Read(out short value))
             {
                 return value;
             }
@@ -565,7 +565,7 @@ namespace Intersect.Memory
 
         public string ReadString()
         {
-            if( Read( out string value ) )
+            if (Read(out string value))
             {
                 return value;
             }
@@ -573,9 +573,9 @@ namespace Intersect.Memory
             throw new OutOfMemoryException();
         }
 
-        public string ReadString( Encoding encoding, bool nullTerminated = false )
+        public string ReadString(Encoding encoding, bool nullTerminated = false)
         {
-            if( Read( out var value, encoding, nullTerminated ) )
+            if (Read(out var value, encoding, nullTerminated))
             {
                 return value;
             }
@@ -585,7 +585,7 @@ namespace Intersect.Memory
 
         public uint ReadUInt()
         {
-            if( Read( out uint value ) )
+            if (Read(out uint value))
             {
                 return value;
             }
@@ -595,7 +595,7 @@ namespace Intersect.Memory
 
         public uint ReadUInt32()
         {
-            if( Read( out uint value ) )
+            if (Read(out uint value))
             {
                 return value;
             }
@@ -605,7 +605,7 @@ namespace Intersect.Memory
 
         public uint ReadUnsignedInteger()
         {
-            if( Read( out uint value ) )
+            if (Read(out uint value))
             {
                 return value;
             }
@@ -615,7 +615,7 @@ namespace Intersect.Memory
 
         public ulong ReadULong()
         {
-            if( Read( out ulong value ) )
+            if (Read(out ulong value))
             {
                 return value;
             }
@@ -625,7 +625,7 @@ namespace Intersect.Memory
 
         public ulong ReadUInt64()
         {
-            if( Read( out ulong value ) )
+            if (Read(out ulong value))
             {
                 return value;
             }
@@ -635,7 +635,7 @@ namespace Intersect.Memory
 
         public ushort ReadUInt16()
         {
-            if( Read( out ushort value ) )
+            if (Read(out ushort value))
             {
                 return value;
             }
@@ -645,7 +645,7 @@ namespace Intersect.Memory
 
         public ushort ReadUShort()
         {
-            if( Read( out ushort value ) )
+            if (Read(out ushort value))
             {
                 return value;
             }
@@ -653,125 +653,125 @@ namespace Intersect.Memory
             throw new OutOfMemoryException();
         }
 
-        public void Write( bool value )
+        public void Write(bool value)
         {
-            Write( BitConverter.GetBytes( value ), 0, sizeof( bool ) );
+            Write(BitConverter.GetBytes(value), 0, sizeof(bool));
         }
 
-        public void Write( byte value )
+        public void Write(byte value)
         {
-            WriteByte( value );
+            WriteByte(value);
         }
 
-        public void Write( byte[] value )
+        public void Write(byte[] value)
         {
-            if( value == null )
+            if (value == null)
             {
                 throw new ArgumentNullException();
             }
 
-            Write( value.Length );
-            Write( value, 0, value.Length );
+            Write(value.Length);
+            Write(value, 0, value.Length);
         }
 
-        public void Write( byte[] value, long count )
+        public void Write(byte[] value, long count)
         {
-            Write( value, 0, count );
+            Write(value, 0, count);
         }
 
-        public void Write( byte[] value, long offset, long count )
+        public void Write(byte[] value, long offset, long count)
         {
-            base.Write( value ?? Array.Empty<byte>(), 0, (int)count );
+            base.Write(value ?? Array.Empty<byte>(), 0, (int)count);
         }
 
-        public void Write( char value )
+        public void Write(char value)
         {
-            Write( BitConverter.GetBytes( value ), 0, sizeof( char ) );
+            Write(BitConverter.GetBytes(value), 0, sizeof(char));
         }
 
-        public void Write( decimal value )
+        public void Write(decimal value)
         {
-            var bits = decimal.GetBits( value );
-            Write( bits[0] );
-            Write( bits[1] );
-            Write( bits[2] );
-            Write( bits[3] );
+            var bits = decimal.GetBits(value);
+            Write(bits[0]);
+            Write(bits[1]);
+            Write(bits[2]);
+            Write(bits[3]);
         }
 
-        public void Write( double value )
+        public void Write(double value)
         {
-            Write( BitConverter.GetBytes( value ), 0, sizeof( double ) );
+            Write(BitConverter.GetBytes(value), 0, sizeof(double));
         }
 
-        public void Write( float value )
+        public void Write(float value)
         {
-            Write( BitConverter.GetBytes( value ), 0, sizeof( float ) );
+            Write(BitConverter.GetBytes(value), 0, sizeof(float));
         }
 
-        public void Write( int value )
+        public void Write(int value)
         {
-            Write( BitConverter.GetBytes( value ), 0, sizeof( int ) );
+            Write(BitConverter.GetBytes(value), 0, sizeof(int));
         }
 
-        public void Write( long value )
+        public void Write(long value)
         {
-            Write( BitConverter.GetBytes( value ), 0, sizeof( long ) );
+            Write(BitConverter.GetBytes(value), 0, sizeof(long));
         }
 
-        public void Write( sbyte value )
+        public void Write(sbyte value)
         {
-            WriteByte( (byte)value );
+            WriteByte((byte)value);
         }
 
-        public void Write( short value )
+        public void Write(short value)
         {
-            Write( BitConverter.GetBytes( value ), 0, sizeof( short ) );
+            Write(BitConverter.GetBytes(value), 0, sizeof(short));
         }
 
-        public void Write( string value )
+        public void Write(string value)
         {
-            Write( value, Encoding.UTF8 );
+            Write(value, Encoding.UTF8);
         }
 
-        public void Write( string value, Encoding encoding, bool nullTerminated = false )
+        public void Write(string value, Encoding encoding, bool nullTerminated = false)
         {
-            if( encoding == null )
+            if (encoding == null)
             {
                 throw new ArgumentNullException();
             }
 
-            if( !nullTerminated )
+            if (!nullTerminated)
             {
-                Write( value?.Length ?? -1 );
+                Write(value?.Length ?? -1);
             }
 
-            if( value == null )
-            {
-                return;
-            }
-
-            if( value.Length < 1 )
+            if (value == null)
             {
                 return;
             }
 
-            var bytes = encoding.GetBytes( value );
-            Write( bytes, bytes.Length );
+            if (value.Length < 1)
+            {
+                return;
+            }
+
+            var bytes = encoding.GetBytes(value);
+            Write(bytes, bytes.Length);
         }
 
-        public void Write( uint value )
+        public void Write(uint value)
         {
-            Write( BitConverter.GetBytes( value ), 0, sizeof( uint ) );
+            Write(BitConverter.GetBytes(value), 0, sizeof(uint));
         }
 
-        public void Write( ulong value )
+        public void Write(ulong value)
         {
-            Write( BitConverter.GetBytes( value ), 0, sizeof( ulong ) );
+            Write(BitConverter.GetBytes(value), 0, sizeof(ulong));
         }
 
-        public void Write( ushort value )
+        public void Write(ushort value)
         {
-            Write( BitConverter.GetBytes( value ), 0, sizeof( ushort ) );
+            Write(BitConverter.GetBytes(value), 0, sizeof(ushort));
         }
 
     }

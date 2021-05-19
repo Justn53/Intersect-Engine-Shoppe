@@ -22,11 +22,11 @@ namespace Intersect.Client.Items
         {
         }
 
-        public MapItemInstance( int tileIndex, Guid uniqueId, Guid itemId, Guid? bagId, int quantity, int[] statbuffs ) : base()
+        public MapItemInstance(int tileIndex, Guid uniqueId, Guid itemId, Guid? bagId, int quantity, int[] statbuffs) : base()
         {
             UniqueId = uniqueId;
             X = tileIndex % Options.MapWidth;
-            Y = (int)Math.Floor( tileIndex / (float)Options.MapWidth );
+            Y = (int)Math.Floor(tileIndex / (float)Options.MapWidth);
             ItemId = itemId;
             BagId = bagId;
             Quantity = quantity;

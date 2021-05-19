@@ -15,9 +15,9 @@ namespace Intersect.Client.Framework.Gwen
         ///     Enables tooltip display for the specified control.
         /// </summary>
         /// <param name="control">Target control.</param>
-        public static void Enable( Base control )
+        public static void Enable(Base control)
         {
-            if( null == control.ToolTip )
+            if (null == control.ToolTip)
             {
                 return;
             }
@@ -29,9 +29,9 @@ namespace Intersect.Client.Framework.Gwen
         ///     Disables tooltip display for the specified control.
         /// </summary>
         /// <param name="control">Target control.</param>
-        public static void Disable( Base control )
+        public static void Disable(Base control)
         {
-            if( sG_toolTip == control )
+            if (sG_toolTip == control)
             {
                 sG_toolTip = null;
             }
@@ -41,18 +41,18 @@ namespace Intersect.Client.Framework.Gwen
         ///     Disables tooltip display for the specified control.
         /// </summary>
         /// <param name="control">Target control.</param>
-        public static void ControlDeleted( Base control )
+        public static void ControlDeleted(Base control)
         {
-            Disable( control );
+            Disable(control);
         }
 
         /// <summary>
         ///     Renders the currently visible tooltip.
         /// </summary>
         /// <param name="skin"></param>
-        public static void RenderToolTip( Skin.Base skin )
+        public static void RenderToolTip(Skin.Base skin)
         {
-            if( null == sG_toolTip )
+            if (null == sG_toolTip)
             {
                 return;
             }
@@ -67,14 +67,14 @@ namespace Intersect.Client.Framework.Gwen
                 mousePos.X - bounds.Width * 0.5f, mousePos.Y - bounds.Height - 10, bounds.Width, bounds.Height
             );
 
-            offset = Util.ClampRectToRect( offset, sG_toolTip.GetCanvas().Bounds );
+            offset = Util.ClampRectToRect(offset, sG_toolTip.GetCanvas().Bounds);
 
             //Calculate offset on screen bounds
-            render.AddRenderOffset( offset );
+            render.AddRenderOffset(offset);
             render.EndClip();
 
-            skin.DrawToolTip( sG_toolTip.ToolTip );
-            sG_toolTip.ToolTip.DoRender( skin );
+            skin.DrawToolTip(sG_toolTip.ToolTip);
+            sG_toolTip.ToolTip.DoRender(skin);
 
             render.RenderOffset = oldRenderOffset;
         }

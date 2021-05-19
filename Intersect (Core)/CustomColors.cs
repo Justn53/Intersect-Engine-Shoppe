@@ -13,9 +13,9 @@ namespace Intersect
     public class ColorConverter : JsonConverter<Color>
     {
 
-        public override void WriteJson( JsonWriter writer, Color value, JsonSerializer serializer )
+        public override void WriteJson(JsonWriter writer, Color value, JsonSerializer serializer)
         {
-            writer.WriteValue( $"{value?.A ?? 0},{value?.R ?? 0},{value?.G ?? 0},{value?.B ?? 0}" );
+            writer.WriteValue($"{value?.A ?? 0},{value?.R ?? 0},{value?.G ?? 0},{value?.B ?? 0}");
         }
 
         public override Color ReadJson(
@@ -26,7 +26,7 @@ namespace Intersect
             JsonSerializer serializer
         )
         {
-            return Color.FromString( reader.Value as string, Color.Black );
+            return Color.FromString(reader.Value as string, Color.Black);
         }
 
     }
@@ -40,7 +40,7 @@ namespace Intersect
 
         public Color Background;
 
-        public LabelColor( Color nameColor, Color outlineColor, Color backgroundColor )
+        public LabelColor(Color nameColor, Color outlineColor, Color backgroundColor)
         {
             Name = nameColor;
             Outline = outlineColor;
@@ -54,18 +54,18 @@ namespace Intersect
 
         public static string Json()
         {
-            return JsonConvert.SerializeObject( Root, Formatting.None, new ColorConverter() );
+            return JsonConvert.SerializeObject(Root, Formatting.None, new ColorConverter());
         }
 
-        public static void Load( string json )
+        public static void Load(string json)
         {
-            Root = JsonConvert.DeserializeObject<RootNamespace>( json, new ColorConverter() ) ?? Root;
+            Root = JsonConvert.DeserializeObject<RootNamespace>(json, new ColorConverter()) ?? Root;
         }
 
         public sealed class NamesNamespace
         {
 
-            public LabelColor Events = new LabelColor( Color.White, Color.Black, new Color( 180, 0, 0, 0 ) );
+            public LabelColor Events = new LabelColor(Color.White, Color.Black, new Color(180, 0, 0, 0));
 
             public Dictionary<string, LabelColor> Npcs = new Dictionary<string, LabelColor>()
             {
@@ -93,31 +93,31 @@ namespace Intersect
 
             public Color AdminChat = Color.Cyan;
 
-            public Color AdminGlobalChat = new Color( 255, 255, 255, 0 );
+            public Color AdminGlobalChat = new Color(255, 255, 255, 0);
 
-            public Color AdminLocalChat = new Color( 255, 255, 255, 0 );
+            public Color AdminLocalChat = new Color(255, 255, 255, 0);
 
             public Color AnnouncementChat = Color.Yellow;
 
             public Color ChatBubbleText = Color.Black;
 
-            public Color GlobalChat = new Color( 255, 220, 220, 220 );
+            public Color GlobalChat = new Color(255, 220, 220, 220);
 
-            public Color GlobalMsg = new Color( 255, 220, 220, 220 );
+            public Color GlobalMsg = new Color(255, 220, 220, 220);
 
-            public Color LocalChat = new Color( 255, 240, 240, 240 );
+            public Color LocalChat = new Color(255, 240, 240, 240);
 
-            public Color ModGlobalChat = new Color( 255, 0, 255, 255 );
+            public Color ModGlobalChat = new Color(255, 0, 255, 255);
 
-            public Color ModLocalChat = new Color( 255, 0, 255, 255 );
+            public Color ModLocalChat = new Color(255, 0, 255, 255);
 
             public Color PartyChat = Color.Green;
 
-            public Color PlayerMsg = new Color( 255, 220, 220, 220 );
+            public Color PlayerMsg = new Color(255, 220, 220, 220);
 
             public Color PrivateChat = Color.Magenta;
 
-            public Color ProximityMsg = new Color( 255, 220, 220, 220 );
+            public Color ProximityMsg = new Color(255, 220, 220, 220);
 
         }
 
@@ -141,7 +141,7 @@ namespace Intersect
 
             public Color Accepted = Color.Green;
 
-            public Color AdminJoined = new Color( 255, 255, 255, 0 );
+            public Color AdminJoined = new Color(255, 255, 255, 0);
 
             public Color Declined = Color.Red;
 
@@ -149,7 +149,7 @@ namespace Intersect
 
             public Color Info = Color.White;
 
-            public Color ModJoined = new Color( 255, 0, 255, 255 );
+            public Color ModJoined = new Color(255, 0, 255, 255);
 
             public Color RequestSent = Color.Yellow;
 
@@ -160,39 +160,39 @@ namespace Intersect
         public sealed class CombatNamespace
         {
 
-            public Color AddMana = new Color( 255, 0, 0, 255 );
+            public Color AddMana = new Color(255, 0, 0, 255);
 
-            public Color Blocked = new Color( 255, 0, 0, 255 );
+            public Color Blocked = new Color(255, 0, 0, 255);
 
-            public Color Cleanse = new Color( 0, 255, 0, 0 );
+            public Color Cleanse = new Color(0, 255, 0, 0);
 
-            public Color Critical = new Color( 255, 255, 255, 0 );
+            public Color Critical = new Color(255, 255, 255, 0);
 
-            public Color Dash = new Color( 255, 0, 0, 255 );
+            public Color Dash = new Color(255, 0, 0, 255);
 
-            public Color Heal = new Color( 255, 0, 255, 0 );
+            public Color Heal = new Color(255, 0, 255, 0);
 
-            public Color Invulnerable = new Color( 255, 255, 0, 0 );
+            public Color Invulnerable = new Color(255, 255, 0, 0);
 
             public Color LevelUp = Color.Cyan;
 
-            public Color MagicDamage = new Color( 255, 255, 0, 255 );
+            public Color MagicDamage = new Color(255, 255, 0, 255);
 
-            public Color Missed = new Color( 255, 255, 255, 255 );
+            public Color Missed = new Color(255, 255, 255, 255);
 
             public Color NoAmmo = Color.Red;
 
             public Color NoTarget = Color.Red;
 
-            public Color PhysicalDamage = new Color( 255, 255, 0, 0 );
+            public Color PhysicalDamage = new Color(255, 255, 0, 0);
 
-            public Color RemoveMana = new Color( 255, 255, 127, 80 );
+            public Color RemoveMana = new Color(255, 255, 127, 80);
 
             public Color StatPoints = Color.Cyan;
 
-            public Color Status = new Color( 255, 255, 255, 0 );
+            public Color Status = new Color(255, 255, 255, 0);
 
-            public Color TrueDamage = new Color( 255, 255, 255, 255 );
+            public Color TrueDamage = new Color(255, 255, 255, 255);
 
         }
 
@@ -203,11 +203,11 @@ namespace Intersect
 
             public Color ConsumeExp = Color.White;
 
-            public Color ConsumeHp = new Color( 255, 0, 255, 0 );
+            public Color ConsumeHp = new Color(255, 0, 255, 0);
 
-            public Color ConsumeMp = new Color( 255, 0, 0, 255 );
+            public Color ConsumeMp = new Color(255, 0, 0, 255);
 
-            public Color ConsumePoison = new Color( 255, 255, 0, 0 );
+            public Color ConsumePoison = new Color(255, 255, 0, 0);
 
             public Dictionary<int, Color> Rarities = new Dictionary<int, Color>()
             {
@@ -235,20 +235,20 @@ namespace Intersect
 
         public static bool Load()
         {
-            var filepath = Path.Combine( "resources", "colors.json" );
+            var filepath = Path.Combine("resources", "colors.json");
 
             // Really don't want two JsonSave() return points...
             // ReSharper disable once InvertIf
-            if( File.Exists( filepath ) )
+            if (File.Exists(filepath))
             {
-                var json = File.ReadAllText( filepath, Encoding.UTF8 );
+                var json = File.ReadAllText(filepath, Encoding.UTF8);
                 try
                 {
-                    Root = JsonConvert.DeserializeObject<RootNamespace>( json, new ColorConverter() ) ?? Root;
+                    Root = JsonConvert.DeserializeObject<RootNamespace>(json, new ColorConverter()) ?? Root;
                 }
-                catch( Exception exception )
+                catch (Exception exception)
                 {
-                    Log.Error( exception );
+                    Log.Error(exception);
 
                     return false;
                 }
@@ -261,16 +261,16 @@ namespace Intersect
         {
             try
             {
-                var filepath = Path.Combine( "resources", "colors.json" );
-                Directory.CreateDirectory( "resources" );
-                var json = JsonConvert.SerializeObject( Root, Formatting.Indented, new ColorConverter() );
-                File.WriteAllText( filepath, json, Encoding.UTF8 );
+                var filepath = Path.Combine("resources", "colors.json");
+                Directory.CreateDirectory("resources");
+                var json = JsonConvert.SerializeObject(Root, Formatting.Indented, new ColorConverter());
+                File.WriteAllText(filepath, json, Encoding.UTF8);
 
                 return true;
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                Log.Error( exception );
+                Log.Error(exception);
 
                 return false;
             }

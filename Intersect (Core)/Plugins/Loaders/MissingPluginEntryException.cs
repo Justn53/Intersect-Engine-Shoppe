@@ -23,7 +23,7 @@ namespace Intersect.Plugins.Loaders
         /// <summary>
         /// Initializes a new instance of <see cref="MissingPluginEntryException"/>.
         /// </summary>
-        public MissingPluginEntryException() : base( ExceptionMessages.MissingPluginEntryExceptionDefault )
+        public MissingPluginEntryException() : base(ExceptionMessages.MissingPluginEntryExceptionDefault)
         {
         }
 
@@ -31,7 +31,7 @@ namespace Intersect.Plugins.Loaders
         /// Initializes a new instance of <see cref="MissingPluginEntryException"/> for the specified <see cref="Assembly"/>.
         /// </summary>
         /// <param name="assembly">the <see cref="Assembly"/> for the exception instance</param>
-        public MissingPluginEntryException( [ValidatedNotNull] Assembly assembly ) : base( assembly.FullName )
+        public MissingPluginEntryException([ValidatedNotNull] Assembly assembly) : base(assembly.FullName)
         {
         }
 
@@ -39,8 +39,8 @@ namespace Intersect.Plugins.Loaders
         /// Initializes a new instance of <see cref="MissingPluginEntryException"/> for the specified <see cref="Assembly"/> name.
         /// </summary>
         /// <param name="assemblyName">the name of the <see cref="Assembly"/> for the exception instance</param>
-        public MissingPluginEntryException( string assemblyName ) : base(
-            ExceptionMessages.MissingPluginEntryExceptionAssemblyName.Format( assemblyName )
+        public MissingPluginEntryException(string assemblyName) : base(
+            ExceptionMessages.MissingPluginEntryExceptionAssemblyName.Format(assemblyName)
         )
         {
             AssemblyName = assemblyName;
@@ -51,7 +51,7 @@ namespace Intersect.Plugins.Loaders
         /// </summary>
         /// <param name="assemblyName">the name of the <see cref="Assembly"/> for the exception instance</param>
         /// <param name="message">the message for the exception instance</param>
-        public MissingPluginEntryException( string assemblyName, string message ) : base( message )
+        public MissingPluginEntryException(string assemblyName, string message) : base(message)
         {
             AssemblyName = assemblyName;
         }
@@ -61,7 +61,7 @@ namespace Intersect.Plugins.Loaders
         /// </summary>
         /// <param name="message">the message for the exception instance</param>
         /// <param name="innerException">the <see cref="Exception"/> that caused this one</param>
-        public MissingPluginEntryException( string message, Exception innerException ) : base( message, innerException )
+        public MissingPluginEntryException(string message, Exception innerException) : base(message, innerException)
         {
         }
 
@@ -70,17 +70,17 @@ namespace Intersect.Plugins.Loaders
         /// </summary>
         /// <param name="serializationInfo">The <see cref="SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
         /// <param name="streamingContext">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
-        protected MissingPluginEntryException( SerializationInfo serializationInfo, StreamingContext streamingContext ) :
-            base( serializationInfo, streamingContext )
+        protected MissingPluginEntryException(SerializationInfo serializationInfo, StreamingContext streamingContext) :
+            base(serializationInfo, streamingContext)
         {
-            AssemblyName = serializationInfo.GetString( nameof( AssemblyName ) );
+            AssemblyName = serializationInfo.GetString(nameof(AssemblyName));
         }
 
         /// <inheritdoc />
-        public override void GetObjectData( SerializationInfo serializationInfo, StreamingContext streamingContext )
+        public override void GetObjectData(SerializationInfo serializationInfo, StreamingContext streamingContext)
         {
-            base.GetObjectData( serializationInfo, streamingContext );
-            serializationInfo.AddValue( nameof( AssemblyName ), AssemblyName );
+            base.GetObjectData(serializationInfo, streamingContext);
+            serializationInfo.AddValue(nameof(AssemblyName), AssemblyName);
         }
     }
 }

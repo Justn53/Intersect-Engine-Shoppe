@@ -14,7 +14,7 @@ namespace Intersect.Network.Packets.Server
 
         }
 
-        public GameObjectPacket( Guid id, GameObjectType type, string data, bool deleted, bool another )
+        public GameObjectPacket(Guid id, GameObjectType type, string data, bool deleted, bool another)
         {
             Id = id;
             Type = type;
@@ -23,19 +23,19 @@ namespace Intersect.Network.Packets.Server
             AnotherFollowing = another;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid Id { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public GameObjectType Type { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public bool AnotherFollowing { get; set; }
 
-        [Key( 3 )]
+        [Key(3)]
         public bool Deleted { get; set; }
 
-        [Key( 4 )]
+        [Key(4)]
         public string Data { get; set; }
 
     }

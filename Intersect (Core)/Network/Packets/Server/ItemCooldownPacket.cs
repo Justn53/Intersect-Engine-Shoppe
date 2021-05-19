@@ -13,10 +13,10 @@ namespace Intersect.Network.Packets.Server
         }
 
 
-        [Key( 0 )]
+        [Key(0)]
         public Dictionary<Guid, long> ItemCds;
 
-        public ItemCooldownPacket( Dictionary<Guid, long> itemCds )
+        public ItemCooldownPacket(Dictionary<Guid, long> itemCds)
         {
             ItemCds = itemCds;
         }

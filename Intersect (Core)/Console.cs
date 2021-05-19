@@ -30,7 +30,7 @@ namespace Intersect
         static Console()
         {
             //Instance = new Console();
-            SystemConsole.CancelKeyPress += ( sender, args ) => CancelKeyPress?.Invoke( sender, args );
+            SystemConsole.CancelKeyPress += (sender, args) => CancelKeyPress?.Invoke(sender, args);
 
             mDefaultError = Error;
             mDefaultOut = Out;
@@ -101,9 +101,9 @@ namespace Intersect
             set => SystemConsole.BufferWidth = value;
         }
 
-        public static void SetBufferSize( int width, int height )
+        public static void SetBufferSize(int width, int height)
         {
-            SystemConsole.SetBufferSize( width, height );
+            SystemConsole.SetBufferSize(width, height);
         }
 
         #endregion
@@ -126,9 +126,9 @@ namespace Intersect
             set => SystemConsole.WindowTop = value;
         }
 
-        public static void SetWindowPosition( int left, int top )
+        public static void SetWindowPosition(int left, int top)
         {
-            SystemConsole.SetWindowPosition( left, top );
+            SystemConsole.SetWindowPosition(left, top);
         }
 
         #endregion
@@ -147,9 +147,9 @@ namespace Intersect
             set => SystemConsole.WindowWidth = value;
         }
 
-        public static void SetWindowSize( int width, int height )
+        public static void SetWindowSize(int width, int height)
         {
-            SystemConsole.SetWindowSize( width, height );
+            SystemConsole.SetWindowSize(width, height);
         }
 
         public static int LargestWindowHeight => SystemConsole.LargestWindowHeight;
@@ -172,18 +172,18 @@ namespace Intersect
                 var top = SystemConsole.CursorTop;
                 var left = value;
 
-                if( left < 0 )
+                if (left < 0)
                 {
                     --top;
                     left += BufferWidth;
                 }
-                else if( left > BufferWidth )
+                else if (left > BufferWidth)
                 {
                     ++top;
                     left -= BufferWidth;
                 }
 
-                SetCursorPosition( left, top );
+                SetCursorPosition(left, top);
             }
         }
 
@@ -193,11 +193,11 @@ namespace Intersect
             set => SystemConsole.CursorTop = value;
         }
 
-        public static void SetCursorPosition( int left, int top )
+        public static void SetCursorPosition(int left, int top)
         {
-            var position = Math.Max( 0, top * BufferWidth + left );
+            var position = Math.Max(0, top * BufferWidth + left);
             var bufferWidth = BufferWidth == 0 ? 1 : BufferWidth;
-            SystemConsole.SetCursorPosition( position % bufferWidth, position / bufferWidth );
+            SystemConsole.SetCursorPosition(position % bufferWidth, position / bufferWidth);
         }
 
         #endregion
@@ -270,9 +270,9 @@ namespace Intersect
         /// <paramref name="frequency" /> is less than 37 or more than 32767 hertz.-or-
         /// <paramref name="duration" /> is less than or equal to zero.</exception>
         /// <exception cref="T:System.Security.HostProtectionException">This method was executed on a server, such as SQL Server, that does not permit access to the console.</exception>
-        public static void Beep( int frequency, int duration )
+        public static void Beep(int frequency, int duration)
         {
-            SystemConsole.Beep( frequency, duration );
+            SystemConsole.Beep(frequency, duration);
         }
 
         #endregion
@@ -295,9 +295,9 @@ namespace Intersect
             return ReadKey();
         }
 
-        public static ConsoleKeyInfo ReadKey( bool intercept )
+        public static ConsoleKeyInfo ReadKey(bool intercept)
         {
-            return SystemConsole.ReadKey( intercept );
+            return SystemConsole.ReadKey(intercept);
         }
 
         /// <summary>Gets a value indicating whether a key press is available in the input stream.</summary>
@@ -375,7 +375,7 @@ namespace Intersect
         {
             Context.Check();
 
-            var result = Context.Wait( ContextOut.TextWriter.Write, ReadKey );
+            var result = Context.Wait(ContextOut.TextWriter.Write, ReadKey);
 
             Context.Clear();
 
@@ -384,13 +384,13 @@ namespace Intersect
 
         // TODO: Implement Wait Read
 
-        public static string ReadLine( bool withPrefix )
+        public static string ReadLine(bool withPrefix)
         {
             // TODO: Actually write a ReadLine that saves the input buffer so that when a Write inevitably happens the input isn't obliterated off the screen (while it still persists in memory).
 
             Context.Check();
 
-            if( !withPrefix )
+            if (!withPrefix)
             {
                 return ReadLine();
             }
@@ -414,7 +414,7 @@ namespace Intersect
         {
             SystemConsole.Clear();
 
-            Context.WritePrefix( Out.Write );
+            Context.WritePrefix(Out.Write);
         }
 
         #region WriteLine
@@ -433,17 +433,17 @@ namespace Intersect
         /// <exception cref="T:System.ArgumentNullException">
         /// <paramref name="format" /> or <paramref name="arg" /> is <see langword="null" />. </exception>
         /// <exception cref="T:System.FormatException">The format specification in <paramref name="format" /> is invalid. </exception>
-        public static void WriteLine( string format, params object[] arg )
+        public static void WriteLine(string format, params object[] arg)
         {
-            SystemConsole.WriteLine( format, arg );
+            SystemConsole.WriteLine(format, arg);
         }
 
         /// <summary>Writes the specified array of Unicode characters, followed by the current line terminator, to the standard output stream.</summary>
         /// <param name="buffer">A Unicode character array. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void WriteLine( char[] buffer )
+        public static void WriteLine(char[] buffer)
         {
-            SystemConsole.WriteLine( buffer );
+            SystemConsole.WriteLine(buffer);
         }
 
         /// <summary>Writes the specified subarray of Unicode characters, followed by the current line terminator, to the standard output stream.</summary>
@@ -457,97 +457,97 @@ namespace Intersect
         /// <exception cref="T:System.ArgumentException">
         /// <paramref name="index" /> plus <paramref name="count" /> specify a position that is not within <paramref name="buffer" />. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void WriteLine( char[] buffer, int index, int count )
+        public static void WriteLine(char[] buffer, int index, int count)
         {
-            SystemConsole.WriteLine( buffer, index, count );
+            SystemConsole.WriteLine(buffer, index, count);
         }
 
         /// <summary>Writes the text representation of the specified Boolean value, followed by the current line terminator, to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void WriteLine( bool value )
+        public static void WriteLine(bool value)
         {
-            SystemConsole.WriteLine( value );
+            SystemConsole.WriteLine(value);
         }
 
         /// <summary>Writes the specified Unicode character, followed by the current line terminator, value to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void WriteLine( char value )
+        public static void WriteLine(char value)
         {
-            SystemConsole.WriteLine( value );
+            SystemConsole.WriteLine(value);
         }
 
         /// <summary>Writes the text representation of the specified <see cref="T:System.Decimal" /> value, followed by the current line terminator, to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void WriteLine( decimal value )
+        public static void WriteLine(decimal value)
         {
-            SystemConsole.WriteLine( value );
+            SystemConsole.WriteLine(value);
         }
 
         /// <summary>Writes the text representation of the specified double-precision floating-point value, followed by the current line terminator, to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void WriteLine( double value )
+        public static void WriteLine(double value)
         {
-            SystemConsole.WriteLine( value );
+            SystemConsole.WriteLine(value);
         }
 
         /// <summary>Writes the text representation of the specified single-precision floating-point value, followed by the current line terminator, to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void WriteLine( float value )
+        public static void WriteLine(float value)
         {
-            SystemConsole.WriteLine( value );
+            SystemConsole.WriteLine(value);
         }
 
         /// <summary>Writes the text representation of the specified 32-bit signed integer value, followed by the current line terminator, to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void WriteLine( int value )
+        public static void WriteLine(int value)
         {
-            SystemConsole.WriteLine( value );
+            SystemConsole.WriteLine(value);
         }
 
         /// <summary>Writes the text representation of the specified 32-bit unsigned integer value, followed by the current line terminator, to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void WriteLine( uint value )
+        public static void WriteLine(uint value)
         {
-            SystemConsole.WriteLine( value );
+            SystemConsole.WriteLine(value);
         }
 
         /// <summary>Writes the text representation of the specified 64-bit signed integer value, followed by the current line terminator, to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void WriteLine( long value )
+        public static void WriteLine(long value)
         {
-            SystemConsole.WriteLine( value );
+            SystemConsole.WriteLine(value);
         }
 
         /// <summary>Writes the text representation of the specified 64-bit unsigned integer value, followed by the current line terminator, to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void WriteLine( ulong value )
+        public static void WriteLine(ulong value)
         {
-            SystemConsole.WriteLine( value );
+            SystemConsole.WriteLine(value);
         }
 
         /// <summary>Writes the text representation of the specified object, followed by the current line terminator, to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void WriteLine( object value )
+        public static void WriteLine(object value)
         {
-            SystemConsole.WriteLine( value );
+            SystemConsole.WriteLine(value);
         }
 
         /// <summary>Writes the specified string value, followed by the current line terminator, to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void WriteLine( string value )
+        public static void WriteLine(string value)
         {
-            SystemConsole.WriteLine( value );
+            SystemConsole.WriteLine(value);
         }
 
         #endregion
@@ -561,17 +561,17 @@ namespace Intersect
         /// <exception cref="T:System.ArgumentNullException">
         /// <paramref name="format" /> or <paramref name="arg" /> is <see langword="null" />. </exception>
         /// <exception cref="T:System.FormatException">The format specification in <paramref name="format" /> is invalid. </exception>
-        public static void Write( string format, params object[] arg )
+        public static void Write(string format, params object[] arg)
         {
-            SystemConsole.Write( format, arg );
+            SystemConsole.Write(format, arg);
         }
 
         /// <summary>Writes the specified array of Unicode characters to the standard output stream.</summary>
         /// <param name="buffer">A Unicode character array. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void Write( char[] buffer )
+        public static void Write(char[] buffer)
         {
-            SystemConsole.Write( buffer );
+            SystemConsole.Write(buffer);
         }
 
         /// <summary>Writes the specified subarray of Unicode characters to the standard output stream.</summary>
@@ -585,97 +585,97 @@ namespace Intersect
         /// <exception cref="T:System.ArgumentException">
         /// <paramref name="index" /> plus <paramref name="count" /> specify a position that is not within <paramref name="buffer" />. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void Write( char[] buffer, int index, int count )
+        public static void Write(char[] buffer, int index, int count)
         {
-            SystemConsole.Write( buffer, index, count );
+            SystemConsole.Write(buffer, index, count);
         }
 
         /// <summary>Writes the text representation of the specified Boolean value to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void Write( bool value )
+        public static void Write(bool value)
         {
-            SystemConsole.Write( value );
+            SystemConsole.Write(value);
         }
 
         /// <summary>Writes the specified Unicode character value to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void Write( char value )
+        public static void Write(char value)
         {
-            SystemConsole.Write( value );
+            SystemConsole.Write(value);
         }
 
         /// <summary>Writes the text representation of the specified double-precision floating-point value to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void Write( double value )
+        public static void Write(double value)
         {
-            SystemConsole.Write( value );
+            SystemConsole.Write(value);
         }
 
         /// <summary>Writes the text representation of the specified <see cref="T:System.Decimal" /> value to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void Write( decimal value )
+        public static void Write(decimal value)
         {
-            SystemConsole.Write( value );
+            SystemConsole.Write(value);
         }
 
         /// <summary>Writes the text representation of the specified single-precision floating-point value to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void Write( float value )
+        public static void Write(float value)
         {
-            SystemConsole.Write( value );
+            SystemConsole.Write(value);
         }
 
         /// <summary>Writes the text representation of the specified 32-bit signed integer value to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void Write( int value )
+        public static void Write(int value)
         {
-            SystemConsole.Write( value );
+            SystemConsole.Write(value);
         }
 
         /// <summary>Writes the text representation of the specified 32-bit unsigned integer value to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void Write( uint value )
+        public static void Write(uint value)
         {
-            SystemConsole.Write( value );
+            SystemConsole.Write(value);
         }
 
         /// <summary>Writes the text representation of the specified 64-bit signed integer value to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void Write( long value )
+        public static void Write(long value)
         {
-            SystemConsole.Write( value );
+            SystemConsole.Write(value);
         }
 
         /// <summary>Writes the text representation of the specified 64-bit unsigned integer value to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void Write( ulong value )
+        public static void Write(ulong value)
         {
-            SystemConsole.Write( value );
+            SystemConsole.Write(value);
         }
 
         /// <summary>Writes the text representation of the specified object to the standard output stream.</summary>
         /// <param name="value">The value to write, or <see langword="null" />. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void Write( object value )
+        public static void Write(object value)
         {
-            SystemConsole.Write( value );
+            SystemConsole.Write(value);
         }
 
         /// <summary>Writes the specified string value to the standard output stream.</summary>
         /// <param name="value">The value to write. </param>
         /// <exception cref="T:System.IO.IOException">An I/O error occurred. </exception>
-        public static void Write( string value )
+        public static void Write(string value)
         {
-            SystemConsole.Write( value );
+            SystemConsole.Write(value);
         }
 
         #endregion
@@ -696,9 +696,9 @@ namespace Intersect
         /// <returns>The standard error stream.</returns>
         /// <exception cref="T:System.ArgumentOutOfRangeException">
         /// <paramref name="bufferSize" /> is less than or equal to zero. </exception>
-        public static Stream OpenStandardError( int bufferSize )
+        public static Stream OpenStandardError(int bufferSize)
         {
-            return SystemConsole.OpenStandardError( bufferSize );
+            return SystemConsole.OpenStandardError(bufferSize);
         }
 
         /// <summary>Acquires the standard input stream.</summary>
@@ -713,9 +713,9 @@ namespace Intersect
         /// <returns>The standard input stream.</returns>
         /// <exception cref="T:System.ArgumentOutOfRangeException">
         /// <paramref name="bufferSize" /> is less than or equal to zero. </exception>
-        public static Stream OpenStandardInput( int bufferSize )
+        public static Stream OpenStandardInput(int bufferSize)
         {
-            return SystemConsole.OpenStandardInput( bufferSize );
+            return SystemConsole.OpenStandardInput(bufferSize);
         }
 
         /// <summary>Acquires the standard output stream.</summary>
@@ -730,9 +730,9 @@ namespace Intersect
         /// <returns>The standard output stream.</returns>
         /// <exception cref="T:System.ArgumentOutOfRangeException">
         /// <paramref name="bufferSize" /> is less than or equal to zero. </exception>
-        public static Stream OpenStandardOutput( int bufferSize )
+        public static Stream OpenStandardOutput(int bufferSize)
         {
-            return SystemConsole.OpenStandardOutput( bufferSize );
+            return SystemConsole.OpenStandardOutput(bufferSize);
         }
 
         #endregion
@@ -759,7 +759,7 @@ namespace Intersect
         public static TextReader In
         {
             get => SystemConsole.In;
-            set => SetIn( value );
+            set => SetIn(value);
         }
 
         /// <summary>Gets the standard output stream.</summary>
@@ -767,7 +767,7 @@ namespace Intersect
         public static TextWriter Out
         {
             get => SystemConsole.Out;
-            set => SetOut( value );
+            set => SetOut(value);
         }
 
         /// <summary>Gets the standard error output stream.</summary>
@@ -775,7 +775,7 @@ namespace Intersect
         public static TextWriter Error
         {
             get => SystemConsole.Error;
-            set => SetError( value );
+            set => SetError(value);
         }
 
         /// <summary>Sets the <see cref="P:System.Console.In" /> property to the specified <see cref="T:System.IO.TextReader" /> object.</summary>
@@ -783,9 +783,9 @@ namespace Intersect
         /// <exception cref="T:System.ArgumentNullException">
         /// <paramref name="newIn" /> is <see langword="null" />. </exception>
         /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
-        public static void SetIn( TextReader newIn )
+        public static void SetIn(TextReader newIn)
         {
-            SystemConsole.SetIn( newIn );
+            SystemConsole.SetIn(newIn);
         }
 
         /// <summary>Sets the <see cref="P:System.Console.Out" /> property to the specified <see cref="T:System.IO.TextWriter" /> object.</summary>
@@ -793,9 +793,9 @@ namespace Intersect
         /// <exception cref="T:System.ArgumentNullException">
         /// <paramref name="newOut" /> is <see langword="null" />. </exception>
         /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
-        public static void SetOut( TextWriter newOut )
+        public static void SetOut(TextWriter newOut)
         {
-            SystemConsole.SetOut( newOut );
+            SystemConsole.SetOut(newOut);
         }
 
         /// <summary>Sets the <see cref="P:System.Console.Error" /> property to the specified <see cref="T:System.IO.TextWriter" /> object.</summary>
@@ -803,9 +803,9 @@ namespace Intersect
         /// <exception cref="T:System.ArgumentNullException">
         /// <paramref name="newError" /> is <see langword="null" />. </exception>
         /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
-        public static void SetError( TextWriter newError )
+        public static void SetError(TextWriter newError)
         {
-            SystemConsole.SetError( newError );
+            SystemConsole.SetError(newError);
         }
 
         #endregion

@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public MapEntitiesPacket( EntityPacket[] mapEntities )
+        public MapEntitiesPacket(EntityPacket[] mapEntities)
         {
             MapEntities = mapEntities;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public EntityPacket[] MapEntities { get; set; }
 
     }

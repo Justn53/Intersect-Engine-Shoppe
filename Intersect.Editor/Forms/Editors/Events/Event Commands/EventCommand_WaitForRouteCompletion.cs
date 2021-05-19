@@ -37,15 +37,15 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             mCurrentMap = currentMap;
             InitLocalization();
             cmbEntities.Items.Clear();
-            if( !mEditingEvent.CommonEvent )
+            if (!mEditingEvent.CommonEvent)
             {
-                cmbEntities.Items.Add( Strings.EventWaitForRouteCompletion.player );
-                if( mEditingCommand.TargetId == Guid.Empty )
+                cmbEntities.Items.Add(Strings.EventWaitForRouteCompletion.player);
+                if (mEditingCommand.TargetId == Guid.Empty)
                 {
                     cmbEntities.SelectedIndex = -1;
                 }
 
-                foreach( var evt in mCurrentMap.LocalEvents )
+                foreach (var evt in mCurrentMap.LocalEvents)
                 {
                     cmbEntities.Items.Add(
                         evt.Key == mEditingEvent.Id
@@ -53,14 +53,14 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                             : "" + evt.Value.Name
                     );
 
-                    if( mEditingCommand.TargetId == evt.Key )
+                    if (mEditingCommand.TargetId == evt.Key)
                     {
                         cmbEntities.SelectedIndex = cmbEntities.Items.Count - 1;
                     }
                 }
             }
 
-            if( cmbEntities.SelectedIndex == -1 && cmbEntities.Items.Count > 0 )
+            if (cmbEntities.SelectedIndex == -1 && cmbEntities.Items.Count > 0)
             {
                 cmbEntities.SelectedIndex = 0;
             }
@@ -77,11 +77,11 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             btnCancel.Text = Strings.EventWaitForRouteCompletion.cancel;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            if( !mEditingEvent.CommonEvent )
+            if (!mEditingEvent.CommonEvent)
             {
-                if( cmbEntities.SelectedIndex == 0 )
+                if (cmbEntities.SelectedIndex == 0)
                 {
                     mEditingCommand.TargetId = Guid.Empty;
                 }
@@ -94,7 +94,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }

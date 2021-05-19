@@ -14,12 +14,12 @@ namespace Intersect.Editor.Forms
             InitializeComponent();
         }
 
-        private void lblWebsite_Click( object sender, EventArgs e )
+        private void lblWebsite_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start( "http://ascensiongamedev.com" );
+            System.Diagnostics.Process.Start("http://ascensiongamedev.com");
         }
 
-        private void frmAbout_Load( object sender, EventArgs e )
+        private void frmAbout_Load(object sender, EventArgs e)
         {
             InitLocalization();
         }
@@ -27,7 +27,7 @@ namespace Intersect.Editor.Forms
         private void InitLocalization()
         {
             Text = Strings.About.title;
-            lblVersion.Text = Strings.About.version.ToString( Application.ProductVersion );
+            lblVersion.Text = Strings.About.version.ToString(Application.ProductVersion);
             lblWebsite.Text = Strings.About.site;
         }
 

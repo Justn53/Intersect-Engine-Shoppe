@@ -33,7 +33,7 @@ namespace Intersect.Network.Packets
         {
         }
 
-        public ApprovalPacket( RSACryptoServiceProvider rsa, byte[] handshakeSecret, byte[] aesKey, Guid guid ) : base(
+        public ApprovalPacket(RSACryptoServiceProvider rsa, byte[] handshakeSecret, byte[] aesKey, Guid guid) : base(
             rsa, handshakeSecret
         )
         {
@@ -57,71 +57,71 @@ namespace Intersect.Network.Packets
 
         public override bool Encrypt()
         {
-            using( var buffer = new MemoryBuffer() )
+            using (var buffer = new MemoryBuffer())
             {
 #if INTERSECT_DIAGNOSTIC
                 Log.Debug($"Handshake secret: {BitConverter.ToString(HandshakeSecret)}.");
                 Log.Debug($"Specified AES Key: {BitConverter.ToString(AesKey)}");
                 Log.Debug($"Assigning UUID: {Guid}).");
 #endif
-                buffer.Write( HandshakeSecret, SIZE_HANDSHAKE_SECRET );
-                buffer.Write( AesKey, SIZE_AES_KEY );
-                buffer.Write( Guid.ToByteArray(), SIZE_GUID );
-                buffer.Write( Adjusted );
+                buffer.Write(HandshakeSecret, SIZE_HANDSHAKE_SECRET);
+                buffer.Write(AesKey, SIZE_AES_KEY);
+                buffer.Write(Guid.ToByteArray(), SIZE_GUID);
+                buffer.Write(Adjusted);
 #if DEBUG
-                buffer.Write( UTC );
-                buffer.Write( Offset );
+                buffer.Write(UTC);
+                buffer.Write(Offset);
 #endif
 
-                Debug.Assert( mRsa != null, "mRsa != null" );
-                EncryptedData = mRsa.Encrypt( buffer.ToArray(), true ) ??
-                                throw new InvalidOperationException( "Failed to encrypt the buffer." );
+                Debug.Assert(mRsa != null, "mRsa != null");
+                EncryptedData = mRsa.Encrypt(buffer.ToArray(), true) ??
+                                throw new InvalidOperationException("Failed to encrypt the buffer.");
 
                 return true;
             }
         }
 
-        public override bool Decrypt( RSACryptoServiceProvider rsa )
+        public override bool Decrypt(RSACryptoServiceProvider rsa)
         {
             mRsa = rsa;
 
-            if( mRsa == null )
+            if (mRsa == null)
             {
-                throw new ArgumentNullException( nameof( rsa ) );
+                throw new ArgumentNullException(nameof(rsa));
             }
 
-            var decryptedApproval = mRsa.Decrypt( EncryptedData, true );
-            using( var buffer = new MemoryBuffer( decryptedApproval ) )
+            var decryptedApproval = mRsa.Decrypt(EncryptedData, true);
+            using (var buffer = new MemoryBuffer(decryptedApproval))
             {
-                if( !buffer.Read( out mHandshakeSecret, SIZE_HANDSHAKE_SECRET ) )
+                if (!buffer.Read(out mHandshakeSecret, SIZE_HANDSHAKE_SECRET))
                 {
                     return false;
                 }
 
-                if( !buffer.Read( out mAesKey, SIZE_AES_KEY ) )
+                if (!buffer.Read(out mAesKey, SIZE_AES_KEY))
                 {
                     return false;
                 }
 
-                if( !buffer.Read( out var guidData, SIZE_GUID ) || guidData == null )
+                if (!buffer.Read(out var guidData, SIZE_GUID) || guidData == null)
                 {
                     return false;
                 }
 
-                Guid = new Guid( guidData );
+                Guid = new Guid(guidData);
 
-                if( !buffer.Read( out mAdjusted ) )
+                if (!buffer.Read(out mAdjusted))
                 {
                     return false;
                 }
 
 #if DEBUG
-                if( !buffer.Read( out mUTC ) )
+                if (!buffer.Read(out mUTC))
                 {
                     return false;
                 }
 
-                if( !buffer.Read( out mOffset ) )
+                if (!buffer.Read(out mOffset))
                 {
                     return false;
                 }

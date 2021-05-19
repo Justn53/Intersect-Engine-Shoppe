@@ -6,7 +6,7 @@ namespace Intersect.Server.Core.CommandParsing.Errors
     public class MissingArgumentError : ParserError
     {
 
-        protected MissingArgumentError( string argumentName, string message ) : base( message )
+        protected MissingArgumentError(string argumentName, string message) : base(message)
         {
             ArgumentName = argumentName;
         }
@@ -19,7 +19,7 @@ namespace Intersect.Server.Core.CommandParsing.Errors
             LocalizedString message
         )
         {
-            return new MissingArgumentError( argumentName, message.ToString( argumentName, commandName ) );
+            return new MissingArgumentError(argumentName, message.ToString(argumentName, commandName));
         }
 
         public static MissingArgumentError Create(
@@ -29,7 +29,7 @@ namespace Intersect.Server.Core.CommandParsing.Errors
             string prefix
         )
         {
-            return new MissingArgumentError( argumentName, message.ToString( prefix, argumentName, commandName ) );
+            return new MissingArgumentError(argumentName, message.ToString(prefix, argumentName, commandName));
         }
 
     }

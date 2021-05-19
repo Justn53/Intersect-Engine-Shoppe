@@ -18,12 +18,12 @@ namespace Intersect.Server.Database.PlayerData.Players
         {
         }
 
-        public SpellSlot( int slot )
+        public SpellSlot(int slot)
         {
             Slot = slot;
         }
 
-        [DatabaseGenerated( DatabaseGeneratedOption.Identity ), JsonIgnore]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity), JsonIgnore]
         public Guid Id { get; private set; }
 
         [JsonIgnore]

@@ -10,16 +10,16 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public LoginPacket( string username, string password )
+        public LoginPacket(string username, string password)
         {
             Username = username;
             Password = password;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public string Username { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public string Password { get; set; }
 
     }

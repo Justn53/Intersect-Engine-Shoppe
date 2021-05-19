@@ -9,9 +9,9 @@ namespace Intersect.Client.Networking
     public static class NetworkStatusExtensions
     {
 
-        public static string ToLocalizedString( this NetworkStatus networkStatus )
+        public static string ToLocalizedString(this NetworkStatus networkStatus)
         {
-            switch( networkStatus )
+            switch (networkStatus)
             {
                 case NetworkStatus.Unknown:
                     return Strings.Server.Unknown;
@@ -41,7 +41,7 @@ namespace Intersect.Client.Networking
                     return "";
 
                 default:
-                    throw new ArgumentOutOfRangeException( nameof( networkStatus ), networkStatus, null );
+                    throw new ArgumentOutOfRangeException(nameof(networkStatus), networkStatus, null);
             }
         }
 

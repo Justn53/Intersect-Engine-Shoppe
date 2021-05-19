@@ -20,19 +20,19 @@ namespace Intersect.Network.Lidgren
 
         private byte[] mRsaSecret;
 
-        public LidgrenConnection( INetwork network, NetConnection connection, byte[] aesKey ) : this(
+        public LidgrenConnection(INetwork network, NetConnection connection, byte[] aesKey) : this(
             network, Guid.NewGuid(), connection, aesKey
         )
         {
         }
 
-        public LidgrenConnection( INetwork network, NetConnection connection, byte[] aesKey, RSAParameters rsaParameters )
-            : this( network, Guid.NewGuid(), connection, aesKey )
+        public LidgrenConnection(INetwork network, NetConnection connection, byte[] aesKey, RSAParameters rsaParameters)
+            : this(network, Guid.NewGuid(), connection, aesKey)
         {
-            CreateRsa( rsaParameters );
+            CreateRsa(rsaParameters);
         }
 
-        public LidgrenConnection( INetwork network, Guid guid, NetConnection netConnection, byte[] aesKey ) : base( guid )
+        public LidgrenConnection(INetwork network, Guid guid, NetConnection netConnection, byte[] aesKey) : base(guid)
         {
             Network = network;
             NetConnection = netConnection ?? throw new ArgumentNullException();
@@ -47,12 +47,12 @@ namespace Intersect.Network.Lidgren
             NetConnection netConnection,
             byte[] handshakeSecret,
             RSAParameters rsaParameters
-        ) : base( guid )
+        ) : base(guid)
         {
             Network = network;
             NetConnection = netConnection;
             mHandshakeSecret = handshakeSecret;
-            CreateRsa( rsaParameters );
+            CreateRsa(rsaParameters);
         }
 
         public INetwork Network { get; }
@@ -67,52 +67,52 @@ namespace Intersect.Network.Lidgren
 
         public override int Port => NetConnection?.RemoteEndPoint?.Port ?? -1;
 
-        private void CreateRsa( RSAParameters rsaParameters )
+        private void CreateRsa(RSAParameters rsaParameters)
         {
             Rsa = new RSACryptoServiceProvider();
-            Rsa.ImportParameters( rsaParameters );
+            Rsa.ImportParameters(rsaParameters);
         }
 
         private void CreateAes()
         {
-            if( NetConnection == null )
+            if (NetConnection == null)
             {
                 throw new ArgumentNullException();
             }
 
-            if( mAesKey == null )
+            if (mAesKey == null)
             {
                 throw new ArgumentNullException();
             }
 
-            Aes = new NetAESEncryption( NetConnection.Peer, mAesKey, 0, mAesKey.Length );
+            Aes = new NetAESEncryption(NetConnection.Peer, mAesKey, 0, mAesKey.Length);
         }
 
-        public bool HandleApproval( ApprovalPacket approval )
+        public bool HandleApproval(ApprovalPacket approval)
         {
-            if( approval == null )
+            if (approval == null)
             {
                 throw new ArgumentNullException();
             }
 
-            if( approval.HandshakeSecret == null )
+            if (approval.HandshakeSecret == null)
             {
                 throw new ArgumentNullException();
             }
 
-            if( approval.AesKey == null )
+            if (approval.AesKey == null)
             {
                 throw new ArgumentNullException();
             }
 
-            if( mHandshakeSecret == null )
+            if (mHandshakeSecret == null)
             {
                 throw new ArgumentNullException();
             }
 
-            if( !mHandshakeSecret.SequenceEqual( approval.HandshakeSecret ) )
+            if (!mHandshakeSecret.SequenceEqual(approval.HandshakeSecret))
             {
-                Log.Error( "Bad handshake secret received from server." );
+                Log.Error("Bad handshake secret received from server.");
 
                 return false;
             }
@@ -121,11 +121,11 @@ namespace Intersect.Network.Lidgren
 
             CreateAes();
 
-            Timing.Global.Synchronize( approval.UTC, approval.Offset );
-            Log.Debug( $"approval Time={approval.Adjusted / TimeSpan.TicksPerMillisecond} Offset={approval.Offset / TimeSpan.TicksPerMillisecond} Real={approval.UTC / TimeSpan.TicksPerMillisecond}" );
-            Log.Debug( $"local Time={Timing.Global.Milliseconds} Offset={Timing.Global.MillisecondsOffset} Real={Timing.Global.MillisecondsUTC}" );
-            Log.Debug( $"real delta={( Timing.Global.TicksUTC - approval.UTC ) / TimeSpan.TicksPerMillisecond}" );
-            Log.Debug( $"this.Statistics.Ping={this.Statistics.Ping} NCPing={(long)Math.Ceiling( NetConnection.AverageRoundtripTime * 1000 )}" );
+            Timing.Global.Synchronize(approval.UTC, approval.Offset);
+            Log.Debug($"approval Time={approval.Adjusted / TimeSpan.TicksPerMillisecond} Offset={approval.Offset / TimeSpan.TicksPerMillisecond} Real={approval.UTC / TimeSpan.TicksPerMillisecond}");
+            Log.Debug($"local Time={Timing.Global.Milliseconds} Offset={Timing.Global.MillisecondsOffset} Real={Timing.Global.MillisecondsUTC}");
+            Log.Debug($"real delta={(Timing.Global.TicksUTC - approval.UTC) / TimeSpan.TicksPerMillisecond}");
+            Log.Debug($"this.Statistics.Ping={this.Statistics.Ping} NCPing={(long)Math.Ceiling(NetConnection.AverageRoundtripTime * 1000)}");
 
             return true;
         }
@@ -133,12 +133,12 @@ namespace Intersect.Network.Lidgren
         public override void Dispose()
         {
             base.Dispose();
-            NetConnection?.Disconnect( NetworkStatus.Quitting.ToString() );
+            NetConnection?.Disconnect(NetworkStatus.Quitting.ToString());
         }
 
-        public override bool Send( IPacket packet, TransmissionMode mode = TransmissionMode.All )
+        public override bool Send(IPacket packet, TransmissionMode mode = TransmissionMode.All)
         {
-            return Network?.Send( this, packet, mode ) ?? false;
+            return Network?.Send(this, packet, mode) ?? false;
         }
 
     }

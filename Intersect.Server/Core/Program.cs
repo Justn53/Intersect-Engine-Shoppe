@@ -14,24 +14,24 @@ namespace Intersect.Server.Core
     {
 
         [STAThread]
-        public static void Main( string[] args )
+        public static void Main(string[] args)
         {
-            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo( "en-US" );
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
             try
             {
-                Type.GetType( "Intersect.Server.Core.Bootstrapper" )
-                    ?.GetMethod( "Start" )
-                    ?.Invoke( null, new object[] { args } );
+                Type.GetType("Intersect.Server.Core.Bootstrapper")
+                    ?.GetMethod("Start")
+                    ?.Invoke(null, new object[] { args });
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                var type = Type.GetType( "Intersect.Server.Core.ServerContext", true );
-                Debug.Assert( type != null, "type != null" );
+                var type = Type.GetType("Intersect.Server.Core.ServerContext", true);
+                Debug.Assert(type != null, "type != null");
 
-                var staticMethodInfo = type.GetMethod( "DispatchUnhandledException", BindingFlags.Static | BindingFlags.NonPublic );
-                Debug.Assert( staticMethodInfo != null, nameof( staticMethodInfo ) + " != null" );
+                var staticMethodInfo = type.GetMethod("DispatchUnhandledException", BindingFlags.Static | BindingFlags.NonPublic);
+                Debug.Assert(staticMethodInfo != null, nameof(staticMethodInfo) + " != null");
 
-                staticMethodInfo.Invoke( null, new object[] { exception.InnerException ?? exception, true } );
+                staticMethodInfo.Invoke(null, new object[] { exception.InnerException ?? exception, true });
             }
         }
 

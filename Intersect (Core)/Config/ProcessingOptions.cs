@@ -63,51 +63,51 @@ namespace Intersect.Config
         public int CommonEventAutorunStartInterval { get; set; } = 500;
 
         [OnDeserialized]
-        internal void OnDeserializedMethod( StreamingContext context )
+        internal void OnDeserializedMethod(StreamingContext context)
         {
             Validate();
         }
 
         public void Validate()
         {
-            if( MinLogicThreads < 1 )
+            if (MinLogicThreads < 1)
             {
-                throw new InvalidOperationException( "Need at least 1 logic thread." );
+                throw new InvalidOperationException("Need at least 1 logic thread.");
             }
 
-            if( MaxLogicThreads < MinLogicThreads )
+            if (MaxLogicThreads < MinLogicThreads)
             {
-                throw new InvalidOperationException( "The maximum number of logic threads should be greater than the minimum number of logic threads." );
+                throw new InvalidOperationException("The maximum number of logic threads should be greater than the minimum number of logic threads.");
             }
 
-            if( LogicThreadIdleTimeout < 1000 )
+            if (LogicThreadIdleTimeout < 1000)
             {
-                throw new Exception( "Logic thread idle timeout is too low, should be above 1000ms else you may run into significant overhead due to threads being created/destroyed too often." );
+                throw new Exception("Logic thread idle timeout is too low, should be above 1000ms else you may run into significant overhead due to threads being created/destroyed too often.");
             }
 
-            if( MinNetworkThreads < 1 )
+            if (MinNetworkThreads < 1)
             {
-                throw new InvalidOperationException( "Need at least 1 network thread." );
+                throw new InvalidOperationException("Need at least 1 network thread.");
             }
 
-            if( MaxNetworkThreads < MinNetworkThreads )
+            if (MaxNetworkThreads < MinNetworkThreads)
             {
-                throw new InvalidOperationException( "The maximum number of network threads should be greater than the minimum number of network threads." );
+                throw new InvalidOperationException("The maximum number of network threads should be greater than the minimum number of network threads.");
             }
 
-            if( NetworkThreadIdleTimeout < 1000 )
+            if (NetworkThreadIdleTimeout < 1000)
             {
-                throw new Exception( "Network thread idle timeout is too low, should be above 1000ms else you may run into significant overhead due to threads being created/destroyed too often." );
+                throw new Exception("Network thread idle timeout is too low, should be above 1000ms else you may run into significant overhead due to threads being created/destroyed too often.");
             }
 
-            if( MapUpdateInterval > 200 )
+            if (MapUpdateInterval > 200)
             {
-                throw new InvalidOperationException( "Map update interval is too high to provide a smooth gaming experience." );
+                throw new InvalidOperationException("Map update interval is too high to provide a smooth gaming experience.");
             }
 
-            if( PlayerSaveInterval < 20000 )
+            if (PlayerSaveInterval < 20000)
             {
-                throw new InvalidOperationException( "Player save interval is too low and would cause performance issues, consider raising." );
+                throw new InvalidOperationException("Player save interval is too low and would cause performance issues, consider raising.");
             }
         }
     }

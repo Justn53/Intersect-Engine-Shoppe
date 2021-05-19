@@ -18,10 +18,10 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="TextBoxNumeric" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public TextBoxNumeric( Base parent, string name = "" ) : base( parent, name )
+        public TextBoxNumeric(Base parent, string name = "") : base(parent, name)
         {
             AutoSizeToContents = false;
-            SetText( "0", false );
+            SetText("0", false);
         }
 
         /// <summary>
@@ -37,16 +37,16 @@ namespace Intersect.Client.Framework.Gwen.Control
             }
         }
 
-        protected virtual bool IsTextAllowed( string str )
+        protected virtual bool IsTextAllowed(string str)
         {
-            if( str == "" || str == "-" )
+            if (str == "" || str == "-")
             {
                 return true; // annoying if single - is not allowed
             }
 
             float d;
 
-            return float.TryParse( str, out d );
+            return float.TryParse(str, out d);
         }
 
         /// <summary>
@@ -55,11 +55,11 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <param name="text">Text to check.</param>
         /// <param name="position">Cursor position.</param>
         /// <returns>True if allowed.</returns>
-        protected override bool IsTextAllowed( string text, int position )
+        protected override bool IsTextAllowed(string text, int position)
         {
-            var newText = Text.Insert( position, text );
+            var newText = Text.Insert(position, text);
 
-            return IsTextAllowed( newText );
+            return IsTextAllowed(newText);
         }
 
         // text -> value
@@ -68,7 +68,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         protected override void OnTextChanged()
         {
-            if( String.IsNullOrEmpty( Text ) || Text == "-" )
+            if (String.IsNullOrEmpty(Text) || Text == "-")
             {
                 mValue = 0;
 
@@ -76,7 +76,7 @@ namespace Intersect.Client.Framework.Gwen.Control
             }
             else
             {
-                mValue = float.Parse( Text );
+                mValue = float.Parse(Text);
             }
 
             base.OnTextChanged();
@@ -87,11 +87,11 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         /// <param name="str">Text to set.</param>
         /// <param name="doEvents">Determines whether to invoke "text changed" event.</param>
-        public override void SetText( string str, bool doEvents = true )
+        public override void SetText(string str, bool doEvents = true)
         {
-            if( IsTextAllowed( str ) )
+            if (IsTextAllowed(str))
             {
-                base.SetText( str, doEvents );
+                base.SetText(str, doEvents);
             }
         }
 

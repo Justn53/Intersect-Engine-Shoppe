@@ -15,7 +15,7 @@ namespace Intersect.GameObjects.Crafting
         [NotMapped] public List<CraftIngredient> Ingredients = new List<CraftIngredient>();
 
         [JsonConstructor]
-        public CraftBase( Guid id ) : base( id )
+        public CraftBase(Guid id) : base(id)
         {
             Name = "New Craft";
         }
@@ -27,20 +27,20 @@ namespace Intersect.GameObjects.Crafting
         }
 
         [JsonIgnore]
-        [Column( "Ingredients" )]
+        [Column("Ingredients")]
         public string IngredientsJson
         {
-            get => JsonConvert.SerializeObject( Ingredients, Formatting.None );
-            protected set => Ingredients = JsonConvert.DeserializeObject<List<CraftIngredient>>( value );
+            get => JsonConvert.SerializeObject(Ingredients, Formatting.None);
+            protected set => Ingredients = JsonConvert.DeserializeObject<List<CraftIngredient>>(value);
         }
 
-        [JsonProperty( Order = -4 )]
+        [JsonProperty(Order = -4)]
         public Guid ItemId { get; set; }
 
-        [JsonProperty( Order = -3 )]
+        [JsonProperty(Order = -3)]
         public int Quantity { get; set; } = 1;
 
-        [JsonProperty( Order = -2 )]
+        [JsonProperty(Order = -2)]
         public int Time { get; set; }
 
         /// <inheritdoc />
@@ -55,7 +55,7 @@ namespace Intersect.GameObjects.Crafting
 
         public int Quantity = 1;
 
-        public CraftIngredient( Guid itemId, int quantity )
+        public CraftIngredient(Guid itemId, int quantity)
         {
             ItemId = itemId;
             Quantity = quantity;
@@ -63,7 +63,7 @@ namespace Intersect.GameObjects.Crafting
 
         public ItemBase GetItem()
         {
-            return ItemBase.Get( ItemId );
+            return ItemBase.Get(ItemId);
         }
 
     }

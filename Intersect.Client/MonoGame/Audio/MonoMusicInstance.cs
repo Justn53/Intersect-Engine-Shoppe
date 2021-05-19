@@ -21,10 +21,10 @@ namespace Intersect.Client.MonoGame.Audio
         private int mVolume;
 
         // ReSharper disable once SuggestBaseTypeForParameter
-        public MonoMusicInstance( MonoMusicSource source ) : base( source )
+        public MonoMusicInstance(MonoMusicSource source) : base(source)
         {
             //Only allow one music player at a time
-            if( Instance != null )
+            if (Instance != null)
             {
                 Instance.Stop();
                 Instance.Dispose();
@@ -42,12 +42,12 @@ namespace Intersect.Client.MonoGame.Audio
         {
             get
             {
-                if( mSong == null || mSong.IsDisposed )
+                if (mSong == null || mSong.IsDisposed)
                 {
                     return AudioInstanceState.Disposed;
                 }
 
-                switch( mSong.State )
+                switch (mSong.State)
                 {
                     case SoundState.Playing:
                         return AudioInstanceState.Playing;
@@ -63,7 +63,7 @@ namespace Intersect.Client.MonoGame.Audio
 
         public override void Play()
         {
-            if( mSong != null && !mSong.IsDisposed )
+            if (mSong != null && !mSong.IsDisposed)
             {
                 mSong.Play();
             }
@@ -71,7 +71,7 @@ namespace Intersect.Client.MonoGame.Audio
 
         public override void Pause()
         {
-            if( mSong != null && !mSong.IsDisposed )
+            if (mSong != null && !mSong.IsDisposed)
             {
                 mSong.Pause();
             }
@@ -79,26 +79,26 @@ namespace Intersect.Client.MonoGame.Audio
 
         public override void Stop()
         {
-            if( mSong != null && !mSong.IsDisposed )
+            if (mSong != null && !mSong.IsDisposed)
             {
                 mSong.Stop();
             }
         }
 
-        public override void SetVolume( int volume, bool isMusic = false )
+        public override void SetVolume(int volume, bool isMusic = false)
         {
-            if( mSong != null && !mSong.IsDisposed )
+            if (mSong != null && !mSong.IsDisposed)
             {
                 mVolume = volume;
                 try
                 {
-                    mSong.Volume = mVolume * ( Globals.Database.MusicVolume / 100f ) / 100f;
+                    mSong.Volume = mVolume * (Globals.Database.MusicVolume / 100f) / 100f;
                 }
-                catch( NullReferenceException )
+                catch (NullReferenceException)
                 {
                     // song changed while changing volume
                 }
-                catch( Exception )
+                catch (Exception)
                 {
                     // device not ready
                 }
@@ -112,7 +112,7 @@ namespace Intersect.Client.MonoGame.Audio
 
         protected override void InternalLoopSet()
         {
-            if( mSong != null )
+            if (mSong != null)
             {
                 //mSong.IsLooped = IsLooping;
             }

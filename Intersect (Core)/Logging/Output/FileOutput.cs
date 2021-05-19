@@ -10,19 +10,19 @@ namespace Intersect.Logging.Output
     public class FileOutput : ILogOutput
     {
 
-        private static readonly string Spacer = Environment.NewLine + new string( '-', 80 ) + Environment.NewLine;
+        private static readonly string Spacer = Environment.NewLine + new string('-', 80) + Environment.NewLine;
 
         private string mFilename;
 
         private StreamWriter mWriter;
 
-        public FileOutput( string filename = null, bool append = true ) : this( filename, LogLevel.All, append )
+        public FileOutput(string filename = null, bool append = true) : this(filename, LogLevel.All, append)
         {
         }
 
-        public FileOutput( string filename, LogLevel logLevel, bool append = true )
+        public FileOutput(string filename, LogLevel logLevel, bool append = true)
         {
-            Filename = string.IsNullOrEmpty( filename ) ? Log.SuggestFilename() : filename;
+            Filename = string.IsNullOrEmpty(filename) ? Log.SuggestFilename() : filename;
             LogLevel = logLevel;
             Append = append;
         }
@@ -34,9 +34,9 @@ namespace Intersect.Logging.Output
             get => mFilename;
             set
             {
-                if( string.IsNullOrEmpty( value ) )
+                if (string.IsNullOrEmpty(value))
                 {
-                    Log.Warn( "Cannot set FileOutput to an empty file name." );
+                    Log.Warn("Cannot set FileOutput to an empty file name.");
 
                     return;
                 }
@@ -51,22 +51,22 @@ namespace Intersect.Logging.Output
         {
             get
             {
-                if( mWriter != null )
+                if (mWriter != null)
                 {
                     return mWriter;
                 }
 
-                var directory = Path.GetDirectoryName( mFilename ) ?? "";
-                directory = Path.Combine( "logs", directory );
+                var directory = Path.GetDirectoryName(mFilename) ?? "";
+                directory = Path.Combine("logs", directory);
 
-                if( !FileSystemHelper.EnsureDirectoryExists( directory ) )
+                if (!FileSystemHelper.EnsureDirectoryExists(directory))
                 {
-                    throw new InvalidOperationException( "The logger directory could not be created or is a file." );
+                    throw new InvalidOperationException("The logger directory could not be created or is a file.");
                 }
 
-                var filename = Path.GetFileName( mFilename );
+                var filename = Path.GetFileName(mFilename);
 
-                mWriter = new StreamWriter( Path.Combine( directory, filename ), Append, Encoding.UTF8 )
+                mWriter = new StreamWriter(Path.Combine(directory, filename), Append, Encoding.UTF8)
                 {
                     AutoFlush = true
                 };
@@ -77,19 +77,19 @@ namespace Intersect.Logging.Output
 
         public LogLevel LogLevel { get; set; }
 
-        public void Write( LogConfiguration configuration, LogLevel logLevel, string message )
+        public void Write(LogConfiguration configuration, LogLevel logLevel, string message)
         {
-            InternalWrite( configuration, logLevel, null, message );
+            InternalWrite(configuration, logLevel, null, message);
         }
 
-        public void Write( LogConfiguration configuration, LogLevel logLevel, string format, params object[] args )
+        public void Write(LogConfiguration configuration, LogLevel logLevel, string format, params object[] args)
         {
-            InternalWrite( configuration, logLevel, null, format, args );
+            InternalWrite(configuration, logLevel, null, format, args);
         }
 
-        public void Write( LogConfiguration configuration, LogLevel logLevel, Exception exception, string message )
+        public void Write(LogConfiguration configuration, LogLevel logLevel, Exception exception, string message)
         {
-            InternalWrite( configuration, logLevel, exception, message );
+            InternalWrite(configuration, logLevel, exception, message);
         }
 
         public void Write(
@@ -100,7 +100,7 @@ namespace Intersect.Logging.Output
             params object[] args
         )
         {
-            InternalWrite( configuration, logLevel, exception, format, args );
+            InternalWrite(configuration, logLevel, exception, format, args);
         }
 
         private void InternalWrite(
@@ -111,7 +111,7 @@ namespace Intersect.Logging.Output
             params object[] args
         )
         {
-            if( LogLevel < logLevel )
+            if (LogLevel < logLevel)
             {
                 return;
             }
@@ -120,8 +120,8 @@ namespace Intersect.Logging.Output
                 configuration, logLevel, DateTime.UtcNow, exception, format, args
             );
 
-            Writer.Write( line );
-            Writer.Write( Spacer );
+            Writer.Write(line);
+            Writer.Write(Spacer);
             Writer.Flush();
         }
 
@@ -132,7 +132,7 @@ namespace Intersect.Logging.Output
 
         public void Flush()
         {
-            if( mWriter == null )
+            if (mWriter == null)
             {
                 return;
             }
@@ -141,7 +141,7 @@ namespace Intersect.Logging.Output
             {
                 mWriter.Flush();
             }
-            catch( ObjectDisposedException )
+            catch (ObjectDisposedException)
             {
                 /* Ignore this exception */
             }
@@ -151,7 +151,7 @@ namespace Intersect.Logging.Output
         {
             Flush();
 
-            if( mWriter == null )
+            if (mWriter == null)
             {
                 return;
             }
@@ -160,7 +160,7 @@ namespace Intersect.Logging.Output
             {
                 mWriter.Close();
             }
-            catch( ObjectDisposedException )
+            catch (ObjectDisposedException)
             {
                 /* Ignore this exception */
             }

@@ -22,7 +22,7 @@ namespace Intersect.Server.Entities
 
         #region Account
 
-        [ForeignKey( nameof( User ) )]
+        [ForeignKey(nameof(User))]
         public Guid UserId { get; private set; }
 
         [JsonIgnore]
@@ -37,109 +37,109 @@ namespace Intersect.Server.Entities
 
         #region Lookup
 
-        public static Tuple<Client, Player> Fetch( LookupKey lookupKey )
+        public static Tuple<Client, Player> Fetch(LookupKey lookupKey)
         {
-            if( !lookupKey.HasName && !lookupKey.HasId )
+            if (!lookupKey.HasName && !lookupKey.HasId)
             {
-                return new Tuple<Client, Player>( null, null );
+                return new Tuple<Client, Player>(null, null);
             }
 
             // HasName checks if null or empty
             // ReSharper disable once AssignNullToNotNullAttribute
-            return lookupKey.HasId ? Fetch( lookupKey.Id ) : Fetch( lookupKey.Name );
+            return lookupKey.HasId ? Fetch(lookupKey.Id) : Fetch(lookupKey.Name);
         }
 
-        public static Tuple<Client, Player> Fetch( string playerName )
+        public static Tuple<Client, Player> Fetch(string playerName)
         {
-            var client = Globals.Clients.Find( queryClient => Entity.CompareName( playerName, queryClient?.Entity?.Name ) );
+            var client = Globals.Clients.Find(queryClient => Entity.CompareName(playerName, queryClient?.Entity?.Name));
 
-            return new Tuple<Client, Player>( client, client?.Entity ?? Player.Find( playerName ) );
+            return new Tuple<Client, Player>(client, client?.Entity ?? Player.Find(playerName));
         }
 
-        public static Tuple<Client, Player> Fetch( Guid playerId )
+        public static Tuple<Client, Player> Fetch(Guid playerId)
         {
-            var client = Globals.Clients.Find( queryClient => playerId == queryClient?.Entity?.Id );
+            var client = Globals.Clients.Find(queryClient => playerId == queryClient?.Entity?.Id);
 
-            return new Tuple<Client, Player>( client, client?.Entity ?? Player.Find( playerId ) );
+            return new Tuple<Client, Player>(client, client?.Entity ?? Player.Find(playerId));
         }
 
-        public static Player Find( Guid playerId )
+        public static Player Find(Guid playerId)
         {
-            if( playerId == Guid.Empty )
+            if (playerId == Guid.Empty)
             {
                 return null;
             }
 
-            var player = Player.FindOnline( playerId );
-            if( player != null )
+            var player = Player.FindOnline(playerId);
+            if (player != null)
             {
                 return player;
             }
 
             try
             {
-                using( var context = DbInterface.CreatePlayerContext() )
+                using (var context = DbInterface.CreatePlayerContext())
                 {
-                    return QueryPlayerById( context, playerId );
+                    return QueryPlayerById(context, playerId);
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex );
+                Log.Error(ex);
                 return null;
             }
         }
 
-        public static Player Find( string playerName )
+        public static Player Find(string playerName)
         {
-            if( string.IsNullOrWhiteSpace( playerName ) )
+            if (string.IsNullOrWhiteSpace(playerName))
             {
                 return null;
             }
 
-            var player = Player.FindOnline( playerName );
-            if( player != null )
+            var player = Player.FindOnline(playerName);
+            if (player != null)
             {
                 return player;
             }
 
             try
             {
-                using( var context = DbInterface.CreatePlayerContext() )
+                using (var context = DbInterface.CreatePlayerContext())
                 {
-                    return QueryPlayerByName( context, playerName );
+                    return QueryPlayerByName(context, playerName);
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex );
+                Log.Error(ex);
                 return null;
             }
         }
 
-        public static bool PlayerExists( string name )
+        public static bool PlayerExists(string name)
         {
-            if( string.IsNullOrWhiteSpace( name ) )
+            if (string.IsNullOrWhiteSpace(name))
             {
                 return false;
             }
 
-            var player = FindOnline( name );
-            if( player != null )
+            var player = FindOnline(name);
+            if (player != null)
             {
                 return true;
             }
 
             try
             {
-                using( var context = DbInterface.CreatePlayerContext() )
+                using (var context = DbInterface.CreatePlayerContext())
                 {
-                    return AnyPlayerByName( context, name );
+                    return AnyPlayerByName(context, name);
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex );
+                Log.Error(ex);
                 return false;
             }
         }
@@ -148,34 +148,34 @@ namespace Intersect.Server.Entities
 
         #region Loading
 
-        public static Player Load( Guid playerId )
+        public static Player Load(Guid playerId)
         {
-            var player = Find( playerId );
+            var player = Find(playerId);
 
-            return Load( player );
+            return Load(player);
         }
 
-        public static Player Load( string playerName )
+        public static Player Load(string playerName)
         {
-            var player = Find( playerName );
+            var player = Find(playerName);
 
-            return Load( player );
+            return Load(player);
         }
 
-        public static Player Load( Player player )
+        public static Player Load(Player player)
         {
-            if( player == null )
+            if (player == null)
             {
                 return null;
             }
 
             // ReSharper disable once InvertIf
-            if( !player.ValidateLists() )
+            if (!player.ValidateLists())
             {
-                player.Bank = player.Bank.OrderBy( bankSlot => bankSlot?.Slot ).ToList();
-                player.Items = player.Items.OrderBy( inventorySlot => inventorySlot?.Slot ).ToList();
-                player.Hotbar = player.Hotbar.OrderBy( hotbarSlot => hotbarSlot?.Slot ).ToList();
-                player.Spells = player.Spells.OrderBy( spellSlot => spellSlot?.Slot ).ToList();
+                player.Bank = player.Bank.OrderBy(bankSlot => bankSlot?.Slot).ToList();
+                player.Items = player.Items.OrderBy(inventorySlot => inventorySlot?.Slot).ToList();
+                player.Hotbar = player.Hotbar.OrderBy(hotbarSlot => hotbarSlot?.Slot).ToList();
+                player.Spells = player.Spells.OrderBy(spellSlot => spellSlot?.Slot).ToList();
             }
 
             return player;
@@ -189,26 +189,26 @@ namespace Intersect.Server.Entities
         {
             try
             {
-                using( var context = DbInterface.CreatePlayerContext() )
+                using (var context = DbInterface.CreatePlayerContext())
                 {
-                    CachedFriends = context.Player_Friends.Where( f => f.Owner.Id == Id ).Select( t => new { t.Target.Id, t.Target.Name } ).ToDictionary( t => t.Id, t => t.Name );
+                    CachedFriends = context.Player_Friends.Where(f => f.Owner.Id == Id).Select(t => new { t.Target.Id, t.Target.Name }).ToDictionary(t => t.Id, t => t.Name);
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex, $"Failed to load friends for {Name}." );
+                Log.Error(ex, $"Failed to load friends for {Name}.");
                 //ServerContext.DispatchUnhandledException(new Exception("Failed to save user, shutting down to prevent rollbacks!"), true);
             }
         }
 
-        public void AddFriend( Player friend )
+        public void AddFriend(Player friend)
         {
-            if( friend == null || friend == this )
+            if (friend == null || friend == this)
             {
                 return;
             }
 
-            if( CachedFriends.ContainsKey( friend.Id ) )
+            if (CachedFriends.ContainsKey(friend.Id))
             {
                 return;
             }
@@ -217,25 +217,25 @@ namespace Intersect.Server.Entities
             //The cost of making a new context is almost nil.
             try
             {
-                CachedFriends.Add( friend.Id, friend.Name );
+                CachedFriends.Add(friend.Id, friend.Name);
 
-                using( var context = DbInterface.CreatePlayerContext( readOnly: false ) )
+                using (var context = DbInterface.CreatePlayerContext(readOnly: false))
                 {
-                    var friendship = new Database.PlayerData.Players.Friend( this, friend );
-                    context.Entry( friendship ).State = EntityState.Added;
+                    var friendship = new Database.PlayerData.Players.Friend(this, friend);
+                    context.Entry(friendship).State = EntityState.Added;
                     context.SaveChanges();
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex, "Failed to add friend " + friend.Name + " to " + Name + "'s friends list." );
+                Log.Error(ex, "Failed to add friend " + friend.Name + " to " + Name + "'s friends list.");
                 //ServerContext.DispatchUnhandledException(new Exception("Failed to save user, shutting down to prevent rollbacks!"), true);
             }
         }
 
-        public static void RemoveFriendship( Guid id, Guid otherId )
+        public static void RemoveFriendship(Guid id, Guid otherId)
         {
-            if( id == Guid.Empty || otherId == Guid.Empty )
+            if (id == Guid.Empty || otherId == Guid.Empty)
             {
                 return;
             }
@@ -244,25 +244,25 @@ namespace Intersect.Server.Entities
             //The cost of making a new context is almost nil.
             try
             {
-                using( var context = DbInterface.CreatePlayerContext( readOnly: false ) )
+                using (var context = DbInterface.CreatePlayerContext(readOnly: false))
                 {
-                    var friendship = context.Player_Friends.Where( f => f.Owner.Id == id && f.Target.Id == otherId ).FirstOrDefault();
-                    if( friendship != null )
+                    var friendship = context.Player_Friends.Where(f => f.Owner.Id == id && f.Target.Id == otherId).FirstOrDefault();
+                    if (friendship != null)
                     {
-                        context.Entry( friendship ).State = EntityState.Deleted;
+                        context.Entry(friendship).State = EntityState.Deleted;
                     }
 
-                    var otherFriendship = context.Player_Friends.Where( f => f.Owner.Id == otherId && f.Target.Id == id ).FirstOrDefault();
-                    if( otherFriendship != null )
+                    var otherFriendship = context.Player_Friends.Where(f => f.Owner.Id == otherId && f.Target.Id == id).FirstOrDefault();
+                    if (otherFriendship != null)
                     {
-                        context.Entry( otherFriendship ).State = EntityState.Deleted;
+                        context.Entry(otherFriendship).State = EntityState.Deleted;
                     }
                     context.SaveChanges();
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex, $"Failed to remove friendship between {id} and {otherId}." );
+                Log.Error(ex, $"Failed to remove friendship between {id} and {otherId}.");
                 //ServerContext.DispatchUnhandledException(new Exception("Failed to save user, shutting down to prevent rollbacks!"), true);
             }
         }
@@ -274,31 +274,31 @@ namespace Intersect.Server.Entities
         {
             try
             {
-                using( var context = DbInterface.CreatePlayerContext() )
+                using (var context = DbInterface.CreatePlayerContext())
                 {
                     return context.Players.Count();
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex );
+                Log.Error(ex);
                 return 0;
             }
         }
 
-        public static IList<Player> List( int page, int count )
+        public static IList<Player> List(int page, int count)
         {
             try
             {
-                using( var context = DbInterface.CreatePlayerContext() )
+                using (var context = DbInterface.CreatePlayerContext())
                 {
-                    return QueryPlayers( context, page * count, count )?.ToList();
+                    return QueryPlayers(context, page * count, count)?.ToList();
 
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex );
+                Log.Error(ex);
                 return null;
             }
         }
@@ -311,18 +311,18 @@ namespace Intersect.Server.Entities
         {
             try
             {
-                using( var context = DbInterface.CreatePlayerContext() )
+                using (var context = DbInterface.CreatePlayerContext())
                 {
                     var results = sortDirection == SortDirection.Ascending
-                        ? QueryPlayersWithRankAscending( context, page * count, count )
-                        : QueryPlayersWithRank( context, page * count, count );
+                        ? QueryPlayersWithRankAscending(context, page * count, count)
+                        : QueryPlayersWithRank(context, page * count, count);
 
                     return results?.ToList();
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex );
+                Log.Error(ex);
                 return null;
             }
         }
@@ -333,81 +333,81 @@ namespace Intersect.Server.Entities
 
         private static readonly Func<PlayerContext, int, int, IEnumerable<Player>> QueryPlayers =
             EF.CompileQuery(
-                ( PlayerContext context, int offset, int count ) => context.Players
-                    .OrderBy( player => player.Id.ToString() )
-                    .Skip( offset )
-                    .Take( count )
-                    .Include( p => p.Bank )
-                    .Include( p => p.Hotbar )
-                    .Include( p => p.Quests )
-                    .Include( p => p.Variables )
-                    .Include( p => p.Items )
-                    .Include( p => p.Spells )
+                (PlayerContext context, int offset, int count) => context.Players
+                    .OrderBy(player => player.Id.ToString())
+                    .Skip(offset)
+                    .Take(count)
+                    .Include(p => p.Bank)
+                    .Include(p => p.Hotbar)
+                    .Include(p => p.Quests)
+                    .Include(p => p.Variables)
+                    .Include(p => p.Items)
+                    .Include(p => p.Spells)
             ) ??
             throw new InvalidOperationException();
 
         private static readonly Func<PlayerContext, int, int, IEnumerable<Player>> QueryPlayersWithRank =
             EF.CompileQuery(
-                ( PlayerContext context, int offset, int count ) => context.Players
-                    .OrderByDescending( entity => EF.Property<dynamic>( entity, "Level" ) )
-                    .ThenByDescending( entity => EF.Property<dynamic>( entity, "Exp" ) )
-                    .Skip( offset )
-                    .Take( count )
-                    .Include( p => p.Bank )
-                    .Include( p => p.Hotbar )
-                    .Include( p => p.Quests )
-                    .Include( p => p.Variables )
-                    .Include( p => p.Items )
-                    .Include( p => p.Spells )
+                (PlayerContext context, int offset, int count) => context.Players
+                    .OrderByDescending(entity => EF.Property<dynamic>(entity, "Level"))
+                    .ThenByDescending(entity => EF.Property<dynamic>(entity, "Exp"))
+                    .Skip(offset)
+                    .Take(count)
+                    .Include(p => p.Bank)
+                    .Include(p => p.Hotbar)
+                    .Include(p => p.Quests)
+                    .Include(p => p.Variables)
+                    .Include(p => p.Items)
+                    .Include(p => p.Spells)
             ) ??
             throw new InvalidOperationException();
 
         private static readonly Func<PlayerContext, int, int, IEnumerable<Player>> QueryPlayersWithRankAscending =
             EF.CompileQuery(
-                ( PlayerContext context, int offset, int count ) => context.Players
-                    .OrderBy( entity => EF.Property<dynamic>( entity, "Level" ) )
-                    .ThenBy( entity => EF.Property<dynamic>( entity, "Exp" ) )
-                    .Skip( offset )
-                    .Take( count )
-                    .Include( p => p.Bank )
-                    .Include( p => p.Hotbar )
-                    .Include( p => p.Quests )
-                    .Include( p => p.Variables )
-                    .Include( p => p.Items )
-                    .Include( p => p.Spells )
+                (PlayerContext context, int offset, int count) => context.Players
+                    .OrderBy(entity => EF.Property<dynamic>(entity, "Level"))
+                    .ThenBy(entity => EF.Property<dynamic>(entity, "Exp"))
+                    .Skip(offset)
+                    .Take(count)
+                    .Include(p => p.Bank)
+                    .Include(p => p.Hotbar)
+                    .Include(p => p.Quests)
+                    .Include(p => p.Variables)
+                    .Include(p => p.Items)
+                    .Include(p => p.Spells)
             ) ??
             throw new InvalidOperationException();
 
         private static readonly Func<PlayerContext, Guid, Player> QueryPlayerById =
             EF.CompileQuery(
-                ( PlayerContext context, Guid id ) => context.Players.Where( p => p.Id == id )
-                    .Include( p => p.Bank )
-                    .Include( p => p.Hotbar )
-                    .Include( p => p.Quests )
-                    .Include( p => p.Variables )
-                    .Include( p => p.Items )
-                    .Include( p => p.Spells )
+                (PlayerContext context, Guid id) => context.Players.Where(p => p.Id == id)
+                    .Include(p => p.Bank)
+                    .Include(p => p.Hotbar)
+                    .Include(p => p.Quests)
+                    .Include(p => p.Variables)
+                    .Include(p => p.Items)
+                    .Include(p => p.Spells)
                     .FirstOrDefault()
             ) ??
             throw new InvalidOperationException();
 
         private static readonly Func<PlayerContext, string, Player> QueryPlayerByName =
             EF.CompileQuery(
-                ( PlayerContext context, string name ) => context.Players
-                .Where( p => p.Name == name )
-                    .Include( p => p.Bank )
-                    .Include( p => p.Hotbar )
-                    .Include( p => p.Quests )
-                    .Include( p => p.Variables )
-                    .Include( p => p.Items )
-                    .Include( p => p.Spells )
+                (PlayerContext context, string name) => context.Players
+                .Where(p => p.Name == name)
+                    .Include(p => p.Bank)
+                    .Include(p => p.Hotbar)
+                    .Include(p => p.Quests)
+                    .Include(p => p.Variables)
+                    .Include(p => p.Items)
+                    .Include(p => p.Spells)
                     .FirstOrDefault()
             ) ??
             throw new InvalidOperationException();
 
         private static readonly Func<PlayerContext, string, bool> AnyPlayerByName =
             EF.CompileQuery(
-                ( PlayerContext context, string name ) => context.Players.Where( p => p.Name == name ).Any() );
+                (PlayerContext context, string name) => context.Players.Where(p => p.Name == name).Any());
 
         #endregion
 

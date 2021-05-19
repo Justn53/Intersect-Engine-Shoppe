@@ -42,47 +42,47 @@ namespace Intersect.Client.Interface.Menu
         private Label mWindowHeader;
 
         //Init
-        public ForgotPasswordWindow( Canvas parent, MainMenu mainMenu, ImagePanel parentPanel )
+        public ForgotPasswordWindow(Canvas parent, MainMenu mainMenu, ImagePanel parentPanel)
         {
             //Assign References
             mMainMenu = mainMenu;
 
             //Main Menu Window
-            mResetWindow = new ImagePanel( parent, "ForgotPasswordWindow" );
+            mResetWindow = new ImagePanel(parent, "ForgotPasswordWindow");
             mResetWindow.IsHidden = true;
 
             //Menu Header
-            mWindowHeader = new Label( mResetWindow, "Header" );
-            mWindowHeader.SetText( Strings.ForgotPass.title );
+            mWindowHeader = new Label(mResetWindow, "Header");
+            mWindowHeader.SetText(Strings.ForgotPass.title);
 
-            mInputBackground = new ImagePanel( mResetWindow, "InputPanel" );
+            mInputBackground = new ImagePanel(mResetWindow, "InputPanel");
 
             //Login Username Label
-            mInputLabel = new Label( mInputBackground, "InputLabel" );
-            mInputLabel.SetText( Strings.ForgotPass.label );
+            mInputLabel = new Label(mInputBackground, "InputLabel");
+            mInputLabel.SetText(Strings.ForgotPass.label);
 
             //Login Username Textbox
-            mInputTextbox = new TextBox( mInputBackground, "InputField" );
+            mInputTextbox = new TextBox(mInputBackground, "InputField");
             mInputTextbox.SubmitPressed += Textbox_SubmitPressed;
             mInputTextbox.Clicked += Textbox_Clicked;
 
-            mHintLabelTemplate = new Label( mResetWindow, "HintLabel" );
+            mHintLabelTemplate = new Label(mResetWindow, "HintLabel");
             mHintLabelTemplate.IsHidden = true;
 
             //Login - Send Login Button
-            mSubmitBtn = new Button( mResetWindow, "SubmitButton" );
-            mSubmitBtn.SetText( Strings.ForgotPass.submit );
+            mSubmitBtn = new Button(mResetWindow, "SubmitButton");
+            mSubmitBtn.SetText(Strings.ForgotPass.submit);
             mSubmitBtn.Clicked += SubmitBtn_Clicked;
 
             //Login - Back Button
-            mBackBtn = new Button( mResetWindow, "BackButton" );
-            mBackBtn.SetText( Strings.ForgotPass.back );
+            mBackBtn = new Button(mResetWindow, "BackButton");
+            mBackBtn.SetText(Strings.ForgotPass.back);
             mBackBtn.Clicked += BackBtn_Clicked;
 
-            mResetWindow.LoadJsonUi( GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString() );
+            mResetWindow.LoadJsonUi(GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString());
 
-            mHintLabel = new RichLabel( mResetWindow );
-            mHintLabel.SetBounds( mHintLabelTemplate.Bounds );
+            mHintLabel = new RichLabel(mResetWindow);
+            mHintLabel.SetBounds(mHintLabelTemplate.Bounds);
             mHintLabelTemplate.IsHidden = false;
             mHintLabel.AddText(
                 Strings.ForgotPass.hint, mHintLabelTemplate.TextColor,
@@ -93,23 +93,23 @@ namespace Intersect.Client.Interface.Menu
 
         public bool IsHidden => mResetWindow.IsHidden;
 
-        private void Textbox_Clicked( Base sender, ClickedEventArgs arguments )
+        private void Textbox_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            Globals.InputManager.OpenKeyboard( GameInput.KeyboardType.Normal, mInputTextbox.Text, false, false, false );
+            Globals.InputManager.OpenKeyboard(GameInput.KeyboardType.Normal, mInputTextbox.Text, false, false, false);
         }
 
         //Methods
         public void Update()
         {
-            if( !Networking.Network.Connected )
+            if (!Networking.Network.Connected)
             {
                 Hide();
                 mMainMenu.Show();
-                Interface.MsgboxErrors.Add( new KeyValuePair<string, string>( "", Strings.Errors.lostconnection ) );
+                Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", Strings.Errors.lostconnection));
             }
 
             // Re-Enable our buttons if we're not waiting for the server anymore with it disabled.
-            if( !Globals.WaitingOnServer && mSubmitBtn.IsDisabled )
+            if (!Globals.WaitingOnServer && mSubmitBtn.IsDisabled)
             {
                 mSubmitBtn.Enable();
             }
@@ -126,20 +126,20 @@ namespace Intersect.Client.Interface.Menu
             mInputTextbox.Text = "";
         }
 
-        void BackBtn_Clicked( Base sender, ClickedEventArgs arguments )
+        void BackBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
             Hide();
             Interface.MenuUi.MainMenu.NotifyOpenLogin();
         }
 
-        void Textbox_SubmitPressed( Base sender, EventArgs arguments )
+        void Textbox_SubmitPressed(Base sender, EventArgs arguments)
         {
             TrySendCode();
         }
 
-        void SubmitBtn_Clicked( Base sender, ClickedEventArgs arguments )
+        void SubmitBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            if( Globals.WaitingOnServer )
+            if (Globals.WaitingOnServer)
             {
                 return;
             }
@@ -151,23 +151,23 @@ namespace Intersect.Client.Interface.Menu
 
         public void TrySendCode()
         {
-            if( !Networking.Network.Connected )
+            if (!Networking.Network.Connected)
             {
-                Interface.MsgboxErrors.Add( new KeyValuePair<string, string>( "", Strings.Errors.notconnected ) );
+                Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", Strings.Errors.notconnected));
 
                 return;
             }
 
-            if( !FieldChecking.IsValidUsername( mInputTextbox?.Text, Strings.Regex.username ) &&
-                !FieldChecking.IsWellformedEmailAddress( mInputTextbox?.Text, Strings.Regex.email ) )
+            if (!FieldChecking.IsValidUsername(mInputTextbox?.Text, Strings.Regex.username) &&
+                !FieldChecking.IsWellformedEmailAddress(mInputTextbox?.Text, Strings.Regex.email))
             {
-                Interface.MsgboxErrors.Add( new KeyValuePair<string, string>( "", Strings.Errors.usernameinvalid ) );
+                Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", Strings.Errors.usernameinvalid));
 
                 return;
             }
 
-            Interface.MenuUi.MainMenu.OpenResetPassword( mInputTextbox?.Text );
-            PacketSender.SendRequestPasswordReset( mInputTextbox?.Text );
+            Interface.MenuUi.MainMenu.OpenResetPassword(mInputTextbox?.Text);
+            PacketSender.SendRequestPasswordReset(mInputTextbox?.Text);
         }
 
     }

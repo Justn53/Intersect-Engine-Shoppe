@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public MapAreaPacket( MapPacket[] maps )
+        public MapAreaPacket(MapPacket[] maps)
         {
             Maps = maps;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public MapPacket[] Maps { get; set; }
 
     }

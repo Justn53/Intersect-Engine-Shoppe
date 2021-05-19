@@ -11,12 +11,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public TargetOverridePacket( Guid targetId )
+        public TargetOverridePacket(Guid targetId)
         {
             TargetId = targetId;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid TargetId { get; set; }
 
     }

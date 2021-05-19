@@ -15,15 +15,15 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private OpenCraftingTableCommand mMyCommand;
 
-        public EventCommandOpenCraftingTable( OpenCraftingTableCommand refCommand, FrmEvent editor )
+        public EventCommandOpenCraftingTable(OpenCraftingTableCommand refCommand, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
             mEventEditor = editor;
             InitLocalization();
             cmbTable.Items.Clear();
-            cmbTable.Items.AddRange( CraftingTableBase.Names );
-            cmbTable.SelectedIndex = CraftingTableBase.ListIndex( mMyCommand.CraftingTableId );
+            cmbTable.Items.AddRange(CraftingTableBase.Names);
+            cmbTable.SelectedIndex = CraftingTableBase.ListIndex(mMyCommand.CraftingTableId);
         }
 
         private void InitLocalization()
@@ -34,17 +34,17 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             btnCancel.Text = Strings.EventOpenCrafting.cancel;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            if( cmbTable.SelectedIndex > -1 )
+            if (cmbTable.SelectedIndex > -1)
             {
-                mMyCommand.CraftingTableId = CraftingTableBase.IdFromList( cmbTable.SelectedIndex );
+                mMyCommand.CraftingTableId = CraftingTableBase.IdFromList(cmbTable.SelectedIndex);
             }
 
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }

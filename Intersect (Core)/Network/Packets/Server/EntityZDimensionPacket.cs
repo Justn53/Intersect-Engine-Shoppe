@@ -11,16 +11,16 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public EntityZDimensionPacket( Guid entityId, byte level )
+        public EntityZDimensionPacket(Guid entityId, byte level)
         {
             EntityId = entityId;
             Level = level;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid EntityId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public byte Level { get; set; }
 
     }

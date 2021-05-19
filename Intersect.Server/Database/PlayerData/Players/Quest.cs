@@ -18,12 +18,12 @@ namespace Intersect.Server.Database.PlayerData.Players
         {
         }
 
-        public Quest( Guid id )
+        public Quest(Guid id)
         {
             QuestId = id;
         }
 
-        [DatabaseGenerated( DatabaseGeneratedOption.Identity )]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [JsonIgnore]
         public Guid Id { get; private set; }
 
@@ -44,7 +44,7 @@ namespace Intersect.Server.Database.PlayerData.Players
 
         public string Data()
         {
-            return JsonConvert.SerializeObject( this );
+            return JsonConvert.SerializeObject(this);
         }
 
     }

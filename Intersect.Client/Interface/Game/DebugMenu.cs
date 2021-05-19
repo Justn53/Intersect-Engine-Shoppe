@@ -45,93 +45,93 @@ namespace Intersect.Client.Interface.Game
         private Label mInterfaceObjectsLabel;
 
         //Init
-        public DebugMenu( Canvas gameCanvas )
+        public DebugMenu(Canvas gameCanvas)
         {
-            mDebugWindow = new WindowControl( gameCanvas, Strings.Debug.title );
-            mDebugWindow.SetSize( 200, 212 );
-            mDebugWindow.SetPosition( 0, 150 );
+            mDebugWindow = new WindowControl(gameCanvas, Strings.Debug.title);
+            mDebugWindow.SetSize(200, 212);
+            mDebugWindow.SetPosition(0, 150);
             mDebugWindow.DisableResizing();
             mDebugWindow.Margin = Margin.Zero;
             mDebugWindow.Padding = Padding.Zero;
             mDebugWindow.Hide();
 
-            mFpsLabel = new Label( mDebugWindow );
-            mFpsLabel.SetPosition( 4, 4 );
+            mFpsLabel = new Label(mDebugWindow);
+            mFpsLabel.SetPosition(4, 4);
 
-            mPingLabel = new Label( mDebugWindow );
-            mPingLabel.SetPosition( 4, 16 );
+            mPingLabel = new Label(mDebugWindow);
+            mPingLabel.SetPosition(4, 16);
 
-            mDrawsLabel = new Label( mDebugWindow );
-            mDrawsLabel.SetPosition( 4, 28 );
+            mDrawsLabel = new Label(mDebugWindow);
+            mDrawsLabel.SetPosition(4, 28);
 
-            mMapLabel = new Label( mDebugWindow );
-            mMapLabel.SetPosition( 4, 40 );
+            mMapLabel = new Label(mDebugWindow);
+            mMapLabel.SetPosition(4, 40);
 
-            mXLabel = new Label( mDebugWindow );
-            mXLabel.SetPosition( 4, 52 );
+            mXLabel = new Label(mDebugWindow);
+            mXLabel.SetPosition(4, 52);
 
-            mYLabel = new Label( mDebugWindow );
-            mYLabel.SetPosition( 4, 64 );
+            mYLabel = new Label(mDebugWindow);
+            mYLabel.SetPosition(4, 64);
 
-            mZLabel = new Label( mDebugWindow );
-            mZLabel.SetPosition( 4, 76 );
+            mZLabel = new Label(mDebugWindow);
+            mZLabel.SetPosition(4, 76);
 
-            mEntitiesLabel = new Label( mDebugWindow );
-            mEntitiesLabel.SetPosition( 4, 88 );
+            mEntitiesLabel = new Label(mDebugWindow);
+            mEntitiesLabel.SetPosition(4, 88);
 
-            mMapsLoadedLabel = new Label( mDebugWindow );
-            mMapsLoadedLabel.SetPosition( 4, 100 );
+            mMapsLoadedLabel = new Label(mDebugWindow);
+            mMapsLoadedLabel.SetPosition(4, 100);
 
-            mMapsDrawnLabel = new Label( mDebugWindow );
-            mMapsDrawnLabel.SetPosition( 4, 112 );
+            mMapsDrawnLabel = new Label(mDebugWindow);
+            mMapsDrawnLabel.SetPosition(4, 112);
 
-            mEntitiesDrawnLabel = new Label( mDebugWindow );
-            mEntitiesDrawnLabel.SetPosition( 4, 124 );
+            mEntitiesDrawnLabel = new Label(mDebugWindow);
+            mEntitiesDrawnLabel.SetPosition(4, 124);
 
-            mLightsDrawnLabel = new Label( mDebugWindow );
-            mLightsDrawnLabel.SetPosition( 4, 136 );
+            mLightsDrawnLabel = new Label(mDebugWindow);
+            mLightsDrawnLabel.SetPosition(4, 136);
 
-            mTimeLabel = new Label( mDebugWindow );
-            mTimeLabel.SetPosition( 4, 148 );
+            mTimeLabel = new Label(mDebugWindow);
+            mTimeLabel.SetPosition(4, 148);
 
-            mInterfaceObjectsLabel = new Label( mDebugWindow );
-            mInterfaceObjectsLabel.SetPosition( 4, 160 );
+            mInterfaceObjectsLabel = new Label(mDebugWindow);
+            mInterfaceObjectsLabel.SetPosition(4, 160);
         }
 
         public void Update()
         {
-            if( mDebugWindow.IsHidden )
+            if (mDebugWindow.IsHidden)
             {
                 return;
             }
 
-            mFpsLabel.Text = Strings.Debug.fps.ToString( Graphics.Renderer.GetFps() );
-            mPingLabel.Text = Strings.Debug.ping.ToString( Networking.Network.Ping );
-            mDrawsLabel.Text = Strings.Debug.draws.ToString( Graphics.DrawCalls );
-            if( MapInstance.Get( Globals.Me.CurrentMap ) != null )
+            mFpsLabel.Text = Strings.Debug.fps.ToString(Graphics.Renderer.GetFps());
+            mPingLabel.Text = Strings.Debug.ping.ToString(Networking.Network.Ping);
+            mDrawsLabel.Text = Strings.Debug.draws.ToString(Graphics.DrawCalls);
+            if (MapInstance.Get(Globals.Me.CurrentMap) != null)
             {
-                mMapLabel.Text = Strings.Debug.map.ToString( MapInstance.Get( Globals.Me.CurrentMap ).Name );
-                mXLabel.Text = Strings.Debug.x.ToString( Globals.Me.X );
-                mYLabel.Text = Strings.Debug.y.ToString( Globals.Me.Y );
-                mZLabel.Text = Strings.Debug.z.ToString( Globals.Me.Z );
+                mMapLabel.Text = Strings.Debug.map.ToString(MapInstance.Get(Globals.Me.CurrentMap).Name);
+                mXLabel.Text = Strings.Debug.x.ToString(Globals.Me.X);
+                mYLabel.Text = Strings.Debug.y.ToString(Globals.Me.Y);
+                mZLabel.Text = Strings.Debug.z.ToString(Globals.Me.Z);
             }
 
             var entityCount = Globals.Entities.Count;
-            foreach( MapInstance map in MapInstance.Lookup.Values )
+            foreach (MapInstance map in MapInstance.Lookup.Values)
             {
-                if( map != null )
+                if (map != null)
                 {
                     entityCount += map.LocalEntities.Count;
                 }
             }
 
-            mEntitiesLabel.Text = Strings.Debug.knownentities.ToString( Globals.Entities.Count );
-            mMapsLoadedLabel.Text = Strings.Debug.knownmaps.ToString( MapInstance.Lookup.Count );
-            mMapsDrawnLabel.Text = Strings.Debug.mapsdrawn.ToString( Graphics.MapsDrawn );
-            mEntitiesDrawnLabel.Text = Strings.Debug.entitiesdrawn.ToString( +Graphics.EntitiesDrawn );
-            mLightsDrawnLabel.Text = Strings.Debug.lightsdrawn.ToString( Graphics.LightsDrawn );
-            mTimeLabel.Text = Strings.Debug.time.ToString( Time.GetTime() );
-            mInterfaceObjectsLabel.Text = Strings.Debug.interfaceobjects.ToString( Interface.GameUi.GameCanvas.Children.ToArray().SelectManyRecursive( x => x.Children ).ToArray().Length );
+            mEntitiesLabel.Text = Strings.Debug.knownentities.ToString(Globals.Entities.Count);
+            mMapsLoadedLabel.Text = Strings.Debug.knownmaps.ToString(MapInstance.Lookup.Count);
+            mMapsDrawnLabel.Text = Strings.Debug.mapsdrawn.ToString(Graphics.MapsDrawn);
+            mEntitiesDrawnLabel.Text = Strings.Debug.entitiesdrawn.ToString(+Graphics.EntitiesDrawn);
+            mLightsDrawnLabel.Text = Strings.Debug.lightsdrawn.ToString(Graphics.LightsDrawn);
+            mTimeLabel.Text = Strings.Debug.time.ToString(Time.GetTime());
+            mInterfaceObjectsLabel.Text = Strings.Debug.interfaceobjects.ToString(Interface.GameUi.GameCanvas.Children.ToArray().SelectManyRecursive(x => x.Children).ToArray().Length);
         }
 
         public void Show()

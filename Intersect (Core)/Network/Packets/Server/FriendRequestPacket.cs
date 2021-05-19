@@ -11,16 +11,16 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public FriendRequestPacket( Guid friendId, string friendName )
+        public FriendRequestPacket(Guid friendId, string friendName)
         {
             FriendId = friendId;
             FriendName = friendName;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid FriendId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public string FriendName { get; set; }
 
     }

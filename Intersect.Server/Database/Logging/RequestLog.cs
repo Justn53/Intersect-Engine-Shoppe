@@ -21,14 +21,14 @@ namespace Intersect.Server.Database.Logging
 
         private string mMethod;
 
-        [DatabaseGenerated( DatabaseGeneratedOption.Identity )]
-        [Column( Order = 0 )]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(Order = 0)]
         [Key]
         public Guid Id { get; set; }
 
         public DateTime Time { get; set; }
 
-        [JsonConverter( typeof( StringEnumConverter ) )]
+        [JsonConverter(typeof(StringEnumConverter))]
         public LogLevel Level { get; set; }
 
         public string Method
@@ -45,8 +45,8 @@ namespace Intersect.Server.Database.Logging
 
         private string SerializedRequestHeaders
         {
-            get => JsonConvert.SerializeObject( RequestHeaders );
-            set => RequestHeaders = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>( value );
+            get => JsonConvert.SerializeObject(RequestHeaders);
+            set => RequestHeaders = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(value);
         }
 
         [NotMapped]
@@ -54,8 +54,8 @@ namespace Intersect.Server.Database.Logging
 
         private string SerializedResponseHeaders
         {
-            get => JsonConvert.SerializeObject( ResponseHeaders );
-            set => ResponseHeaders = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>( value );
+            get => JsonConvert.SerializeObject(ResponseHeaders);
+            set => ResponseHeaders = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(value);
         }
 
         [NotMapped]
@@ -65,16 +65,16 @@ namespace Intersect.Server.Database.Logging
         {
 
             /// <inheritdoc />
-            public void Configure( EntityTypeBuilder<RequestLog> builder )
+            public void Configure(EntityTypeBuilder<RequestLog> builder)
             {
-                if( builder == null )
+                if (builder == null)
                 {
-                    throw new ArgumentNullException( nameof( builder ) );
+                    throw new ArgumentNullException(nameof(builder));
                 }
 
-                builder.Property( rl => rl.SerializedRequestHeaders ).IsNotNull().HasColumnName( nameof( RequestHeaders ) );
+                builder.Property(rl => rl.SerializedRequestHeaders).IsNotNull().HasColumnName(nameof(RequestHeaders));
 
-                builder.Property( rl => rl.SerializedResponseHeaders ).IsNotNull().HasColumnName( nameof( ResponseHeaders ) );
+                builder.Property(rl => rl.SerializedResponseHeaders).IsNotNull().HasColumnName(nameof(ResponseHeaders));
             }
 
         }

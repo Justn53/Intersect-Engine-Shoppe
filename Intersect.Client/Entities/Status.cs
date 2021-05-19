@@ -23,7 +23,7 @@ namespace Intersect.Client.Entities
 
         public StatusTypes Type;
 
-        public Status( Guid spellId, StatusTypes type, string data, long timeRemaining, long totalDuration )
+        public Status(Guid spellId, StatusTypes type, string data, long timeRemaining, long totalDuration)
         {
             SpellId = spellId;
             Type = type;

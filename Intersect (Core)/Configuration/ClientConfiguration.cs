@@ -16,20 +16,20 @@ namespace Intersect.Configuration
         public const string DefaultPath = @"resources/config.json";
 
         /// <inheritdoc />
-        public ClientConfiguration Load( string filePath = DefaultPath, bool failQuietly = false )
+        public ClientConfiguration Load(string filePath = DefaultPath, bool failQuietly = false)
         {
-            return ConfigurationHelper.Load( this, filePath, failQuietly );
+            return ConfigurationHelper.Load(this, filePath, failQuietly);
         }
 
         /// <inheritdoc />
-        public ClientConfiguration Save( string filePath = DefaultPath, bool failQuietly = false )
+        public ClientConfiguration Save(string filePath = DefaultPath, bool failQuietly = false)
         {
-            return ConfigurationHelper.Save( this, filePath, failQuietly );
+            return ConfigurationHelper.Save(this, filePath, failQuietly);
         }
 
-        public static ClientConfiguration LoadAndSave( string filePath = null )
+        public static ClientConfiguration LoadAndSave(string filePath = null)
         {
-            return ConfigurationHelper.LoadSafely( Instance, filePath );
+            return ConfigurationHelper.LoadSafely(Instance, filePath);
         }
 
         #region Constants
@@ -56,12 +56,12 @@ namespace Intersect.Configuration
 
         public void Validate()
         {
-            Host = string.IsNullOrWhiteSpace( Host ) ? DEFAULT_HOST : Host.Trim();
-            Port = Math.Min( Math.Max( Port, (ushort)1 ), ushort.MaxValue );
-            GameFont = string.IsNullOrWhiteSpace( GameFont ) ? DEFAULT_FONT : GameFont.Trim();
-            UIFont = string.IsNullOrWhiteSpace( UIFont ) ? DEFAULT_UI_FONT : UIFont.Trim();
-            ChatLines = Math.Min( Math.Max( ChatLines, 10 ), 500 );
-            IntroImages = new List<string>( IntroImages?.Distinct() ?? new List<string>() );
+            Host = string.IsNullOrWhiteSpace(Host) ? DEFAULT_HOST : Host.Trim();
+            Port = Math.Min(Math.Max(Port, (ushort)1), ushort.MaxValue);
+            GameFont = string.IsNullOrWhiteSpace(GameFont) ? DEFAULT_FONT : GameFont.Trim();
+            UIFont = string.IsNullOrWhiteSpace(UIFont) ? DEFAULT_UI_FONT : UIFont.Trim();
+            ChatLines = Math.Min(Math.Max(ChatLines, 10), 500);
+            IntroImages = new List<string>(IntroImages?.Distinct() ?? new List<string>());
         }
 
         #endregion
@@ -133,13 +133,13 @@ namespace Intersect.Configuration
         #region Serialization Hooks
 
         [OnDeserializing]
-        internal void OnDeserializing( StreamingContext context )
+        internal void OnDeserializing(StreamingContext context)
         {
             IntroImages?.Clear();
         }
 
         [OnDeserialized]
-        internal void OnDeserialized( StreamingContext context )
+        internal void OnDeserialized(StreamingContext context)
         {
             Validate();
         }

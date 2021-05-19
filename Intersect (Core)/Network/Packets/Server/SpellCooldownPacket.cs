@@ -13,10 +13,10 @@ namespace Intersect.Network.Packets.Server
         }
 
 
-        [Key( 0 )]
+        [Key(0)]
         public Dictionary<Guid, long> SpellCds;
 
-        public SpellCooldownPacket( Dictionary<Guid, long> spellCds )
+        public SpellCooldownPacket(Dictionary<Guid, long> spellCds)
         {
             SpellCds = spellCds;
         }

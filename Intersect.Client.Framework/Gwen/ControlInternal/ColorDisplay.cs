@@ -17,10 +17,10 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Initializes a new instance of the <see cref="ColorDisplay" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ColorDisplay( Base parent ) : base( parent )
+        public ColorDisplay(Base parent) : base(parent)
         {
-            SetSize( 32, 32 );
-            mColor = Color.FromArgb( 255, 255, 0, 0 );
+            SetSize(32, 32);
+            mColor = Color.FromArgb(255, 255, 0, 0);
 
             //m_DrawCheckers = true;
         }
@@ -38,34 +38,34 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         public int R
         {
             get => mColor.R;
-            set => mColor = Color.FromArgb( mColor.A, value, mColor.G, mColor.B );
+            set => mColor = Color.FromArgb(mColor.A, value, mColor.G, mColor.B);
         }
 
         public int G
         {
             get => mColor.G;
-            set => mColor = Color.FromArgb( mColor.A, mColor.R, value, mColor.B );
+            set => mColor = Color.FromArgb(mColor.A, mColor.R, value, mColor.B);
         }
 
         public int B
         {
             get => mColor.B;
-            set => mColor = Color.FromArgb( mColor.A, mColor.R, mColor.G, value );
+            set => mColor = Color.FromArgb(mColor.A, mColor.R, mColor.G, value);
         }
 
         public int A
         {
             get => mColor.A;
-            set => mColor = Color.FromArgb( value, mColor.R, mColor.G, mColor.B );
+            set => mColor = Color.FromArgb(value, mColor.R, mColor.G, mColor.B);
         }
 
         /// <summary>
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawColorDisplay( this, mColor );
+            skin.DrawColorDisplay(this, mColor);
         }
 
     }

@@ -16,13 +16,13 @@ namespace Intersect.Server.Core.Commands
             LocaleCommand command,
             LocaleArgument argument,
             params ICommandArgument[] arguments
-        ) : base( command, argument, arguments )
+        ) : base(command, argument, arguments)
         {
         }
 
-        protected override Client FindTarget( ServerContext context, ParserResult result, string targetName )
+        protected override Client FindTarget(ServerContext context, ParserResult result, string targetName)
         {
-            if( string.IsNullOrWhiteSpace( targetName ) )
+            if (string.IsNullOrWhiteSpace(targetName))
             {
                 return null;
             }
@@ -32,7 +32,7 @@ namespace Intersect.Server.Core.Commands
                 {
                     var playerName = client?.Entity?.Name;
 
-                    return string.Equals( playerName, targetName, StringComparison.OrdinalIgnoreCase );
+                    return string.Equals(playerName, targetName, StringComparison.OrdinalIgnoreCase);
                 }
             );
         }

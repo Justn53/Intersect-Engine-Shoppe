@@ -30,7 +30,7 @@ namespace Intersect.Server.Core
             /// This is our thread pool for handling server/game logic. This includes npcs, event processing, map updating, projectiles, spell casting, etc. 
             /// Min/Max Number of Threads & Idle Timeouts are set via server config.
             /// </summary>
-            public readonly SmartThreadPool LogicPool = new SmartThreadPool( Options.Instance.Processing.LogicThreadIdleTimeout, Options.Instance.Processing.MaxLogicThreads, Options.Instance.Processing.MinLogicThreads );
+            public readonly SmartThreadPool LogicPool = new SmartThreadPool(Options.Instance.Processing.LogicThreadIdleTimeout, Options.Instance.Processing.MaxLogicThreads, Options.Instance.Processing.MinLogicThreads);
 
             /// <summary>
             /// Queue of active maps which maps are added to after being updated. Once a map makes it to the front of the queue they are updated again.
@@ -49,15 +49,15 @@ namespace Intersect.Server.Core
             /// </summary>
             public readonly HashSet<Guid> ActiveMaps = new HashSet<Guid>();
 
-            public LogicThread() : base( "ServerLogic" )
+            public LogicThread() : base("ServerLogic")
             {
             }
 
-            protected override void ThreadStart( ServerContext serverContext )
+            protected override void ThreadStart(ServerContext serverContext)
             {
-                if( serverContext == null )
+                if (serverContext == null)
                 {
-                    throw new ArgumentNullException( nameof( serverContext ) );
+                    throw new ArgumentNullException(nameof(serverContext));
                 }
 
                 try
@@ -71,50 +71,50 @@ namespace Intersect.Server.Core
                     var sourceMaps = new HashSet<Guid>();
                     var players = 0;
 
-                    while( ServerContext.Instance.IsRunning )
+                    while (ServerContext.Instance.IsRunning)
                     {
                         var startTime = Globals.Timing.Milliseconds;
 
 
-                        if( startTime > updateTimer )
+                        if (startTime > updateTimer)
                         {
                             //Resync Active Maps By Scanning Players and Their Surrounding Maps
                             players = 0;
                             processedMaps.Clear();
                             sourceMaps.Clear();
-                            foreach( var player in Player.OnlineList )
+                            foreach (var player in Player.OnlineList)
                             {
-                                if( player != null )
+                                if (player != null)
                                     players++;
 
                                 var plyrMap = player?.MapId ?? Guid.Empty;
-                                if( plyrMap != Guid.Empty && !sourceMaps.Contains( plyrMap ) )
+                                if (plyrMap != Guid.Empty && !sourceMaps.Contains(plyrMap))
                                 {
-                                    var mapInstance = MapInstance.Get( plyrMap );
-                                    if( mapInstance != null )
+                                    var mapInstance = MapInstance.Get(plyrMap);
+                                    if (mapInstance != null)
                                     {
-                                        foreach( var map in mapInstance.GetSurroundingMaps( true ) )
+                                        foreach (var map in mapInstance.GetSurroundingMaps(true))
                                         {
-                                            if( !processedMaps.Contains( map.Id ) )
+                                            if (!processedMaps.Contains(map.Id))
                                             {
-                                                if( !ActiveMaps.Contains( map.Id ) )
+                                                if (!ActiveMaps.Contains(map.Id))
                                                 {
-                                                    AddToQueue( map );
+                                                    AddToQueue(map);
                                                 }
-                                                processedMaps.Add( map.Id );
+                                                processedMaps.Add(map.Id);
                                             }
                                         }
                                     }
-                                    sourceMaps.Add( plyrMap );
+                                    sourceMaps.Add(plyrMap);
                                 }
                             }
 
                             //Remove any Active Maps that we didn't deem neccessarry of processing
-                            foreach( var map in ActiveMaps.ToArray() )
+                            foreach (var map in ActiveMaps.ToArray())
                             {
-                                if( !processedMaps.Contains( map ) )
+                                if (!processedMaps.Contains(map))
                                 {
-                                    ActiveMaps.Remove( map );
+                                    ActiveMaps.Remove(map);
                                 }
                             }
 
@@ -123,24 +123,24 @@ namespace Intersect.Server.Core
                         }
 
                         //Check our map update queues. If maps are ready to be updated based on our update intervals set in the server config then tell our thread pool to queue the map update as a work item.
-                        lock( LogicLock )
+                        lock (LogicLock)
                         {
-                            if( Options.Instance.Processing.MapUpdateInterval != Options.Instance.Processing.ProjectileUpdateInterval )
+                            if (Options.Instance.Processing.MapUpdateInterval != Options.Instance.Processing.ProjectileUpdateInterval)
                             {
-                                while( MapProjectileUpdateQueue.TryPeek( out MapInstance result ) && result.LastProjectileUpdateTime + Options.Instance.Processing.ProjectileUpdateInterval < startTime )
+                                while (MapProjectileUpdateQueue.TryPeek(out MapInstance result) && result.LastProjectileUpdateTime + Options.Instance.Processing.ProjectileUpdateInterval < startTime)
                                 {
-                                    if( MapProjectileUpdateQueue.TryDequeue( out MapInstance sameResult ) )
+                                    if (MapProjectileUpdateQueue.TryDequeue(out MapInstance sameResult))
                                     {
-                                        LogicPool.QueueWorkItem( UpdateMap, sameResult, true );
+                                        LogicPool.QueueWorkItem(UpdateMap, sameResult, true);
                                     }
                                 }
                             }
 
-                            while( MapUpdateQueue.TryPeek( out MapInstance result ) && result.LastUpdateTime + Options.Instance.Processing.MapUpdateInterval < startTime )
+                            while (MapUpdateQueue.TryPeek(out MapInstance result) && result.LastUpdateTime + Options.Instance.Processing.MapUpdateInterval < startTime)
                             {
-                                if( MapUpdateQueue.TryDequeue( out MapInstance sameResult ) )
+                                if (MapUpdateQueue.TryDequeue(out MapInstance sameResult))
                                 {
-                                    LogicPool.QueueWorkItem( UpdateMap, sameResult, false );
+                                    LogicPool.QueueWorkItem(UpdateMap, sameResult, false);
                                 }
                             }
                         }
@@ -149,7 +149,7 @@ namespace Intersect.Server.Core
                         swCps++;
 
                         var endTime = Globals.Timing.Milliseconds;
-                        if( Globals.Timing.Milliseconds > swCpsTimer )
+                        if (Globals.Timing.Milliseconds > swCpsTimer)
                         {
                             Globals.Cps = swCps;
                             swCps = 0;
@@ -157,13 +157,13 @@ namespace Intersect.Server.Core
                             Console.Title = $"Intersect Server - CPS: {Globals.Cps}, Players: {players}, Active Maps: {ActiveMaps.Count}, Logic Threads: {LogicPool.ActiveThreads} ({LogicPool.InUseThreads} In Use), Pool Queue: {LogicPool.CurrentWorkItemsCount}, Idle: {LogicPool.IsIdle}";
                         }
 
-                        Thread.Sleep( 1 );
+                        Thread.Sleep(1);
                     }
                     LogicPool.Shutdown();
                 }
-                catch( Exception exception )
+                catch (Exception exception)
                 {
-                    ServerContext.DispatchUnhandledException( exception );
+                    ServerContext.DispatchUnhandledException(exception);
                 }
                 finally
                 {
@@ -175,14 +175,14 @@ namespace Intersect.Server.Core
             /// Adds a map to the map update queues for our logic loop to start processing.
             /// </summary>
             /// <param name="map">The map in which we want to add to our update queues.</param>
-            private void AddToQueue( MapInstance map )
+            private void AddToQueue(MapInstance map)
             {
-                if( Options.Instance.Processing.MapUpdateInterval != Options.Instance.Processing.ProjectileUpdateInterval )
+                if (Options.Instance.Processing.MapUpdateInterval != Options.Instance.Processing.ProjectileUpdateInterval)
                 {
-                    MapProjectileUpdateQueue.Enqueue( map );
+                    MapProjectileUpdateQueue.Enqueue(map);
                 }
-                MapUpdateQueue.Enqueue( map );
-                ActiveMaps.Add( map.Id );
+                MapUpdateQueue.Enqueue(map);
+                ActiveMaps.Add(map.Id);
             }
 
             /// <summary>
@@ -190,34 +190,34 @@ namespace Intersect.Server.Core
             /// </summary>
             /// <param name="map">The map our thread updates.</param>
             /// <param name="onlyProjectiles">If true only map projectiles are updated and not the entire map.</param>
-            private void UpdateMap( MapInstance map, bool onlyProjectiles )
+            private void UpdateMap(MapInstance map, bool onlyProjectiles)
             {
                 try
                 {
-                    if( onlyProjectiles )
+                    if (onlyProjectiles)
                     {
-                        map.UpdateProjectiles( Globals.Timing.Milliseconds );
-                        if( ActiveMaps.Contains( map.Id ) )
+                        map.UpdateProjectiles(Globals.Timing.Milliseconds);
+                        if (ActiveMaps.Contains(map.Id))
                         {
-                            MapProjectileUpdateQueue.Enqueue( map );
+                            MapProjectileUpdateQueue.Enqueue(map);
                         }
                     }
                     else
                     {
-                        map.Update( Globals.Timing.Milliseconds );
-                        if( ActiveMaps.Contains( map.Id ) )
+                        map.Update(Globals.Timing.Milliseconds);
+                        if (ActiveMaps.Contains(map.Id))
                         {
-                            MapUpdateQueue.Enqueue( map );
+                            MapUpdateQueue.Enqueue(map);
                         }
                     }
                 }
-                catch( ThreadAbortException )
+                catch (ThreadAbortException)
                 {
                     //Ignore if this pool is being shut down
                 }
-                catch( Exception exception )
+                catch (Exception exception)
                 {
-                    ServerContext.DispatchUnhandledException( exception );
+                    ServerContext.DispatchUnhandledException(exception);
                 }
             }
 

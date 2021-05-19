@@ -20,7 +20,7 @@
 
         public bool IsValid()
         {
-            return !string.IsNullOrEmpty( FromAddress ) && !string.IsNullOrEmpty( Host );
+            return !string.IsNullOrEmpty(FromAddress) && !string.IsNullOrEmpty(Host);
         }
 
     }

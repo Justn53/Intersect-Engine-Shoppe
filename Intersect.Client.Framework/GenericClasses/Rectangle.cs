@@ -48,7 +48,7 @@ namespace Intersect.Client.Framework.GenericClasses
 
         public static Rectangle Empty => new Rectangle();
 
-        public Rectangle( int x, int y, int w, int h )
+        public Rectangle(int x, int y, int w, int h)
         {
             mX = x;
             mY = y;
@@ -56,34 +56,34 @@ namespace Intersect.Client.Framework.GenericClasses
             mHeight = h;
         }
 
-        public static Rectangle Intersect( Rectangle a, Rectangle b )
+        public static Rectangle Intersect(Rectangle a, Rectangle b)
         {
             // MS.NET returns a non-empty rectangle if the two rectangles
             // touch each other
-            if( !a.IntersectsWithInclusive( b ) )
+            if (!a.IntersectsWithInclusive(b))
             {
                 return Empty;
             }
 
             return Rectangle.FromLtrb(
-                Math.Max( a.Left, b.Left ), Math.Max( a.Top, b.Top ), Math.Min( a.Right, b.Right ),
-                Math.Min( a.Bottom, b.Bottom )
+                Math.Max(a.Left, b.Left), Math.Max(a.Top, b.Top), Math.Min(a.Right, b.Right),
+                Math.Min(a.Bottom, b.Bottom)
             );
         }
 
-        public static Rectangle FromLtrb( int left, int top, int right, int bottom )
+        public static Rectangle FromLtrb(int left, int top, int right, int bottom)
         {
-            return new Rectangle( left, top, right - left, bottom - top );
+            return new Rectangle(left, top, right - left, bottom - top);
         }
 
-        public bool IntersectsWith( Rectangle rect )
+        public bool IntersectsWith(Rectangle rect)
         {
-            return !( Left >= rect.Right || Right <= rect.Left || Top >= rect.Bottom || Bottom <= rect.Top );
+            return !(Left >= rect.Right || Right <= rect.Left || Top >= rect.Bottom || Bottom <= rect.Top);
         }
 
-        private bool IntersectsWithInclusive( Rectangle r )
+        private bool IntersectsWithInclusive(Rectangle r)
         {
-            return !( Left > r.Right || Right < r.Left || Top > r.Bottom || Bottom < r.Top );
+            return !(Left > r.Right || Right < r.Left || Top > r.Bottom || Bottom < r.Top);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Intersect.Client.Framework.GenericClasses
         /// <remarks>
         ///     Checks if an x,y coordinate lies within this Rectangle.
         /// </remarks>
-        public bool Contains( int x, int y )
+        public bool Contains(int x, int y)
         {
             return x >= Left && x < Right && y >= Top && y < Bottom;
         }
@@ -111,31 +111,31 @@ namespace Intersect.Client.Framework.GenericClasses
         /// <remarks>
         ///     Checks if a Point lies within this Rectangle.
         /// </remarks>
-        public bool Contains( Point pt )
+        public bool Contains(Point pt)
         {
-            return Contains( pt.X, pt.Y );
+            return Contains(pt.X, pt.Y);
         }
 
-        public static string ToString( Rectangle rect )
+        public static string ToString(Rectangle rect)
         {
             return rect.X + "," + rect.Y + "," + rect.Width + "," + rect.Height;
         }
 
-        public static Rectangle FromString( string rect )
+        public static Rectangle FromString(string rect)
         {
-            if( string.IsNullOrEmpty( rect ) )
+            if (string.IsNullOrEmpty(rect))
             {
                 return Rectangle.Empty;
             }
 
-            var strs = rect.Split( ",".ToCharArray() );
+            var strs = rect.Split(",".ToCharArray());
             var parts = new int[strs.Length];
-            for( var i = 0; i < strs.Length; i++ )
+            for (var i = 0; i < strs.Length; i++)
             {
-                parts[i] = int.Parse( strs[i] );
+                parts[i] = int.Parse(strs[i]);
             }
 
-            return new Rectangle( parts[0], parts[1], parts[2], parts[3] );
+            return new Rectangle(parts[0], parts[1], parts[2], parts[3]);
         }
 
     }

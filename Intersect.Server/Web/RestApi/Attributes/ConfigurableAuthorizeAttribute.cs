@@ -13,33 +13,33 @@ using Intersect.Server.Web.RestApi.Services;
 namespace Intersect.Server.Web.RestApi.Attributes
 {
 
-    [AttributeUsage( AttributeTargets.Class | AttributeTargets.Method, Inherited = false )]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]
     internal class ConfigurableAuthorizeAttribute : AuthorizeAttribute
     {
         protected IEnumerable<string> InternalRoles =>
-            Roles?.Split( ',' ).Where( role => !string.IsNullOrWhiteSpace( role ) ).Select( role => role.Trim() ) ??
+            Roles?.Split(',').Where(role => !string.IsNullOrWhiteSpace(role)).Select(role => role.Trim()) ??
             Array.Empty<string>();
 
-        protected override bool IsAuthorized( HttpActionContext actionContext )
+        protected override bool IsAuthorized(HttpActionContext actionContext)
         {
-            var authorized = base.IsAuthorized( actionContext );
+            var authorized = base.IsAuthorized(actionContext);
             var whitelistedRoles = InternalRoles?.ToList();
 
-            if( whitelistedRoles?.Count > 0 )
+            if (whitelistedRoles?.Count > 0)
             {
                 return actionContext?.RequestContext?.Principal is ClaimsPrincipal claimsPrincipal &&
                        InternalRoles.Any(
-                           role => !string.IsNullOrWhiteSpace( role ) &&
+                           role => !string.IsNullOrWhiteSpace(role) &&
                                    claimsPrincipal.HasClaim(
                                        claim => IntersectClaimTypes.Role.Equals(
                                                     claim?.Type, StringComparison.OrdinalIgnoreCase
                                                 ) &&
-                                                role.Equals( claim?.Value, StringComparison.OrdinalIgnoreCase )
+                                                role.Equals(claim?.Value, StringComparison.OrdinalIgnoreCase)
                                    )
                        );
             }
 
-            if( authorized )
+            if (authorized)
             {
                 return true;
             }
@@ -48,22 +48,22 @@ namespace Intersect.Server.Web.RestApi.Attributes
             var method = actionContext?.Request?.Method?.Method ?? "GET";
             var service = actionContext?.ControllerContext?.Configuration?.DependencyResolver?.GetAuthorizedRoutes();
 
-            return !service?.RequiresAuthorization( route, method ) ?? false;
+            return !service?.RequiresAuthorization(route, method) ?? false;
         }
 
-        public override void OnAuthorization( HttpActionContext actionContext )
+        public override void OnAuthorization(HttpActionContext actionContext)
         {
-            base.OnAuthorization( actionContext );
+            base.OnAuthorization(actionContext);
         }
 
-        public override Task OnAuthorizationAsync( HttpActionContext actionContext, CancellationToken cancellationToken )
+        public override Task OnAuthorizationAsync(HttpActionContext actionContext, CancellationToken cancellationToken)
         {
-            return base.OnAuthorizationAsync( actionContext, cancellationToken );
+            return base.OnAuthorizationAsync(actionContext, cancellationToken);
         }
 
-        protected override void HandleUnauthorizedRequest( HttpActionContext actionContext )
+        protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
         {
-            base.HandleUnauthorizedRequest( actionContext );
+            base.HandleUnauthorizedRequest(actionContext);
         }
 
     }

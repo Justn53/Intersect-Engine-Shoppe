@@ -56,27 +56,27 @@ namespace Intersect.Config
         /// <summary>
         /// Packet flooding detection thresholds for the game editor. (No Restrictions.)
         /// </summary>
-        [JsonProperty( "EditorFloodThreshholds" )]
+        [JsonProperty("EditorFloodThreshholds")]
         public FloodThreshholds EditorThreshholds = FloodThreshholds.Editor();
 
         /// <summary>
         /// Packet flooding detection thresholds for general players. Pretty strict. 
         /// Might need to be adjusted if there is a lot of high paceed actions/movement/combat in your game.
         /// </summary>
-        [JsonProperty( "PlayerFloodThreshholds" )]
+        [JsonProperty("PlayerFloodThreshholds")]
         public FloodThreshholds PlayerThreshholds = new FloodThreshholds();
 
         /// <summary>
         /// Packet flooding detection thresholds for mods/admins. Hopefully you trust these guys.
         /// Limits need to be higher than general players since they can warp quickly around the world with shift click.
         /// </summary>
-        [JsonProperty( "ModAdminFloodThreshholds" )]
+        [JsonProperty("ModAdminFloodThreshholds")]
         public FloodThreshholds ModAdminThreshholds = FloodThreshholds.Editor();
 
         /// <summary>
         /// Packet flooding detection threshholds for all users who are not yet logged in.
         /// </summary>
-        [JsonProperty( "FloodThreshholds" )] public FloodThreshholds Threshholds = FloodThreshholds.NotLoggedIn();
+        [JsonProperty("FloodThreshholds")] public FloodThreshholds Threshholds = FloodThreshholds.NotLoggedIn();
         #endregion
     }
 

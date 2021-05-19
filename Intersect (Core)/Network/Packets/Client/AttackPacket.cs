@@ -12,12 +12,12 @@ namespace Intersect.Network.Packets.Client
 
         }
 
-        public AttackPacket( Guid target )
+        public AttackPacket(Guid target)
         {
             Target = target;
         }
 
-        [Key( 3 )]
+        [Key(3)]
         public Guid Target { get; set; }
 
     }

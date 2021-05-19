@@ -9,18 +9,18 @@ namespace Intersect.Server.Web.RestApi.Extensions
     public static class HttpStatusCodeExtensions
     {
 
-        public static LogLevel ToIntersectLogLevel( this HttpStatusCode httpStatusCode, HttpMethod httpMethod = null )
+        public static LogLevel ToIntersectLogLevel(this HttpStatusCode httpStatusCode, HttpMethod httpMethod = null)
         {
             // 1xx
-            if( httpStatusCode < HttpStatusCode.OK )
+            if (httpStatusCode < HttpStatusCode.OK)
             {
                 return LogLevel.Diagnostic;
             }
 
             // 2xx
-            if( httpStatusCode < HttpStatusCode.MultipleChoices )
+            if (httpStatusCode < HttpStatusCode.MultipleChoices)
             {
-                if( httpMethod == HttpMethod.Get || httpMethod == HttpMethod.Head || httpMethod == HttpMethod.Options )
+                if (httpMethod == HttpMethod.Get || httpMethod == HttpMethod.Head || httpMethod == HttpMethod.Options)
                 {
                     return LogLevel.Debug;
                 }
@@ -29,13 +29,13 @@ namespace Intersect.Server.Web.RestApi.Extensions
             }
 
             // 3xx
-            if( httpStatusCode < HttpStatusCode.BadRequest )
+            if (httpStatusCode < HttpStatusCode.BadRequest)
             {
                 return LogLevel.Info;
             }
 
             // ReSharper disable once SwitchStatementMissingSomeCases
-            switch( httpStatusCode )
+            switch (httpStatusCode)
             {
                 case HttpStatusCode.BadRequest:
                 case HttpStatusCode.RequestTimeout:
@@ -43,9 +43,9 @@ namespace Intersect.Server.Web.RestApi.Extensions
                 case HttpStatusCode.RequestUriTooLong:
                 case HttpStatusCode.UnsupportedMediaType:
                 case HttpStatusCode.RequestedRangeNotSatisfiable:
-                    if( httpMethod == HttpMethod.Get ||
+                    if (httpMethod == HttpMethod.Get ||
                         httpMethod == HttpMethod.Head ||
-                        httpMethod == HttpMethod.Options )
+                        httpMethod == HttpMethod.Options)
                     {
                         return LogLevel.Info;
                     }
@@ -58,9 +58,9 @@ namespace Intersect.Server.Web.RestApi.Extensions
                 case HttpStatusCode.ProxyAuthenticationRequired:
                 case HttpStatusCode.Conflict:
                 case HttpStatusCode.Gone:
-                    if( httpMethod == HttpMethod.Get ||
+                    if (httpMethod == HttpMethod.Get ||
                         httpMethod == HttpMethod.Head ||
-                        httpMethod == HttpMethod.Options )
+                        httpMethod == HttpMethod.Options)
                     {
                         return LogLevel.Warn;
                     }
@@ -73,7 +73,7 @@ namespace Intersect.Server.Web.RestApi.Extensions
 
             // 4xx
             // ReSharper disable once ConvertIfStatementToReturnStatement
-            if( httpStatusCode < HttpStatusCode.InternalServerError )
+            if (httpStatusCode < HttpStatusCode.InternalServerError)
             {
                 return LogLevel.Trace;
             }

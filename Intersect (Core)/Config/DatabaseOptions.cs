@@ -10,7 +10,7 @@ namespace Intersect.Config
     public class DatabaseOptions
     {
 
-        [SuppressMessage( "ReSharper", "InconsistentNaming" )]
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
         public enum DatabaseType
         {
 
@@ -32,7 +32,7 @@ namespace Intersect.Config
 
         }
 
-        [JsonConverter( typeof( StringEnumConverter ) )]
+        [JsonConverter(typeof(StringEnumConverter))]
         public DatabaseType Type { get; set; } = DatabaseType.SQLite;
 
         public string Server { get; set; } = "localhost";
@@ -45,11 +45,11 @@ namespace Intersect.Config
 
         public string Password { get; set; } = "";
 
-        [JsonConverter( typeof( StringEnumConverter ) )]
+        [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty(
             NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Populate
         )]
-        [DefaultValue( Logging.LogLevel.Error )]
+        [DefaultValue(Logging.LogLevel.Error)]
         public Logging.LogLevel LogLevel { get; set; } = Logging.LogLevel.Error;
 
     }

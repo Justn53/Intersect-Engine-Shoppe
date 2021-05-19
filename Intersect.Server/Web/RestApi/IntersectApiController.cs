@@ -13,13 +13,13 @@ namespace Intersect.Server.Web.RestApi
 
         public const int PAGE_SIZE_MIN = 5;
 
-        protected override void Initialize( HttpControllerContext controllerContext )
+        protected override void Initialize(HttpControllerContext controllerContext)
         {
-            base.Initialize( controllerContext );
-            if( RequestContext != null && Configuration?.Formatters?.JsonFormatter?.SerializerSettings != null )
+            base.Initialize(controllerContext);
+            if (RequestContext != null && Configuration?.Formatters?.JsonFormatter?.SerializerSettings != null)
             {
                 Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver =
-                    new ApiVisibilityContractResolver( RequestContext );
+                    new ApiVisibilityContractResolver(RequestContext);
             }
         }
 

@@ -12,15 +12,15 @@ namespace Intersect.Admin.Actions
 
         }
 
-        public WarpMeToAction( string name )
+        public WarpMeToAction(string name)
         {
             Name = name;
         }
 
-        [Key( 1 )]
+        [Key(1)]
         public override AdminActions Action { get; } = AdminActions.WarpMeTo;
 
-        [Key( 2 )]
+        [Key(2)]
         public string Name { get; set; }
 
     }

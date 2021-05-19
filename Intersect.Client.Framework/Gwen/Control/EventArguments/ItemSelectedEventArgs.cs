@@ -6,7 +6,7 @@ namespace Intersect.Client.Framework.Gwen.Control.EventArguments
     public class ItemSelectedEventArgs : EventArgs
     {
 
-        internal ItemSelectedEventArgs( Base selecteditem, bool automated = false )
+        internal ItemSelectedEventArgs(Base selecteditem, bool automated = false)
         {
             this.SelectedItem = selecteditem;
             this.Automated = automated;

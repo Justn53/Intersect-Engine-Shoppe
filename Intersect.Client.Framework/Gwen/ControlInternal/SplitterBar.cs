@@ -13,7 +13,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Initializes a new instance of the <see cref="SplitterBar" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public SplitterBar( Base parent ) : base( parent )
+        public SplitterBar(Base parent) : base(parent)
         {
             Target = this;
             RestrictToParent = true;
@@ -23,11 +23,11 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            if( ShouldDrawBackground )
+            if (ShouldDrawBackground)
             {
-                skin.DrawButton( this, true, false, IsDisabled );
+                skin.DrawButton(this, true, false, IsDisabled);
             }
         }
 
@@ -35,9 +35,9 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout( Skin.Base skin )
+        protected override void Layout(Skin.Base skin)
         {
-            MoveTo( X, Y );
+            MoveTo(X, Y);
         }
 
     }

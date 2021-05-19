@@ -16,28 +16,28 @@ namespace Intersect.Plugins.Helpers
             "plugins", $"{Log.Initial:yyyy_MM_dd-HH_mm_ss_fff}"
         );
 
-        private static Logger CreateLogger( IManifestHelper manifest, CreateLoggerOptions createLoggerOptions )
+        private static Logger CreateLogger(IManifestHelper manifest, CreateLoggerOptions createLoggerOptions)
         {
-            var logName = string.IsNullOrWhiteSpace( createLoggerOptions.Name )
+            var logName = string.IsNullOrWhiteSpace(createLoggerOptions.Name)
                 ? manifest.Key
                 : $"{manifest.Key}.{createLoggerOptions.Name}";
 
             var outputs = new List<ILogOutput>();
 
-            if( createLoggerOptions.File > LogLevel.None )
+            if (createLoggerOptions.File > LogLevel.None)
             {
                 outputs.Add(
-                    new FileOutput( Path.Combine( BasePluginLogPath, $"{logName}.log" ), createLoggerOptions.File )
+                    new FileOutput(Path.Combine(BasePluginLogPath, $"{logName}.log"), createLoggerOptions.File)
                 );
             }
 
-            if( createLoggerOptions.Console > LogLevel.None )
+            if (createLoggerOptions.Console > LogLevel.None)
             {
-                outputs.Add( new ConciseConsoleOutput( createLoggerOptions.Console ) );
+                outputs.Add(new ConciseConsoleOutput(createLoggerOptions.Console));
             }
 
             var immutableOutputs = outputs.ToImmutableList();
-            Debug.Assert( immutableOutputs != null, $"{nameof( immutableOutputs )} != null" );
+            Debug.Assert(immutableOutputs != null, $"{nameof(immutableOutputs)} != null");
 
             return new Logger(
                 new LogConfiguration
@@ -55,7 +55,7 @@ namespace Intersect.Plugins.Helpers
 
         public Logger Plugin { get; }
 
-        internal LoggingHelper( Logger applicationLogger, IManifestHelper manifest )
+        internal LoggingHelper(Logger applicationLogger, IManifestHelper manifest)
         {
             mManifest = manifest;
 
@@ -70,7 +70,7 @@ namespace Intersect.Plugins.Helpers
         }
 
         /// <inheritdoc />
-        public Logger CreateLogger( CreateLoggerOptions createLoggerOptions ) =>
-            CreateLogger( mManifest, createLoggerOptions );
+        public Logger CreateLogger(CreateLoggerOptions createLoggerOptions) =>
+            CreateLogger(mManifest, createLoggerOptions);
     }
 }

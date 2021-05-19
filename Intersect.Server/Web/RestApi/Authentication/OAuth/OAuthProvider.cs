@@ -22,17 +22,17 @@ namespace Intersect.Server.Web.RestApi.Authentication.OAuth
 
         public const string TokenEndpoint = "/api/oauth/token";
 
-        public OAuthProvider( ApiConfiguration configuration ) : base( configuration )
+        public OAuthProvider(ApiConfiguration configuration) : base(configuration)
         {
-            OAuthAuthorizationServerProvider = new GrantProvider( Configuration );
-            RefreshTokenProvider = new RefreshTokenProvider( Configuration );
+            OAuthAuthorizationServerProvider = new GrantProvider(Configuration);
+            RefreshTokenProvider = new RefreshTokenProvider(Configuration);
         }
 
         private OAuthAuthorizationServerProvider OAuthAuthorizationServerProvider { get; }
 
         private AuthenticationTokenProvider RefreshTokenProvider { get; }
 
-        public override void Configure( IAppBuilder appBuilder )
+        public override void Configure(IAppBuilder appBuilder)
         {
             appBuilder.UseAesDataProtectorProvider();
 
@@ -51,10 +51,10 @@ namespace Intersect.Server.Web.RestApi.Authentication.OAuth
             appBuilder.UseOAuthAuthorizationServer(
                 new OAuthAuthorizationServerOptions
                 {
-                    TokenEndpointPath = new PathString( TokenEndpoint ),
+                    TokenEndpointPath = new PathString(TokenEndpoint),
                     ApplicationCanDisplayErrors = true,
                     AllowInsecureHttp = true,
-                    AccessTokenExpireTimeSpan = TimeSpan.FromMinutes( Configuration.RefreshTokenLifetime ),
+                    AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(Configuration.RefreshTokenLifetime),
                     Provider = OAuthAuthorizationServerProvider,
                     RefreshTokenProvider = RefreshTokenProvider
                 }

@@ -12,12 +12,12 @@ namespace Intersect.Network.Packets.Client
 
         }
 
-        public AdminActionPacket( AdminAction action )
+        public AdminActionPacket(AdminAction action)
         {
             Action = action;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public AdminAction Action { get; set; }
 
     }

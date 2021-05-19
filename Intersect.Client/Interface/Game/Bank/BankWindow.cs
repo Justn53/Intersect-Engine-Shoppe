@@ -34,16 +34,16 @@ namespace Intersect.Client.Interface.Game.Bank
         public int Y;
 
         //Init
-        public BankWindow( Canvas gameCanvas )
+        public BankWindow(Canvas gameCanvas)
         {
-            mBankWindow = new WindowControl( gameCanvas, Strings.Bank.title, false, "BankWindow" );
+            mBankWindow = new WindowControl(gameCanvas, Strings.Bank.title, false, "BankWindow");
             mBankWindow.DisableResizing();
-            Interface.InputBlockingElements.Add( mBankWindow );
+            Interface.InputBlockingElements.Add(mBankWindow);
 
-            mItemContainer = new ScrollControl( mBankWindow, "ItemContainer" );
-            mItemContainer.EnableScroll( false, true );
+            mItemContainer = new ScrollControl(mBankWindow, "ItemContainer");
+            mItemContainer.EnableScroll(false, true);
 
-            mBankWindow.LoadJsonUi( GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString() );
+            mBankWindow.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
             InitItemContainer();
         }
 
@@ -64,22 +64,22 @@ namespace Intersect.Client.Interface.Game.Bank
 
         public void Update()
         {
-            if( mBankWindow.IsHidden == true )
+            if (mBankWindow.IsHidden == true)
             {
                 return;
             }
 
             X = mBankWindow.X;
             Y = mBankWindow.Y;
-            for( var i = 0; i < Options.MaxBankSlots; i++ )
+            for (var i = 0; i < Options.MaxBankSlots; i++)
             {
-                if( Globals.Bank[i] != null && Globals.Bank[i].ItemId != Guid.Empty )
+                if (Globals.Bank[i] != null && Globals.Bank[i].ItemId != Guid.Empty)
                 {
-                    var item = ItemBase.Get( Globals.Bank[i].ItemId );
-                    if( item != null )
+                    var item = ItemBase.Get(Globals.Bank[i].ItemId);
+                    if (item != null)
                     {
                         Items[i].Pnl.IsHidden = false;
-                        if( item.IsStackable )
+                        if (item.IsStackable)
                         {
                             mValues[i].IsHidden = false;
                             mValues[i].Text = Globals.Bank[i].Quantity.ToString();
@@ -89,7 +89,7 @@ namespace Intersect.Client.Interface.Game.Bank
                             mValues[i].IsHidden = true;
                         }
 
-                        if( Items[i].IsDragging )
+                        if (Items[i].IsDragging)
                         {
                             Items[i].Pnl.IsHidden = true;
                             mValues[i].IsHidden = true;
@@ -108,28 +108,28 @@ namespace Intersect.Client.Interface.Game.Bank
 
         private void InitItemContainer()
         {
-            for( var i = 0; i < Options.MaxBankSlots; i++ )
+            for (var i = 0; i < Options.MaxBankSlots; i++)
             {
-                Items.Add( new BankItem( this, i ) );
-                Items[i].Container = new ImagePanel( mItemContainer, "BankItem" );
+                Items.Add(new BankItem(this, i));
+                Items[i].Container = new ImagePanel(mItemContainer, "BankItem");
                 Items[i].Setup();
 
-                mValues.Add( new Label( Items[i].Container, "BankItemValue" ) );
+                mValues.Add(new Label(Items[i].Container, "BankItemValue"));
                 mValues[i].Text = "";
 
-                Items[i].Container.LoadJsonUi( GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString() );
+                Items[i].Container.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
 
                 var xPadding = Items[i].Container.Margin.Left + Items[i].Container.Margin.Right;
                 var yPadding = Items[i].Container.Margin.Top + Items[i].Container.Margin.Bottom;
                 Items[i]
                     .Container.SetPosition(
                         i %
-                        ( mItemContainer.Width / ( Items[i].Container.Width + xPadding ) ) *
-                        ( Items[i].Container.Width + xPadding ) +
+                        (mItemContainer.Width / (Items[i].Container.Width + xPadding)) *
+                        (Items[i].Container.Width + xPadding) +
                         xPadding,
                         i /
-                        ( mItemContainer.Width / ( Items[i].Container.Width + xPadding ) ) *
-                        ( Items[i].Container.Height + yPadding ) +
+                        (mItemContainer.Width / (Items[i].Container.Width + xPadding)) *
+                        (Items[i].Container.Height + yPadding) +
                         yPadding
                     );
             }
@@ -139,8 +139,8 @@ namespace Intersect.Client.Interface.Game.Bank
         {
             var rect = new FloatRect()
             {
-                X = mBankWindow.LocalPosToCanvas( new Point( 0, 0 ) ).X - sItemXPadding / 2,
-                Y = mBankWindow.LocalPosToCanvas( new Point( 0, 0 ) ).Y - sItemYPadding / 2,
+                X = mBankWindow.LocalPosToCanvas(new Point(0, 0)).X - sItemXPadding / 2,
+                Y = mBankWindow.LocalPosToCanvas(new Point(0, 0)).Y - sItemYPadding / 2,
                 Width = mBankWindow.Width + sItemXPadding,
                 Height = mBankWindow.Height + sItemYPadding
             };

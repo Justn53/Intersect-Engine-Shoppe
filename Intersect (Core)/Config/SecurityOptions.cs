@@ -10,34 +10,34 @@ namespace Intersect.Config
 
         public List<string> IpBlacklist = new List<string>();
 
-        [JsonProperty( "Packets" )] public PacketOptions PacketOpts = new PacketOptions();
+        [JsonProperty("Packets")] public PacketOptions PacketOpts = new PacketOptions();
 
-        public bool CheckIp( string ip )
+        public bool CheckIp(string ip)
         {
             ip = ip.Trim();
-            var parts = ip.Split( '.' );
-            if( parts.Length != 4 )
+            var parts = ip.Split('.');
+            if (parts.Length != 4)
             {
                 return false; //Bad IP
             }
 
             //Check if all 4 parts match any of the ips on our blacklist
-            foreach( var checkIp in IpBlacklist )
+            foreach (var checkIp in IpBlacklist)
             {
                 var chkIp = checkIp.Trim();
-                var chkParts = chkIp.Split( '.' );
-                if( chkParts.Length == 4 ) //Valid IP
+                var chkParts = chkIp.Split('.');
+                if (chkParts.Length == 4) //Valid IP
                 {
                     var match = true;
-                    for( var i = 0; i < 4; i++ )
+                    for (var i = 0; i < 4; i++)
                     {
-                        if( chkParts[i] != "*" && chkParts[i] != parts[i] )
+                        if (chkParts[i] != "*" && chkParts[i] != parts[i])
                         {
                             match = false;
                         }
                     }
 
-                    if( match )
+                    if (match)
                     {
                         return false; //Bad Ip
                     }

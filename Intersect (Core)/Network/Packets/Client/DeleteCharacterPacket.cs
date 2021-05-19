@@ -11,12 +11,12 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public DeleteCharacterPacket( Guid charId )
+        public DeleteCharacterPacket(Guid charId)
         {
             CharacterId = charId;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid CharacterId { get; set; }
 
     }

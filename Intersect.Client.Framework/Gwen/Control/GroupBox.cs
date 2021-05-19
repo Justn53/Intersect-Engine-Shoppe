@@ -12,7 +12,7 @@
         ///     Initializes a new instance of the <see cref="GroupBox" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public GroupBox( Base parent ) : base( parent )
+        public GroupBox(Base parent) : base(parent)
         {
             AutoSizeToContents = false;
 
@@ -22,13 +22,13 @@
             MouseInputEnabled = true;
             KeyboardInputEnabled = true;
 
-            TextPadding = new Padding( 10, 0, 10, 0 );
+            TextPadding = new Padding(10, 0, 10, 0);
             Alignment = Pos.Top | Pos.Left;
             Invalidate();
 
-            mInnerPanel = new Base( this );
+            mInnerPanel = new Base(this);
             mInnerPanel.Dock = Pos.Fill;
-            mInnerPanel.Margin = new Margin( 5, TextHeight + 5, 5, 5 );
+            mInnerPanel.Margin = new Margin(5, TextHeight + 5, 5, 5);
 
             //Margin = new Margin(5, 5, 5, 5);
         }
@@ -37,10 +37,10 @@
         ///     Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout( Skin.Base skin )
+        protected override void Layout(Skin.Base skin)
         {
-            base.Layout( skin );
-            if( AutoSizeToContents )
+            base.Layout(skin);
+            if (AutoSizeToContents)
             {
                 DoSizeToContents();
             }
@@ -50,9 +50,9 @@
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawGroupBox( this, TextX, TextHeight, TextWidth );
+            skin.DrawGroupBox(this, TextX, TextHeight, TextWidth);
         }
 
         /// <summary>
@@ -68,7 +68,7 @@
         {
             mInnerPanel.SizeToChildren();
             SizeToChildren();
-            if( Width < TextWidth + TextPadding.Right + TextPadding.Left )
+            if (Width < TextWidth + TextPadding.Right + TextPadding.Left)
             {
                 Width = TextWidth + TextPadding.Right + TextPadding.Left;
             }

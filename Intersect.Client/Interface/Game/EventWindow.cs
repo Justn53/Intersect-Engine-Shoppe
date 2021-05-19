@@ -39,54 +39,54 @@ namespace Intersect.Client.Interface.Game
         private Button mEventResponse4;
 
         //Init
-        public EventWindow( Canvas gameCanvas )
+        public EventWindow(Canvas gameCanvas)
         {
             //Event Dialog Window
-            mEventDialogWindow = new ImagePanel( gameCanvas, "EventDialogueWindow" );
+            mEventDialogWindow = new ImagePanel(gameCanvas, "EventDialogueWindow");
             mEventDialogWindow.Hide();
-            Interface.InputBlockingElements.Add( mEventDialogWindow );
+            Interface.InputBlockingElements.Add(mEventDialogWindow);
 
-            mEventFace = new ImagePanel( mEventDialogWindow, "EventFacePanel" );
+            mEventFace = new ImagePanel(mEventDialogWindow, "EventFacePanel");
 
-            mEventDialogArea = new ScrollControl( mEventDialogWindow, "EventDialogArea" );
-            mEventDialogLabelTemplate = new Label( mEventDialogArea, "EventDialogLabel" );
-            mEventDialogLabel = new RichLabel( mEventDialogArea );
+            mEventDialogArea = new ScrollControl(mEventDialogWindow, "EventDialogArea");
+            mEventDialogLabelTemplate = new Label(mEventDialogArea, "EventDialogLabel");
+            mEventDialogLabel = new RichLabel(mEventDialogArea);
 
-            mEventDialogAreaNoFace = new ScrollControl( mEventDialogWindow, "EventDialogAreaNoFace" );
-            mEventDialogLabelNoFaceTemplate = new Label( mEventDialogAreaNoFace, "EventDialogLabel" );
-            mEventDialogLabelNoFace = new RichLabel( mEventDialogAreaNoFace );
+            mEventDialogAreaNoFace = new ScrollControl(mEventDialogWindow, "EventDialogAreaNoFace");
+            mEventDialogLabelNoFaceTemplate = new Label(mEventDialogAreaNoFace, "EventDialogLabel");
+            mEventDialogLabelNoFace = new RichLabel(mEventDialogAreaNoFace);
 
-            mEventResponse1 = new Button( mEventDialogWindow, "EventResponse1" );
+            mEventResponse1 = new Button(mEventDialogWindow, "EventResponse1");
             mEventResponse1.Clicked += EventResponse1_Clicked;
 
-            mEventResponse2 = new Button( mEventDialogWindow, "EventResponse2" );
+            mEventResponse2 = new Button(mEventDialogWindow, "EventResponse2");
             mEventResponse2.Clicked += EventResponse2_Clicked;
 
-            mEventResponse3 = new Button( mEventDialogWindow, "EventResponse3" );
+            mEventResponse3 = new Button(mEventDialogWindow, "EventResponse3");
             mEventResponse3.Clicked += EventResponse3_Clicked;
 
-            mEventResponse4 = new Button( mEventDialogWindow, "EventResponse4" );
+            mEventResponse4 = new Button(mEventDialogWindow, "EventResponse4");
             mEventResponse4.Clicked += EventResponse4_Clicked;
         }
 
         //Update
         public void Update()
         {
-            if( mEventDialogWindow.IsHidden )
+            if (mEventDialogWindow.IsHidden)
             {
-                Interface.InputBlockingElements.Remove( this );
+                Interface.InputBlockingElements.Remove(this);
             }
             else
             {
-                if( !Interface.InputBlockingElements.Contains( this ) )
+                if (!Interface.InputBlockingElements.Contains(this))
                 {
-                    Interface.InputBlockingElements.Add( this );
+                    Interface.InputBlockingElements.Add(this);
                 }
             }
 
-            if( Globals.EventDialogs.Count > 0 )
+            if (Globals.EventDialogs.Count > 0)
             {
-                if( mEventDialogWindow.IsHidden )
+                if (mEventDialogWindow.IsHidden)
                 {
                     base.Show();
                     mEventDialogWindow.Show();
@@ -99,24 +99,24 @@ namespace Intersect.Client.Interface.Game
 
                     var responseCount = 0;
                     var maxResponse = 1;
-                    if( Globals.EventDialogs[0].Opt1.Length > 0 )
+                    if (Globals.EventDialogs[0].Opt1.Length > 0)
                     {
                         responseCount++;
                     }
 
-                    if( Globals.EventDialogs[0].Opt2.Length > 0 )
+                    if (Globals.EventDialogs[0].Opt2.Length > 0)
                     {
                         responseCount++;
                         maxResponse = 2;
                     }
 
-                    if( Globals.EventDialogs[0].Opt3.Length > 0 )
+                    if (Globals.EventDialogs[0].Opt3.Length > 0)
                     {
                         responseCount++;
                         maxResponse = 3;
                     }
 
-                    if( Globals.EventDialogs[0].Opt4.Length > 0 )
+                    if (Globals.EventDialogs[0].Opt4.Length > 0)
                     {
                         responseCount++;
                         maxResponse = 4;
@@ -126,7 +126,7 @@ namespace Intersect.Client.Interface.Game
                     mEventResponse2.Name = "";
                     mEventResponse3.Name = "";
                     mEventResponse4.Name = "";
-                    switch( maxResponse )
+                    switch (maxResponse)
                     {
                         case 1:
                             mEventDialogWindow.Name = "EventDialogWindow_1Response";
@@ -160,7 +160,7 @@ namespace Intersect.Client.Interface.Game
                         GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString()
                     );
 
-                    if( faceTex != null )
+                    if (faceTex != null)
                     {
                         mEventFace.Show();
                         mEventFace.Texture = faceTex;
@@ -174,50 +174,50 @@ namespace Intersect.Client.Interface.Game
                         mEventDialogAreaNoFace.Show();
                     }
 
-                    if( responseCount == 0 )
+                    if (responseCount == 0)
                     {
                         mEventResponse1.Show();
-                        mEventResponse1.SetText( Strings.EventWindow.Continue );
+                        mEventResponse1.SetText(Strings.EventWindow.Continue);
                         mEventResponse2.Hide();
                         mEventResponse3.Hide();
                         mEventResponse4.Hide();
                     }
                     else
                     {
-                        if( Globals.EventDialogs[0].Opt1 != "" )
+                        if (Globals.EventDialogs[0].Opt1 != "")
                         {
                             mEventResponse1.Show();
-                            mEventResponse1.SetText( Globals.EventDialogs[0].Opt1 );
+                            mEventResponse1.SetText(Globals.EventDialogs[0].Opt1);
                         }
                         else
                         {
                             mEventResponse1.Hide();
                         }
 
-                        if( Globals.EventDialogs[0].Opt2 != "" )
+                        if (Globals.EventDialogs[0].Opt2 != "")
                         {
                             mEventResponse2.Show();
-                            mEventResponse2.SetText( Globals.EventDialogs[0].Opt2 );
+                            mEventResponse2.SetText(Globals.EventDialogs[0].Opt2);
                         }
                         else
                         {
                             mEventResponse2.Hide();
                         }
 
-                        if( Globals.EventDialogs[0].Opt3 != "" )
+                        if (Globals.EventDialogs[0].Opt3 != "")
                         {
                             mEventResponse3.Show();
-                            mEventResponse3.SetText( Globals.EventDialogs[0].Opt3 );
+                            mEventResponse3.SetText(Globals.EventDialogs[0].Opt3);
                         }
                         else
                         {
                             mEventResponse3.Hide();
                         }
 
-                        if( Globals.EventDialogs[0].Opt4 != "" )
+                        if (Globals.EventDialogs[0].Opt4 != "")
                         {
                             mEventResponse4.Show();
-                            mEventResponse4.SetText( Globals.EventDialogs[0].Opt4 );
+                            mEventResponse4.SetText(Globals.EventDialogs[0].Opt4);
                         }
                         else
                         {
@@ -229,7 +229,7 @@ namespace Intersect.Client.Interface.Game
                         mEventDialogWindow.Texture.GetWidth(), mEventDialogWindow.Texture.GetHeight()
                     );
 
-                    if( faceTex != null )
+                    if (faceTex != null)
                     {
                         mEventDialogLabel.ClearText();
                         mEventDialogLabel.Width = mEventDialogArea.Width -
@@ -242,7 +242,7 @@ namespace Intersect.Client.Interface.Game
                                 : Alignments.Left, mEventDialogLabelTemplate.Font
                         );
 
-                        mEventDialogLabel.SizeToChildren( false, true );
+                        mEventDialogLabel.SizeToChildren(false, true);
                         mEventDialogArea.ScrollToTop();
                     }
                     else
@@ -258,7 +258,7 @@ namespace Intersect.Client.Interface.Game
                                 : Alignments.Left, mEventDialogLabelNoFaceTemplate.Font
                         );
 
-                        mEventDialogLabelNoFace.SizeToChildren( false, true );
+                        mEventDialogLabelNoFace.SizeToChildren(false, true);
                         mEventDialogAreaNoFace.ScrollToTop();
                     }
                 }
@@ -266,60 +266,60 @@ namespace Intersect.Client.Interface.Game
         }
 
         //Input Handlers
-        void EventResponse4_Clicked( Base sender, ClickedEventArgs arguments )
+        void EventResponse4_Clicked(Base sender, ClickedEventArgs arguments)
         {
             var ed = Globals.EventDialogs[0];
-            if( ed.ResponseSent != 0 )
+            if (ed.ResponseSent != 0)
             {
                 return;
             }
 
-            PacketSender.SendEventResponse( 4, ed );
+            PacketSender.SendEventResponse(4, ed);
             mEventDialogWindow.RemoveModal();
             mEventDialogWindow.IsHidden = true;
             ed.ResponseSent = 1;
             base.Hide();
         }
 
-        void EventResponse3_Clicked( Base sender, ClickedEventArgs arguments )
+        void EventResponse3_Clicked(Base sender, ClickedEventArgs arguments)
         {
             var ed = Globals.EventDialogs[0];
-            if( ed.ResponseSent != 0 )
+            if (ed.ResponseSent != 0)
             {
                 return;
             }
 
-            PacketSender.SendEventResponse( 3, ed );
+            PacketSender.SendEventResponse(3, ed);
             mEventDialogWindow.RemoveModal();
             mEventDialogWindow.IsHidden = true;
             ed.ResponseSent = 1;
             base.Hide();
         }
 
-        void EventResponse2_Clicked( Base sender, ClickedEventArgs arguments )
+        void EventResponse2_Clicked(Base sender, ClickedEventArgs arguments)
         {
             var ed = Globals.EventDialogs[0];
-            if( ed.ResponseSent != 0 )
+            if (ed.ResponseSent != 0)
             {
                 return;
             }
 
-            PacketSender.SendEventResponse( 2, ed );
+            PacketSender.SendEventResponse(2, ed);
             mEventDialogWindow.RemoveModal();
             mEventDialogWindow.IsHidden = true;
             ed.ResponseSent = 1;
             base.Hide();
         }
 
-        public void EventResponse1_Clicked( Base sender, ClickedEventArgs arguments )
+        public void EventResponse1_Clicked(Base sender, ClickedEventArgs arguments)
         {
             var ed = Globals.EventDialogs[0];
-            if( ed.ResponseSent != 0 )
+            if (ed.ResponseSent != 0)
             {
                 return;
             }
 
-            PacketSender.SendEventResponse( 1, ed );
+            PacketSender.SendEventResponse(1, ed);
             mEventDialogWindow.RemoveModal();
             mEventDialogWindow.IsHidden = true;
             ed.ResponseSent = 1;

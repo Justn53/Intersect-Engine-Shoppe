@@ -16,7 +16,7 @@ namespace Intersect.Plugins.Helpers
 
         private readonly string[] mArgs;
 
-        internal CommandLineHelper( Logger logger, string[] args, Parser parser ) : base(
+        internal CommandLineHelper(Logger logger, string[] args, Parser parser) : base(
             logger
         )
         {
@@ -26,29 +26,29 @@ namespace Intersect.Plugins.Helpers
 
         /// <inheritdoc />
         public TArguments ParseArguments<TArguments>() =>
-            mParser.ParseArguments<TArguments>( mArgs ).MapResult( arguments => arguments, HandleErrors<TArguments> );
+            mParser.ParseArguments<TArguments>(mArgs).MapResult(arguments => arguments, HandleErrors<TArguments>);
 
-        private TArguments HandleErrors<TArguments>( IEnumerable<Error> errors )
+        private TArguments HandleErrors<TArguments>(IEnumerable<Error> errors)
         {
             var errorsAsList = errors?.ToList();
 
-            var fatalParsingError = errorsAsList?.Any( error => error?.StopsProcessing ?? false ) ?? false;
+            var fatalParsingError = errorsAsList?.Any(error => error?.StopsProcessing ?? false) ?? false;
 
             var errorString = string.Join(
-                ", ", errorsAsList?.ToList().Select( error => error?.ToString() ) ?? Array.Empty<string>()
+                ", ", errorsAsList?.ToList().Select(error => error?.ToString()) ?? Array.Empty<string>()
             );
 
             var exception = new ArgumentException(
-                $@"Error parsing plugin arguments of type {typeof( TArguments ).FullName}, received the following errors: {errorString}"
+                $@"Error parsing plugin arguments of type {typeof(TArguments).FullName}, received the following errors: {errorString}"
             );
 
-            if( fatalParsingError )
+            if (fatalParsingError)
             {
-                Logger.Error( exception );
+                Logger.Error(exception);
             }
             else
             {
-                Logger.Warn( exception );
+                Logger.Warn(exception);
             }
 
             return default;

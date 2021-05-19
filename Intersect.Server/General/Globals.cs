@@ -26,39 +26,39 @@ namespace Intersect.Server.General
 
         [Obsolete] public static Timing Timing => Timing.Global;
 
-        public static List<Player> OnlineList => Clients.FindAll( client => client?.Entity != null )
-            .Select( client => client.Entity )
+        public static List<Player> OnlineList => Clients.FindAll(client => client?.Entity != null)
+            .Select(client => client.Entity)
             .ToList();
 
-        public static void KillResourcesOf( ResourceBase resource )
+        public static void KillResourcesOf(ResourceBase resource)
         {
-            foreach( MapInstance map in MapInstance.Lookup.Values )
+            foreach (MapInstance map in MapInstance.Lookup.Values)
             {
-                map?.DespawnResourcesOf( resource );
+                map?.DespawnResourcesOf(resource);
             }
         }
 
-        public static void KillNpcsOf( NpcBase npc )
+        public static void KillNpcsOf(NpcBase npc)
         {
-            foreach( MapInstance map in MapInstance.Lookup.Values )
+            foreach (MapInstance map in MapInstance.Lookup.Values)
             {
-                map?.DespawnNpcsOf( npc );
+                map?.DespawnNpcsOf(npc);
             }
         }
 
-        public static void KillProjectilesOf( ProjectileBase projectile )
+        public static void KillProjectilesOf(ProjectileBase projectile)
         {
-            foreach( MapInstance map in MapInstance.Lookup.Values )
+            foreach (MapInstance map in MapInstance.Lookup.Values)
             {
-                map?.DespawnProjectilesOf( projectile );
+                map?.DespawnProjectilesOf(projectile);
             }
         }
 
-        public static void KillItemsOf( ItemBase item )
+        public static void KillItemsOf(ItemBase item)
         {
-            foreach( MapInstance map in MapInstance.Lookup.Values )
+            foreach (MapInstance map in MapInstance.Lookup.Values)
             {
-                map?.DespawnItemsOf( item );
+                map?.DespawnItemsOf(item);
             }
         }
 

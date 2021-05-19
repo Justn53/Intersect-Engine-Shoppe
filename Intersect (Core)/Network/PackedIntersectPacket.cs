@@ -23,32 +23,32 @@ namespace Intersect.Network
 
         public static Dictionary<short, Type> KnownKeys { get; set; } = new Dictionary<short, Type>();
 
-        private static IEnumerable<Type> FindTypes( IEnumerable<string> nameSpaces ) => nameSpaces.SelectMany( FindTypes );
+        private static IEnumerable<Type> FindTypes(IEnumerable<string> nameSpaces) => nameSpaces.SelectMany(FindTypes);
 
-        private static IEnumerable<Type> FindTypes( string nameSpace ) =>
-            typeof( Ceras ).Assembly.GetTypes().Where( type => type.Namespace == nameSpace );
+        private static IEnumerable<Type> FindTypes(string nameSpace) =>
+            typeof(Ceras).Assembly.GetTypes().Where(type => type.Namespace == nameSpace);
 
-        public static void AddKnownTypes( IReadOnlyList<Type> types )
+        public static void AddKnownTypes(IReadOnlyList<Type> types)
         {
             var key = (short)KnownKeys.Count;
-            foreach( var type in types )
+            foreach (var type in types)
             {
-                if( KnownTypes.ContainsKey( type ) )
+                if (KnownTypes.ContainsKey(type))
                 {
                     continue;
                 }
 
-                KnownKeys.Add( key, type );
-                KnownTypes.Add( type, key );
+                KnownKeys.Add(key, type);
+                KnownTypes.Add(type, key);
 
                 key++;
             }
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public short Key { get; set; } = -1;
 
-        [Key( 1 )]
+        [Key(1)]
         public byte[] Data { get; set; }
 
         [IgnoreMember]
@@ -59,11 +59,11 @@ namespace Intersect.Network
 
         }
 
-        public PackedIntersectPacket( IntersectPacket packet )
+        public PackedIntersectPacket(IntersectPacket packet)
         {
-            if( !KnownTypes.TryGetValue( packet.GetType(), out var key ) )
+            if (!KnownTypes.TryGetValue(packet.GetType(), out var key))
             {
-                throw new ArgumentException( $"Type not a known packet type: {packet.GetType().FullName}" );
+                throw new ArgumentException($"Type not a known packet type: {packet.GetType().FullName}");
             }
 
             Key = key;

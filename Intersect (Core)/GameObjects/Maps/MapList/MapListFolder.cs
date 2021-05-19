@@ -18,9 +18,9 @@ namespace Intersect.GameObjects.Maps.MapList
             Type = 0;
         }
 
-        public void PostLoad( DatabaseObjectLookup gameMaps, bool isServer = true )
+        public void PostLoad(DatabaseObjectLookup gameMaps, bool isServer = true)
         {
-            Children.PostLoad( gameMaps, isServer, false );
+            Children.PostLoad(gameMaps, isServer, false);
         }
 
     }

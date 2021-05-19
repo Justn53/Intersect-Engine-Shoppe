@@ -30,32 +30,32 @@ namespace Intersect.Client.Interface.Menu
         private RichLabel mRichLabel;
 
         //Init
-        public CreditsWindow( Canvas parent, MainMenu mainMenu )
+        public CreditsWindow(Canvas parent, MainMenu mainMenu)
         {
             //Assign References
             mMainMenu = mainMenu;
 
             //Main Menu Window
-            mCreditsWindow = new ImagePanel( parent, "CreditsWindow" );
+            mCreditsWindow = new ImagePanel(parent, "CreditsWindow");
 
             //Menu Header
-            mCreditsHeader = new Label( mCreditsWindow, "CreditsHeader" );
-            mCreditsHeader.SetText( Strings.Credits.title );
+            mCreditsHeader = new Label(mCreditsWindow, "CreditsHeader");
+            mCreditsHeader.SetText(Strings.Credits.title);
 
-            mCreditsContent = new ScrollControl( mCreditsWindow, "CreditsScrollview" );
-            mCreditsContent.EnableScroll( false, true );
+            mCreditsContent = new ScrollControl(mCreditsWindow, "CreditsScrollview");
+            mCreditsContent.EnableScroll(false, true);
 
-            mRichLabel = new RichLabel( mCreditsContent, "CreditsLabel" );
+            mRichLabel = new RichLabel(mCreditsContent, "CreditsLabel");
 
             //Back Button
-            mBackBtn = new Button( mCreditsWindow, "BackButton" );
-            mBackBtn.SetText( Strings.Credits.back );
+            mBackBtn = new Button(mCreditsWindow, "BackButton");
+            mBackBtn.SetText(Strings.Credits.back);
             mBackBtn.Clicked += BackBtn_Clicked;
 
-            mCreditsWindow.LoadJsonUi( GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString() );
+            mCreditsWindow.LoadJsonUi(GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString());
         }
 
-        private void BackBtn_Clicked( Base sender, ClickedEventArgs arguments )
+        private void BackBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
             Hide();
             mMainMenu.Show();
@@ -76,10 +76,10 @@ namespace Intersect.Client.Interface.Menu
             mCreditsWindow.IsHidden = false;
             mRichLabel.ClearText();
             var credits = new Credits();
-            var creditsFile = Path.Combine( "resources", "credits.json" );
-            if( File.Exists( creditsFile ) )
+            var creditsFile = Path.Combine("resources", "credits.json");
+            if (File.Exists(creditsFile))
             {
-                credits = JsonConvert.DeserializeObject<Credits>( File.ReadAllText( creditsFile ) );
+                credits = JsonConvert.DeserializeObject<Credits>(File.ReadAllText(creditsFile));
             }
             else
             {
@@ -89,29 +89,29 @@ namespace Intersect.Client.Interface.Menu
                 line.Size = 12;
                 line.Clr = Intersect.Color.White;
                 line.Font = "sourcesansproblack";
-                credits.Lines.Add( line );
+                credits.Lines.Add(line);
             }
 
-            File.WriteAllText( creditsFile, JsonConvert.SerializeObject( credits, Formatting.Indented ) );
+            File.WriteAllText(creditsFile, JsonConvert.SerializeObject(credits, Formatting.Indented));
 
-            foreach( var line in credits.Lines )
+            foreach (var line in credits.Lines)
             {
-                if( line.Text.Trim().Length == 0 )
+                if (line.Text.Trim().Length == 0)
                 {
                     mRichLabel.AddLineBreak();
                 }
                 else
                 {
                     mRichLabel.AddText(
-                        line.Text, new Color( line.Clr.A, line.Clr.R, line.Clr.G, line.Clr.B ), line.GetAlignment(),
-                        GameContentManager.Current.GetFont( line.Font, line.Size )
+                        line.Text, new Color(line.Clr.A, line.Clr.R, line.Clr.G, line.Clr.B), line.GetAlignment(),
+                        GameContentManager.Current.GetFont(line.Font, line.Size)
                     );
 
                     mRichLabel.AddLineBreak();
                 }
             }
 
-            mRichLabel.SizeToChildren( false, true );
+            mRichLabel.SizeToChildren(false, true);
         }
 
     }

@@ -11,16 +11,16 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public FriendsPacket( Dictionary<string, string> onlineFriends, string[] offlineFriends )
+        public FriendsPacket(Dictionary<string, string> onlineFriends, string[] offlineFriends)
         {
             OnlineFriends = onlineFriends;
             OfflineFriends = offlineFriends;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Dictionary<string, string> OnlineFriends { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public string[] OfflineFriends { get; set; }
 
     }

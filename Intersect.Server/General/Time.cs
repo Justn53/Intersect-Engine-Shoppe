@@ -25,7 +25,7 @@ namespace Intersect.Server.General
         public static void Init()
         {
             var timeBase = TimeBase.GetTimeBase();
-            if( timeBase.SyncTime )
+            if (timeBase.SyncTime)
             {
                 sGameTime = DateTime.Now;
             }
@@ -35,9 +35,9 @@ namespace Intersect.Server.General
                     DateTime.Now.Year,
                     DateTime.Now.Month,
                     DateTime.Now.Day,
-                    Randomization.Next( 0, 24 ),
-                    Randomization.Next( 0, 60 ),
-                    Randomization.Next( 0, 60 )
+                    Randomization.Next(0, 24),
+                    Randomization.Next(0, 60),
+                    Randomization.Next(0, 60)
                 );
             }
 
@@ -48,11 +48,11 @@ namespace Intersect.Server.General
         public static void Update()
         {
             var timeBase = TimeBase.GetTimeBase();
-            if( Globals.Timing.Milliseconds > sUpdateTime )
+            if (Globals.Timing.Milliseconds > sUpdateTime)
             {
-                if( !timeBase.SyncTime )
+                if (!timeBase.SyncTime)
                 {
-                    sGameTime = sGameTime.Add( new TimeSpan( 0, 0, 0, 0, (int)( 1000 * timeBase.Rate ) ) );
+                    sGameTime = sGameTime.Add(new TimeSpan(0, 0, 0, 0, (int)(1000 * timeBase.Rate)));
 
                     //Not sure if Rate is negative if time will go backwards but we can hope!
                 }
@@ -64,9 +64,9 @@ namespace Intersect.Server.General
                 //Calculate what "timeRange" we should be in, if we're not then switch and notify the world
                 //Gonna do this by minutes
                 var minuteOfDay = sGameTime.Hour * 60 + sGameTime.Minute;
-                var expectedRange = (int)Math.Floor( minuteOfDay / (float)timeBase.RangeInterval );
+                var expectedRange = (int)Math.Floor(minuteOfDay / (float)timeBase.RangeInterval);
 
-                if( expectedRange != sTimeRange )
+                if (expectedRange != sTimeRange)
                 {
                     sTimeRange = expectedRange;
 
@@ -74,10 +74,10 @@ namespace Intersect.Server.General
                     PacketSender.SendTimeToAll();
                 }
 
-                Hour = sGameTime.ToString( "%h" );
-                MilitaryHour = sGameTime.ToString( "HH" );
-                Minute = sGameTime.ToString( "mm" );
-                Second = sGameTime.ToString( "ss" );
+                Hour = sGameTime.ToString("%h");
+                MilitaryHour = sGameTime.ToString("HH");
+                Minute = sGameTime.ToString("mm");
+                Second = sGameTime.ToString("ss");
 
                 sUpdateTime = Globals.Timing.Milliseconds + 1000;
             }

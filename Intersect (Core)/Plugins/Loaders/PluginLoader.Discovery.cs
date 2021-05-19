@@ -30,20 +30,20 @@ namespace Intersect.Plugins.Loaders
             var discoveredPlugins = pluginDirectories.SelectMany(
                 pluginDirectory =>
                 {
-                    Debug.Assert( pluginDirectory != null, nameof( pluginDirectory ) + " != null" );
-                    return DiscoverPlugins( applicationContext, pluginDirectory ) ?? Array.Empty<Plugin>();
+                    Debug.Assert(pluginDirectory != null, nameof(pluginDirectory) + " != null");
+                    return DiscoverPlugins(applicationContext, pluginDirectory) ?? Array.Empty<Plugin>();
                 }
             );
 
             var plugins = new Dictionary<string, Plugin>();
 
-            foreach( var discoveredPlugin in discoveredPlugins )
+            foreach (var discoveredPlugin in discoveredPlugins)
             {
-                Debug.Assert( discoveredPlugin != null, $"{nameof( discoveredPlugin )} != null" );
+                Debug.Assert(discoveredPlugin != null, $"{nameof(discoveredPlugin)} != null");
                 var key = discoveredPlugin.Manifest.Key;
-                if( !plugins.TryGetValue( discoveredPlugin.Manifest.Key, out var existingPlugin ) ||
+                if (!plugins.TryGetValue(discoveredPlugin.Manifest.Key, out var existingPlugin) ||
                     existingPlugin == default ||
-                    existingPlugin.Manifest.Version < discoveredPlugin.Manifest.Version )
+                    existingPlugin.Manifest.Version < discoveredPlugin.Manifest.Version)
                 {
                     plugins[key] = discoveredPlugin;
                 }
@@ -63,25 +63,25 @@ namespace Intersect.Plugins.Loaders
             string pluginDirectory
         )
         {
-            if( Directory.Exists( pluginDirectory ) )
+            if (Directory.Exists(pluginDirectory))
             {
                 var pluginFiles = new List<string>();
 
                 pluginFiles.AddRange(
-                    Directory.EnumerateDirectories( pluginDirectory )
-                        .Select( directoryPath => new DirectoryInfo( directoryPath ) )
-                        .Select( directoryInfo => Path.Combine( directoryInfo.FullName, $"{directoryInfo.Name}.dll" ) )
-                        .Where( File.Exists )
+                    Directory.EnumerateDirectories(pluginDirectory)
+                        .Select(directoryPath => new DirectoryInfo(directoryPath))
+                        .Select(directoryInfo => Path.Combine(directoryInfo.FullName, $"{directoryInfo.Name}.dll"))
+                        .Where(File.Exists)
                 );
 
                 return pluginFiles.Select(
                         file =>
                         {
-                            Debug.Assert( file != null, nameof( file ) + " != null" );
-                            return LoadFrom( applicationContext, file );
+                            Debug.Assert(file != null, nameof(file) + " != null");
+                            return LoadFrom(applicationContext, file);
                         }
                     )
-                    .Where( plugin => plugin != default );
+                    .Where(plugin => plugin != default);
             }
 
             applicationContext.Logger.Warn(

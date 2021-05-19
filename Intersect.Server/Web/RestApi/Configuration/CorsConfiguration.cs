@@ -18,16 +18,16 @@ namespace Intersect.Server.Web.RestApi.Configuration
 
         public string Origin { get; set; }
 
-        [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
-        [JsonConverter( typeof( SingleOrArrayConverter<string> ) )]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Headers { get; set; }
 
-        [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
-        [JsonConverter( typeof( SingleOrArrayConverter<string> ) )]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> Methods { get; set; }
 
-        [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
-        [JsonConverter( typeof( SingleOrArrayConverter<string> ) )]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(SingleOrArrayConverter<string>))]
         public List<string> ExposedHeaders { get; set; }
 
     }
@@ -35,20 +35,20 @@ namespace Intersect.Server.Web.RestApi.Configuration
     public static class CorsConfigurationExtensions
     {
 
-        public static CorsOptions AsCorsOptions( this CorsConfiguration corsConfiguration )
+        public static CorsOptions AsCorsOptions(this CorsConfiguration corsConfiguration)
         {
             return new CorsOptions { PolicyProvider = corsConfiguration.AsOwinPolicyProvider() };
         }
 
-        public static ICorsPolicyProvider AsOwinPolicyProvider( this CorsConfiguration corsConfiguration )
+        public static ICorsPolicyProvider AsOwinPolicyProvider(this CorsConfiguration corsConfiguration)
         {
             var attribute = new CorsPolicyProvider
             {
                 PolicyResolver = context => Task.FromResult(
                     CreatePolicy(
-                        corsConfiguration.Origin, string.Join( ",", corsConfiguration.Methods ?? new List<string>() ),
-                        string.Join( ",", corsConfiguration.Headers ?? new List<string>() ),
-                        string.Join( ",", corsConfiguration.ExposedHeaders ?? new List<string>() )
+                        corsConfiguration.Origin, string.Join(",", corsConfiguration.Methods ?? new List<string>()),
+                        string.Join(",", corsConfiguration.Headers ?? new List<string>()),
+                        string.Join(",", corsConfiguration.ExposedHeaders ?? new List<string>())
                     )
                 )
             };
@@ -56,50 +56,50 @@ namespace Intersect.Server.Web.RestApi.Configuration
             return attribute;
         }
 
-        private static CorsPolicy CreatePolicy( string origins, string headers, string methods, string exposedHeaders )
+        private static CorsPolicy CreatePolicy(string origins, string headers, string methods, string exposedHeaders)
         {
-            if( string.IsNullOrEmpty( origins ) )
+            if (string.IsNullOrEmpty(origins))
             {
-                throw new ArgumentNullException( nameof( origins ) );
+                throw new ArgumentNullException(nameof(origins));
             }
 
             var policy = new CorsPolicy();
-            if( origins == "*" )
+            if (origins == "*")
             {
                 policy.AllowAnyOrigin = true;
             }
             else
             {
-                AddCommaSeparatedValuesToCollection( origins, policy.Origins );
+                AddCommaSeparatedValuesToCollection(origins, policy.Origins);
             }
 
-            if( !string.IsNullOrEmpty( headers ) )
+            if (!string.IsNullOrEmpty(headers))
             {
-                if( headers == "*" )
+                if (headers == "*")
                 {
                     policy.AllowAnyHeader = true;
                 }
                 else
                 {
-                    AddCommaSeparatedValuesToCollection( headers, policy.Headers );
+                    AddCommaSeparatedValuesToCollection(headers, policy.Headers);
                 }
             }
 
-            if( !string.IsNullOrEmpty( methods ) )
+            if (!string.IsNullOrEmpty(methods))
             {
-                if( methods == "*" )
+                if (methods == "*")
                 {
                     policy.AllowAnyMethod = true;
                 }
                 else
                 {
-                    AddCommaSeparatedValuesToCollection( methods, policy.Methods );
+                    AddCommaSeparatedValuesToCollection(methods, policy.Methods);
                 }
             }
 
-            if( !string.IsNullOrEmpty( exposedHeaders ) )
+            if (!string.IsNullOrEmpty(exposedHeaders))
             {
-                AddCommaSeparatedValuesToCollection( exposedHeaders, policy.ExposedHeaders );
+                AddCommaSeparatedValuesToCollection(exposedHeaders, policy.ExposedHeaders);
             }
 
             return policy;
@@ -110,10 +110,10 @@ namespace Intersect.Server.Web.RestApi.Configuration
             ICollection<string> collection
         )
         {
-            commaSeparatedValues?.Split( ',' )
-                .Where( part => !string.IsNullOrWhiteSpace( part?.Trim() ) )
+            commaSeparatedValues?.Split(',')
+                .Where(part => !string.IsNullOrWhiteSpace(part?.Trim()))
                 .ToList()
-                .ForEach( collection.Add );
+                .ForEach(collection.Add);
         }
 
     }

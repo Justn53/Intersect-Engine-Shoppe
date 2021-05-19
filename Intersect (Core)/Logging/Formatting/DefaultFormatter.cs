@@ -29,17 +29,17 @@ namespace Intersect.Logging.Formatting
             params object[] args
         )
         {
-            var prefix = FormatPrefix( configuration, logLevel, dateTime ).ToString();
+            var prefix = FormatPrefix(configuration, logLevel, dateTime).ToString();
             var builder = new StringBuilder();
 
-            if( message != null )
+            if (message != null)
             {
-                FormatLine( builder, prefix, message, args );
+                FormatLine(builder, prefix, message, args);
             }
 
-            if( exception != null )
+            if (exception != null)
             {
-                FormatLine( builder, prefix, exception );
+                FormatLine(builder, prefix, exception);
             }
 
             return builder.ToString();
@@ -52,25 +52,25 @@ namespace Intersect.Logging.Formatting
             StringBuilder builder = null
         )
         {
-            if( builder == null )
+            if (builder == null)
             {
                 builder = new StringBuilder();
             }
 
-            if( !string.IsNullOrWhiteSpace( TimestampFormat ) )
+            if (!string.IsNullOrWhiteSpace(TimestampFormat))
             {
-                builder.Append( dateTime.ToString( TimestampFormat ) );
-                builder.Append( ' ' );
+                builder.Append(dateTime.ToString(TimestampFormat));
+                builder.Append(' ');
             }
 
-            builder.Append( $"[{logLevel}]" );
-            builder.Append( ' ' );
+            builder.Append($"[{logLevel}]");
+            builder.Append(' ');
 
             // ReSharper disable once InvertIf
-            if( !string.IsNullOrEmpty( configuration.Tag ) )
+            if (!string.IsNullOrEmpty(configuration.Tag))
             {
-                builder.Append( configuration.Tag );
-                builder.Append( ": " );
+                builder.Append(configuration.Tag);
+                builder.Append(": ");
             }
 
             return builder;
@@ -83,15 +83,15 @@ namespace Intersect.Logging.Formatting
             params object[] args
         )
         {
-            builder.Append( prefix );
+            builder.Append(prefix);
 
-            if( args?.Length > 0 )
+            if (args?.Length > 0)
             {
-                builder.AppendFormat( message, args );
+                builder.AppendFormat(message, args);
             }
             else
             {
-                builder.Append( message );
+                builder.Append(message);
             }
 
             builder.AppendLine();
@@ -104,30 +104,30 @@ namespace Intersect.Logging.Formatting
             bool recurse = true
         )
         {
-            if( !string.IsNullOrWhiteSpace( prefix ) )
+            if (!string.IsNullOrWhiteSpace(prefix))
             {
-                builder.AppendLine( prefix );
+                builder.AppendLine(prefix);
             }
 
-            builder.AppendLine( $@"  Message: {exception.Message}" );
+            builder.AppendLine($@"  Message: {exception.Message}");
 
-            if( exception.StackTrace?.Length < 10000 )
+            if (exception.StackTrace?.Length < 10000)
             {
-                builder.AppendLine( $@"    Stack: {exception.StackTrace}" );
+                builder.AppendLine($@"    Stack: {exception.StackTrace}");
             }
 
             builder.AppendLine();
 
-            if( !recurse )
+            if (!recurse)
             {
                 return;
             }
 
             var innerException = exception;
-            while( ( innerException = innerException.InnerException ) != null )
+            while ((innerException = innerException.InnerException) != null)
             {
-                builder.AppendLine( @"Caused By" );
-                FormatLine( builder, null, innerException, false );
+                builder.AppendLine(@"Caused By");
+                FormatLine(builder, null, innerException, false);
             }
         }
 

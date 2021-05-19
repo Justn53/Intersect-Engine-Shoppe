@@ -10,16 +10,16 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public ChatMsgPacket( string msg, byte channel )
+        public ChatMsgPacket(string msg, byte channel)
         {
             Message = msg;
             Channel = channel;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public string Message { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public byte Channel { get; set; }
 
     }

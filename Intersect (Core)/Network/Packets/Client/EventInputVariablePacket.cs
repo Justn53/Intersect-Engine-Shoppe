@@ -11,7 +11,7 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public EventInputVariablePacket( Guid eventId, int value, string stringValue = "", bool canceled = false )
+        public EventInputVariablePacket(Guid eventId, int value, string stringValue = "", bool canceled = false)
         {
             EventId = eventId;
             Value = value;
@@ -19,16 +19,16 @@ namespace Intersect.Network.Packets.Client
             Canceled = canceled;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid EventId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public int Value { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public string StringValue { get; set; }
 
-        [Key( 3 )]
+        [Key(3)]
         public bool Canceled { get; set; }
 
     }

@@ -30,11 +30,11 @@ namespace Intersect.Editor.Forms
 
         public FrmLogin()
         {
-            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo( "en-US" );
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
             InitializeComponent();
         }
 
-        private void frmLogin_Load( object sender, EventArgs e )
+        private void frmLogin_Load(object sender, EventArgs e)
         {
             AppDomain.CurrentDomain.UnhandledException += Program.CurrentDomain_UnhandledException;
             Strings.Load();
@@ -42,11 +42,11 @@ namespace Intersect.Editor.Forms
             Database.LoadOptions();
             mOptionsLoaded = true;
             EditorLoopDelegate = Main.StartLoop;
-            if( Preferences.LoadPreference( "username" ).Trim().Length > 0 )
+            if (Preferences.LoadPreference("username").Trim().Length > 0)
             {
-                txtUsername.Text = Preferences.LoadPreference( "Username" );
+                txtUsername.Text = Preferences.LoadPreference("Username");
                 txtPassword.Text = "*****";
-                mSavedPassword = Preferences.LoadPreference( "Password" );
+                mSavedPassword = Preferences.LoadPreference("Password");
                 chkRemember.Checked = true;
             }
 
@@ -57,7 +57,7 @@ namespace Intersect.Editor.Forms
         private void InitLocalization()
         {
             Text = Strings.Login.title;
-            lblVersion.Text = Strings.Login.version.ToString( Application.ProductVersion );
+            lblVersion.Text = Strings.Login.version.ToString(Application.ProductVersion);
             lblGettingStarted.Text = Strings.Login.gettingstarted;
             lblUsername.Text = Strings.Login.username;
             lblPassword.Text = Strings.Login.password;
@@ -66,9 +66,9 @@ namespace Intersect.Editor.Forms
             lblStatus.Text = Strings.Login.connecting;
         }
 
-        private void tmrSocket_Tick( object sender, EventArgs e )
+        private void tmrSocket_Tick(object sender, EventArgs e)
         {
-            if( !mOptionsLoaded )
+            if (!mOptionsLoaded)
             {
                 return;
             }
@@ -76,21 +76,21 @@ namespace Intersect.Editor.Forms
             Networking.Network.Update();
             var statusString = Strings.Login.connecting;
             btnLogin.Enabled = Networking.Network.Connected;
-            if( Networking.Network.Connected )
+            if (Networking.Network.Connected)
             {
                 statusString = Strings.Login.connected;
             }
-            else if( Networking.Network.Connecting )
+            else if (Networking.Network.Connecting)
             {
             }
-            else if( Networking.Network.ConnectionDenied )
+            else if (Networking.Network.ConnectionDenied)
             {
                 statusString = Strings.Login.Denied;
             }
             else
             {
-                var seconds = ( Globals.ReconnectTime - Globals.System.GetTimeMs() ) / 1000;
-                statusString = Strings.Login.failedtoconnect.ToString( seconds.ToString( "0" ) );
+                var seconds = (Globals.ReconnectTime - Globals.System.GetTimeMs()) / 1000;
+                statusString = Strings.Login.failedtoconnect.ToString(seconds.ToString("0"));
             }
 
             Process.GetProcesses()
@@ -98,7 +98,7 @@ namespace Intersect.Editor.Forms
                 .ForEach(
                     process =>
                     {
-                        if( !( process?.ProcessName.Contains( "raptr" ) ?? false ) )
+                        if (!(process?.ProcessName.Contains("raptr") ?? false))
                         {
                             return;
                         }
@@ -111,88 +111,88 @@ namespace Intersect.Editor.Forms
             Globals.LoginForm.lblStatus.Text = statusString;
         }
 
-        private void btnLogin_Click( object sender, EventArgs e )
+        private void btnLogin_Click(object sender, EventArgs e)
         {
-            if( !Networking.Network.Connected || !btnLogin.Enabled )
+            if (!Networking.Network.Connected || !btnLogin.Enabled)
             {
                 return;
             }
 
-            if( txtUsername.Text.Trim().Length > 0 && txtPassword.Text.Trim().Length > 0 )
+            if (txtUsername.Text.Trim().Length > 0 && txtPassword.Text.Trim().Length > 0)
             {
-                using( var sha = new SHA256Managed() )
+                using (var sha = new SHA256Managed())
                 {
-                    if( mSavedPassword != "" )
+                    if (mSavedPassword != "")
                     {
-                        PacketSender.SendLogin( txtUsername.Text.Trim(), mSavedPassword );
+                        PacketSender.SendLogin(txtUsername.Text.Trim(), mSavedPassword);
                     }
                     else
                     {
                         PacketSender.SendLogin(
                             txtUsername.Text.Trim(),
-                            BitConverter.ToString( sha.ComputeHash( Encoding.UTF8.GetBytes( txtPassword.Text.Trim() ) ) )
-                                .Replace( "-", "" )
+                            BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(txtPassword.Text.Trim())))
+                                .Replace("-", "")
                         );
                     }
                 }
             }
         }
 
-        protected override void OnKeyPress( KeyPressEventArgs e )
+        protected override void OnKeyPress(KeyPressEventArgs e)
         {
-            base.OnKeyPress( e );
-            if( e.KeyChar != 13 )
+            base.OnKeyPress(e);
+            if (e.KeyChar != 13)
             {
                 return;
             }
 
             e.Handled = true;
-            btnLogin_Click( null, null );
+            btnLogin_Click(null, null);
         }
 
-        protected override void OnClosed( EventArgs e )
+        protected override void OnClosed(EventArgs e)
         {
-            Networking.Network.EditorLidgrenNetwork?.Disconnect( NetworkStatus.Quitting.ToString() );
-            base.OnClosed( e );
+            Networking.Network.EditorLidgrenNetwork?.Disconnect(NetworkStatus.Quitting.ToString());
+            base.OnClosed(e);
             Application.Exit();
         }
 
         public void TryRemembering()
         {
-            using( var sha = new SHA256Managed() )
+            using (var sha = new SHA256Managed())
             {
-                if( chkRemember.Checked )
+                if (chkRemember.Checked)
                 {
-                    Preferences.SavePreference( "Username", txtUsername.Text );
-                    if( mSavedPassword != "" )
+                    Preferences.SavePreference("Username", txtUsername.Text);
+                    if (mSavedPassword != "")
                     {
-                        Preferences.SavePreference( "Password", mSavedPassword );
+                        Preferences.SavePreference("Password", mSavedPassword);
                     }
                     else
                     {
                         Preferences.SavePreference(
                             "Password",
-                            BitConverter.ToString( sha.ComputeHash( Encoding.UTF8.GetBytes( txtPassword.Text.Trim() ) ) )
-                                .Replace( "-", "" )
+                            BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(txtPassword.Text.Trim())))
+                                .Replace("-", "")
                         );
                     }
                 }
                 else
                 {
-                    Preferences.SavePreference( "Username", "" );
-                    Preferences.SavePreference( "Password", "" );
+                    Preferences.SavePreference("Username", "");
+                    Preferences.SavePreference("Password", "");
                 }
             }
         }
 
-        private void txtPassword_KeyDown( object sender, KeyEventArgs e )
+        private void txtPassword_KeyDown(object sender, KeyEventArgs e)
         {
-            if( e.KeyCode == Keys.Return )
+            if (e.KeyCode == Keys.Return)
             {
                 return;
             }
 
-            if( mSavedPassword != "" )
+            if (mSavedPassword != "")
             {
                 mSavedPassword = "";
                 txtPassword.Text = "";
@@ -200,14 +200,14 @@ namespace Intersect.Editor.Forms
             }
         }
 
-        private void txtUsername_KeyDown( object sender, KeyEventArgs e )
+        private void txtUsername_KeyDown(object sender, KeyEventArgs e)
         {
-            if( e.KeyCode == Keys.Return )
+            if (e.KeyCode == Keys.Return)
             {
                 return;
             }
 
-            if( mSavedPassword != "" )
+            if (mSavedPassword != "")
             {
                 mSavedPassword = "";
                 txtUsername.Text = "";
@@ -216,9 +216,9 @@ namespace Intersect.Editor.Forms
             }
         }
 
-        private void FrmLogin_KeyDown( object sender, KeyEventArgs e )
+        private void FrmLogin_KeyDown(object sender, KeyEventArgs e)
         {
-            if( e.KeyCode == Keys.F1 )
+            if (e.KeyCode == Keys.F1)
             {
                 new FrmOptions().ShowDialog();
             }
@@ -226,15 +226,15 @@ namespace Intersect.Editor.Forms
 
         public void HideSafe()
         {
-            ShowSafe( false );
+            ShowSafe(false);
         }
 
-        public void ShowSafe( bool show = true )
+        public void ShowSafe(bool show = true)
         {
             var doShow = new Action<Form>(
                 instance =>
                 {
-                    if( show )
+                    if (show)
                     {
                         instance?.Show();
                     }
@@ -245,13 +245,13 @@ namespace Intersect.Editor.Forms
                 }
             );
 
-            if( !InvokeRequired )
+            if (!InvokeRequired)
             {
-                doShow( this );
+                doShow(this);
             }
             else
             {
-                Invoke( doShow, this );
+                Invoke(doShow, this);
             }
         }
 

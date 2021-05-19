@@ -24,7 +24,7 @@ namespace Intersect.Plugins.Manifests
 
         /// <inheritdoc />
         [JsonProperty]
-        public SemVersion Version { get; private set; } = new SemVersion( 1 );
+        public SemVersion Version { get; private set; } = new SemVersion(1);
 
         /// <inheritdoc />
         [JsonProperty]

@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public UpgradeStatPacket( byte stat )
+        public UpgradeStatPacket(byte stat)
         {
             Stat = stat;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public byte Stat { get; set; }
 
     }

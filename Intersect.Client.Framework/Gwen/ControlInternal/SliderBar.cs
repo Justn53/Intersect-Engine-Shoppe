@@ -15,7 +15,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Initializes a new instance of the <see cref="SliderBar" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public SliderBar( Base parent ) : base( parent )
+        public SliderBar(Base parent) : base(parent)
         {
             Target = this;
             RestrictToParent = true;
@@ -34,9 +34,9 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawSliderButton( this, IsHeld, IsHorizontal );
+            skin.DrawSliderButton(this, IsHeld, IsHorizontal);
         }
 
     }

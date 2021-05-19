@@ -16,18 +16,18 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private PlaySoundCommand mMyCommand;
 
-        public EventCommandPlayBgs( PlaySoundCommand refCommand, FrmEvent editor )
+        public EventCommandPlayBgs(PlaySoundCommand refCommand, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
             mEventEditor = editor;
             InitLocalization();
             cmbSound.Items.Clear();
-            cmbSound.Items.Add( Strings.General.none );
-            cmbSound.Items.AddRange( GameContentManager.SmartSortedSoundNames );
-            if( cmbSound.Items.IndexOf( TextUtils.NullToNone( mMyCommand.File ) ) > -1 )
+            cmbSound.Items.Add(Strings.General.none);
+            cmbSound.Items.AddRange(GameContentManager.SmartSortedSoundNames);
+            if (cmbSound.Items.IndexOf(TextUtils.NullToNone(mMyCommand.File)) > -1)
             {
-                cmbSound.SelectedIndex = cmbSound.Items.IndexOf( TextUtils.NullToNone( mMyCommand.File ) );
+                cmbSound.SelectedIndex = cmbSound.Items.IndexOf(TextUtils.NullToNone(mMyCommand.File));
             }
             else
             {
@@ -43,18 +43,18 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             btnCancel.Text = Strings.EventPlayBgs.cancel;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            mMyCommand.File = TextUtils.SanitizeNone( cmbSound?.Text );
+            mMyCommand.File = TextUtils.SanitizeNone(cmbSound?.Text);
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }
 
-        private void cmbSprite_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbSprite_SelectedIndexChanged(object sender, EventArgs e)
         {
         }
 

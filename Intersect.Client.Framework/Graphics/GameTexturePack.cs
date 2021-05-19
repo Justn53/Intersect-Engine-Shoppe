@@ -14,27 +14,27 @@ namespace Intersect.Client.Framework.Graphics
         private static Dictionary<string, List<GameTexturePackFrame>> mFrameTypes =
             new Dictionary<string, List<GameTexturePackFrame>>();
 
-        public static void AddFrame( GameTexturePackFrame frame )
+        public static void AddFrame(GameTexturePackFrame frame)
         {
-            mFrames.Add( frame );
+            mFrames.Add(frame);
 
             //find the sub folder
             var sep = new char[] { '/', '\\' };
-            var subFolder = frame.Filename.Split( sep )[1].ToLower();
-            if( !mFrameTypes.ContainsKey( subFolder ) )
+            var subFolder = frame.Filename.Split(sep)[1].ToLower();
+            if (!mFrameTypes.ContainsKey(subFolder))
             {
-                mFrameTypes.Add( subFolder, new List<GameTexturePackFrame>() );
+                mFrameTypes.Add(subFolder, new List<GameTexturePackFrame>());
             }
 
-            if( !mFrameTypes[subFolder].Contains( frame ) )
+            if (!mFrameTypes[subFolder].Contains(frame))
             {
-                mFrameTypes[subFolder].Add( frame );
+                mFrameTypes[subFolder].Add(frame);
             }
         }
 
-        public static GameTexturePackFrame[] GetFolderFrames( string folder )
+        public static GameTexturePackFrame[] GetFolderFrames(string folder)
         {
-            if( mFrameTypes.ContainsKey( folder.ToLower() ) )
+            if (mFrameTypes.ContainsKey(folder.ToLower()))
             {
                 return mFrameTypes[folder.ToLower()].ToArray();
             }
@@ -42,10 +42,10 @@ namespace Intersect.Client.Framework.Graphics
             return null;
         }
 
-        public static GameTexturePackFrame GetFrame( string filename )
+        public static GameTexturePackFrame GetFrame(string filename)
         {
-            filename = filename.Replace( "\\", "/" );
-            return mFrames.Where( p => p.Filename.ToLower() == filename ).FirstOrDefault();
+            filename = filename.Replace("\\", "/");
+            return mFrames.Where(p => p.Filename.ToLower() == filename).FirstOrDefault();
         }
 
     }
@@ -61,7 +61,7 @@ namespace Intersect.Client.Framework.Graphics
             GameTexture packTexture
         )
         {
-            Filename = filename.Replace( '\\', '/' );
+            Filename = filename.Replace('\\', '/');
             Rect = rect;
             Rotated = rotated;
             SourceRect = sourceSpriteRect;

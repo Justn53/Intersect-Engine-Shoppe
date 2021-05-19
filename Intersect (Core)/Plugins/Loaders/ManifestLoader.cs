@@ -19,14 +19,14 @@ namespace Intersect.Plugins.Loaders
     /// </summary>
     public static class ManifestLoader
     {
-        private static readonly Type ManifestType = typeof( IManifestHelper );
+        private static readonly Type ManifestType = typeof(IManifestHelper);
 
         /// <summary>
         /// Delegate signature for manifest loading functions.
         /// </summary>
         /// <param name="assembly">the <see cref="Assembly"/> to pull the manifest from</param>
         /// <returns>an instance of <see cref="IManifestHelper"/> or null if not found or an error occurred</returns>
-        public delegate IManifestHelper ManifestLoaderDelegate( Assembly assembly );
+        public delegate IManifestHelper ManifestLoaderDelegate(Assembly assembly);
 
         /// <summary>
         /// Currently registered manifest loading functions.
@@ -46,12 +46,12 @@ namespace Intersect.Plugins.Loaders
             "Design", "CA1031:Do not catch general exception types",
             Justification = "This method is supposed to be safe and not leak exceptions upwards, only log them."
         )]
-        public static IManifestHelper FindManifest( Assembly assembly )
+        public static IManifestHelper FindManifest(Assembly assembly)
         {
-            if( ManifestLoaderDelegates.Count < 1 )
+            if (ManifestLoaderDelegates.Count < 1)
             {
                 throw new InvalidOperationException(
-                    $"{nameof( ManifestLoaderDelegates )} was initialized with no pre-registered delegates, or the pre-defined delegates were removed and no alternatives were added."
+                    $"{nameof(ManifestLoaderDelegates)} was initialized with no pre-registered delegates, or the pre-defined delegates were removed and no alternatives were added."
                 );
             }
 
@@ -60,18 +60,18 @@ namespace Intersect.Plugins.Loaders
                 // This SHOULD NOT be converted into a LINQ expression.
                 // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
                 // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
-                foreach( var manifestLoaderDelegate in ManifestLoaderDelegates )
+                foreach (var manifestLoaderDelegate in ManifestLoaderDelegates)
                 {
-                    var manifest = manifestLoaderDelegate?.Invoke( assembly );
-                    if( manifest != null )
+                    var manifest = manifestLoaderDelegate?.Invoke(assembly);
+                    if (manifest != null)
                     {
                         return manifest;
                     }
                 }
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                Log.Error( exception, "Exception thrown by manifest loader delegate." );
+                Log.Error(exception, "Exception thrown by manifest loader delegate.");
             }
 
             return default;
@@ -82,51 +82,51 @@ namespace Intersect.Plugins.Loaders
         /// </summary>
         /// <param name="assembly">the <see cref="Assembly"/> to pull the manifest from</param>
         /// <returns>an instance of <see cref="IManifestHelper"/> or null if not found or an error occurred</returns>
-        public static IManifestHelper LoadJsonManifestFrom( Assembly assembly )
+        public static IManifestHelper LoadJsonManifestFrom(Assembly assembly)
         {
             try
             {
-                var manifestInfo = assembly.GetManifestResourceInfo( @"manifest.json" );
-                if( manifestInfo == null )
+                var manifestInfo = assembly.GetManifestResourceInfo(@"manifest.json");
+                if (manifestInfo == null)
                 {
                     return null;
                 }
 
-                using( var manifestStream = assembly.GetManifestResourceStream( @"manifest.json" ) )
+                using (var manifestStream = assembly.GetManifestResourceStream(@"manifest.json"))
                 {
-                    if( manifestStream == null )
+                    if (manifestStream == null)
                     {
-                        throw new InvalidDataException( "Manifest resource stream null when info exists." );
+                        throw new InvalidDataException("Manifest resource stream null when info exists.");
                     }
 
-                    using( var manifestReader = new StreamReader( manifestStream ) )
+                    using (var manifestReader = new StreamReader(manifestStream))
                     {
                         var manifestSource = manifestReader.ReadToEnd();
 
-                        if( string.IsNullOrWhiteSpace( manifestSource ) )
+                        if (string.IsNullOrWhiteSpace(manifestSource))
                         {
-                            throw new InvalidDataException( "Manifest is empty or failed to load and is null." );
+                            throw new InvalidDataException("Manifest is empty or failed to load and is null.");
                         }
 
-                        return JsonConvert.DeserializeObject<JsonManifest>( manifestSource );
+                        return JsonConvert.DeserializeObject<JsonManifest>(manifestSource);
                     }
                 }
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                throw new Exception( $"Failed to load manifest.json from {assembly.FullName}.", exception );
+                throw new Exception($"Failed to load manifest.json from {assembly.FullName}.", exception);
             }
         }
 
-        internal static bool IsVirtualManifestType( Type type )
+        internal static bool IsVirtualManifestType(Type type)
         {
             // Abstract, interface and generic types are not valid virtual manifest types.
-            if( type.IsAbstract || type.IsInterface || type.IsGenericType )
+            if (type.IsAbstract || type.IsInterface || type.IsGenericType)
             {
                 return false;
             }
 
-            if( !ManifestType.IsAssignableFrom( type ) )
+            if (!ManifestType.IsAssignableFrom(type))
             {
                 var mismatchedType = type.GetInterfaces()
                     .FirstOrDefault(
@@ -135,14 +135,14 @@ namespace Intersect.Plugins.Loaders
                         )
                     );
 
-                if( mismatchedType != null )
+                if (mismatchedType != null)
                 {
-                    Log.Debug( $"Expected: {ManifestType.AssemblyQualifiedName} in {ManifestType.Assembly.Location}" );
-                    Log.Debug( $"Loaded: {mismatchedType.AssemblyQualifiedName} in {mismatchedType.Assembly.Location}" );
+                    Log.Debug($"Expected: {ManifestType.AssemblyQualifiedName} in {ManifestType.Assembly.Location}");
+                    Log.Debug($"Loaded: {mismatchedType.AssemblyQualifiedName} in {mismatchedType.Assembly.Location}");
 
-                    if( !string.Equals(
+                    if (!string.Equals(
                         ManifestType.Assembly.Location, mismatchedType.Assembly.Location, StringComparison.Ordinal
-                    ) )
+                    ))
                     {
                         Log.Warn(
                             $"Manifest loaded the core library from the wrong location." +
@@ -155,18 +155,18 @@ namespace Intersect.Plugins.Loaders
                 return false;
             }
 
-            if( type.IsValueType )
+            if (type.IsValueType)
             {
                 return true;
             }
 
-            var constructor = type.GetConstructor( Array.Empty<Type>() );
-            if( constructor != null )
+            var constructor = type.GetConstructor(Array.Empty<Type>());
+            if (constructor != null)
             {
                 return true;
             }
 
-            Log.Debug( $"'{type.Name}' is missing a default constructor." );
+            Log.Debug($"'{type.Name}' is missing a default constructor.");
             return false;
         }
 
@@ -175,26 +175,26 @@ namespace Intersect.Plugins.Loaders
         /// </summary>
         /// <param name="assembly">the <see cref="Assembly"/> to pull the manifest from</param>
         /// <returns>an instance of <see cref="IManifestHelper"/> or null if not found or an error occurred</returns>
-        public static IManifestHelper LoadVirtualManifestFrom( Assembly assembly )
+        public static IManifestHelper LoadVirtualManifestFrom(Assembly assembly)
         {
-            if( default == assembly )
+            if (default == assembly)
             {
-                throw new ArgumentNullException( nameof( assembly ) );
+                throw new ArgumentNullException(nameof(assembly));
             }
 
             try
             {
                 var assemblyTypes = assembly.GetTypes();
-                var manifestType = assemblyTypes.FirstOrDefault( IsVirtualManifestType );
-                if( default != manifestType )
+                var manifestType = assemblyTypes.FirstOrDefault(IsVirtualManifestType);
+                if (default != manifestType)
                 {
-                    return Activator.CreateInstance( manifestType ) as IManifestHelper;
+                    return Activator.CreateInstance(manifestType) as IManifestHelper;
                 }
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
                 Debugger.Break();
-                throw new Exception( $"Failed to load virtual manifest from {assembly.FullName}.", exception );
+                throw new Exception($"Failed to load virtual manifest from {assembly.FullName}.", exception);
             }
 
             return default;

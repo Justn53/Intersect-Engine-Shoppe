@@ -25,9 +25,9 @@ namespace Intersect.Plugins.Loaders
             .ForEach(
                 plugin =>
                 {
-                    if( plugin != null )
+                    if (plugin != null)
                     {
-                        plugin.Configuration = LoadConfiguration( applicationContext, plugin );
+                        plugin.Configuration = LoadConfiguration(applicationContext, plugin);
                     }
                 }
             );
@@ -53,9 +53,9 @@ namespace Intersect.Plugins.Loaders
             {
                 try
                 {
-                    if( File.Exists( configurationFilePath ) )
+                    if (File.Exists(configurationFilePath))
                     {
-                        serializedOldConfiguration = File.ReadAllText( configurationFilePath, Encoding.UTF8 );
+                        serializedOldConfiguration = File.ReadAllText(configurationFilePath, Encoding.UTF8);
                         configuration = JsonConvert.DeserializeObject(
                                             serializedOldConfiguration, plugin.Reference.ConfigurationType,
                                             new JsonSerializerSettings
@@ -66,7 +66,7 @@ namespace Intersect.Plugins.Loaders
                                         configuration;
                     }
                 }
-                catch( Exception exception )
+                catch (Exception exception)
                 {
                     applicationContext.Logger.Warn(
                         exception,
@@ -74,25 +74,25 @@ namespace Intersect.Plugins.Loaders
                     );
                 }
 
-                var serializedUpdatedConfiguration = JsonConvert.SerializeObject( configuration, Formatting.Indented );
+                var serializedUpdatedConfiguration = JsonConvert.SerializeObject(configuration, Formatting.Indented);
 
                 var backupConfigurationFilePath = Path.Combine(
-                    Path.GetDirectoryName( configurationFilePath ),
-                    $"{Path.GetFileNameWithoutExtension( configurationFilePath )}.{DateTime.Now:yyyyMMddHHmmss}.backup.json"
+                    Path.GetDirectoryName(configurationFilePath),
+                    $"{Path.GetFileNameWithoutExtension(configurationFilePath)}.{DateTime.Now:yyyyMMddHHmmss}.backup.json"
                 );
 
                 try
                 {
-                    if( serializedOldConfiguration == null ||
+                    if (serializedOldConfiguration == null ||
                         !string.Equals(
                             serializedOldConfiguration, serializedUpdatedConfiguration, StringComparison.Ordinal
-                        ) )
+                        ))
                     {
                         // If the file existed and has changed make a time-stamped backup of the configuration file
-                        File.Copy( configurationFilePath, backupConfigurationFilePath );
+                        File.Copy(configurationFilePath, backupConfigurationFilePath);
                     }
                 }
-                catch( Exception exception )
+                catch (Exception exception)
                 {
                     applicationContext.Logger.Warn(
                         exception,
@@ -100,9 +100,9 @@ namespace Intersect.Plugins.Loaders
                     );
                 }
 
-                File.WriteAllText( configurationFilePath, serializedUpdatedConfiguration, Encoding.UTF8 );
+                File.WriteAllText(configurationFilePath, serializedUpdatedConfiguration, Encoding.UTF8);
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
                 applicationContext.Logger.Warn(
                     exception, $"Failed to save plugin configuration to '{configurationFilePath}'."

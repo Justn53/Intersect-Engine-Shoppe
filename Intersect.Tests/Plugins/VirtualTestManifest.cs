@@ -7,7 +7,7 @@ namespace Intersect.Plugins
 {
     internal class VirtualTestManifest : IManifestHelper
     {
-        internal static readonly string Namespace = typeof( VirtualTestManifest ).Namespace ?? "Intersect.Plugins";
+        internal static readonly string Namespace = typeof(VirtualTestManifest).Namespace ?? "Intersect.Plugins";
 
         /// <inheritdoc />
         public string Name { get; } = "Test Manifest";
@@ -16,7 +16,7 @@ namespace Intersect.Plugins
         public string Key { get; } = "AscensionGameDev.Intersect.Tests";
 
         /// <inheritdoc />
-        public SemVersion Version { get; } = new SemVersion( 1, 0, 0 );
+        public SemVersion Version { get; } = new SemVersion(1, 0, 0);
 
         /// <inheritdoc />
         public Authors Authors { get; } = new[]

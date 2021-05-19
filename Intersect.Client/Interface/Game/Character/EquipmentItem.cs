@@ -32,7 +32,7 @@ namespace Intersect.Client.Interface.Game.Character
 
         public ImagePanel Pnl;
 
-        public EquipmentItem( int index, WindowControl characterWindow )
+        public EquipmentItem(int index, WindowControl characterWindow)
         {
             mYindex = index;
             mCharacterWindow = characterWindow;
@@ -44,58 +44,58 @@ namespace Intersect.Client.Interface.Game.Character
             Pnl.HoverLeave += pnl_HoverLeave;
             Pnl.RightClicked += pnl_RightClicked;
 
-            ContentPanel = new ImagePanel( Pnl, "EquipmentIcon" );
+            ContentPanel = new ImagePanel(Pnl, "EquipmentIcon");
             ContentPanel.MouseInputEnabled = false;
-            Pnl.SetToolTipText( Options.EquipmentSlots[mYindex] );
+            Pnl.SetToolTipText(Options.EquipmentSlots[mYindex]);
         }
 
-        void pnl_RightClicked( Base sender, ClickedEventArgs arguments )
+        void pnl_RightClicked(Base sender, ClickedEventArgs arguments)
         {
-            PacketSender.SendUnequipItem( mYindex );
+            PacketSender.SendUnequipItem(mYindex);
         }
 
-        void pnl_HoverLeave( Base sender, EventArgs arguments )
+        void pnl_HoverLeave(Base sender, EventArgs arguments)
         {
-            if( mDescWindow != null )
+            if (mDescWindow != null)
             {
                 mDescWindow.Dispose();
                 mDescWindow = null;
             }
         }
 
-        void pnl_HoverEnter( Base sender, EventArgs arguments )
+        void pnl_HoverEnter(Base sender, EventArgs arguments)
         {
-            if( InputHandler.MouseFocus != null )
+            if (InputHandler.MouseFocus != null)
             {
                 return;
             }
 
-            if( Globals.InputManager.MouseButtonDown( GameInput.MouseButtons.Left ) )
+            if (Globals.InputManager.MouseButtonDown(GameInput.MouseButtons.Left))
             {
                 return;
             }
 
-            if( mDescWindow != null )
+            if (mDescWindow != null)
             {
                 mDescWindow.Dispose();
                 mDescWindow = null;
             }
 
-            var item = ItemBase.Get( mCurrentItemId );
-            if( item == null )
+            var item = ItemBase.Get(mCurrentItemId);
+            if (item == null)
             {
                 return;
             }
 
-            mDescWindow = new ItemDescWindow( item, 1, mCharacterWindow.X, mCharacterWindow.Y, mStatBoost, item.Name );
+            mDescWindow = new ItemDescWindow(item, 1, mCharacterWindow.X, mCharacterWindow.Y, mStatBoost, item.Name);
         }
 
         public FloatRect RenderBounds()
         {
             var rect = new FloatRect()
             {
-                X = Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).X,
-                Y = Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).Y,
+                X = Pnl.LocalPosToCanvas(new Point(0, 0)).X,
+                Y = Pnl.LocalPosToCanvas(new Point(0, 0)).Y,
                 Width = Pnl.Width,
                 Height = Pnl.Height
             };
@@ -103,17 +103,17 @@ namespace Intersect.Client.Interface.Game.Character
             return rect;
         }
 
-        public void Update( Guid currentItemId, int[] statBoost )
+        public void Update(Guid currentItemId, int[] statBoost)
         {
-            if( currentItemId != mCurrentItemId || !mTexLoaded )
+            if (currentItemId != mCurrentItemId || !mTexLoaded)
             {
                 mCurrentItemId = currentItemId;
                 mStatBoost = statBoost;
-                var item = ItemBase.Get( mCurrentItemId );
-                if( item != null )
+                var item = ItemBase.Get(mCurrentItemId);
+                if (item != null)
                 {
-                    var itemTex = Globals.ContentManager.GetTexture( GameContentManager.TextureType.Item, item.Icon );
-                    if( itemTex != null )
+                    var itemTex = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Item, item.Icon);
+                    if (itemTex != null)
                     {
                         ContentPanel.Show();
                         ContentPanel.Texture = itemTex;

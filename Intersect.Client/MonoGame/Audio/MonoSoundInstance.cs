@@ -17,7 +17,7 @@ namespace Intersect.Client.MonoGame.Audio
         private int mVolume;
 
         // ReSharper disable once SuggestBaseTypeForParameter
-        public MonoSoundInstance( MonoSoundSource source ) : base( source )
+        public MonoSoundInstance(MonoSoundSource source) : base(source)
         {
             mInstance = Source.Effect?.CreateInstance();
         }
@@ -26,12 +26,12 @@ namespace Intersect.Client.MonoGame.Audio
         {
             get
             {
-                if( mDisposed || mInstance == null )
+                if (mDisposed || mInstance == null)
                 {
                     return AudioInstanceState.Disposed;
                 }
 
-                switch( mInstance.State )
+                switch (mInstance.State)
                 {
                     case SoundState.Playing:
                         return AudioInstanceState.Playing;
@@ -53,9 +53,9 @@ namespace Intersect.Client.MonoGame.Audio
             {
                 mInstance?.Play();
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Logging.Log.Debug( ex, "Error trying to play sound in MonoSoundInstance.Play()" );
+                Logging.Log.Debug(ex, "Error trying to play sound in MonoSoundInstance.Play()");
             }
         }
 
@@ -69,21 +69,21 @@ namespace Intersect.Client.MonoGame.Audio
             mInstance?.Stop();
         }
 
-        public override void SetVolume( int volume, bool isMusic = false )
+        public override void SetVolume(int volume, bool isMusic = false)
         {
             mVolume = volume;
             try
             {
-                if( mInstance != null )
+                if (mInstance != null)
                 {
-                    mInstance.Volume = mVolume * (float)( Globals.Database.SoundVolume / 100f ) / 100f;
+                    mInstance.Volume = mVolume * (float)(Globals.Database.SoundVolume / 100f) / 100f;
                 }
             }
-            catch( NullReferenceException )
+            catch (NullReferenceException)
             {
                 // song changed while changing volume
             }
-            catch( Exception )
+            catch (Exception)
             {
                 // device not ready
             }
@@ -96,7 +96,7 @@ namespace Intersect.Client.MonoGame.Audio
 
         protected override void InternalLoopSet()
         {
-            if( mInstance != null )
+            if (mInstance != null)
             {
                 mInstance.IsLooped = IsLooping;
             }
@@ -104,13 +104,13 @@ namespace Intersect.Client.MonoGame.Audio
 
         public override void Dispose()
         {
-            if( mDisposed || mInstance == null )
+            if (mDisposed || mInstance == null)
             {
                 return;
             }
 
             mDisposed = true;
-            if( mInstance.State != SoundState.Stopped )
+            if (mInstance.State != SoundState.Stopped)
             {
                 mInstance.Stop();
             }

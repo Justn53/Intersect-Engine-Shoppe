@@ -10,16 +10,16 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public ErrorMessagePacket( string header, string error )
+        public ErrorMessagePacket(string header, string error)
         {
             Header = header;
             Error = error;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public string Header { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public string Error { get; set; }
 
     }

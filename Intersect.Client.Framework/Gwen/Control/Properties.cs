@@ -18,10 +18,10 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="Properties" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Properties( Base parent ) : base( parent )
+        public Properties(Base parent) : base(parent)
         {
-            mSplitterBar = new SplitterBar( this );
-            mSplitterBar.SetPosition( 80, 0 );
+            mSplitterBar = new SplitterBar(this);
+            mSplitterBar.SetPosition(80, 0);
             mSplitterBar.Cursor = Cursors.SizeWe;
             mSplitterBar.Dragged += OnSplitterMoved;
             mSplitterBar.ShouldDrawBackground = false;
@@ -44,23 +44,23 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Function invoked after layout.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void PostLayout( Skin.Base skin )
+        protected override void PostLayout(Skin.Base skin)
         {
             mSplitterBar.Height = 0;
 
-            if( SizeToChildren( false, true ) )
+            if (SizeToChildren(false, true))
             {
                 InvalidateParent();
             }
 
-            mSplitterBar.SetSize( 3, Height );
+            mSplitterBar.SetSize(3, Height);
         }
 
         /// <summary>
         ///     Handles the splitter moved event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnSplitterMoved( Base control, EventArgs args )
+        protected virtual void OnSplitterMoved(Base control, EventArgs args)
         {
             InvalidateChildren();
         }
@@ -71,9 +71,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <param name="label">Property name.</param>
         /// <param name="value">Initial value.</param>
         /// <returns>Newly created row.</returns>
-        public PropertyRow Add( string label, string value = "" )
+        public PropertyRow Add(string label, string value = "")
         {
-            return Add( label, new Property.Text( this ), value );
+            return Add(label, new Property.Text(this), value);
         }
 
         /// <summary>
@@ -83,25 +83,25 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <param name="prop">Property control.</param>
         /// <param name="value">Initial value.</param>
         /// <returns>Newly created row.</returns>
-        public PropertyRow Add( string label, Property.Base prop, string value = "" )
+        public PropertyRow Add(string label, Property.Base prop, string value = "")
         {
-            var row = new PropertyRow( this, prop );
+            var row = new PropertyRow(this, prop);
             row.Dock = Pos.Top;
             row.Label = label;
             row.ValueChanged += OnRowValueChanged;
 
-            prop.SetValue( value, true );
+            prop.SetValue(value, true);
 
             mSplitterBar.BringToFront();
 
             return row;
         }
 
-        private void OnRowValueChanged( Base control, EventArgs args )
+        private void OnRowValueChanged(Base control, EventArgs args)
         {
-            if( ValueChanged != null )
+            if (ValueChanged != null)
             {
-                ValueChanged.Invoke( control, EventArgs.Empty );
+                ValueChanged.Invoke(control, EventArgs.Empty);
             }
         }
 

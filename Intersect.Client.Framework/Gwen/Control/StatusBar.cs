@@ -11,7 +11,7 @@
         ///     Initializes a new instance of the <see cref="StatusBar" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public StatusBar( Base parent ) : base( parent )
+        public StatusBar(Base parent) : base(parent)
         {
             AutoSizeToContents = false;
 
@@ -28,7 +28,7 @@
         /// </summary>
         /// <param name="control">Control to add.</param>
         /// <param name="right">Determines whether the control should be added to the right side of the bar.</param>
-        public void AddControl( Base control, bool right )
+        public void AddControl(Base control, bool right)
         {
             control.Parent = this;
             control.Dock = right ? Pos.Right : Pos.Left;
@@ -38,9 +38,9 @@
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawStatusBar( this );
+            skin.DrawStatusBar(this);
         }
 
     }

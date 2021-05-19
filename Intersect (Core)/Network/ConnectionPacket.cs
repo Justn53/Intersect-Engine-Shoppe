@@ -12,8 +12,8 @@ using Intersect.Logging;
 namespace Intersect.Network
 {
     [MessagePackObject]
-    [Union( 0, typeof( ApprovalPacket ) )]
-    [Union( 1, typeof( HailPacket ) )]
+    [Union(0, typeof(ApprovalPacket))]
+    [Union(1, typeof(HailPacket))]
     public abstract class ConnectionPacket : IntersectPacket
     {
         protected const int SIZE_HANDSHAKE_SECRET = 32;
@@ -37,7 +37,7 @@ namespace Intersect.Network
         {
         }
 
-        protected ConnectionPacket( RSACryptoServiceProvider rsa, byte[] handshakeSecret )
+        protected ConnectionPacket(RSACryptoServiceProvider rsa, byte[] handshakeSecret)
         {
             mRsa = rsa ?? throw new ArgumentNullException();
 
@@ -76,14 +76,14 @@ namespace Intersect.Network
             set => mOffset = value;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public byte[] EncryptedData { get; set; }
 
         public abstract bool Encrypt();
 
-        public abstract bool Decrypt( RSACryptoServiceProvider rsa );
+        public abstract bool Decrypt(RSACryptoServiceProvider rsa);
 
-        protected static void DumpKey( RSAParameters parameters, bool isPublic )
+        protected static void DumpKey(RSAParameters parameters, bool isPublic)
         {
 #if INTERSECT_DIAGNOSTIC
             Log.Diagnostic($"Exponent: {BitConverter.ToString(parameters.Exponent)}");

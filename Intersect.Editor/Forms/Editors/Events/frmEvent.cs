@@ -62,78 +62,78 @@ namespace Intersect.Editor.Forms.Editors.Events
 
         public int mOldSelectedCommand;
 
-        private void txtEventname_TextChanged( object sender, EventArgs e )
+        private void txtEventname_TextChanged(object sender, EventArgs e)
         {
             MyEvent.Name = txtEventname.Text;
-            Text = Strings.EventEditor.title.ToString( txtEventname.Text );
+            Text = Strings.EventEditor.title.ToString(txtEventname.Text);
         }
 
-        private void lstEventCommands_SelectedIndexChanged( object sender, EventArgs e )
+        private void lstEventCommands_SelectedIndexChanged(object sender, EventArgs e)
         {
             mCurrentCommand = lstEventCommands.SelectedIndex;
             mOldSelectedCommand = lstEventCommands.SelectedIndex;
         }
 
-        private void lstEventCommands_KeyDown( object sender, KeyEventArgs e )
+        private void lstEventCommands_KeyDown(object sender, KeyEventArgs e)
         {
-            if( e.KeyCode != Keys.Delete )
+            if (e.KeyCode != Keys.Delete)
             {
                 return;
             }
 
-            if( mCurrentCommand < 0 || mCurrentCommand >= mCommandProperties.Count )
+            if (mCurrentCommand < 0 || mCurrentCommand >= mCommandProperties.Count)
             {
                 return;
             }
 
-            if( !mCommandProperties[mCurrentCommand].Editable )
+            if (!mCommandProperties[mCurrentCommand].Editable)
             {
                 return;
             }
 
-            if( mCommandProperties[mCurrentCommand].MyIndex < 0 ||
-                mCommandProperties[mCurrentCommand].MyIndex >= mCommandProperties[mCurrentCommand].MyList.Count )
+            if (mCommandProperties[mCurrentCommand].MyIndex < 0 ||
+                mCommandProperties[mCurrentCommand].MyIndex >= mCommandProperties[mCurrentCommand].MyList.Count)
             {
                 return;
             }
 
-            HandleRemoveCommand( mCommandProperties[mCurrentCommand].Cmd );
-            mCommandProperties[mCurrentCommand].MyList.Remove( mCommandProperties[mCurrentCommand].Cmd );
+            HandleRemoveCommand(mCommandProperties[mCurrentCommand].Cmd);
+            mCommandProperties[mCurrentCommand].MyList.Remove(mCommandProperties[mCurrentCommand].Cmd);
             mCurrentCommand = -1;
 
             mOldSelectedCommand = lstEventCommands.SelectedIndex;
             ListPageCommands();
         }
 
-        private void lstEventCommands_Click( object sender, MouseEventArgs e )
+        private void lstEventCommands_Click(object sender, MouseEventArgs e)
         {
-            if( e.Button != MouseButtons.Right )
+            if (e.Button != MouseButtons.Right)
             {
                 return;
             }
 
-            var i = lstEventCommands.IndexFromPoint( e.Location );
-            if( i <= -1 || i >= lstEventCommands.Items.Count )
+            var i = lstEventCommands.IndexFromPoint(e.Location);
+            if (i <= -1 || i >= lstEventCommands.Items.Count)
             {
                 return;
             }
 
-            if( !mCommandProperties[i].Editable )
+            if (!mCommandProperties[i].Editable)
             {
                 return;
             }
 
             lstEventCommands.SelectedIndex = i;
 
-            if( mCurrentCommand < 0 || mCurrentCommand >= mCommandProperties.Count )
+            if (mCurrentCommand < 0 || mCurrentCommand >= mCommandProperties.Count)
             {
                 return;
             }
 
-            commandMenu.Show( (ListBox)sender, e.Location );
+            commandMenu.Show((ListBox)sender, e.Location);
             btnEdit.Enabled = mCommandProperties[mCurrentCommand].Editable;
-            if( mCommandProperties[mCurrentCommand].MyIndex < 0 ||
-                mCommandProperties[mCurrentCommand].MyIndex >= mCommandProperties[mCurrentCommand].MyList.Count )
+            if (mCommandProperties[mCurrentCommand].MyIndex < 0 ||
+                mCommandProperties[mCurrentCommand].MyIndex >= mCommandProperties[mCurrentCommand].MyList.Count)
             {
                 btnEdit.Enabled = false;
             }
@@ -145,19 +145,19 @@ namespace Intersect.Editor.Forms.Editors.Events
             mOldSelectedCommand = lstEventCommands.SelectedIndex;
         }
 
-        private void lstEventCommands_DoubleClick( object sender, EventArgs e )
+        private void lstEventCommands_DoubleClick(object sender, EventArgs e)
         {
-            if( mCurrentCommand <= -1 )
+            if (mCurrentCommand <= -1)
             {
                 return;
             }
 
-            if( !mCommandProperties[mCurrentCommand].Editable )
+            if (!mCommandProperties[mCurrentCommand].Editable)
             {
                 return;
             }
 
-            if( mCommandProperties[mCurrentCommand].Type == EventCommandType.Null )
+            if (mCommandProperties[mCurrentCommand].Type == EventCommandType.Null)
             {
                 grpNewCommands.Show();
                 DisableButtons();
@@ -176,10 +176,10 @@ namespace Intersect.Editor.Forms.Editors.Events
         /// <summary>
         ///     Opens the graphic selector window to pick the default graphic for this event page.
         /// </summary>
-        private void pnlPreview_DoubleClick( object sender, EventArgs e )
+        private void pnlPreview_DoubleClick(object sender, EventArgs e)
         {
-            var graphicSelector = new EventGraphicSelector( CurrentPage.Graphic, this );
-            Controls.Add( graphicSelector );
+            var graphicSelector = new EventGraphicSelector(CurrentPage.Graphic, this);
+            Controls.Add(graphicSelector);
             graphicSelector.BringToFront();
             graphicSelector.Size = ClientSize;
         }
@@ -189,28 +189,28 @@ namespace Intersect.Editor.Forms.Editors.Events
             Graphics graphics;
             Bitmap sourceBitmap = null;
             Bitmap destBitmap = null;
-            destBitmap = new Bitmap( pnlPreview.Width, pnlPreview.Height );
-            graphics = Graphics.FromImage( destBitmap );
-            graphics.Clear( System.Drawing.Color.FromArgb( 60, 63, 65 ) );
+            destBitmap = new Bitmap(pnlPreview.Width, pnlPreview.Height);
+            graphics = Graphics.FromImage(destBitmap);
+            graphics.Clear(System.Drawing.Color.FromArgb(60, 63, 65));
 
-            if( CurrentPage.Graphic.Type == EventGraphicType.Sprite )
+            if (CurrentPage.Graphic.Type == EventGraphicType.Sprite)
             {
-                if( File.Exists( "resources/entities/" + CurrentPage.Graphic.Filename ) )
+                if (File.Exists("resources/entities/" + CurrentPage.Graphic.Filename))
                 {
-                    sourceBitmap = new Bitmap( "resources/entities/" + CurrentPage.Graphic.Filename );
+                    sourceBitmap = new Bitmap("resources/entities/" + CurrentPage.Graphic.Filename);
                 }
             }
-            else if( CurrentPage.Graphic.Type == EventGraphicType.Tileset )
+            else if (CurrentPage.Graphic.Type == EventGraphicType.Tileset)
             {
-                if( File.Exists( "resources/tilesets/" + CurrentPage.Graphic.Filename ) )
+                if (File.Exists("resources/tilesets/" + CurrentPage.Graphic.Filename))
                 {
-                    sourceBitmap = new Bitmap( "resources/tilesets/" + CurrentPage.Graphic.Filename );
+                    sourceBitmap = new Bitmap("resources/tilesets/" + CurrentPage.Graphic.Filename);
                 }
             }
 
-            if( sourceBitmap != null )
+            if (sourceBitmap != null)
             {
-                if( CurrentPage.Graphic.Type == EventGraphicType.Sprite )
+                if (CurrentPage.Graphic.Type == EventGraphicType.Sprite)
                 {
                     graphics.DrawImage(
                         sourceBitmap,
@@ -226,15 +226,15 @@ namespace Intersect.Editor.Forms.Editors.Events
                         ), GraphicsUnit.Pixel
                     );
                 }
-                else if( CurrentPage.Graphic.Type == EventGraphicType.Tileset )
+                else if (CurrentPage.Graphic.Type == EventGraphicType.Tileset)
                 {
                     graphics.DrawImage(
                         sourceBitmap,
                         new Rectangle(
                             pnlPreview.Width / 2 -
-                            ( Options.TileWidth + CurrentPage.Graphic.Width * Options.TileWidth ) / 2,
+                            (Options.TileWidth + CurrentPage.Graphic.Width * Options.TileWidth) / 2,
                             pnlPreview.Height / 2 -
-                            ( Options.TileHeight + CurrentPage.Graphic.Height * Options.TileHeight ) / 2,
+                            (Options.TileHeight + CurrentPage.Graphic.Height * Options.TileHeight) / 2,
                             Options.TileWidth + CurrentPage.Graphic.Width * Options.TileWidth,
                             Options.TileHeight + CurrentPage.Graphic.Height * Options.TileHeight
                         ),
@@ -253,51 +253,51 @@ namespace Intersect.Editor.Forms.Editors.Events
             pnlPreview.BackgroundImage = destBitmap;
         }
 
-        public void CloseMoveRouteDesigner( EventMoveRouteDesigner moveRouteDesigner )
+        public void CloseMoveRouteDesigner(EventMoveRouteDesigner moveRouteDesigner)
         {
-            Controls.Remove( moveRouteDesigner );
+            Controls.Remove(moveRouteDesigner);
         }
 
-        public void CloseGraphicSelector( EventGraphicSelector graphicSelector )
+        public void CloseGraphicSelector(EventGraphicSelector graphicSelector)
         {
-            Controls.Remove( graphicSelector );
+            Controls.Remove(graphicSelector);
             UpdateEventPreview();
         }
 
-        private void btnNewPage_Click( object sender, EventArgs e )
+        private void btnNewPage_Click(object sender, EventArgs e)
         {
-            MyEvent.Pages.Add( new EventPage() );
+            MyEvent.Pages.Add(new EventPage());
             UpdateTabControl();
-            LoadPage( MyEvent.Pages.Count - 1 );
+            LoadPage(MyEvent.Pages.Count - 1);
         }
 
         private void UpdateTabControl()
         {
-            foreach( var page in mPageTabs )
+            foreach (var page in mPageTabs)
             {
-                pnlTabs.Controls.Remove( page );
+                pnlTabs.Controls.Remove(page);
             }
 
             mPageTabs.Clear();
-            for( var i = 0; i < MyEvent.Pages.Count; i++ )
+            for (var i = 0; i < MyEvent.Pages.Count; i++)
             {
                 var btn = new DarkButton()
                 {
-                    Text = ( i + 1 ).ToString()
+                    Text = (i + 1).ToString()
                 };
 
                 btn.Click += TabBtn_Click;
-                mPageTabs.Add( btn );
+                mPageTabs.Add(btn);
             }
 
-            pnlTabs.Controls.AddRange( mPageTabs.ToArray() );
-            for( var i = 0; i < MyEvent.Pages.Count; i++ )
+            pnlTabs.Controls.AddRange(mPageTabs.ToArray());
+            for (var i = 0; i < MyEvent.Pages.Count; i++)
             {
                 var btn = mPageTabs[i];
-                btn.Size = new Size( 0, 0 );
-                btn.MaximumSize = new Size( 100, 22 );
+                btn.Size = new Size(0, 0);
+                btn.MaximumSize = new Size(100, 22);
                 btn.AutoSize = true;
-                if( i > 0 )
+                if (i > 0)
                 {
                     btn.Left = mPageTabs[i - 1].Right - 1;
                 }
@@ -306,14 +306,14 @@ namespace Intersect.Editor.Forms.Editors.Events
                 btn.SendToBack();
             }
 
-            pnlTabs.SetBounds( 0, 0, pnlTabs.Width, pnlTabs.Height );
+            pnlTabs.SetBounds(0, 0, pnlTabs.Width, pnlTabs.Height);
             btnTabsRight.Visible = pnlTabs.Right > pnlTabsContainer.Width;
             btnTabsLeft.Visible = pnlTabs.Left < 0;
         }
 
-        private void TabBtn_Click( object sender, EventArgs e )
+        private void TabBtn_Click(object sender, EventArgs e)
         {
-            LoadPage( mPageTabs.IndexOf( (DarkButton)sender ) );
+            LoadPage(mPageTabs.IndexOf((DarkButton)sender));
         }
 
         private void EnableButtons()
@@ -321,7 +321,7 @@ namespace Intersect.Editor.Forms.Editors.Events
             //Enable Actions
             btnNewPage.Enabled = true;
             btnCopyPage.Enabled = true;
-            if( mPageCopy != null )
+            if (mPageCopy != null)
             {
                 btnPastePage.Enabled = true;
             }
@@ -330,7 +330,7 @@ namespace Intersect.Editor.Forms.Editors.Events
                 btnPastePage.Enabled = false;
             }
 
-            if( MyEvent.Pages.Count > 1 )
+            if (MyEvent.Pages.Count > 1)
             {
                 btnDeletePage.Enabled = true;
             }
@@ -356,62 +356,62 @@ namespace Intersect.Editor.Forms.Editors.Events
             btnCancel.Enabled = false;
         }
 
-        private void FrmEvent_KeyDown( object sender, KeyEventArgs e )
+        private void FrmEvent_KeyDown(object sender, KeyEventArgs e)
         {
-            if( e.KeyCode == Keys.Escape )
+            if (e.KeyCode == Keys.Escape)
             {
-                if( grpNewCommands.Visible )
+                if (grpNewCommands.Visible)
                 {
                     grpNewCommands.Hide();
                     EnableButtons();
                 }
             }
-            else if( lstEventCommands.Focused && e.KeyData == ( Keys.Control | Keys.X ) )
+            else if (lstEventCommands.Focused && e.KeyData == (Keys.Control | Keys.X))
             {
-                if( lstEventCommands.SelectedIndex > -1 )
+                if (lstEventCommands.SelectedIndex > -1)
                 {
-                    btnCut_Click( null, null );
+                    btnCut_Click(null, null);
                 }
 
                 return;
             }
-            else if( lstEventCommands.Focused && e.KeyData == ( Keys.Control | Keys.C ) )
+            else if (lstEventCommands.Focused && e.KeyData == (Keys.Control | Keys.C))
             {
-                if( lstEventCommands.SelectedIndex > -1 )
+                if (lstEventCommands.SelectedIndex > -1)
                 {
-                    btnCopy_Click( null, null );
+                    btnCopy_Click(null, null);
                 }
 
                 return;
             }
-            else if( lstEventCommands.Focused && e.KeyData == ( Keys.Control | Keys.V ) )
+            else if (lstEventCommands.Focused && e.KeyData == (Keys.Control | Keys.V))
             {
-                if( lstEventCommands.SelectedIndex > -1 )
+                if (lstEventCommands.SelectedIndex > -1)
                 {
-                    btnPaste_Click( null, null );
+                    btnPaste_Click(null, null);
                 }
 
                 return;
             }
         }
 
-        private void btnDeletePage_Click( object sender, EventArgs e )
+        private void btnDeletePage_Click(object sender, EventArgs e)
         {
-            if( MyEvent.Pages.Count > 1 )
+            if (MyEvent.Pages.Count > 1)
             {
-                MyEvent.Pages.RemoveAt( CurrentPageIndex );
+                MyEvent.Pages.RemoveAt(CurrentPageIndex);
                 UpdateTabControl();
-                LoadPage( 0 );
+                LoadPage(0);
             }
         }
 
-        private void btnClearPage_Click( object sender, EventArgs e )
+        private void btnClearPage_Click(object sender, EventArgs e)
         {
             MyEvent.Pages[CurrentPageIndex] = new EventPage();
-            LoadPage( CurrentPageIndex );
+            LoadPage(CurrentPageIndex);
         }
 
-        private void btnCopyPage_Click( object sender, EventArgs e )
+        private void btnCopyPage_Click(object sender, EventArgs e)
         {
             mPageCopy = JsonConvert.SerializeObject(
                 CurrentPage,
@@ -425,9 +425,9 @@ namespace Intersect.Editor.Forms.Editors.Events
             EnableButtons();
         }
 
-        private void btnPastePage_Click( object sender, EventArgs e )
+        private void btnPastePage_Click(object sender, EventArgs e)
         {
-            if( mPageCopy != null )
+            if (mPageCopy != null)
             {
                 MyEvent.Pages[CurrentPageIndex] = new EventPage();
                 JsonConvert.PopulateObject(
@@ -440,35 +440,35 @@ namespace Intersect.Editor.Forms.Editors.Events
                     }
                 );
 
-                LoadPage( CurrentPageIndex );
+                LoadPage(CurrentPageIndex);
             }
         }
 
-        private void cmbAnimation_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbAnimation_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CurrentPage.AnimationId = AnimationBase.IdFromList( cmbAnimation.SelectedIndex - 1 );
+            CurrentPage.AnimationId = AnimationBase.IdFromList(cmbAnimation.SelectedIndex - 1);
         }
 
-        private void chkIsGlobal_CheckedChanged( object sender, EventArgs e )
+        private void chkIsGlobal_CheckedChanged(object sender, EventArgs e)
         {
             MyEvent.Global = chkIsGlobal.Checked;
         }
 
-        private void lblCloseCommands_Click( object sender, EventArgs e )
+        private void lblCloseCommands_Click(object sender, EventArgs e)
         {
-            if( grpNewCommands.Visible )
+            if (grpNewCommands.Visible)
             {
                 grpNewCommands.Hide();
                 EnableButtons();
             }
         }
 
-        private void btnTabsRight_Click( object sender, EventArgs e )
+        private void btnTabsRight_Click(object sender, EventArgs e)
         {
-            if( pnlTabs.Right > pnlTabsContainer.Width )
+            if (pnlTabs.Right > pnlTabsContainer.Width)
             {
-                pnlTabs.SetBounds( pnlTabs.Bounds.Left - 200, 0, pnlTabs.Width, pnlTabs.Height );
-                if( pnlTabs.Right < pnlTabsContainer.Width )
+                pnlTabs.SetBounds(pnlTabs.Bounds.Left - 200, 0, pnlTabs.Width, pnlTabs.Height);
+                if (pnlTabs.Right < pnlTabsContainer.Width)
                 {
                     pnlTabs.SetBounds(
                         pnlTabs.Bounds.Left + pnlTabsContainer.Width - pnlTabs.Right, 0, pnlTabs.Width, pnlTabs.Height
@@ -480,14 +480,14 @@ namespace Intersect.Editor.Forms.Editors.Events
             btnTabsLeft.Visible = pnlTabs.Left < 0;
         }
 
-        private void btnTabsLeft_Click( object sender, EventArgs e )
+        private void btnTabsLeft_Click(object sender, EventArgs e)
         {
-            if( pnlTabs.Left < 0 )
+            if (pnlTabs.Left < 0)
             {
-                pnlTabs.SetBounds( pnlTabs.Bounds.Left + 200, 0, pnlTabs.Width, pnlTabs.Height );
-                if( pnlTabs.Left > 0 )
+                pnlTabs.SetBounds(pnlTabs.Bounds.Left + 200, 0, pnlTabs.Width, pnlTabs.Height);
+                if (pnlTabs.Left > 0)
                 {
-                    pnlTabs.SetBounds( 0, 0, pnlTabs.Width, pnlTabs.Height );
+                    pnlTabs.SetBounds(0, 0, pnlTabs.Width, pnlTabs.Height);
                 }
             }
 
@@ -495,17 +495,17 @@ namespace Intersect.Editor.Forms.Editors.Events
             btnTabsLeft.Visible = pnlTabs.Left < 0;
         }
 
-        private void lstCommands_NodeMouseDoubleClick( object sender, TreeNodeMouseClickEventArgs e )
+        private void lstCommands_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if( e.Node.Tag == null )
+            if (e.Node.Tag == null)
             {
                 return;
             }
 
-            var type = (EventCommandType)int.Parse( e.Node.Tag.ToString() );
+            var type = (EventCommandType)int.Parse(e.Node.Tag.ToString());
 
-            if( ( type == EventCommandType.SetMoveRoute || type == EventCommandType.WaitForRouteCompletion ) &&
-                MyEvent.CommonEvent )
+            if ((type == EventCommandType.SetMoveRoute || type == EventCommandType.WaitForRouteCompletion) &&
+                MyEvent.CommonEvent)
             {
                 DarkMessageBox.ShowWarning(
                     Strings.EventCommandList.notcommon, Strings.EventCommandList.notcommoncaption, DarkDialogButton.Ok,
@@ -520,7 +520,7 @@ namespace Intersect.Editor.Forms.Editors.Events
             EventCommand tmpCommand = null;
             grpNewCommands.Hide();
 
-            switch( type )
+            switch (type)
             {
                 case EventCommandType.Null:
                     break;
@@ -529,11 +529,11 @@ namespace Intersect.Editor.Forms.Editors.Events
 
                     break;
                 case EventCommandType.ShowOptions:
-                    tmpCommand = new ShowOptionsCommand( CurrentPage.CommandLists );
+                    tmpCommand = new ShowOptionsCommand(CurrentPage.CommandLists);
 
                     break;
                 case EventCommandType.InputVariable:
-                    tmpCommand = new InputVariableCommand( CurrentPage.CommandLists );
+                    tmpCommand = new InputVariableCommand(CurrentPage.CommandLists);
 
                     break;
                 case EventCommandType.AddChatboxText:
@@ -549,7 +549,7 @@ namespace Intersect.Editor.Forms.Editors.Events
 
                     break;
                 case EventCommandType.ConditionalBranch:
-                    tmpCommand = new ConditionalBranchCommand( CurrentPage.CommandLists );
+                    tmpCommand = new ConditionalBranchCommand(CurrentPage.CommandLists);
 
                     break;
                 case EventCommandType.ExitEventProcess:
@@ -589,11 +589,11 @@ namespace Intersect.Editor.Forms.Editors.Events
 
                     break;
                 case EventCommandType.ChangeSpells:
-                    tmpCommand = new ChangeSpellsCommand( CurrentPage.CommandLists );
+                    tmpCommand = new ChangeSpellsCommand(CurrentPage.CommandLists);
 
                     break;
                 case EventCommandType.ChangeItems:
-                    tmpCommand = new ChangeItemsCommand( CurrentPage.CommandLists );
+                    tmpCommand = new ChangeItemsCommand(CurrentPage.CommandLists);
 
                     break;
                 case EventCommandType.EquipItem:
@@ -693,7 +693,7 @@ namespace Intersect.Editor.Forms.Editors.Events
 
                     break;
                 case EventCommandType.StartQuest:
-                    tmpCommand = new StartQuestCommand( CurrentPage.CommandLists );
+                    tmpCommand = new StartQuestCommand(CurrentPage.CommandLists);
 
                     break;
                 case EventCommandType.CompleteQuestTask:
@@ -727,7 +727,7 @@ namespace Intersect.Editor.Forms.Editors.Events
                     break;
 
                 case EventCommandType.ChangeName:
-                    tmpCommand = new ChangeNameCommand( CurrentPage.CommandLists );
+                    tmpCommand = new ChangeNameCommand(CurrentPage.CommandLists);
 
                     break;
                 case EventCommandType.RemoveItem:
@@ -743,43 +743,43 @@ namespace Intersect.Editor.Forms.Editors.Events
                     throw new ArgumentOutOfRangeException();
             }
 
-            if( mIsInsert )
+            if (mIsInsert)
             {
                 mCommandProperties[mCurrentCommand]
                     .MyList.Insert(
-                        mCommandProperties[mCurrentCommand].MyList.IndexOf( mCommandProperties[mCurrentCommand].Cmd ),
+                        mCommandProperties[mCurrentCommand].MyList.IndexOf(mCommandProperties[mCurrentCommand].Cmd),
                         tmpCommand
                     );
             }
             else
             {
-                mCommandProperties[mCurrentCommand].MyList.Add( tmpCommand );
+                mCommandProperties[mCurrentCommand].MyList.Add(tmpCommand);
             }
 
-            OpenEditCommand( tmpCommand );
+            OpenEditCommand(tmpCommand);
             mIsEdit = false;
         }
 
-        private void btnEditConditions_Click( object sender, EventArgs e )
+        private void btnEditConditions_Click(object sender, EventArgs e)
         {
-            var editForm = new FrmDynamicRequirements( CurrentPage.ConditionLists, RequirementType.Event );
+            var editForm = new FrmDynamicRequirements(CurrentPage.ConditionLists, RequirementType.Event);
             editForm.ShowDialog();
         }
 
-        private void txtCommand_TextChanged( object sender, EventArgs e )
+        private void txtCommand_TextChanged(object sender, EventArgs e)
         {
             CurrentPage.TriggerCommand = txtCommand.Text;
         }
 
         #region "Form Events"
 
-        public FrmEvent( MapBase currentMap )
+        public FrmEvent(MapBase currentMap)
         {
             InitializeComponent();
             mCurrentMap = currentMap;
         }
 
-        private void frmEvent_Load( object sender, EventArgs e )
+        private void frmEvent_Load(object sender, EventArgs e)
         {
             grpNewCommands.BringToFront();
             grpCreateCommands.BringToFront();
@@ -790,39 +790,39 @@ namespace Intersect.Editor.Forms.Editors.Events
         /// <summary>
         ///     Intercepts the form closing event to ask the user if they want to save their changes or not.
         /// </summary>
-        private void frmEvent_FormClosing( object sender, FormClosingEventArgs e )
+        private void frmEvent_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if( e.CloseReason != CloseReason.UserClosing )
+            if (e.CloseReason != CloseReason.UserClosing)
             {
                 return;
             }
 
-            if( btnSave.Enabled == false )
+            if (btnSave.Enabled == false)
             {
                 e.Cancel = true;
 
                 return;
             }
 
-            if( DarkMessageBox.ShowWarning(
+            if (DarkMessageBox.ShowWarning(
                     Strings.EventEditor.savedialogue, Strings.EventEditor.savecaption, DarkDialogButton.YesNo,
                     Properties.Resources.Icon
                 ) ==
-                DialogResult.Yes )
+                DialogResult.Yes)
             {
-                btnSave_Click( null, null );
+                btnSave_Click(null, null);
             }
             else
             {
-                btnCancel_Click( null, null );
+                btnCancel_Click(null, null);
             }
         }
 
-        private void FrmEvent_FormClosed( object sender, FormClosedEventArgs e )
+        private void FrmEvent_FormClosed(object sender, FormClosedEventArgs e)
         {
         }
 
-        private void FrmEvent_VisibleChanged( object sender, EventArgs e )
+        private void FrmEvent_VisibleChanged(object sender, EventArgs e)
         {
             //btnCancel_Click(null, null);
         }
@@ -850,31 +850,31 @@ namespace Intersect.Editor.Forms.Editors.Events
             grpMovement.Text = Strings.EventEditor.movement;
             lblType.Text = Strings.EventEditor.movementtype;
             cmbMoveType.Items.Clear();
-            for( var i = 0; i < Strings.EventEditor.movementtypes.Count; i++ )
+            for (var i = 0; i < Strings.EventEditor.movementtypes.Count; i++)
             {
-                cmbMoveType.Items.Add( Strings.EventEditor.movementtypes[i] );
+                cmbMoveType.Items.Add(Strings.EventEditor.movementtypes[i]);
             }
 
             btnSetRoute.Text = Strings.EventEditor.setroute;
             lblSpeed.Text = Strings.EventEditor.speed;
             cmbEventSpeed.Items.Clear();
-            for( var i = 0; i < Strings.EventEditor.speeds.Count; i++ )
+            for (var i = 0; i < Strings.EventEditor.speeds.Count; i++)
             {
-                cmbEventSpeed.Items.Add( Strings.EventEditor.speeds[i] );
+                cmbEventSpeed.Items.Add(Strings.EventEditor.speeds[i]);
             }
 
             lblFreq.Text = Strings.EventEditor.frequency;
             cmbEventFreq.Items.Clear();
-            for( var i = 0; i < Strings.EventEditor.frequencies.Count; i++ )
+            for (var i = 0; i < Strings.EventEditor.frequencies.Count; i++)
             {
-                cmbEventFreq.Items.Add( Strings.EventEditor.frequencies[i] );
+                cmbEventFreq.Items.Add(Strings.EventEditor.frequencies[i]);
             }
 
             lblLayer.Text = Strings.EventEditor.layer;
             cmbLayering.Items.Clear();
-            for( var i = 0; i < Strings.EventEditor.layers.Count; i++ )
+            for (var i = 0; i < Strings.EventEditor.layers.Count; i++)
             {
-                cmbLayering.Items.Add( Strings.EventEditor.layers[i] );
+                cmbLayering.Items.Add(Strings.EventEditor.layers[i]);
             }
 
             grpInspector.Text = Strings.EventEditor.inspector;
@@ -899,10 +899,10 @@ namespace Intersect.Editor.Forms.Editors.Events
             btnSave.Text = Strings.EventEditor.save;
             btnCancel.Text = Strings.EventEditor.cancel;
 
-            for( var i = 0; i < lstCommands.Nodes.Count; i++ )
+            for (var i = 0; i < lstCommands.Nodes.Count; i++)
             {
                 lstCommands.Nodes[i].Text = Strings.EventCommands.commands[lstCommands.Nodes[i].Name];
-                for( var x = 0; x < lstCommands.Nodes[i].Nodes.Count; x++ )
+                for (var x = 0; x < lstCommands.Nodes[i].Nodes.Count; x++)
                 {
                     lstCommands.Nodes[i].Nodes[x].Text =
                         Strings.EventCommands.commands[lstCommands.Nodes[i].Nodes[x].Name];
@@ -919,89 +919,89 @@ namespace Intersect.Editor.Forms.Editors.Events
         ///     It also populates General lists in our editor (ie. switches/variables) for event spawning conditions.
         ///     If the event is a common event (not a map entity) we hide the entity Options on the form.
         /// </summary>
-        public void InitEditor( bool disableNaming, bool disableTriggers, bool questEvent )
+        public void InitEditor(bool disableNaming, bool disableTriggers, bool questEvent)
         {
             mEventBackup = MyEvent.JsonData;
             txtEventname.Text = MyEvent.Name;
-            if( disableNaming )
+            if (disableNaming)
             {
                 txtEventname.Enabled = false;
             }
 
-            if( disableTriggers )
+            if (disableTriggers)
             {
                 grpTriggers.Hide();
             }
 
             cmbPreviewFace.Items.Clear();
-            cmbPreviewFace.Items.Add( Strings.General.none );
+            cmbPreviewFace.Items.Add(Strings.General.none);
             cmbPreviewFace.Items.AddRange(
-                GameContentManager.GetSmartSortedTextureNames( GameContentManager.TextureType.Face )
+                GameContentManager.GetSmartSortedTextureNames(GameContentManager.TextureType.Face)
             );
 
             cmbAnimation.Items.Clear();
-            cmbAnimation.Items.Add( Strings.General.none );
-            cmbAnimation.Items.AddRange( AnimationBase.Names );
-            if( MyEvent.CommonEvent || questEvent )
+            cmbAnimation.Items.Add(Strings.General.none);
+            cmbAnimation.Items.AddRange(AnimationBase.Names);
+            if (MyEvent.CommonEvent || questEvent)
             {
                 grpEntityOptions.Hide();
                 cmbTrigger.Items.Clear();
-                for( var i = 0; i < Strings.EventEditor.commontriggers.Count; i++ )
+                for (var i = 0; i < Strings.EventEditor.commontriggers.Count; i++)
                 {
-                    cmbTrigger.Items.Add( Strings.EventEditor.commontriggers[i] );
+                    cmbTrigger.Items.Add(Strings.EventEditor.commontriggers[i]);
                 }
             }
             else
             {
                 cmbTrigger.Items.Clear();
-                for( var i = 0; i < Strings.EventEditor.triggers.Count; i++ )
+                for (var i = 0; i < Strings.EventEditor.triggers.Count; i++)
                 {
-                    cmbTrigger.Items.Add( Strings.EventEditor.triggers[i] );
+                    cmbTrigger.Items.Add(Strings.EventEditor.triggers[i]);
                 }
 
                 cmbTriggerVal.Items.Clear();
-                cmbTriggerVal.Items.Add( Strings.General.none );
-                cmbTriggerVal.Items.AddRange( ProjectileBase.Names );
+                cmbTriggerVal.Items.Add(Strings.General.none);
+                cmbTriggerVal.Items.AddRange(ProjectileBase.Names);
             }
 
-            chkIsGlobal.Checked = Convert.ToBoolean( MyEvent.Global );
-            if( MyEvent.CommonEvent )
+            chkIsGlobal.Checked = Convert.ToBoolean(MyEvent.Global);
+            if (MyEvent.CommonEvent)
             {
                 chkIsGlobal.Hide();
             }
 
             UpdateTabControl();
-            LoadPage( 0 );
+            LoadPage(0);
         }
 
         /// <summary>
         ///     Initializes all of the form controls with values from the passed event page.
         /// </summary>
         /// <param name="pageNum">The index of the page to load.</param>
-        public void LoadPage( int pageNum )
+        public void LoadPage(int pageNum)
         {
-            Text = Strings.EventEditor.title.ToString( txtEventname.Text );
+            Text = Strings.EventEditor.title.ToString(txtEventname.Text);
             CurrentPageIndex = pageNum;
-            if( MyEvent.Pages.Count == 0 )
+            if (MyEvent.Pages.Count == 0)
             {
-                MyEvent.Pages.Add( new EventPage() );
+                MyEvent.Pages.Add(new EventPage());
             }
 
             CurrentPage = MyEvent.Pages[pageNum];
-            for( var i = 0; i < mPageTabs.Count; i++ )
+            for (var i = 0; i < mPageTabs.Count; i++)
             {
-                if( i == CurrentPageIndex )
+                if (i == CurrentPageIndex)
                 {
-                    mPageTabs[i].BackColor = System.Drawing.Color.FromArgb( 90, 90, 90 );
+                    mPageTabs[i].BackColor = System.Drawing.Color.FromArgb(90, 90, 90);
                 }
                 else
                 {
-                    mPageTabs[i].BackColor = System.Drawing.Color.FromArgb( 45, 45, 48 );
+                    mPageTabs[i].BackColor = System.Drawing.Color.FromArgb(45, 45, 48);
                 }
             }
 
             cmbMoveType.SelectedIndex = (int)CurrentPage.Movement.Type;
-            if( CurrentPage.Movement.Type == EventMovementType.MoveRoute )
+            if (CurrentPage.Movement.Type == EventMovementType.MoveRoute)
             {
                 btnSetRoute.Enabled = true;
             }
@@ -1012,9 +1012,9 @@ namespace Intersect.Editor.Forms.Editors.Events
 
             cmbEventSpeed.SelectedIndex = (int)CurrentPage.Movement.Speed;
             cmbEventFreq.SelectedIndex = (int)CurrentPage.Movement.Frequency;
-            chkWalkThrough.Checked = Convert.ToBoolean( CurrentPage.Passable );
+            chkWalkThrough.Checked = Convert.ToBoolean(CurrentPage.Passable);
             cmbLayering.SelectedIndex = (int)CurrentPage.Layer;
-            if( MyEvent.CommonEvent )
+            if (MyEvent.CommonEvent)
             {
                 cmbTrigger.SelectedIndex = (int)CurrentPage.CommonTrigger;
             }
@@ -1025,9 +1025,9 @@ namespace Intersect.Editor.Forms.Editors.Events
 
             cmbTriggerVal.Hide();
             lblTriggerVal.Hide();
-            if( MyEvent.CommonEvent )
+            if (MyEvent.CommonEvent)
             {
-                if( cmbTrigger.SelectedIndex == (int)CommonEventTrigger.SlashCommand )
+                if (cmbTrigger.SelectedIndex == (int)CommonEventTrigger.SlashCommand)
                 {
                     txtCommand.Show();
                     txtCommand.Text = CurrentPage.TriggerCommand;
@@ -1036,55 +1036,55 @@ namespace Intersect.Editor.Forms.Editors.Events
                 }
             }
 
-            cmbPreviewFace.SelectedIndex = cmbPreviewFace.Items.IndexOf( TextUtils.NullToNone( CurrentPage.FaceGraphic ) );
-            if( cmbPreviewFace.SelectedIndex == -1 )
+            cmbPreviewFace.SelectedIndex = cmbPreviewFace.Items.IndexOf(TextUtils.NullToNone(CurrentPage.FaceGraphic));
+            if (cmbPreviewFace.SelectedIndex == -1)
             {
                 cmbPreviewFace.SelectedIndex = 0;
                 UpdateFacePreview();
             }
 
-            cmbAnimation.SelectedIndex = AnimationBase.ListIndex( CurrentPage.AnimationId ) + 1;
-            chkHideName.Checked = Convert.ToBoolean( CurrentPage.HideName );
-            chkDisableInspector.Checked = Convert.ToBoolean( CurrentPage.DisablePreview );
-            chkDirectionFix.Checked = Convert.ToBoolean( CurrentPage.DirectionFix );
-            chkWalkingAnimation.Checked = Convert.ToBoolean( CurrentPage.WalkingAnimation );
-            chkInteractionFreeze.Checked = Convert.ToBoolean( CurrentPage.InteractionFreeze );
+            cmbAnimation.SelectedIndex = AnimationBase.ListIndex(CurrentPage.AnimationId) + 1;
+            chkHideName.Checked = Convert.ToBoolean(CurrentPage.HideName);
+            chkDisableInspector.Checked = Convert.ToBoolean(CurrentPage.DisablePreview);
+            chkDirectionFix.Checked = Convert.ToBoolean(CurrentPage.DirectionFix);
+            chkWalkingAnimation.Checked = Convert.ToBoolean(CurrentPage.WalkingAnimation);
+            chkInteractionFreeze.Checked = Convert.ToBoolean(CurrentPage.InteractionFreeze);
             txtDesc.Text = CurrentPage.Description;
             ListPageCommands();
             UpdateEventPreview();
             EnableButtons();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
-            if( grpCreateCommands.Visible )
+            if (grpCreateCommands.Visible)
             {
                 CancelCommandEdit();
             }
 
-            if( NewEvent )
+            if (NewEvent)
             {
-                MyMap.LocalEvents.Remove( MyEvent.Id );
+                MyMap.LocalEvents.Remove(MyEvent.Id);
             }
             else
             {
-                MyEvent.Load( mEventBackup );
+                MyEvent.Load(mEventBackup);
             }
 
             Hide();
             Dispose();
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            if( grpCreateCommands.Visible )
+            if (grpCreateCommands.Visible)
             {
                 CancelCommandEdit();
             }
 
-            if( MyEvent.CommonEvent && MyEvent.Id != Guid.Empty )
+            if (MyEvent.CommonEvent && MyEvent.Id != Guid.Empty)
             {
-                PacketSender.SendSaveObject( MyEvent );
+                PacketSender.SendSaveObject(MyEvent);
             }
 
             Hide();
@@ -1107,7 +1107,7 @@ namespace Intersect.Editor.Forms.Editors.Events
             );
 
             // Reset our view to roughly where the user left off.
-            if( mOldSelectedCommand > ( lstEventCommands.Items.Count -1 ) )
+            if (mOldSelectedCommand > (lstEventCommands.Items.Count - 1))
             {
                 lstEventCommands.SelectedIndex = lstEventCommands.Items.Count - 1;
             }
@@ -1121,40 +1121,40 @@ namespace Intersect.Editor.Forms.Editors.Events
         ///     Given a new or existing command this creates the window to select to edit it's values.
         /// </summary>
         /// <param name="command">The command that will be modified.</param>
-        private void OpenEditCommand( EventCommand command )
+        private void OpenEditCommand(EventCommand command)
         {
             UserControl cmdWindow = null;
-            switch( command.Type )
+            switch (command.Type)
             {
                 case EventCommandType.Null:
                     break;
                 case EventCommandType.ShowText:
-                    cmdWindow = new EventCommandText( (ShowTextCommand)command, this );
+                    cmdWindow = new EventCommandText((ShowTextCommand)command, this);
 
                     break;
                 case EventCommandType.ShowOptions:
-                    cmdWindow = new EventCommandOptions( (ShowOptionsCommand)command, CurrentPage, this );
+                    cmdWindow = new EventCommandOptions((ShowOptionsCommand)command, CurrentPage, this);
 
                     break;
                 case EventCommandType.InputVariable:
-                    cmdWindow = new EventCommandInput( (InputVariableCommand)command, this );
+                    cmdWindow = new EventCommandInput((InputVariableCommand)command, this);
 
                     break;
                 case EventCommandType.AddChatboxText:
-                    cmdWindow = new EventCommandChatboxText( (AddChatboxTextCommand)command, this );
+                    cmdWindow = new EventCommandChatboxText((AddChatboxTextCommand)command, this);
 
                     break;
                 case EventCommandType.SetVariable:
-                    cmdWindow = new EventCommandVariable( (SetVariableCommand)command, this );
+                    cmdWindow = new EventCommandVariable((SetVariableCommand)command, this);
 
                     break;
                 case EventCommandType.SetSelfSwitch:
-                    cmdWindow = new EventCommandSelfSwitch( (SetSelfSwitchCommand)command, this );
+                    cmdWindow = new EventCommandSelfSwitch((SetSelfSwitchCommand)command, this);
 
                     break;
                 case EventCommandType.ConditionalBranch:
                     cmdWindow = new EventCommandConditionalBranch(
-                        ( (ConditionalBranchCommand)command ).Condition, CurrentPage, this,
+                        ((ConditionalBranchCommand)command).Condition, CurrentPage, this,
                         (ConditionalBranchCommand)command
                     );
 
@@ -1163,84 +1163,84 @@ namespace Intersect.Editor.Forms.Editors.Events
                     //No editor
                     break;
                 case EventCommandType.Label:
-                    cmdWindow = new EventCommandLabel( (LabelCommand)command, this );
+                    cmdWindow = new EventCommandLabel((LabelCommand)command, this);
 
                     break;
                 case EventCommandType.GoToLabel:
-                    cmdWindow = new EventCommandGotoLabel( (GoToLabelCommand)command, this );
+                    cmdWindow = new EventCommandGotoLabel((GoToLabelCommand)command, this);
 
                     break;
                 case EventCommandType.StartCommonEvent:
-                    cmdWindow = new EventCommandStartCommonEvent( (StartCommmonEventCommand)command, this );
+                    cmdWindow = new EventCommandStartCommonEvent((StartCommmonEventCommand)command, this);
 
                     break;
                 case EventCommandType.RestoreHp:
-                    cmdWindow = new EventCommandChangeVital( (RestoreHpCommand)command, this );
+                    cmdWindow = new EventCommandChangeVital((RestoreHpCommand)command, this);
 
                     break;
                 case EventCommandType.RestoreMp:
-                    cmdWindow = new EventCommandChangeVital( (RestoreMpCommand)command, this );
+                    cmdWindow = new EventCommandChangeVital((RestoreMpCommand)command, this);
 
                     break;
                 case EventCommandType.LevelUp:
                     //No editor
                     break;
                 case EventCommandType.GiveExperience:
-                    cmdWindow = new EventCommandGiveExperience( (GiveExperienceCommand)command, this );
+                    cmdWindow = new EventCommandGiveExperience((GiveExperienceCommand)command, this);
 
                     break;
                 case EventCommandType.ChangeLevel:
-                    cmdWindow = new EventCommandChangeLevel( (ChangeLevelCommand)command, this );
+                    cmdWindow = new EventCommandChangeLevel((ChangeLevelCommand)command, this);
 
                     break;
                 case EventCommandType.ChangeSpells:
-                    cmdWindow = new EventCommandChangeSpells( (ChangeSpellsCommand)command, CurrentPage, this );
+                    cmdWindow = new EventCommandChangeSpells((ChangeSpellsCommand)command, CurrentPage, this);
 
                     break;
                 case EventCommandType.ChangeItems:
-                    cmdWindow = new EventCommandChangeItems( (ChangeItemsCommand)command, CurrentPage, this );
+                    cmdWindow = new EventCommandChangeItems((ChangeItemsCommand)command, CurrentPage, this);
 
                     break;
                 case EventCommandType.EquipItem:
-                    cmdWindow = new EventCommandEquipItems( (EquipItemCommand)command, this );
+                    cmdWindow = new EventCommandEquipItems((EquipItemCommand)command, this);
 
                     break;
                 case EventCommandType.ChangeSprite:
-                    cmdWindow = new EventCommandChangeSprite( (ChangeSpriteCommand)command, this );
+                    cmdWindow = new EventCommandChangeSprite((ChangeSpriteCommand)command, this);
 
                     break;
                 case EventCommandType.ChangeFace:
-                    cmdWindow = new EventCommandChangeFace( (ChangeFaceCommand)command, this );
+                    cmdWindow = new EventCommandChangeFace((ChangeFaceCommand)command, this);
 
                     break;
                 case EventCommandType.ChangeGender:
-                    cmdWindow = new EventCommandChangeGender( (ChangeGenderCommand)command, this );
+                    cmdWindow = new EventCommandChangeGender((ChangeGenderCommand)command, this);
 
                     break;
                 case EventCommandType.ChangeNameColor:
-                    cmdWindow = new EventCommandChangeNameColor( (ChangeNameColorCommand)command, this );
+                    cmdWindow = new EventCommandChangeNameColor((ChangeNameColorCommand)command, this);
 
                     break;
                 case EventCommandType.PlayerLabel:
-                    cmdWindow = new EventCommandChangePlayerLabel( (ChangePlayerLabelCommand)command, this );
+                    cmdWindow = new EventCommandChangePlayerLabel((ChangePlayerLabelCommand)command, this);
 
                     break;
                 case EventCommandType.SetAccess:
-                    cmdWindow = new EventCommandSetAccess( (SetAccessCommand)command, this );
+                    cmdWindow = new EventCommandSetAccess((SetAccessCommand)command, this);
 
                     break;
                 case EventCommandType.WarpPlayer:
-                    cmdWindow = new EventCommandWarp( (WarpCommand)command, this );
+                    cmdWindow = new EventCommandWarp((WarpCommand)command, this);
 
                     break;
                 case EventCommandType.SetMoveRoute:
                     var cmd = (SetMoveRouteCommand)command;
-                    if( cmd.Route == null )
+                    if (cmd.Route == null)
                     {
                         cmd.Route = new EventMoveRoute();
                     }
 
-                    cmdWindow = new EventMoveRouteDesigner( this, mCurrentMap, MyEvent, cmd.Route, cmd );
+                    cmdWindow = new EventMoveRouteDesigner(this, mCurrentMap, MyEvent, cmd.Route, cmd);
 
                     break;
                 case EventCommandType.WaitForRouteCompletion:
@@ -1258,7 +1258,7 @@ namespace Intersect.Editor.Forms.Editors.Events
                 case EventCommandType.ShowPlayer:
                     break;
                 case EventCommandType.SpawnNpc:
-                    cmdWindow = new EventCommandSpawnNpc( this, mCurrentMap, MyEvent, (SpawnNpcCommand)command );
+                    cmdWindow = new EventCommandSpawnNpc(this, mCurrentMap, MyEvent, (SpawnNpcCommand)command);
 
                     break;
                 case EventCommandType.DespawnNpc:
@@ -1270,76 +1270,76 @@ namespace Intersect.Editor.Forms.Editors.Events
 
                     break;
                 case EventCommandType.PlayBgm:
-                    cmdWindow = new EventCommandPlayBgm( (PlayBgmCommand)command, this );
+                    cmdWindow = new EventCommandPlayBgm((PlayBgmCommand)command, this);
 
                     break;
                 case EventCommandType.FadeoutBgm:
                     break;
                 case EventCommandType.PlaySound:
-                    cmdWindow = new EventCommandPlayBgs( (PlaySoundCommand)command, this );
+                    cmdWindow = new EventCommandPlayBgs((PlaySoundCommand)command, this);
 
                     break;
                 case EventCommandType.StopSounds:
                     break;
                 case EventCommandType.ShowPicture:
-                    cmdWindow = new EventCommand_ShowPicture( (ShowPictureCommand)command, this );
+                    cmdWindow = new EventCommand_ShowPicture((ShowPictureCommand)command, this);
 
                     break;
                 case EventCommandType.HidePicture:
                     break;
                 case EventCommandType.Wait:
-                    cmdWindow = new EventCommandWait( (WaitCommand)command, this );
+                    cmdWindow = new EventCommandWait((WaitCommand)command, this);
 
                     break;
                 case EventCommandType.OpenBank:
                     break;
                 case EventCommandType.OpenShop:
-                    cmdWindow = new EventCommandOpenShop( (OpenShopCommand)command, this );
+                    cmdWindow = new EventCommandOpenShop((OpenShopCommand)command, this);
 
                     break;
                 case EventCommandType.OpenCraftingTable:
-                    cmdWindow = new EventCommandOpenCraftingTable( (OpenCraftingTableCommand)command, this );
+                    cmdWindow = new EventCommandOpenCraftingTable((OpenCraftingTableCommand)command, this);
 
                     break;
                 case EventCommandType.SetClass:
-                    cmdWindow = new EventCommandSetClass( (SetClassCommand)command, this );
+                    cmdWindow = new EventCommandSetClass((SetClassCommand)command, this);
 
                     break;
                 case EventCommandType.StartQuest:
-                    cmdWindow = new EventCommandStartQuest( (StartQuestCommand)command, CurrentPage, this );
+                    cmdWindow = new EventCommandStartQuest((StartQuestCommand)command, CurrentPage, this);
 
                     break;
                 case EventCommandType.CompleteQuestTask:
-                    cmdWindow = new EventCommandCompleteQuestTask( (CompleteQuestTaskCommand)command, this );
+                    cmdWindow = new EventCommandCompleteQuestTask((CompleteQuestTaskCommand)command, this);
 
                     break;
                 case EventCommandType.EndQuest:
-                    cmdWindow = new EventCommandEndQuest( (EndQuestCommand)command, this );
+                    cmdWindow = new EventCommandEndQuest((EndQuestCommand)command, this);
 
                     break;
                 case EventCommandType.ChangePlayerColor:
-                    cmdWindow = new EventCommandChangePlayerColor( (ChangePlayerColorCommand)command, this );
+                    cmdWindow = new EventCommandChangePlayerColor((ChangePlayerColorCommand)command, this);
 
                     break;
                 case EventCommandType.ChangeName:
-                    cmdWindow = new EventCommandChangeName( (ChangeNameCommand)command, CurrentPage, this );
+                    cmdWindow = new EventCommandChangeName((ChangeNameCommand)command, CurrentPage, this);
 
                     break;
                 case EventCommandType.RemoveItem:
                     break;
 
                 case EventCommandType.ReplaceItem:
-                    cmdWindow = new EventCommandReplaceItem( (ReplaceItemCommand)command, this );
+                    cmdWindow = new EventCommandReplaceItem((ReplaceItemCommand)command, this);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            if( cmdWindow != null )
+            if (cmdWindow != null)
             {
-                if( cmdWindow.GetType() == typeof( EventMoveRouteDesigner ) )
+                if (cmdWindow.GetType() == typeof(EventMoveRouteDesigner))
                 {
-                    Controls.Add( cmdWindow );
+                    Controls.Add(cmdWindow);
                     cmdWindow.Width = ClientSize.Width;
                     cmdWindow.Height = ClientSize.Height;
                     cmdWindow.BringToFront();
@@ -1348,7 +1348,7 @@ namespace Intersect.Editor.Forms.Editors.Events
                 else
                 {
                     grpCreateCommands.Show();
-                    grpCreateCommands.Controls.Add( cmdWindow );
+                    grpCreateCommands.Controls.Add(cmdWindow);
                     cmdWindow.Left = grpCreateCommands.Width / 2 - cmdWindow.Width / 2;
                     cmdWindow.Top = grpCreateCommands.Height / 2 - cmdWindow.Height / 2;
                     mEditingCommand = command;
@@ -1365,12 +1365,12 @@ namespace Intersect.Editor.Forms.Editors.Events
         /// <summary>
         ///     Resets the form when a user saves a command they are creating or editting.
         /// </summary>
-        public void FinishCommandEdit( bool moveRoute = false )
+        public void FinishCommandEdit(bool moveRoute = false)
         {
-            if( !moveRoute )
+            if (!moveRoute)
             {
                 grpCreateCommands.Hide();
-                grpCreateCommands.Controls.RemoveAt( 0 );
+                grpCreateCommands.Controls.RemoveAt(0);
 
                 //Remove the only control which should be the last editing window
             }
@@ -1382,26 +1382,26 @@ namespace Intersect.Editor.Forms.Editors.Events
         /// <summary>
         ///     Resets the form when a user cancels editting or creating a new command for the event.
         /// </summary>
-        public void CancelCommandEdit( bool moveRoute = false, bool condition = false )
+        public void CancelCommandEdit(bool moveRoute = false, bool condition = false)
         {
-            if( mCurrentCommand > -1 && mCommandProperties.Count > mCurrentCommand && !condition )
+            if (mCurrentCommand > -1 && mCommandProperties.Count > mCurrentCommand && !condition)
             {
-                if( !mIsEdit )
+                if (!mIsEdit)
                 {
-                    if( mIsInsert )
+                    if (mIsInsert)
                     {
                         HandleRemoveCommand(
                             mCommandProperties[mCurrentCommand]
                                 .MyList[
                                     mCommandProperties[mCurrentCommand]
-                                        .MyList.IndexOf( mCommandProperties[mCurrentCommand].Cmd ) -
+                                        .MyList.IndexOf(mCommandProperties[mCurrentCommand].Cmd) -
                                     1]
                         );
 
                         mCommandProperties[mCurrentCommand]
                             .MyList.RemoveAt(
                                 mCommandProperties[mCurrentCommand]
-                                    .MyList.IndexOf( mCommandProperties[mCurrentCommand].Cmd ) -
+                                    .MyList.IndexOf(mCommandProperties[mCurrentCommand].Cmd) -
                                 1
                             );
                     }
@@ -1413,75 +1413,75 @@ namespace Intersect.Editor.Forms.Editors.Events
                         );
 
                         mCommandProperties[mCurrentCommand]
-                            .MyList.RemoveAt( mCommandProperties[mCurrentCommand].MyList.Count - 1 );
+                            .MyList.RemoveAt(mCommandProperties[mCurrentCommand].MyList.Count - 1);
                     }
                 }
             }
 
-            if( !moveRoute )
+            if (!moveRoute)
             {
                 grpCreateCommands.Hide();
-                grpCreateCommands.Controls.RemoveAt( 0 );
+                grpCreateCommands.Controls.RemoveAt(0);
             }
 
             ListPageCommands();
             EnableButtons();
         }
 
-        private void HandleRemoveCommand( EventCommand cmd )
+        private void HandleRemoveCommand(EventCommand cmd)
         {
             //If we cancelled an insert for a command that created additional command lists we need to remove those orphaned list(s)
             var branchesToRemove = new List<Guid>();
-            switch( cmd.Type )
+            switch (cmd.Type)
             {
                 case EventCommandType.ShowOptions:
-                    branchesToRemove.AddRange( ( (ShowOptionsCommand)cmd ).BranchIds );
+                    branchesToRemove.AddRange(((ShowOptionsCommand)cmd).BranchIds);
 
                     break;
                 case EventCommandType.InputVariable:
-                    branchesToRemove.AddRange( ( (InputVariableCommand)cmd ).BranchIds );
+                    branchesToRemove.AddRange(((InputVariableCommand)cmd).BranchIds);
 
                     break;
                 case EventCommandType.ConditionalBranch:
-                    branchesToRemove.AddRange( ( (ConditionalBranchCommand)cmd ).BranchIds );
+                    branchesToRemove.AddRange(((ConditionalBranchCommand)cmd).BranchIds);
 
                     break;
                 case EventCommandType.ChangeItems:
-                    branchesToRemove.AddRange( ( (ChangeItemsCommand)cmd ).BranchIds );
+                    branchesToRemove.AddRange(((ChangeItemsCommand)cmd).BranchIds);
 
                     break;
                 case EventCommandType.ChangeSpells:
-                    branchesToRemove.AddRange( ( (ChangeSpellsCommand)cmd ).BranchIds );
+                    branchesToRemove.AddRange(((ChangeSpellsCommand)cmd).BranchIds);
 
                     break;
                 case EventCommandType.StartQuest:
-                    branchesToRemove.AddRange( ( (StartQuestCommand)cmd ).BranchIds );
+                    branchesToRemove.AddRange(((StartQuestCommand)cmd).BranchIds);
 
                     break;
             }
 
-            foreach( var branch in branchesToRemove )
+            foreach (var branch in branchesToRemove)
             {
-                CurrentPage.CommandLists.Remove( branch );
+                CurrentPage.CommandLists.Remove(branch);
             }
         }
 
         /// <summary>
         ///     Opens the 'Add Command' window in order to insert a command at the select location in the command list.
         /// </summary>
-        private void btnInsert_Click( object sender, EventArgs e )
+        private void btnInsert_Click(object sender, EventArgs e)
         {
-            if( mCurrentCommand < 0 || mCurrentCommand >= mCommandProperties.Count )
+            if (mCurrentCommand < 0 || mCurrentCommand >= mCommandProperties.Count)
             {
                 return;
             }
 
-            if( !mCommandProperties[mCurrentCommand].Editable )
+            if (!mCommandProperties[mCurrentCommand].Editable)
             {
                 return;
             }
 
-            if( mCommandProperties[mCurrentCommand].Type == EventCommandType.Null )
+            if (mCommandProperties[mCurrentCommand].Type == EventCommandType.Null)
             {
                 grpNewCommands.Show();
                 mIsInsert = false;
@@ -1495,91 +1495,91 @@ namespace Intersect.Editor.Forms.Editors.Events
             }
         }
 
-        private void btnEdit_Click( object sender, EventArgs e )
+        private void btnEdit_Click(object sender, EventArgs e)
         {
-            if( mCurrentCommand < 0 || mCurrentCommand >= mCommandProperties.Count )
+            if (mCurrentCommand < 0 || mCurrentCommand >= mCommandProperties.Count)
             {
                 return;
             }
 
-            if( !mCommandProperties[mCurrentCommand].Editable )
+            if (!mCommandProperties[mCurrentCommand].Editable)
             {
                 return;
             }
 
-            if( mCommandProperties[mCurrentCommand].MyIndex < 0 ||
-                mCommandProperties[mCurrentCommand].MyIndex >= mCommandProperties[mCurrentCommand].MyList.Count )
+            if (mCommandProperties[mCurrentCommand].MyIndex < 0 ||
+                mCommandProperties[mCurrentCommand].MyIndex >= mCommandProperties[mCurrentCommand].MyList.Count)
             {
                 return;
             }
 
-            OpenEditCommand( mCommandProperties[mCurrentCommand].MyList[mCommandProperties[mCurrentCommand].MyIndex] );
+            OpenEditCommand(mCommandProperties[mCurrentCommand].MyList[mCommandProperties[mCurrentCommand].MyIndex]);
             mIsEdit = true;
         }
 
-        private void btnDelete_Click( object sender, EventArgs e )
+        private void btnDelete_Click(object sender, EventArgs e)
         {
-            if( mCurrentCommand < 0 || mCurrentCommand >= mCommandProperties.Count )
+            if (mCurrentCommand < 0 || mCurrentCommand >= mCommandProperties.Count)
             {
                 return;
             }
 
-            if( !mCommandProperties[mCurrentCommand].Editable )
+            if (!mCommandProperties[mCurrentCommand].Editable)
             {
                 return;
             }
 
-            if( mCommandProperties[mCurrentCommand].MyIndex < 0 ||
-                mCommandProperties[mCurrentCommand].MyIndex >= mCommandProperties[mCurrentCommand].MyList.Count )
+            if (mCommandProperties[mCurrentCommand].MyIndex < 0 ||
+                mCommandProperties[mCurrentCommand].MyIndex >= mCommandProperties[mCurrentCommand].MyList.Count)
             {
                 return;
             }
 
-            HandleRemoveCommand( mCommandProperties[mCurrentCommand].Cmd );
-            mCommandProperties[mCurrentCommand].MyList.Remove( mCommandProperties[mCurrentCommand].Cmd );
+            HandleRemoveCommand(mCommandProperties[mCurrentCommand].Cmd);
+            mCommandProperties[mCurrentCommand].MyList.Remove(mCommandProperties[mCurrentCommand].Cmd);
             mCurrentCommand = -1;
             ListPageCommands();
         }
 
-        private void btnCut_Click( object sender, EventArgs e )
+        private void btnCut_Click(object sender, EventArgs e)
         {
-            if( mCurrentCommand < 0 || mCurrentCommand >= mCommandProperties.Count )
+            if (mCurrentCommand < 0 || mCurrentCommand >= mCommandProperties.Count)
             {
                 return;
             }
 
-            if( !mCommandProperties[mCurrentCommand].Editable )
+            if (!mCommandProperties[mCurrentCommand].Editable)
             {
                 return;
             }
 
-            if( mCommandProperties[mCurrentCommand].MyIndex < 0 ||
-                mCommandProperties[mCurrentCommand].MyIndex >= mCommandProperties[mCurrentCommand].MyList.Count )
+            if (mCommandProperties[mCurrentCommand].MyIndex < 0 ||
+                mCommandProperties[mCurrentCommand].MyIndex >= mCommandProperties[mCurrentCommand].MyList.Count)
             {
                 return;
             }
 
             //Get a json representation of what we're cutting
-            btnCopy_Click( sender, e );
+            btnCopy_Click(sender, e);
 
             //Delete the command
-            btnDelete_Click( sender, e );
+            btnDelete_Click(sender, e);
         }
 
-        private void btnCopy_Click( object sender, EventArgs e )
+        private void btnCopy_Click(object sender, EventArgs e)
         {
-            if( mCurrentCommand < 0 || mCurrentCommand >= mCommandProperties.Count )
+            if (mCurrentCommand < 0 || mCurrentCommand >= mCommandProperties.Count)
             {
                 return;
             }
 
-            if( !mCommandProperties[mCurrentCommand].Editable )
+            if (!mCommandProperties[mCurrentCommand].Editable)
             {
                 return;
             }
 
-            if( mCommandProperties[mCurrentCommand].MyIndex < 0 ||
-                mCommandProperties[mCurrentCommand].MyIndex >= mCommandProperties[mCurrentCommand].MyList.Count )
+            if (mCommandProperties[mCurrentCommand].MyIndex < 0 ||
+                mCommandProperties[mCurrentCommand].MyIndex >= mCommandProperties[mCurrentCommand].MyList.Count)
             {
                 return;
             }
@@ -1587,7 +1587,7 @@ namespace Intersect.Editor.Forms.Editors.Events
             var copyLists = new Dictionary<Guid, List<EventCommand>>();
             mCopyData = mCommandProperties[mCurrentCommand]
                 .MyList[mCommandProperties[mCurrentCommand].MyIndex]
-                .GetCopyData( CurrentPage.CommandLists, copyLists );
+                .GetCopyData(CurrentPage.CommandLists, copyLists);
 
             mCopyLists = JsonConvert.SerializeObject(
                 copyLists,
@@ -1601,19 +1601,19 @@ namespace Intersect.Editor.Forms.Editors.Events
             );
         }
 
-        private void btnPaste_Click( object sender, EventArgs e )
+        private void btnPaste_Click(object sender, EventArgs e)
         {
-            if( mCurrentCommand < 0 || mCurrentCommand >= mCommandProperties.Count )
+            if (mCurrentCommand < 0 || mCurrentCommand >= mCommandProperties.Count)
             {
                 return;
             }
 
-            if( !mCommandProperties[mCurrentCommand].Editable )
+            if (!mCommandProperties[mCurrentCommand].Editable)
             {
                 return;
             }
 
-            if( mCopyData != null )
+            if (mCopyData != null)
             {
                 var newCmd = JsonConvert.DeserializeObject<EventCommand>(
                     mCopyData,
@@ -1638,34 +1638,34 @@ namespace Intersect.Editor.Forms.Editors.Events
                 );
 
                 var newListIds = new Dictionary<Guid, Guid>();
-                foreach( var list in lists )
+                foreach (var list in lists)
                 {
-                    newListIds.Add( list.Key, Guid.NewGuid() );
+                    newListIds.Add(list.Key, Guid.NewGuid());
                 }
 
-                newCmd.FixBranchIds( newListIds );
-                foreach( var list in lists )
+                newCmd.FixBranchIds(newListIds);
+                foreach (var list in lists)
                 {
-                    foreach( var cmd in list.Value )
+                    foreach (var cmd in list.Value)
                     {
-                        cmd.FixBranchIds( newListIds );
+                        cmd.FixBranchIds(newListIds);
                     }
                 }
 
-                foreach( var list in lists )
+                foreach (var list in lists)
                 {
-                    CurrentPage.CommandLists.Add( newListIds[list.Key], list.Value );
+                    CurrentPage.CommandLists.Add(newListIds[list.Key], list.Value);
                 }
 
-                if( mCommandProperties[mCurrentCommand].Type == EventCommandType.Null )
+                if (mCommandProperties[mCurrentCommand].Type == EventCommandType.Null)
                 {
-                    mCommandProperties[mCurrentCommand].MyList.Add( newCmd );
+                    mCommandProperties[mCurrentCommand].MyList.Add(newCmd);
                 }
                 else
                 {
                     mCommandProperties[mCurrentCommand]
                         .MyList.Insert(
-                            mCommandProperties[mCurrentCommand].MyList.IndexOf( mCommandProperties[mCurrentCommand].Cmd ),
+                            mCommandProperties[mCurrentCommand].MyList.IndexOf(mCommandProperties[mCurrentCommand].Cmd),
                             newCmd
                         );
                 }
@@ -1678,10 +1678,10 @@ namespace Intersect.Editor.Forms.Editors.Events
 
         #region "Movement Options"
 
-        private void cmbMoveType_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbMoveType_SelectedIndexChanged(object sender, EventArgs e)
         {
             CurrentPage.Movement.Type = (EventMovementType)cmbMoveType.SelectedIndex;
-            if( CurrentPage.Movement.Type == EventMovementType.MoveRoute )
+            if (CurrentPage.Movement.Type == EventMovementType.MoveRoute)
             {
                 btnSetRoute.Enabled = true;
             }
@@ -1691,20 +1691,20 @@ namespace Intersect.Editor.Forms.Editors.Events
             }
         }
 
-        private void cmbEventSpeed_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbEventSpeed_SelectedIndexChanged(object sender, EventArgs e)
         {
             CurrentPage.Movement.Speed = (EventMovementSpeed)cmbEventSpeed.SelectedIndex;
         }
 
-        private void cmbEventFreq_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbEventFreq_SelectedIndexChanged(object sender, EventArgs e)
         {
             CurrentPage.Movement.Frequency = (EventMovementFrequency)cmbEventFreq.SelectedIndex;
         }
 
-        private void btnSetRoute_Click( object sender, EventArgs e )
+        private void btnSetRoute_Click(object sender, EventArgs e)
         {
-            var moveRouteDesigner = new EventMoveRouteDesigner( this, mCurrentMap, MyEvent, CurrentPage.Movement.Route );
-            Controls.Add( moveRouteDesigner );
+            var moveRouteDesigner = new EventMoveRouteDesigner(this, mCurrentMap, MyEvent, CurrentPage.Movement.Route);
+            Controls.Add(moveRouteDesigner);
             moveRouteDesigner.BringToFront();
             moveRouteDesigner.Size = ClientSize;
         }
@@ -1713,19 +1713,19 @@ namespace Intersect.Editor.Forms.Editors.Events
 
         #region "Extra Options"
 
-        private void chkWalkThrough_CheckedChanged( object sender, EventArgs e )
+        private void chkWalkThrough_CheckedChanged(object sender, EventArgs e)
         {
             CurrentPage.Passable = chkWalkThrough.Checked;
         }
 
-        private void cmbLayering_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbLayering_SelectedIndexChanged(object sender, EventArgs e)
         {
             CurrentPage.Layer = (EventRenderLayer)cmbLayering.SelectedIndex;
         }
 
-        private void cmbTrigger_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbTrigger_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if( MyEvent.CommonEvent )
+            if (MyEvent.CommonEvent)
             {
                 CurrentPage.CommonTrigger = (CommonEventTrigger)cmbTrigger.SelectedIndex;
             }
@@ -1739,9 +1739,9 @@ namespace Intersect.Editor.Forms.Editors.Events
             txtCommand.Hide();
             lblCommand.Hide();
 
-            if( MyEvent.CommonEvent )
+            if (MyEvent.CommonEvent)
             {
-                if( cmbTrigger.SelectedIndex == (int)CommonEventTrigger.SlashCommand )
+                if (cmbTrigger.SelectedIndex == (int)CommonEventTrigger.SlashCommand)
                 {
                     txtCommand.Show();
                     txtCommand.Text = CurrentPage.TriggerCommand;
@@ -1751,22 +1751,22 @@ namespace Intersect.Editor.Forms.Editors.Events
             }
         }
 
-        private void chkHideName_CheckedChanged( object sender, EventArgs e )
+        private void chkHideName_CheckedChanged(object sender, EventArgs e)
         {
             CurrentPage.HideName = chkHideName.Checked;
         }
 
-        private void chkDirectionFix_CheckedChanged( object sender, EventArgs e )
+        private void chkDirectionFix_CheckedChanged(object sender, EventArgs e)
         {
             CurrentPage.DirectionFix = chkDirectionFix.Checked;
         }
 
-        private void chkWalkingAnimation_CheckedChanged( object sender, EventArgs e )
+        private void chkWalkingAnimation_CheckedChanged(object sender, EventArgs e)
         {
             CurrentPage.WalkingAnimation = chkWalkingAnimation.Checked;
         }
 
-        private void chkInteractionFreeze_CheckedChanged( object sender, EventArgs e )
+        private void chkInteractionFreeze_CheckedChanged(object sender, EventArgs e)
         {
             CurrentPage.InteractionFreeze = chkInteractionFreeze.Checked;
         }
@@ -1775,15 +1775,15 @@ namespace Intersect.Editor.Forms.Editors.Events
 
         #region "Inspector Options"
 
-        private void txtDesc_TextChanged( object sender, EventArgs e )
+        private void txtDesc_TextChanged(object sender, EventArgs e)
         {
             CurrentPage.Description = txtDesc.Text;
         }
 
-        private void chkDisablePreview_CheckedChanged( object sender, EventArgs e )
+        private void chkDisablePreview_CheckedChanged(object sender, EventArgs e)
         {
             CurrentPage.DisablePreview = chkDisableInspector.Checked;
-            if( chkDisableInspector.Checked )
+            if (chkDisableInspector.Checked)
             {
                 cmbPreviewFace.Enabled = false;
                 txtDesc.Enabled = false;
@@ -1799,22 +1799,22 @@ namespace Intersect.Editor.Forms.Editors.Events
 
         private void UpdateFacePreview()
         {
-            if( CurrentPage.DisablePreview || cmbPreviewFace.SelectedIndex < 1 )
+            if (CurrentPage.DisablePreview || cmbPreviewFace.SelectedIndex < 1)
             {
                 pnlFacePreview.BackgroundImage = null;
 
                 return;
             }
 
-            if( File.Exists( "resources/faces/" + cmbPreviewFace.Text ) )
+            if (File.Exists("resources/faces/" + cmbPreviewFace.Text))
             {
-                pnlFacePreview.BackgroundImage = new Bitmap( "resources/faces/" + cmbPreviewFace.Text );
+                pnlFacePreview.BackgroundImage = new Bitmap("resources/faces/" + cmbPreviewFace.Text);
             }
         }
 
-        private void cmbPreviewFace_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbPreviewFace_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CurrentPage.FaceGraphic = TextUtils.SanitizeNone( cmbPreviewFace?.Text );
+            CurrentPage.FaceGraphic = TextUtils.SanitizeNone(cmbPreviewFace?.Text);
             UpdateFacePreview();
         }
 

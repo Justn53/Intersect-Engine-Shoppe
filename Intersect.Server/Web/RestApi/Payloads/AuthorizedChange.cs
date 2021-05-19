@@ -9,7 +9,7 @@ namespace Intersect.Server.Web.RestApi.Payloads
     {
 
         [JsonIgnore, NotMapped]
-        public bool IsValid => !string.IsNullOrWhiteSpace( Authorization ) && !string.IsNullOrWhiteSpace( New );
+        public bool IsValid => !string.IsNullOrWhiteSpace(Authorization) && !string.IsNullOrWhiteSpace(New);
 
         public string Authorization { get; set; }
 

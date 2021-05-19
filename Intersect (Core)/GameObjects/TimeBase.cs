@@ -18,15 +18,15 @@ namespace Intersect.GameObjects
             ResetColors();
         }
 
-        [DatabaseGenerated( DatabaseGeneratedOption.Identity )]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; protected set; }
 
         [JsonIgnore]
-        [Column( "DaylightHues" )]
+        [Column("DaylightHues")]
         public string DaylightHuesJson
         {
-            get => JsonConvert.SerializeObject( DaylightHues, Formatting.None );
-            protected set => DaylightHues = JsonConvert.DeserializeObject<Color[]>( value );
+            get => JsonConvert.SerializeObject(DaylightHues, Formatting.None);
+            protected set => DaylightHues = JsonConvert.DeserializeObject<Color[]>(value);
         }
 
         public int RangeInterval { get; set; } = 720;
@@ -35,33 +35,33 @@ namespace Intersect.GameObjects
 
         public bool SyncTime { get; set; } = true;
 
-        public void LoadFromJson( string json )
+        public void LoadFromJson(string json)
         {
-            JsonConvert.PopulateObject( json, this );
+            JsonConvert.PopulateObject(json, this);
         }
 
         public string GetInstanceJson()
         {
-            return JsonConvert.SerializeObject( this );
+            return JsonConvert.SerializeObject(this);
         }
 
         public static string GetTimeJson()
         {
-            return JsonConvert.SerializeObject( sTimeBase );
+            return JsonConvert.SerializeObject(sTimeBase);
         }
 
         public void ResetColors()
         {
             DaylightHues = new Color[1440 / RangeInterval];
-            for( var i = 0; i < 1440 / RangeInterval; i++ )
+            for (var i = 0; i < 1440 / RangeInterval; i++)
             {
-                DaylightHues[i] = new Color( 255, 255, 255, 255 );
+                DaylightHues[i] = new Color(255, 255, 255, 255);
             }
         }
 
-        public static int GetIntervalIndex( int minutes )
+        public static int GetIntervalIndex(int minutes)
         {
-            switch( minutes )
+            switch (minutes)
             {
                 case 1440: //24 hour span
                     return 0;
@@ -92,9 +92,9 @@ namespace Intersect.GameObjects
             return 5;
         }
 
-        public static int GetTimeInterval( int index )
+        public static int GetTimeInterval(int index)
         {
-            switch( index )
+            switch (index)
             {
                 case 0: //24 hour span
                     return 1440;
@@ -125,7 +125,7 @@ namespace Intersect.GameObjects
             return 5;
         }
 
-        public static void SetStaticTime( TimeBase time )
+        public static void SetStaticTime(TimeBase time)
         {
             sTimeBase = time;
         }

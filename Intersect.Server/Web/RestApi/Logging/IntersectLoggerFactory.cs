@@ -8,9 +8,9 @@ namespace Intersect.Server.Web.RestApi.Logging
     {
 
         /// <inheritdoc />
-        public ILogger Create( string name )
+        public ILogger Create(string name)
         {
-            return new IntersectLogger( name );
+            return new IntersectLogger(name);
         }
 
     }

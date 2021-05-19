@@ -9,14 +9,14 @@ namespace Intersect.Localization
     public class LocaleDescribableToken : LocaleToken
     {
 
-        [JsonProperty( nameof( Description ), NullValueHandling = NullValueHandling.Ignore )]
+        [JsonProperty(nameof(Description), NullValueHandling = NullValueHandling.Ignore)]
         private LocalizedString mDescription;
 
         public LocaleDescribableToken()
         {
         }
 
-        public LocaleDescribableToken( string name, string description = null ) : base( name )
+        public LocaleDescribableToken(string name, string description = null) : base(name)
         {
             mDescription = description?.Trim();
         }
@@ -27,7 +27,7 @@ namespace Intersect.Localization
             get => mDescription ?? "";
             set
             {
-                if( mDescription == null )
+                if (mDescription == null)
                 {
                     mDescription = value;
                 }

@@ -13,7 +13,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Initializes a new instance of the <see cref="TabControlInner" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        internal TabControlInner( Base parent ) : base( parent )
+        internal TabControlInner(Base parent) : base(parent)
         {
         }
 
@@ -21,9 +21,9 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawTabControl( this );
+            skin.DrawTabControl(this);
         }
 
     }

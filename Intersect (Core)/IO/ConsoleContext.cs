@@ -21,13 +21,13 @@ namespace Intersect.IO
 
         private int mInputHistoryPosition;
 
-        public ConsoleContext( int inputHistoryLength = 0 )
+        public ConsoleContext(int inputHistoryLength = 0)
         {
             mLock = new object();
 
-            mInputHistory = new List<string>( Math.Max( 0, inputHistoryLength ) );
+            mInputHistory = new List<string>(Math.Max(0, inputHistoryLength));
             InputHistoryLength = inputHistoryLength;
-            InputBuffer = new List<char>( 80 );
+            InputBuffer = new List<char>(80);
         }
 
         private int WaitCursorLeft { get; set; }
@@ -39,7 +39,7 @@ namespace Intersect.IO
         public int InputHistoryPosition
         {
             get => mInputHistoryPosition;
-            set => mInputHistoryPosition = Math.Max( 0, Math.Min( mInputHistory.Count, value ) );
+            set => mInputHistoryPosition = Math.Max(0, Math.Min(mInputHistory.Count, value));
         }
 
         public bool InputHistoryEnabled
@@ -73,18 +73,18 @@ namespace Intersect.IO
 
         public void Check()
         {
-            if( IsWaitingRead )
+            if (IsWaitingRead)
             {
-                throw new InvalidOperationException( "Already waiting on a Read*() operation." );
+                throw new InvalidOperationException("Already waiting on a Read*() operation.");
             }
         }
 
-        public TResult Wait<TResult>( Action<string> write, Func<TResult> waitForResult )
+        public TResult Wait<TResult>(Action<string> write, Func<TResult> waitForResult)
         {
-            lock( mLock )
+            lock (mLock)
             {
                 IsWaitingRead = true;
-                WritePrefix( write );
+                WritePrefix(write);
             }
 
             return waitForResult();
@@ -92,15 +92,15 @@ namespace Intersect.IO
 
         public void Clear()
         {
-            lock( mLock )
+            lock (mLock)
             {
                 IsWaitingRead = false;
             }
         }
 
-        public void ResetWaitCursor( Action<string> write, int clearBufferLength = -1 )
+        public void ResetWaitCursor(Action<string> write, int clearBufferLength = -1)
         {
-            if( !IsWaitingRead )
+            if (!IsWaitingRead)
             {
                 return;
             }
@@ -109,11 +109,11 @@ namespace Intersect.IO
             var realColumnCursor = onCurrentLine ? WaitCursorLeft : 0;
             var currentLineCursor = Console.CursorTop;
 
-            Console.SetCursorPosition( realColumnCursor, Console.CursorTop );
-            write( new string( ' ', ( WaitPrefix?.Length ?? 0 ) + Math.Max( clearBufferLength, InputBuffer.Count ) ) );
-            Console.SetCursorPosition( realColumnCursor, currentLineCursor );
+            Console.SetCursorPosition(realColumnCursor, Console.CursorTop);
+            write(new string(' ', (WaitPrefix?.Length ?? 0) + Math.Max(clearBufferLength, InputBuffer.Count)));
+            Console.SetCursorPosition(realColumnCursor, currentLineCursor);
 
-            if( onCurrentLine )
+            if (onCurrentLine)
             {
                 return;
             }
@@ -122,9 +122,9 @@ namespace Intersect.IO
             Console.CursorTop = WaitCursorTop;
         }
 
-        public async Task ResetWaitCursorAsync( Func<string, Task> writeAsync, int clearBufferLength = -1 )
+        public async Task ResetWaitCursorAsync(Func<string, Task> writeAsync, int clearBufferLength = -1)
         {
-            if( !IsWaitingRead )
+            if (!IsWaitingRead)
             {
                 return;
             }
@@ -133,20 +133,20 @@ namespace Intersect.IO
 
             var realColumnCursor = onCurrentLine ? WaitCursorLeft : 0;
             var currentLineCursor = Console.CursorTop;
-            Console.SetCursorPosition( realColumnCursor, Console.CursorTop );
+            Console.SetCursorPosition(realColumnCursor, Console.CursorTop);
 
             var task = writeAsync(
-                new string( ' ', ( WaitPrefix?.Length ?? 0 ) + Math.Max( clearBufferLength, InputBuffer.Count ) )
+                new string(' ', (WaitPrefix?.Length ?? 0) + Math.Max(clearBufferLength, InputBuffer.Count))
             );
 
-            if( task != null )
+            if (task != null)
             {
                 await task;
             }
 
-            Console.SetCursorPosition( realColumnCursor, currentLineCursor );
+            Console.SetCursorPosition(realColumnCursor, currentLineCursor);
 
-            if( onCurrentLine )
+            if (onCurrentLine)
             {
                 return;
             }
@@ -155,54 +155,54 @@ namespace Intersect.IO
             Console.CursorTop = WaitCursorTop;
         }
 
-        public void MoveWaitCursor( bool subtractPrefix = false )
+        public void MoveWaitCursor(bool subtractPrefix = false)
         {
             WaitCursorTop = Console.CursorTop;
             WaitCursorLeft = Console.CursorLeft;
 
-            if( subtractPrefix )
+            if (subtractPrefix)
             {
                 WaitCursorLeft -= WaitPrefix?.Length ?? 0;
             }
         }
 
-        public void WritePrefix( Action<string> write, int bufferPosition = -1 )
+        public void WritePrefix(Action<string> write, int bufferPosition = -1)
         {
-            if( !IsWaitingRead )
+            if (!IsWaitingRead)
             {
                 return;
             }
 
             MoveWaitCursor();
 
-            if( string.IsNullOrEmpty( WaitPrefix ) )
+            if (string.IsNullOrEmpty(WaitPrefix))
             {
                 return;
             }
 
-            write( WaitPrefix + new string( InputBuffer.ToArray() ) );
-            if( bufferPosition > -1 )
+            write(WaitPrefix + new string(InputBuffer.ToArray()));
+            if (bufferPosition > -1)
             {
-                Console.CursorLeft -= Math.Max( 0, InputBuffer.Count - bufferPosition );
+                Console.CursorLeft -= Math.Max(0, InputBuffer.Count - bufferPosition);
             }
         }
 
-        public async Task WritePrefixAsync( Func<string, Task> writeAsync )
+        public async Task WritePrefixAsync(Func<string, Task> writeAsync)
         {
-            if( !IsWaitingRead )
+            if (!IsWaitingRead)
             {
                 return;
             }
 
             MoveWaitCursor();
 
-            if( string.IsNullOrEmpty( WaitPrefix ) )
+            if (string.IsNullOrEmpty(WaitPrefix))
             {
                 return;
             }
 
-            var task = writeAsync( WaitPrefix );
-            if( task != null )
+            var task = writeAsync(WaitPrefix);
+            if (task != null)
             {
                 await task;
             }
@@ -221,32 +221,32 @@ namespace Intersect.IO
 
                     var line = "";
                     var finished = false;
-                    while( !finished )
+                    while (!finished)
                     {
                         var keyInfo = readKey();
                         var bufferPosition = Math.Max(
                             0,
                             Math.Min(
                                 InputBuffer.Count,
-                                Console.BufferWidth * ( Console.CursorTop - WaitCursorTop ) +
-                                ( Console.CursorLeft - WaitCursorLeft ) -
-                                ( WaitPrefix?.Length ?? 0 )
+                                Console.BufferWidth * (Console.CursorTop - WaitCursorTop) +
+                                (Console.CursorLeft - WaitCursorLeft) -
+                                (WaitPrefix?.Length ?? 0)
                             )
                         );
 
                         var bufferLength = InputBuffer.Count;
 
-                        switch( keyInfo.Key )
+                        switch (keyInfo.Key)
                         {
                             case ConsoleKey.Enter:
-                                line = new string( InputBuffer.ToArray() );
+                                line = new string(InputBuffer.ToArray());
                                 InputBuffer.Clear();
-                                if( InputHistoryFull )
+                                if (InputHistoryFull)
                                 {
-                                    mInputHistory.RemoveRange( 0, mInputHistory.Count - mInputHistoryLength );
+                                    mInputHistory.RemoveRange(0, mInputHistory.Count - mInputHistoryLength);
                                 }
 
-                                mInputHistory.Add( line );
+                                mInputHistory.Add(line);
                                 InputHistoryPosition = mInputHistory.Count;
                                 writeLine();
                                 MoveWaitCursor();
@@ -256,24 +256,24 @@ namespace Intersect.IO
 
                             case ConsoleKey.Backspace:
                                 --bufferPosition;
-                                if( -1 < bufferPosition && bufferPosition < InputBuffer.Count )
+                                if (-1 < bufferPosition && bufferPosition < InputBuffer.Count)
                                 {
-                                    InputBuffer.RemoveAt( bufferPosition );
+                                    InputBuffer.RemoveAt(bufferPosition);
                                 }
 
                                 break;
 
                             case ConsoleKey.Delete:
-                                if( bufferPosition < InputBuffer.Count )
+                                if (bufferPosition < InputBuffer.Count)
                                 {
-                                    InputBuffer.RemoveAt( bufferPosition );
+                                    InputBuffer.RemoveAt(bufferPosition);
                                 }
 
                                 break;
 
                             case ConsoleKey.UpArrow:
                                 --InputHistoryPosition;
-                                if( mInputHistory.Count > InputHistoryPosition )
+                                if (mInputHistory.Count > InputHistoryPosition)
                                 {
                                     InputBuffer.Clear();
                                     InputBuffer.AddRange(
@@ -285,14 +285,14 @@ namespace Intersect.IO
 
                             case ConsoleKey.DownArrow:
                                 ++InputHistoryPosition;
-                                if( mInputHistory.Count > InputHistoryPosition )
+                                if (mInputHistory.Count > InputHistoryPosition)
                                 {
                                     InputBuffer.Clear();
                                     InputBuffer.AddRange(
                                         mInputHistory[InputHistoryPosition]?.ToCharArray() ?? Array.Empty<char>()
                                     );
                                 }
-                                else if( mInputHistory.Count == InputHistoryPosition && InputHistoryPosition > 0 )
+                                else if (mInputHistory.Count == InputHistoryPosition && InputHistoryPosition > 0)
                                 {
                                     InputBuffer.Clear();
                                 }
@@ -450,7 +450,7 @@ namespace Intersect.IO
                             case ConsoleKey.OemClear:
 
                             default:
-                                InputBuffer.Add( keyInfo.KeyChar );
+                                InputBuffer.Add(keyInfo.KeyChar);
                                 ++bufferPosition;
 
                                 break;
@@ -459,11 +459,11 @@ namespace Intersect.IO
                         }
 
                         // ReSharper disable once InvertIf
-                        if( !finished )
+                        if (!finished)
                         {
                             // TODO: Soft cursor reset and prefix rewrite
-                            ResetWaitCursor( write, bufferLength );
-                            WritePrefix( write, bufferPosition );
+                            ResetWaitCursor(write, bufferLength);
+                            WritePrefix(write, bufferPosition);
                         }
                     }
 

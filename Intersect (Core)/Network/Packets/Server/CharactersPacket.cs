@@ -10,16 +10,16 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public CharactersPacket( CharacterPacket[] characters, bool freeSlot )
+        public CharactersPacket(CharacterPacket[] characters, bool freeSlot)
         {
             Characters = characters;
             FreeSlot = freeSlot;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public CharacterPacket[] Characters { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public bool FreeSlot { get; set; }
 
     }

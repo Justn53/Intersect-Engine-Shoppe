@@ -6,7 +6,7 @@ namespace Intersect.Server.Web.RestApi.Services
     internal interface IAuthorizedRoutesService
     {
 
-        bool RequiresAuthorization( string endpoint, string method = "GET" );
+        bool RequiresAuthorization(string endpoint, string method = "GET");
 
     }
 
@@ -17,7 +17,7 @@ namespace Intersect.Server.Web.RestApi.Services
             this IDependencyResolver dependencyResolver
         )
         {
-            return dependencyResolver.GetService( typeof( IAuthorizedRoutesService ) ) as IAuthorizedRoutesService;
+            return dependencyResolver.GetService(typeof(IAuthorizedRoutesService)) as IAuthorizedRoutesService;
         }
 
     }

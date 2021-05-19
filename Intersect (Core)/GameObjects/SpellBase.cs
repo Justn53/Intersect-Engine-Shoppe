@@ -20,7 +20,7 @@ namespace Intersect.GameObjects
         [NotMapped] public int[] VitalCost = new int[(int)Vitals.VitalCount];
 
         [JsonConstructor]
-        public SpellBase( Guid id ) : base( id )
+        public SpellBase(Guid id) : base(id)
         {
             Name = "New Spell";
         }
@@ -37,25 +37,25 @@ namespace Intersect.GameObjects
         public string Icon { get; set; } = "";
 
         //Animations
-        [Column( "CastAnimation" )]
+        [Column("CastAnimation")]
         public Guid CastAnimationId { get; set; }
 
         [NotMapped]
         [JsonIgnore]
         public AnimationBase CastAnimation
         {
-            get => AnimationBase.Get( CastAnimationId );
+            get => AnimationBase.Get(CastAnimationId);
             set => CastAnimationId = value?.Id ?? Guid.Empty;
         }
 
-        [Column( "HitAnimation" )]
+        [Column("HitAnimation")]
         public Guid HitAnimationId { get; set; }
 
         [NotMapped]
         [JsonIgnore]
         public AnimationBase HitAnimation
         {
-            get => AnimationBase.Get( HitAnimationId );
+            get => AnimationBase.Get(HitAnimationId);
             set => HitAnimationId = value?.Id ?? Guid.Empty;
         }
 
@@ -78,12 +78,12 @@ namespace Intersect.GameObjects
         public bool Bound { get; set; }
 
         //Requirements
-        [Column( "CastRequirements" )]
+        [Column("CastRequirements")]
         [JsonIgnore]
         public string JsonCastRequirements
         {
             get => CastingRequirements.Data();
-            set => CastingRequirements.Load( value );
+            set => CastingRequirements.Load(value);
         }
 
         [NotMapped]
@@ -99,24 +99,24 @@ namespace Intersect.GameObjects
         public SpellDashOpts Dash { get; set; } = new SpellDashOpts();
 
         //Event Info
-        [Column( "Event" )]
+        [Column("Event")]
         public Guid EventId { get; set; }
 
         [NotMapped]
         [JsonIgnore]
         public EventBase Event
         {
-            get => EventBase.Get( EventId );
+            get => EventBase.Get(EventId);
             set => EventId = value?.Id ?? Guid.Empty;
         }
 
         //Costs
-        [Column( "VitalCost" )]
+        [Column("VitalCost")]
         [JsonIgnore]
         public string VitalCostJson
         {
-            get => DatabaseUtils.SaveIntArray( VitalCost, (int)Vitals.VitalCount );
-            set => VitalCost = DatabaseUtils.LoadIntArray( value, (int)Vitals.VitalCount );
+            get => DatabaseUtils.SaveIntArray(VitalCost, (int)Vitals.VitalCount);
+            set => VitalCost = DatabaseUtils.LoadIntArray(value, (int)Vitals.VitalCount);
         }
 
         /// <inheritdoc />
@@ -127,17 +127,17 @@ namespace Intersect.GameObjects
         /// </summary>
         /// <param name="cooldownGroup">The cooldown group to search for.</param>
         /// <returns>Returns an array of <see cref="ItemBase"/> containing all items with the supplied cooldown group.</returns>
-        public static SpellBase[] GetCooldownGroup( string cooldownGroup )
+        public static SpellBase[] GetCooldownGroup(string cooldownGroup)
         {
             cooldownGroup = cooldownGroup.Trim();
 
             // No point looking for nothing.
-            if( string.IsNullOrWhiteSpace( cooldownGroup ) )
+            if (string.IsNullOrWhiteSpace(cooldownGroup))
             {
                 return Array.Empty<SpellBase>();
             }
 
-            return Lookup.Where( i => ( (SpellBase)i.Value ).CooldownGroup.Trim() == cooldownGroup ).Select( i => (SpellBase)i.Value ).ToArray();
+            return Lookup.Where(i => ((SpellBase)i.Value).CooldownGroup.Trim() == cooldownGroup).Select(i => (SpellBase)i.Value).ToArray();
         }
     }
 
@@ -160,45 +160,45 @@ namespace Intersect.GameObjects
         public int CastRange { get; set; }
 
         //Extra Data, Teleport Coords, Custom Spells, Etc
-        [Column( "Projectile" )]
+        [Column("Projectile")]
         public Guid ProjectileId { get; set; }
 
         [NotMapped]
         [JsonIgnore]
         public ProjectileBase Projectile
         {
-            get => ProjectileBase.Get( ProjectileId );
+            get => ProjectileBase.Get(ProjectileId);
             set => ProjectileId = value?.Id ?? Guid.Empty;
         }
 
         //Heal/Damage
-        [Column( "VitalDiff" )]
+        [Column("VitalDiff")]
         [JsonIgnore]
         public string VitalDiffJson
         {
-            get => DatabaseUtils.SaveIntArray( VitalDiff, (int)Vitals.VitalCount );
-            set => VitalDiff = DatabaseUtils.LoadIntArray( value, (int)Vitals.VitalCount );
+            get => DatabaseUtils.SaveIntArray(VitalDiff, (int)Vitals.VitalCount);
+            set => VitalDiff = DatabaseUtils.LoadIntArray(value, (int)Vitals.VitalCount);
         }
 
         //Buff/Debuff Data
-        [Column( "StatDiff" )]
+        [Column("StatDiff")]
         [JsonIgnore]
         public string StatDiffJson
         {
-            get => DatabaseUtils.SaveIntArray( StatDiff, (int)Stats.StatCount );
-            set => StatDiff = DatabaseUtils.LoadIntArray( value, (int)Stats.StatCount );
+            get => DatabaseUtils.SaveIntArray(StatDiff, (int)Stats.StatCount);
+            set => StatDiff = DatabaseUtils.LoadIntArray(value, (int)Stats.StatCount);
         }
 
         [NotMapped]
         public int[] StatDiff { get; set; } = new int[(int)Stats.StatCount];
 
         //Buff/Debuff Data
-        [Column( "PercentageStatDiff" )]
+        [Column("PercentageStatDiff")]
         [JsonIgnore]
         public string PercentageStatDiffJson
         {
-            get => DatabaseUtils.SaveIntArray( PercentageStatDiff, (int)Stats.StatCount );
-            set => PercentageStatDiff = DatabaseUtils.LoadIntArray( value, (int)Stats.StatCount );
+            get => DatabaseUtils.SaveIntArray(PercentageStatDiff, (int)Stats.StatCount);
+            set => PercentageStatDiff = DatabaseUtils.LoadIntArray(value, (int)Stats.StatCount);
         }
 
         [NotMapped]
@@ -220,10 +220,10 @@ namespace Intersect.GameObjects
 
         public string TransformSprite { get; set; }
 
-        [Column( "OnHit" )]
+        [Column("OnHit")]
         public int OnHitDuration { get; set; }
 
-        [Column( "Trap" )]
+        [Column("Trap")]
         public int TrapDuration { get; set; }
 
     }

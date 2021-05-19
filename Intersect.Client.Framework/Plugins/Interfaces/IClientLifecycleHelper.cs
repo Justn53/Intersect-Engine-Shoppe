@@ -10,7 +10,7 @@ namespace Intersect.Client.Plugins.Interfaces
     {
         public GameStates State { get; }
 
-        public LifecycleChangeStateArgs( GameStates state )
+        public LifecycleChangeStateArgs(GameStates state)
         {
             State = state;
         }
@@ -41,6 +41,6 @@ namespace Intersect.Client.Plugins.Interfaces
         /// Invokes <see cref="LifecycleChangeState"/> handlers for <paramref name="state"/>.
         /// </summary>
         /// <param name="state">the new <see cref="GameStates"/></param>
-        void OnLifecycleChangeState( GameStates state );
+        void OnLifecycleChangeState(GameStates state);
     }
 }

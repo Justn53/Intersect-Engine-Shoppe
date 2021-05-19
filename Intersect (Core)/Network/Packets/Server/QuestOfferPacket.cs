@@ -11,12 +11,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public QuestOfferPacket( Guid questId )
+        public QuestOfferPacket(Guid questId)
         {
             QuestId = questId;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid QuestId { get; set; }
 
     }

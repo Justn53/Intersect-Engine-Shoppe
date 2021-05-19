@@ -12,7 +12,7 @@ namespace Intersect.Server.Web.RestApi.Payloads
 
         public SortDirection Direction { get; set; }
 
-        public static Sort From( string sortBy, SortDirection sortDirection )
+        public static Sort From(string sortBy, SortDirection sortDirection)
         {
             return new Sort
             {
@@ -21,16 +21,16 @@ namespace Intersect.Server.Web.RestApi.Payloads
             };
         }
 
-        public static Sort[] From( string[] sortBy, SortDirection[] sortDirections )
+        public static Sort[] From(string[] sortBy, SortDirection[] sortDirections)
         {
             var filteredBy =
-                sortBy?.Where( by => !string.IsNullOrWhiteSpace( by ) ).Take( sortDirections?.Length ?? 0 ).ToList() ??
+                sortBy?.Where(by => !string.IsNullOrWhiteSpace(by)).Take(sortDirections?.Length ?? 0).ToList() ??
                 new List<string>();
 
-            var filteredDirections = sortDirections?.Take( filteredBy.Count ).ToList() ?? new List<SortDirection>();
+            var filteredDirections = sortDirections?.Take(filteredBy.Count).ToList() ?? new List<SortDirection>();
 
             return filteredBy.Select(
-                    ( by, index ) => From( by ?? throw new InvalidOperationException(), filteredDirections[index] )
+                    (by, index) => From(by ?? throw new InvalidOperationException(), filteredDirections[index])
                 )
                 .ToArray();
         }

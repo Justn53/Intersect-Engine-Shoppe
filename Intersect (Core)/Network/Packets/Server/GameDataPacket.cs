@@ -10,16 +10,16 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public GameDataPacket( GameObjectPacket[] gameObjects, string colorsJson )
+        public GameDataPacket(GameObjectPacket[] gameObjects, string colorsJson)
         {
             GameObjects = gameObjects;
             ColorsJson = colorsJson;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public GameObjectPacket[] GameObjects { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public string ColorsJson { get; set; }
 
     }

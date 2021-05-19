@@ -11,11 +11,11 @@ namespace Intersect.Threading
 
         private Action mNextAction;
 
-        public LockingActionQueue() : this( new object() )
+        public LockingActionQueue() : this(new object())
         {
         }
 
-        public LockingActionQueue( object lockObjectObject )
+        public LockingActionQueue(object lockObjectObject)
         {
             mLockObject = lockObjectObject;
         }
@@ -24,9 +24,9 @@ namespace Intersect.Threading
         {
             get
             {
-                lock( mLockObject )
+                lock (mLockObject)
                 {
-                    Monitor.Wait( mLockObject );
+                    Monitor.Wait(mLockObject);
 
                     return mNextAction;
                 }
@@ -34,10 +34,10 @@ namespace Intersect.Threading
 
             set
             {
-                lock( mLockObject )
+                lock (mLockObject)
                 {
                     mNextAction = value;
-                    Monitor.PulseAll( mLockObject );
+                    Monitor.PulseAll(mLockObject);
                 }
             }
         }

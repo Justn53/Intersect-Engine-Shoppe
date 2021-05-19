@@ -6,7 +6,7 @@ namespace Intersect.Server.Plugins.Helpers
     internal sealed class ServerLifecycleHelper : ContextHelper<IServerPluginContext>, IServerLifecycleHelper
     {
         /// <inheritdoc />
-        public ServerLifecycleHelper( IServerPluginContext context ) : base( context )
+        public ServerLifecycleHelper(IServerPluginContext context) : base(context)
         {
         }
     }

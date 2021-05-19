@@ -8,7 +8,7 @@ namespace Intersect.Server.Maps
         public readonly int X;
         public readonly int Y;
 
-        public MapTileLoc( Guid id, int x, int y )
+        public MapTileLoc(Guid id, int x, int y)
         {
             MapId = id;
             X = x;
@@ -19,15 +19,15 @@ namespace Intersect.Server.Maps
         {
             unchecked
             {
-                return MapId.GetHashCode() + ( Y * Options.MapHeight ) + X;
+                return MapId.GetHashCode() + (Y * Options.MapHeight) + X;
             }
         }
 
-        public override bool Equals( object obj )
+        public override bool Equals(object obj)
         {
-            if( obj is MapTileLoc loc )
+            if (obj is MapTileLoc loc)
             {
-                if( X == loc.X && Y == loc.Y && MapId == loc.MapId )
+                if (X == loc.X && Y == loc.Y && MapId == loc.MapId)
                 {
                     return true;
                 }

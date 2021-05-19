@@ -11,15 +11,15 @@ using Intersect.Server.Web.RestApi.Payloads;
 namespace Intersect.Server.Web.RestApi.Routes.V1
 {
 
-    [RoutePrefix( "chat" )]
+    [RoutePrefix("chat")]
     [ConfigurableAuthorize]
     public sealed class ChatController : ApiController
     {
 
         [Route]
-        [Route( "global" )]
+        [Route("global")]
         [HttpPost]
-        public object SendGlobal( [FromBody] ChatMessage chatMessage )
+        public object SendGlobal([FromBody] ChatMessage chatMessage)
         {
             try
             {
@@ -33,17 +33,17 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
                     chatMessage
                 };
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                return Request.CreateErrorResponse( HttpStatusCode.InternalServerError, exception.Message );
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exception.Message);
             }
         }
 
-        [Route( "direct/{lookupKey:LookupKey}" )]
+        [Route("direct/{lookupKey:LookupKey}")]
         [HttpPost]
-        public object SendDirect( LookupKey lookupKey, [FromBody] ChatMessage chatMessage )
+        public object SendDirect(LookupKey lookupKey, [FromBody] ChatMessage chatMessage)
         {
-            if( lookupKey.IsInvalid )
+            if (lookupKey.IsInvalid)
             {
                 return Request.CreateErrorResponse(
                     HttpStatusCode.BadRequest, lookupKey.IsIdInvalid ? @"Invalid player id." : @"Invalid player name."
@@ -56,9 +56,9 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
                 )
             );
 
-            if( client == null )
+            if (client == null)
             {
-                return Request.CreateErrorResponse( HttpStatusCode.NotFound, $@"No player found for '{lookupKey}'." );
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, $@"No player found for '{lookupKey}'.");
             }
 
             try
@@ -75,26 +75,26 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
                     chatMessage
                 };
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                return Request.CreateErrorResponse( HttpStatusCode.InternalServerError, exception.Message );
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exception.Message);
             }
         }
 
-        [Route( "proximity/{mapId:guid}" )]
+        [Route("proximity/{mapId:guid}")]
         [HttpPost]
-        public object SendProximity( Guid mapId, [FromBody] ChatMessage chatMessage )
+        public object SendProximity(Guid mapId, [FromBody] ChatMessage chatMessage)
         {
-            if( Guid.Empty == mapId )
+            if (Guid.Empty == mapId)
             {
-                return Request.CreateErrorResponse( HttpStatusCode.BadRequest, $@"Invalid map id '{mapId}'." );
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, $@"Invalid map id '{mapId}'.");
             }
 
             try
             {
-                if( PacketSender.SendProximityMsg(
+                if (PacketSender.SendProximityMsg(
                     chatMessage.Message, Enums.ChatMessageType.Local, mapId, chatMessage.Color ?? CustomColors.Chat.ProximityMsg, chatMessage.Target
-                ) )
+                ))
                 {
                     return new
                     {
@@ -104,11 +104,11 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
                     };
                 }
 
-                return Request.CreateErrorResponse( HttpStatusCode.NotFound, $@"No map found for '{mapId}'." );
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, $@"No map found for '{mapId}'.");
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                return Request.CreateErrorResponse( HttpStatusCode.InternalServerError, exception.Message );
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exception.Message);
             }
         }
 

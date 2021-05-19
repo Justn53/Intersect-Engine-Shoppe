@@ -49,12 +49,12 @@ namespace Intersect.Editor.Forms.Editors
             lblName.Text = Strings.VariableEditor.name;
             grpValue.Text = Strings.VariableEditor.value;
             cmbBooleanValue.Items.Clear();
-            cmbBooleanValue.Items.Add( Strings.VariableEditor.False );
-            cmbBooleanValue.Items.Add( Strings.VariableEditor.True );
+            cmbBooleanValue.Items.Add(Strings.VariableEditor.False);
+            cmbBooleanValue.Items.Add(Strings.VariableEditor.True);
             cmbVariableType.Items.Clear();
-            foreach( var itm in Strings.VariableEditor.types )
+            foreach (var itm in Strings.VariableEditor.types)
             {
-                cmbVariableType.Items.Add( itm.Value );
+                cmbVariableType.Items.Add(itm.Value);
             }
 
             toolStripItemNew.ToolTipText = Strings.VariableEditor.New;
@@ -70,21 +70,21 @@ namespace Intersect.Editor.Forms.Editors
             btnCancel.Text = Strings.VariableEditor.cancel;
         }
 
-        protected override void GameObjectUpdatedDelegate( GameObjectType type )
+        protected override void GameObjectUpdatedDelegate(GameObjectType type)
         {
-            if( type == GameObjectType.PlayerVariable )
+            if (type == GameObjectType.PlayerVariable)
             {
                 InitEditor();
-                if( mEditorItem != null && !PlayerVariableBase.Lookup.Values.Contains( mEditorItem ) )
+                if (mEditorItem != null && !PlayerVariableBase.Lookup.Values.Contains(mEditorItem))
                 {
                     mEditorItem = null;
                     UpdateEditor();
                 }
             }
-            else if( type == GameObjectType.ServerVariable )
+            else if (type == GameObjectType.ServerVariable)
             {
                 InitEditor();
-                if( mEditorItem != null && !ServerVariableBase.Lookup.Values.Contains( mEditorItem ) )
+                if (mEditorItem != null && !ServerVariableBase.Lookup.Values.Contains(mEditorItem))
                 {
                     mEditorItem = null;
                     UpdateEditor();
@@ -92,45 +92,45 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void btnNew_Click( object sender, EventArgs e )
+        private void btnNew_Click(object sender, EventArgs e)
         {
-            if( rdoPlayerVariables.Checked )
+            if (rdoPlayerVariables.Checked)
             {
-                PacketSender.SendCreateObject( GameObjectType.PlayerVariable );
+                PacketSender.SendCreateObject(GameObjectType.PlayerVariable);
             }
-            else if( rdoGlobalVariables.Checked )
+            else if (rdoGlobalVariables.Checked)
             {
-                PacketSender.SendCreateObject( GameObjectType.ServerVariable );
+                PacketSender.SendCreateObject(GameObjectType.ServerVariable);
             }
         }
 
-        private void btnUndo_Click( object sender, EventArgs e )
+        private void btnUndo_Click(object sender, EventArgs e)
         {
-            if( mChanged.Contains( mEditorItem ) && mEditorItem != null )
+            if (mChanged.Contains(mEditorItem) && mEditorItem != null)
             {
                 mEditorItem.RestoreBackup();
                 UpdateEditor();
             }
         }
 
-        private void btnDelete_Click( object sender, EventArgs e )
+        private void btnDelete_Click(object sender, EventArgs e)
         {
-            if( mEditorItem != null )
+            if (mEditorItem != null)
             {
-                if( DarkMessageBox.ShowWarning(
+                if (DarkMessageBox.ShowWarning(
                         Strings.VariableEditor.deleteprompt, Strings.VariableEditor.deletecaption,
                         DarkDialogButton.YesNo, Properties.Resources.Icon
                     ) ==
-                    DialogResult.Yes )
+                    DialogResult.Yes)
                 {
-                    PacketSender.SendDeleteObject( mEditorItem );
+                    PacketSender.SendDeleteObject(mEditorItem);
                 }
             }
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
-            foreach( var item in mChanged )
+            foreach (var item in mChanged)
             {
                 item.RestoreBackup();
                 item.DeleteBackup();
@@ -141,12 +141,12 @@ namespace Intersect.Editor.Forms.Editors
             Dispose();
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
             //Send Changed items
-            foreach( var item in mChanged )
+            foreach (var item in mChanged)
             {
-                PacketSender.SendSaveObject( item );
+                PacketSender.SendSaveObject(item);
                 item.DeleteBackup();
             }
 
@@ -155,13 +155,13 @@ namespace Intersect.Editor.Forms.Editors
             Dispose();
         }
 
-        private void rdoPlayerVariables_CheckedChanged( object sender, EventArgs e )
+        private void rdoPlayerVariables_CheckedChanged(object sender, EventArgs e)
         {
             mEditorItem = null;
             InitEditor();
         }
 
-        private void rdoGlobalVariables_CheckedChanged( object sender, EventArgs e )
+        private void rdoGlobalVariables_CheckedChanged(object sender, EventArgs e)
         {
             mEditorItem = null;
             InitEditor();
@@ -175,25 +175,25 @@ namespace Intersect.Editor.Forms.Editors
 
         private void UpdateEditor()
         {
-            if( mEditorItem != null )
+            if (mEditorItem != null)
             {
                 grpEditor.Show();
                 grpValue.Hide();
-                if( rdoPlayerVariables.Checked )
+                if (rdoPlayerVariables.Checked)
                 {
                     lblObject.Text = Strings.VariableEditor.playervariable;
-                    txtObjectName.Text = ( (PlayerVariableBase)mEditorItem ).Name;
-                    txtId.Text = ( (PlayerVariableBase)mEditorItem ).TextId;
-                    cmbFolder.Text = ( (PlayerVariableBase)mEditorItem ).Folder;
-                    cmbVariableType.SelectedIndex = (int)( ( (PlayerVariableBase)mEditorItem ).Type - 1 );
+                    txtObjectName.Text = ((PlayerVariableBase)mEditorItem).Name;
+                    txtId.Text = ((PlayerVariableBase)mEditorItem).TextId;
+                    cmbFolder.Text = ((PlayerVariableBase)mEditorItem).Folder;
+                    cmbVariableType.SelectedIndex = (int)(((PlayerVariableBase)mEditorItem).Type - 1);
                 }
-                else if( rdoGlobalVariables.Checked )
+                else if (rdoGlobalVariables.Checked)
                 {
                     lblObject.Text = Strings.VariableEditor.globalvariable;
-                    txtObjectName.Text = ( (ServerVariableBase)mEditorItem ).Name;
-                    txtId.Text = ( (ServerVariableBase)mEditorItem ).TextId;
-                    cmbFolder.Text = ( (ServerVariableBase)mEditorItem ).Folder;
-                    cmbVariableType.SelectedIndex = (int)( ( (ServerVariableBase)mEditorItem ).Type - 1 );
+                    txtObjectName.Text = ((ServerVariableBase)mEditorItem).Name;
+                    txtId.Text = ((ServerVariableBase)mEditorItem).TextId;
+                    cmbFolder.Text = ((ServerVariableBase)mEditorItem).Folder;
+                    cmbVariableType.SelectedIndex = (int)(((ServerVariableBase)mEditorItem).Type - 1);
                     grpValue.Show();
                 }
 
@@ -209,74 +209,74 @@ namespace Intersect.Editor.Forms.Editors
 
         private void UpdateSelection()
         {
-            if( lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null )
+            if (lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null)
             {
                 grpEditor.Show();
-                if( rdoPlayerVariables.Checked )
+                if (rdoPlayerVariables.Checked)
                 {
-                    var obj = PlayerVariableBase.Get( (Guid)lstVariables.SelectedNode.Tag );
+                    var obj = PlayerVariableBase.Get((Guid)lstVariables.SelectedNode.Tag);
                     lstVariables.SelectedNode.Text = obj.Name;
                     grpValue.Hide();
                 }
-                else if( rdoGlobalVariables.Checked )
+                else if (rdoGlobalVariables.Checked)
                 {
-                    var obj = ServerVariableBase.Get( (Guid)lstVariables.SelectedNode.Tag );
-                    lstVariables.SelectedNode.Text = obj.Name + " = " + obj.Value.ToString( obj.Type );
+                    var obj = ServerVariableBase.Get((Guid)lstVariables.SelectedNode.Tag);
+                    lstVariables.SelectedNode.Text = obj.Name + " = " + obj.Value.ToString(obj.Type);
                 }
             }
         }
 
-        private void txtObjectName_TextChanged( object sender, EventArgs e )
+        private void txtObjectName_TextChanged(object sender, EventArgs e)
         {
-            if( lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null )
+            if (lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null)
             {
                 grpEditor.Show();
                 grpValue.Hide();
-                if( rdoPlayerVariables.Checked )
+                if (rdoPlayerVariables.Checked)
                 {
-                    var obj = PlayerVariableBase.Get( (Guid)lstVariables.SelectedNode.Tag );
+                    var obj = PlayerVariableBase.Get((Guid)lstVariables.SelectedNode.Tag);
                     obj.Name = txtObjectName.Text;
                     lstVariables.SelectedNode.Text = obj.Name;
                 }
-                else if( rdoGlobalVariables.Checked )
+                else if (rdoGlobalVariables.Checked)
                 {
-                    var obj = ServerVariableBase.Get( (Guid)lstVariables.SelectedNode.Tag );
+                    var obj = ServerVariableBase.Get((Guid)lstVariables.SelectedNode.Tag);
                     obj.Name = txtObjectName.Text;
                     lstVariables.SelectedNode.Text = obj.Name + " = " + obj.Value.ToString();
                 }
             }
         }
 
-        private void txtId_KeyPress( object sender, KeyPressEventArgs e )
+        private void txtId_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = e.KeyChar == ' ';
         }
 
-        private void txtId_TextChanged( object sender, EventArgs e )
+        private void txtId_TextChanged(object sender, EventArgs e)
         {
-            if( lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null )
+            if (lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null)
             {
-                if( rdoPlayerVariables.Checked )
+                if (rdoPlayerVariables.Checked)
                 {
-                    var obj = PlayerVariableBase.Get( (Guid)lstVariables.SelectedNode.Tag );
+                    var obj = PlayerVariableBase.Get((Guid)lstVariables.SelectedNode.Tag);
                     obj.TextId = txtId.Text;
                 }
-                else if( rdoGlobalVariables.Checked )
+                else if (rdoGlobalVariables.Checked)
                 {
-                    var obj = ServerVariableBase.Get( (Guid)lstVariables.SelectedNode.Tag );
+                    var obj = ServerVariableBase.Get((Guid)lstVariables.SelectedNode.Tag);
                     obj.TextId = txtId.Text;
                 }
             }
         }
 
-        private void nudVariableValue_ValueChanged( object sender, EventArgs e )
+        private void nudVariableValue_ValueChanged(object sender, EventArgs e)
         {
-            if( lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null )
+            if (lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null)
             {
-                if( rdoGlobalVariables.Checked )
+                if (rdoGlobalVariables.Checked)
                 {
-                    var obj = ServerVariableBase.Get( (Guid)lstVariables.SelectedNode.Tag );
-                    if( obj != null )
+                    var obj = ServerVariableBase.Get((Guid)lstVariables.SelectedNode.Tag);
+                    if (obj != null)
                     {
                         obj.Value.Integer = (long)nudVariableValue.Value;
                         UpdateSelection();
@@ -285,19 +285,19 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void cmbVariableType_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbVariableType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if( lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null )
+            if (lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null)
             {
-                if( rdoPlayerVariables.Checked )
+                if (rdoPlayerVariables.Checked)
                 {
-                    var obj = PlayerVariableBase.Get( (Guid)lstVariables.SelectedNode.Tag );
-                    obj.Type = (VariableDataTypes)( cmbVariableType.SelectedIndex + 1 );
+                    var obj = PlayerVariableBase.Get((Guid)lstVariables.SelectedNode.Tag);
+                    obj.Type = (VariableDataTypes)(cmbVariableType.SelectedIndex + 1);
                 }
-                else if( rdoGlobalVariables.Checked )
+                else if (rdoGlobalVariables.Checked)
                 {
-                    var obj = ServerVariableBase.Get( (Guid)lstVariables.SelectedNode.Tag );
-                    obj.Type = (VariableDataTypes)( cmbVariableType.SelectedIndex + 1 );
+                    var obj = ServerVariableBase.Get((Guid)lstVariables.SelectedNode.Tag);
+                    obj.Type = (VariableDataTypes)(cmbVariableType.SelectedIndex + 1);
                 }
 
                 InitValueGroup();
@@ -307,23 +307,23 @@ namespace Intersect.Editor.Forms.Editors
 
         private void InitValueGroup()
         {
-            if( rdoPlayerVariables.Checked )
+            if (rdoPlayerVariables.Checked)
             {
                 grpValue.Hide();
             }
             else
             {
-                if( lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null )
+                if (lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null)
                 {
-                    var obj = ServerVariableBase.Get( (Guid)lstVariables.SelectedNode.Tag );
+                    var obj = ServerVariableBase.Get((Guid)lstVariables.SelectedNode.Tag);
                     cmbBooleanValue.Hide();
                     nudVariableValue.Hide();
                     txtStringValue.Hide();
-                    switch( obj.Type )
+                    switch (obj.Type)
                     {
                         case VariableDataTypes.Boolean:
                             cmbBooleanValue.Show();
-                            cmbBooleanValue.SelectedIndex = Convert.ToInt32( obj.Value.Boolean );
+                            cmbBooleanValue.SelectedIndex = Convert.ToInt32(obj.Value.Boolean);
 
                             break;
 
@@ -349,16 +349,16 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void cmbBooleanValue_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbBooleanValue_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if( lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null )
+            if (lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null)
             {
-                if( rdoGlobalVariables.Checked )
+                if (rdoGlobalVariables.Checked)
                 {
-                    var obj = ServerVariableBase.Get( (Guid)lstVariables.SelectedNode.Tag );
-                    if( obj != null )
+                    var obj = ServerVariableBase.Get((Guid)lstVariables.SelectedNode.Tag);
+                    if (obj != null)
                     {
-                        obj.Value.Boolean = Convert.ToBoolean( cmbBooleanValue.SelectedIndex );
+                        obj.Value.Boolean = Convert.ToBoolean(cmbBooleanValue.SelectedIndex);
                         UpdateSelection();
                     }
                 }
@@ -367,14 +367,14 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void txtStringValue_TextChanged( object sender, EventArgs e )
+        private void txtStringValue_TextChanged(object sender, EventArgs e)
         {
-            if( lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null )
+            if (lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null)
             {
-                if( rdoGlobalVariables.Checked )
+                if (rdoGlobalVariables.Checked)
                 {
-                    var obj = ServerVariableBase.Get( (Guid)lstVariables.SelectedNode.Tag );
-                    if( obj != null )
+                    var obj = ServerVariableBase.Get((Guid)lstVariables.SelectedNode.Tag);
+                    if (obj != null)
                     {
                         obj.Value.String = txtStringValue.Text;
                         UpdateSelection();
@@ -389,7 +389,7 @@ namespace Intersect.Editor.Forms.Editors
         {
             var selectedId = Guid.Empty;
             var folderNodes = new Dictionary<string, TreeNode>();
-            if( lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null )
+            if (lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null)
             {
                 selectedId = (Guid)lstVariables.SelectedNode.Tag;
             }
@@ -397,7 +397,7 @@ namespace Intersect.Editor.Forms.Editors
             lstVariables.Nodes.Clear();
 
             //Fix Title
-            if( rdoPlayerVariables.Checked )
+            if (rdoPlayerVariables.Checked)
             {
                 grpVariables.Text = rdoPlayerVariables.Text;
             }
@@ -414,44 +414,44 @@ namespace Intersect.Editor.Forms.Editors
             //Collect folders
             var mFolders = new List<string>();
             cmbFolder.Items.Clear();
-            cmbFolder.Items.Add( "" );
+            cmbFolder.Items.Add("");
 
-            if( rdoPlayerVariables.Checked )
+            if (rdoPlayerVariables.Checked)
             {
-                foreach( var itm in PlayerVariableBase.Lookup )
+                foreach (var itm in PlayerVariableBase.Lookup)
                 {
-                    if( !string.IsNullOrEmpty( ( (PlayerVariableBase)itm.Value ).Folder ) &&
-                        !mFolders.Contains( ( (PlayerVariableBase)itm.Value ).Folder ) )
+                    if (!string.IsNullOrEmpty(((PlayerVariableBase)itm.Value).Folder) &&
+                        !mFolders.Contains(((PlayerVariableBase)itm.Value).Folder))
                     {
-                        mFolders.Add( ( (PlayerVariableBase)itm.Value ).Folder );
-                        if( !mKnownFolders.Contains( ( (PlayerVariableBase)itm.Value ).Folder ) )
+                        mFolders.Add(((PlayerVariableBase)itm.Value).Folder);
+                        if (!mKnownFolders.Contains(((PlayerVariableBase)itm.Value).Folder))
                         {
-                            mKnownFolders.Add( ( (PlayerVariableBase)itm.Value ).Folder );
+                            mKnownFolders.Add(((PlayerVariableBase)itm.Value).Folder);
                         }
                     }
                 }
 
                 mKnownFolders.Sort();
-                cmbFolder.Items.AddRange( mKnownFolders.ToArray() );
+                cmbFolder.Items.AddRange(mKnownFolders.ToArray());
                 lblId.Text = Strings.VariableEditor.textidpv;
             }
-            else if( rdoGlobalVariables.Checked )
+            else if (rdoGlobalVariables.Checked)
             {
-                foreach( var itm in ServerVariableBase.Lookup )
+                foreach (var itm in ServerVariableBase.Lookup)
                 {
-                    if( !string.IsNullOrEmpty( ( (ServerVariableBase)itm.Value ).Folder ) &&
-                        !mFolders.Contains( ( (ServerVariableBase)itm.Value ).Folder ) )
+                    if (!string.IsNullOrEmpty(((ServerVariableBase)itm.Value).Folder) &&
+                        !mFolders.Contains(((ServerVariableBase)itm.Value).Folder))
                     {
-                        mFolders.Add( ( (ServerVariableBase)itm.Value ).Folder );
-                        if( !mGlobalKnownFolders.Contains( ( (ServerVariableBase)itm.Value ).Folder ) )
+                        mFolders.Add(((ServerVariableBase)itm.Value).Folder);
+                        if (!mGlobalKnownFolders.Contains(((ServerVariableBase)itm.Value).Folder))
                         {
-                            mGlobalKnownFolders.Add( ( (ServerVariableBase)itm.Value ).Folder );
+                            mGlobalKnownFolders.Add(((ServerVariableBase)itm.Value).Folder);
                         }
                     }
                 }
 
                 mGlobalKnownFolders.Sort();
-                cmbFolder.Items.AddRange( mGlobalKnownFolders.ToArray() );
+                cmbFolder.Items.AddRange(mGlobalKnownFolders.ToArray());
                 lblId.Text = Strings.VariableEditor.textidgv;
             }
 
@@ -459,27 +459,27 @@ namespace Intersect.Editor.Forms.Editors
 
             lstVariables.Sorted = !btnChronological.Checked;
 
-            if( !btnChronological.Checked && !CustomSearch() )
+            if (!btnChronological.Checked && !CustomSearch())
             {
-                foreach( var folder in mFolders )
+                foreach (var folder in mFolders)
                 {
-                    var node = lstVariables.Nodes.Add( folder );
+                    var node = lstVariables.Nodes.Add(folder);
                     node.ImageIndex = 0;
                     node.SelectedImageIndex = 0;
-                    folderNodes.Add( folder, node );
+                    folderNodes.Add(folder, node);
                 }
             }
 
             var itemPairs = rdoPlayerVariables.Checked ? PlayerVariableBase.ItemPairs : ServerVariableBase.ItemPairs;
 
-            foreach( var itm in itemPairs )
+            foreach (var itm in itemPairs)
             {
-                var node = new TreeNode( itm.Value );
-                if( rdoGlobalVariables.Checked )
+                var node = new TreeNode(itm.Value);
+                if (rdoGlobalVariables.Checked)
                 {
                     node.Text = node.Text +
                                 " = " +
-                                ServerVariableBase.Get( itm.Key ).Value.ToString( ServerVariableBase.Get( itm.Key ).Type );
+                                ServerVariableBase.Get(itm.Key).Value.ToString(ServerVariableBase.Get(itm.Key).Type);
                 }
 
                 node.Tag = itm.Key;
@@ -487,39 +487,39 @@ namespace Intersect.Editor.Forms.Editors
                 node.SelectedImageIndex = 1;
 
                 var folder = "";
-                if( rdoPlayerVariables.Checked )
+                if (rdoPlayerVariables.Checked)
                 {
-                    folder = PlayerVariableBase.Get( itm.Key ).Folder;
+                    folder = PlayerVariableBase.Get(itm.Key).Folder;
                 }
 
-                if( rdoGlobalVariables.Checked )
+                if (rdoGlobalVariables.Checked)
                 {
-                    folder = ServerVariableBase.Get( itm.Key ).Folder;
+                    folder = ServerVariableBase.Get(itm.Key).Folder;
                 }
 
-                if( !string.IsNullOrEmpty( folder ) && !btnChronological.Checked && !CustomSearch() )
+                if (!string.IsNullOrEmpty(folder) && !btnChronological.Checked && !CustomSearch())
                 {
                     var folderNode = folderNodes[folder];
-                    folderNode.Nodes.Add( node );
-                    if( itm.Key == selectedId )
+                    folderNode.Nodes.Add(node);
+                    if (itm.Key == selectedId)
                     {
                         folderNode.Expand();
                     }
                 }
                 else
                 {
-                    lstVariables.Nodes.Add( node );
+                    lstVariables.Nodes.Add(node);
                 }
 
-                if( CustomSearch() )
+                if (CustomSearch())
                 {
-                    if( !node.Text.ToLower().Contains( txtSearch.Text.ToLower() ) )
+                    if (!node.Text.ToLower().Contains(txtSearch.Text.ToLower()))
                     {
                         node.Remove();
                     }
                 }
 
-                if( itm.Key == selectedId )
+                if (itm.Key == selectedId)
                 {
                     lstVariables.SelectedNode = node;
                 }
@@ -527,21 +527,21 @@ namespace Intersect.Editor.Forms.Editors
 
             var selectedNode = lstVariables.SelectedNode;
 
-            if( !btnChronological.Checked )
+            if (!btnChronological.Checked)
             {
                 lstVariables.Sort();
             }
 
             lstVariables.SelectedNode = selectedNode;
             var expandedFolders = mExpandedFolders;
-            if( rdoGlobalVariables.Checked )
+            if (rdoGlobalVariables.Checked)
             {
                 expandedFolders = mGlobalExpandedFolders;
             }
 
-            foreach( var node in expandedFolders )
+            foreach (var node in expandedFolders)
             {
-                if( folderNodes.ContainsKey( node ) )
+                if (folderNodes.ContainsKey(node))
                 {
                     folderNodes[node].Expand();
                 }
@@ -550,7 +550,7 @@ namespace Intersect.Editor.Forms.Editors
             UpdateEditor();
         }
 
-        private void btnAddFolder_Click( object sender, EventArgs e )
+        private void btnAddFolder_Click(object sender, EventArgs e)
         {
             var folderName = "";
             var result = DarkInputBox.ShowInformation(
@@ -558,23 +558,23 @@ namespace Intersect.Editor.Forms.Editors
                 DarkDialogButton.OkCancel
             );
 
-            if( result == DialogResult.OK && !string.IsNullOrEmpty( folderName ) )
+            if (result == DialogResult.OK && !string.IsNullOrEmpty(folderName))
             {
-                if( !cmbFolder.Items.Contains( folderName ) )
+                if (!cmbFolder.Items.Contains(folderName))
                 {
-                    if( lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null )
+                    if (lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null)
                     {
-                        if( rdoPlayerVariables.Checked )
+                        if (rdoPlayerVariables.Checked)
                         {
-                            var obj = PlayerVariableBase.Get( (Guid)lstVariables.SelectedNode.Tag );
+                            var obj = PlayerVariableBase.Get((Guid)lstVariables.SelectedNode.Tag);
                             obj.Folder = folderName;
-                            mExpandedFolders.Add( folderName );
+                            mExpandedFolders.Add(folderName);
                         }
-                        else if( rdoGlobalVariables.Checked )
+                        else if (rdoGlobalVariables.Checked)
                         {
-                            var obj = ServerVariableBase.Get( (Guid)lstVariables.SelectedNode.Tag );
+                            var obj = ServerVariableBase.Get((Guid)lstVariables.SelectedNode.Tag);
                             obj.Folder = folderName;
-                            mGlobalExpandedFolders.Add( folderName );
+                            mGlobalExpandedFolders.Add(folderName);
                         }
 
                         InitEditor();
@@ -584,25 +584,25 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void lstVariables_NodeMouseClick( object sender, TreeNodeMouseClickEventArgs e )
+        private void lstVariables_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             var node = e.Node;
-            if( node != null )
+            if (node != null)
             {
-                if( e.Button == MouseButtons.Right )
+                if (e.Button == MouseButtons.Right)
                 {
-                    if( e.Node.Tag != null && e.Node.Tag.GetType() == typeof( Guid ) )
+                    if (e.Node.Tag != null && e.Node.Tag.GetType() == typeof(Guid))
                     {
-                        Clipboard.SetText( e.Node.Tag.ToString() );
+                        Clipboard.SetText(e.Node.Tag.ToString());
                     }
                 }
 
-                var hitTest = lstVariables.HitTest( e.Location );
-                if( hitTest.Location != TreeViewHitTestLocations.PlusMinus )
+                var hitTest = lstVariables.HitTest(e.Location);
+                if (hitTest.Location != TreeViewHitTestLocations.PlusMinus)
                 {
-                    if( node.Nodes.Count > 0 )
+                    if (node.Nodes.Count > 0)
                     {
-                        if( node.IsExpanded )
+                        if (node.IsExpanded)
                         {
                             node.Collapse();
                         }
@@ -613,41 +613,41 @@ namespace Intersect.Editor.Forms.Editors
                     }
                 }
 
-                if( node.IsExpanded )
+                if (node.IsExpanded)
                 {
-                    if( rdoPlayerVariables.Checked && !mExpandedFolders.Contains( node.Text ) )
+                    if (rdoPlayerVariables.Checked && !mExpandedFolders.Contains(node.Text))
                     {
-                        mExpandedFolders.Add( node.Text );
+                        mExpandedFolders.Add(node.Text);
                     }
 
-                    if( rdoGlobalVariables.Checked && !mGlobalExpandedFolders.Contains( node.Text ) )
+                    if (rdoGlobalVariables.Checked && !mGlobalExpandedFolders.Contains(node.Text))
                     {
-                        mGlobalExpandedFolders.Add( node.Text );
+                        mGlobalExpandedFolders.Add(node.Text);
                     }
                 }
                 else
                 {
-                    if( rdoPlayerVariables.Checked && mExpandedFolders.Contains( node.Text ) )
+                    if (rdoPlayerVariables.Checked && mExpandedFolders.Contains(node.Text))
                     {
-                        mExpandedFolders.Remove( node.Text );
+                        mExpandedFolders.Remove(node.Text);
                     }
 
-                    if( rdoGlobalVariables.Checked && mGlobalExpandedFolders.Contains( node.Text ) )
+                    if (rdoGlobalVariables.Checked && mGlobalExpandedFolders.Contains(node.Text))
                     {
-                        mGlobalExpandedFolders.Remove( node.Text );
+                        mGlobalExpandedFolders.Remove(node.Text);
                     }
                 }
             }
         }
 
-        private void lstVariables_AfterSelect( object sender, TreeViewEventArgs e )
+        private void lstVariables_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if( mChangingName )
+            if (mChangingName)
             {
                 return;
             }
 
-            if( lstVariables.SelectedNode == null || lstVariables.SelectedNode.Tag == null )
+            if (lstVariables.SelectedNode == null || lstVariables.SelectedNode.Tag == null)
             {
                 mEditorItem = null;
                 UpdateEditor();
@@ -656,24 +656,24 @@ namespace Intersect.Editor.Forms.Editors
             }
 
             var id = (Guid)lstVariables.SelectedNode.Tag;
-            if( id != Guid.Empty )
+            if (id != Guid.Empty)
             {
                 IDatabaseObject obj = null;
-                if( rdoPlayerVariables.Checked )
+                if (rdoPlayerVariables.Checked)
                 {
-                    obj = PlayerVariableBase.Get( id );
+                    obj = PlayerVariableBase.Get(id);
                 }
-                else if( rdoGlobalVariables.Checked )
+                else if (rdoGlobalVariables.Checked)
                 {
-                    obj = ServerVariableBase.Get( id );
+                    obj = ServerVariableBase.Get(id);
                 }
 
-                if( obj != null )
+                if (obj != null)
                 {
                     mEditorItem = obj;
-                    if( !mChanged.Contains( obj ) )
+                    if (!mChanged.Contains(obj))
                     {
-                        mChanged.Add( obj );
+                        mChanged.Add(obj);
                         obj.MakeBackup();
                     }
                 }
@@ -682,18 +682,18 @@ namespace Intersect.Editor.Forms.Editors
             UpdateEditor();
         }
 
-        private void cmbFolder_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbFolder_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if( lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null )
+            if (lstVariables.SelectedNode != null && lstVariables.SelectedNode.Tag != null)
             {
-                if( rdoPlayerVariables.Checked )
+                if (rdoPlayerVariables.Checked)
                 {
-                    var obj = PlayerVariableBase.Get( (Guid)lstVariables.SelectedNode.Tag );
+                    var obj = PlayerVariableBase.Get((Guid)lstVariables.SelectedNode.Tag);
                     obj.Folder = cmbFolder.Text;
                 }
-                else if( rdoGlobalVariables.Checked )
+                else if (rdoGlobalVariables.Checked)
                 {
-                    var obj = ServerVariableBase.Get( (Guid)lstVariables.SelectedNode.Tag );
+                    var obj = ServerVariableBase.Get((Guid)lstVariables.SelectedNode.Tag);
                     obj.Folder = cmbFolder.Text;
                 }
 
@@ -701,45 +701,45 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void btnChronological_Click( object sender, EventArgs e )
+        private void btnChronological_Click(object sender, EventArgs e)
         {
             btnChronological.Checked = !btnChronological.Checked;
             InitEditor();
         }
 
-        private void txtSearch_TextChanged( object sender, EventArgs e )
+        private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             InitEditor();
         }
 
-        private void txtSearch_Leave( object sender, EventArgs e )
+        private void txtSearch_Leave(object sender, EventArgs e)
         {
-            if( string.IsNullOrWhiteSpace( txtSearch.Text ) )
+            if (string.IsNullOrWhiteSpace(txtSearch.Text))
             {
                 txtSearch.Text = Strings.VariableEditor.searchplaceholder;
             }
         }
 
-        private void txtSearch_Enter( object sender, EventArgs e )
+        private void txtSearch_Enter(object sender, EventArgs e)
         {
             txtSearch.SelectAll();
             txtSearch.Focus();
         }
 
-        private void btnClearSearch_Click( object sender, EventArgs e )
+        private void btnClearSearch_Click(object sender, EventArgs e)
         {
             txtSearch.Text = Strings.VariableEditor.searchplaceholder;
         }
 
         private bool CustomSearch()
         {
-            return !string.IsNullOrWhiteSpace( txtSearch.Text ) &&
+            return !string.IsNullOrWhiteSpace(txtSearch.Text) &&
                    txtSearch.Text != Strings.VariableEditor.searchplaceholder;
         }
 
-        private void txtSearch_Click( object sender, EventArgs e )
+        private void txtSearch_Click(object sender, EventArgs e)
         {
-            if( txtSearch.Text == Strings.VariableEditor.searchplaceholder )
+            if (txtSearch.Text == Strings.VariableEditor.searchplaceholder)
             {
                 txtSearch.SelectAll();
             }

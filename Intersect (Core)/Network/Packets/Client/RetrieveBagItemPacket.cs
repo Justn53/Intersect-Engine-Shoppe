@@ -6,16 +6,16 @@ namespace Intersect.Network.Packets.Client
     public class RetrieveBagItemPacket : SlotQuantityPacket
     {
         //Parameterless Constructor for MessagePack
-        public RetrieveBagItemPacket() : base( 0, 0 )
+        public RetrieveBagItemPacket() : base(0, 0)
         {
         }
 
-        public RetrieveBagItemPacket( int bagSlot, int quantity, int invSlot ) : base( bagSlot, quantity )
+        public RetrieveBagItemPacket(int bagSlot, int quantity, int invSlot) : base(bagSlot, quantity)
         {
             InventorySlot = invSlot;
         }
 
-        [Key( 4 )]
+        [Key(4)]
         public int InventorySlot { get; set; }
 
     }

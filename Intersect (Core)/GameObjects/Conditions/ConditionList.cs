@@ -18,12 +18,12 @@ namespace Intersect.GameObjects.Conditions
         {
         }
 
-        public ConditionList( string data )
+        public ConditionList(string data)
         {
-            Load( data );
+            Load(data);
         }
 
-        public void Load( string data )
+        public void Load(string data)
         {
             JsonConvert.PopulateObject(
                 data, this,

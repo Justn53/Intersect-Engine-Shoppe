@@ -42,31 +42,31 @@ namespace Intersect.Core
         public bool IsRunning { get; private set; }
 
         /// <inheritdoc />
-        public string Name => typeof( TServiceImplementation ).Name;
+        public string Name => typeof(TServiceImplementation).Name;
 
         /// <inheritdoc />
-        public Type ServiceType => typeof( TServiceInterface );
+        public Type ServiceType => typeof(TServiceInterface);
 
         #endregion Properties
 
         #region Public Lifecycle Methods
 
         /// <inheritdoc />
-        public virtual bool Bootstrap( IApplicationContext applicationContext ) => true;
+        public virtual bool Bootstrap(IApplicationContext applicationContext) => true;
 
         /// <inheritdoc />
         public void Dispose()
         {
-            Dispose( true );
-            GC.SuppressFinalize( this );
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
         /// Internal subclass Dispose() implementation method.
         /// </summary>
-        protected virtual void Dispose( bool disposing )
+        protected virtual void Dispose(bool disposing)
         {
-            if( mDisposed )
+            if (mDisposed)
             {
                 return;
             }
@@ -75,23 +75,23 @@ namespace Intersect.Core
         }
 
         /// <inheritdoc />
-        public bool Start( IApplicationContext applicationContext )
+        public bool Start(IApplicationContext applicationContext)
         {
-            lock( mLifecycleLock )
+            lock (mLifecycleLock)
             {
-                if( IsRunning )
+                if (IsRunning)
                 {
-                    throw new InvalidOperationException( $"Service '{Name}' already running." );
+                    throw new InvalidOperationException($"Service '{Name}' already running.");
                 }
 
                 try
                 {
-                    TaskStart( applicationContext );
+                    TaskStart(applicationContext);
                     IsRunning = true;
                 }
-                catch( Exception exception )
+                catch (Exception exception)
                 {
-                    throw new ServiceLifecycleFailureException( ServiceLifecycleStage.Startup, Name, exception );
+                    throw new ServiceLifecycleFailureException(ServiceLifecycleStage.Startup, Name, exception);
                 }
             }
 
@@ -99,23 +99,23 @@ namespace Intersect.Core
         }
 
         /// <inheritdoc />
-        public bool Stop( IApplicationContext applicationContext )
+        public bool Stop(IApplicationContext applicationContext)
         {
-            lock( mLifecycleLock )
+            lock (mLifecycleLock)
             {
-                if( !IsRunning )
+                if (!IsRunning)
                 {
-                    throw new InvalidOperationException( $"Service '{Name}' is not yet running." );
+                    throw new InvalidOperationException($"Service '{Name}' is not yet running.");
                 }
 
                 try
                 {
-                    TaskStop( applicationContext );
+                    TaskStop(applicationContext);
                     IsRunning = false;
                 }
-                catch( Exception exception )
+                catch (Exception exception)
                 {
-                    throw new ServiceLifecycleFailureException( ServiceLifecycleStage.Shutdown, Name, exception );
+                    throw new ServiceLifecycleFailureException(ServiceLifecycleStage.Shutdown, Name, exception);
                 }
             }
 
@@ -130,13 +130,13 @@ namespace Intersect.Core
         /// Internal startup handler declaration.
         /// </summary>
         /// <param name="applicationContext">the application context the service is being started in</param>
-        protected abstract void TaskStart( [ValidatedNotNull] IApplicationContext applicationContext );
+        protected abstract void TaskStart([ValidatedNotNull] IApplicationContext applicationContext);
 
         /// <summary>
         /// Internal shutdown handler declaration.
         /// </summary>
         /// <param name="applicationContext">the application context the service is being shutdown in</param>
-        protected abstract void TaskStop( [ValidatedNotNull] IApplicationContext applicationContext );
+        protected abstract void TaskStop([ValidatedNotNull] IApplicationContext applicationContext);
 
         #endregion Internal Lifecycle Methods
     }

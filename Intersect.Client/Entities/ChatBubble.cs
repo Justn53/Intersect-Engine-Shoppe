@@ -30,9 +30,9 @@ namespace Intersect.Client.Entities
 
         private Rectangle mTextureBounds;
 
-        public ChatBubble( Entity owner, string text )
+        public ChatBubble(Entity owner, string text)
         {
-            if( string.IsNullOrEmpty( text ) )
+            if (string.IsNullOrEmpty(text))
             {
                 return;
             }
@@ -40,12 +40,12 @@ namespace Intersect.Client.Entities
             mOwner = owner;
             mSourceText = text;
             mRenderTimer = Globals.System.GetTimeMs() + 5000;
-            mBubbleTex = Globals.ContentManager.GetTexture( GameContentManager.TextureType.Misc, "chatbubble.png" );
+            mBubbleTex = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Misc, "chatbubble.png");
         }
 
         public bool Update()
         {
-            if( mRenderTimer < Globals.System.GetTimeMs() )
+            if (mRenderTimer < Globals.System.GetTimeMs())
             {
                 return false;
             }
@@ -53,34 +53,34 @@ namespace Intersect.Client.Entities
             return true;
         }
 
-        public float Draw( float yoffset = 0f )
+        public float Draw(float yoffset = 0f)
         {
-            if( mText == null && mSourceText.Trim().Length > 0 )
+            if (mText == null && mSourceText.Trim().Length > 0)
             {
-                mText = Interface.Interface.WrapText( mSourceText, 200, Graphics.ChatBubbleFont );
+                mText = Interface.Interface.WrapText(mSourceText, 200, Graphics.ChatBubbleFont);
             }
 
-            if( mText == null )
+            if (mText == null)
             {
                 return 0f;
             }
 
-            var y = (int)Math.Ceiling( mOwner.GetLabelLocation( Entity.LabelType.ChatBubble ) );
+            var y = (int)Math.Ceiling(mOwner.GetLabelLocation(Entity.LabelType.ChatBubble));
 
-            var x = (int)Math.Ceiling( mOwner.GetCenterPos().X );
-            if( mTextureBounds.Width == 0 )
+            var x = (int)Math.Ceiling(mOwner.GetCenterPos().X);
+            if (mTextureBounds.Width == 0)
             {
                 //Gotta Calculate Bounds
-                for( var i = ( mText?.Length ?? 0 ) - 1; i > -1; i-- )
+                for (var i = (mText?.Length ?? 0) - 1; i > -1; i--)
                 {
-                    var textSize = Graphics.Renderer.MeasureText( mText[i], Graphics.ChatBubbleFont, 1 );
-                    if( textSize.X > mTextureBounds.Width )
+                    var textSize = Graphics.Renderer.MeasureText(mText[i], Graphics.ChatBubbleFont, 1);
+                    if (textSize.X > mTextureBounds.Width)
                     {
                         mTextureBounds.Width = (int)textSize.X + 16;
                     }
 
                     mTextureBounds.Height += (int)textSize.Y + 2;
-                    if( textSize.X > mTextBounds.Width )
+                    if (textSize.X > mTextBounds.Width)
                     {
                         mTextBounds.Width = (int)textSize.X;
                     }
@@ -89,49 +89,49 @@ namespace Intersect.Client.Entities
                 }
 
                 mTextureBounds.Height += 16;
-                if( mTextureBounds.Width < 48 )
+                if (mTextureBounds.Width < 48)
                 {
                     mTextureBounds.Width = 48;
                 }
 
-                if( mTextureBounds.Height < 32 )
+                if (mTextureBounds.Height < 32)
                 {
                     mTextureBounds.Height = 32;
                 }
 
-                mTextureBounds.Width = (int)( Math.Round( mTextureBounds.Width / 8.0 ) * 8.0 );
-                mTextureBounds.Height = (int)( Math.Round( mTextureBounds.Height / 8.0 ) * 8.0 );
-                if( mTextureBounds.Width / 8 % 2 != 0 )
+                mTextureBounds.Width = (int)(Math.Round(mTextureBounds.Width / 8.0) * 8.0);
+                mTextureBounds.Height = (int)(Math.Round(mTextureBounds.Height / 8.0) * 8.0);
+                if (mTextureBounds.Width / 8 % 2 != 0)
                 {
                     mTextureBounds.Width += 8;
                 }
 
                 mTexSections = new Point[mTextureBounds.Width / 8, mTextureBounds.Height / 8];
-                for( var x1 = 0; x1 < mTextureBounds.Width / 8; x1++ )
+                for (var x1 = 0; x1 < mTextureBounds.Width / 8; x1++)
                 {
-                    for( var y1 = 0; y1 < mTextureBounds.Height / 8; y1++ )
+                    for (var y1 = 0; y1 < mTextureBounds.Height / 8; y1++)
                     {
-                        if( x1 == 0 )
+                        if (x1 == 0)
                         {
                             mTexSections[x1, y1].X = 0;
                         }
-                        else if( x1 == 1 )
+                        else if (x1 == 1)
                         {
                             mTexSections[x1, y1].X = 1;
                         }
-                        else if( x1 == mTextureBounds.Width / 16 - 1 )
+                        else if (x1 == mTextureBounds.Width / 16 - 1)
                         {
                             mTexSections[x1, y1].X = 3;
                         }
-                        else if( x1 == mTextureBounds.Width / 16 )
+                        else if (x1 == mTextureBounds.Width / 16)
                         {
                             mTexSections[x1, y1].X = 4;
                         }
-                        else if( x1 == mTextureBounds.Width / 8 - 1 )
+                        else if (x1 == mTextureBounds.Width / 8 - 1)
                         {
                             mTexSections[x1, y1].X = 7;
                         }
-                        else if( x1 == mTextureBounds.Width / 8 - 2 )
+                        else if (x1 == mTextureBounds.Width / 8 - 2)
                         {
                             mTexSections[x1, y1].X = 6;
                         }
@@ -140,19 +140,19 @@ namespace Intersect.Client.Entities
                             mTexSections[x1, y1].X = 2;
                         }
 
-                        if( y1 == 0 )
+                        if (y1 == 0)
                         {
                             mTexSections[x1, y1].Y = 0;
                         }
-                        else if( y1 == 1 )
+                        else if (y1 == 1)
                         {
                             mTexSections[x1, y1].Y = 1;
                         }
-                        else if( y1 == mTextureBounds.Height / 8 - 1 )
+                        else if (y1 == mTextureBounds.Height / 8 - 1)
                         {
                             mTexSections[x1, y1].Y = 3;
                         }
-                        else if( y1 == mTextureBounds.Height / 8 - 2 )
+                        else if (y1 == mTextureBounds.Height / 8 - 2)
                         {
                             mTexSections[x1, y1].Y = 2;
                         }
@@ -164,13 +164,13 @@ namespace Intersect.Client.Entities
                 }
             }
 
-            if( mBubbleTex != null )
+            if (mBubbleTex != null)
             {
                 //Draw Background if available
                 //Draw Top Left
-                for( var x1 = 0; x1 < mTextureBounds.Width / 8; x1++ )
+                for (var x1 = 0; x1 < mTextureBounds.Width / 8; x1++)
                 {
-                    for( var y1 = 0; y1 < mTextureBounds.Height / 8; y1++ )
+                    for (var y1 = 0; y1 < mTextureBounds.Height / 8; y1++)
                     {
                         Graphics.Renderer.DrawTexture(
                             mBubbleTex, mTexSections[x1, y1].X * 8, mTexSections[x1, y1].Y * 8, 8, 8,
@@ -180,14 +180,14 @@ namespace Intersect.Client.Entities
                     }
                 }
 
-                for( var i = mText.Length - 1; i > -1; i-- )
+                for (var i = mText.Length - 1; i > -1; i--)
                 {
-                    var textSize = Graphics.Renderer.MeasureText( mText[i], Graphics.ChatBubbleFont, 1 );
+                    var textSize = Graphics.Renderer.MeasureText(mText[i], Graphics.ChatBubbleFont, 1);
                     Graphics.Renderer.DrawString(
                         mText[i], Graphics.ChatBubbleFont,
-                        (int)( x - mTextureBounds.Width / 2 + ( mTextureBounds.Width - textSize.X ) / 2f ),
-                        (int)( y - mTextureBounds.Height - yoffset + 8 + i * 16 ), 1,
-                        Color.FromArgb( CustomColors.Chat.ChatBubbleText.ToArgb() ), true, null
+                        (int)(x - mTextureBounds.Width / 2 + (mTextureBounds.Width - textSize.X) / 2f),
+                        (int)(y - mTextureBounds.Height - yoffset + 8 + i * 16), 1,
+                        Color.FromArgb(CustomColors.Chat.ChatBubbleText.ToArgb()), true, null
                     );
                 }
             }

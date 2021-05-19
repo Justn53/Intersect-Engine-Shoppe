@@ -18,7 +18,7 @@ namespace Intersect.Server.Core.CommandParsing
             IEnumerable<ParserError> errors = null,
             IEnumerable<ICommandArgument> missing = null,
             IEnumerable<ICommandArgument> omitted = null
-        ) : this( default( TCommand ), parsed, errors, missing, omitted )
+        ) : this(default(TCommand), parsed, errors, missing, omitted)
         {
         }
 
@@ -32,10 +32,10 @@ namespace Intersect.Server.Core.CommandParsing
         {
             Command = command;
             Parsed = parsed;
-            Errors = ( errors ?? Array.Empty<ParserError>() ).ToImmutableList() ?? throw new InvalidOperationException();
-            Missing = ( missing ?? Array.Empty<ICommandArgument>() ).ToImmutableList() ?? throw new InvalidOperationException();
-            Omitted = ( omitted ?? Array.Empty<ICommandArgument>() ).ToImmutableList() ?? throw new InvalidOperationException();
-            Unhandled = Errors.Where( error => error is UnhandledArgumentError )
+            Errors = (errors ?? Array.Empty<ParserError>()).ToImmutableList() ?? throw new InvalidOperationException();
+            Missing = (missing ?? Array.Empty<ICommandArgument>()).ToImmutableList() ?? throw new InvalidOperationException();
+            Omitted = (omitted ?? Array.Empty<ICommandArgument>()).ToImmutableList() ?? throw new InvalidOperationException();
+            Unhandled = Errors.Where(error => error is UnhandledArgumentError)
                             .Cast<UnhandledArgumentError>()
                             .ToImmutableList() ??
                         throw new InvalidOperationException();
@@ -46,7 +46,7 @@ namespace Intersect.Server.Core.CommandParsing
             ParserError error,
             IEnumerable<ICommandArgument> missing = null,
             IEnumerable<ICommandArgument> omitted = null
-        ) : this( command, new ArgumentValuesMap(), new[] { error }, missing, omitted )
+        ) : this(command, new ArgumentValuesMap(), new[] { error }, missing, omitted)
         {
         }
 
@@ -72,7 +72,7 @@ namespace Intersect.Server.Core.CommandParsing
             IEnumerable<ParserError> errors = null,
             IEnumerable<ICommandArgument> missing = null,
             IEnumerable<ICommandArgument> omitted = null
-        ) : base( parsed, errors, missing, omitted )
+        ) : base(parsed, errors, missing, omitted)
         {
         }
 
@@ -82,7 +82,7 @@ namespace Intersect.Server.Core.CommandParsing
             IEnumerable<ParserError> errors = null,
             IEnumerable<ICommandArgument> missing = null,
             IEnumerable<ICommandArgument> omitted = null
-        ) : base( command, parsed, errors, missing, omitted )
+        ) : base(command, parsed, errors, missing, omitted)
         {
         }
 
@@ -91,7 +91,7 @@ namespace Intersect.Server.Core.CommandParsing
             ParserError error,
             IEnumerable<ICommandArgument> missing = null,
             IEnumerable<ICommandArgument> omitted = null
-        ) : base( command, error, missing, omitted )
+        ) : base(command, error, missing, omitted)
         {
         }
 

@@ -25,11 +25,11 @@ namespace Intersect.GameObjects.Events
         }
 
         [JsonConstructor]
-        public EventBase( Guid id, Guid mapId, int x, int y, bool isCommon = false, bool isGlobal = false ) : base( id )
+        public EventBase(Guid id, Guid mapId, int x, int y, bool isCommon = false, bool isGlobal = false) : base(id)
         {
             Name = "New Event";
             MapId = mapId;
-            if( isCommon )
+            if (isCommon)
             {
                 Name = "New Common Event";
             }
@@ -41,27 +41,27 @@ namespace Intersect.GameObjects.Events
             Pages = new List<EventPage> { new EventPage() };
         }
 
-        public EventBase( Guid id, bool isCommon = false ) : base( id )
+        public EventBase(Guid id, bool isCommon = false) : base(id)
         {
             Name = "New Event";
             Pages = new List<EventPage>();
             CommonEvent = isCommon;
         }
 
-        public EventBase( Guid id, EventBase copy ) : base( id )
+        public EventBase(Guid id, EventBase copy) : base(id)
         {
             Name = "New Event";
             Pages = new List<EventPage>();
-            Load( copy.JsonData );
+            Load(copy.JsonData);
             CommonEvent = copy.CommonEvent;
         }
 
-        public EventBase( Guid id, string json, bool isCommon = false ) : base( id )
+        public EventBase(Guid id, string json, bool isCommon = false) : base(id)
         {
             Name = "New Event";
             CommonEvent = isCommon;
             Pages = new List<EventPage>();
-            Load( json );
+            Load(json);
         }
 
         public Guid MapId { get; set; }
@@ -75,7 +75,7 @@ namespace Intersect.GameObjects.Events
         public bool Global { get; set; }
 
         [JsonIgnore]
-        [Column( "Pages" )]
+        [Column("Pages")]
         public string PagesJson
         {
             get => mCachedPagesData;
@@ -109,15 +109,15 @@ namespace Intersect.GameObjects.Events
             }
         }
 
-        public new static string[] Names => Lookup.Where( pair => ( (EventBase)pair.Value )?.CommonEvent ?? false )
-            .OrderBy( p => p.Value?.TimeCreated )
-            .Select( pair => pair.Value?.Name ?? Deleted )
+        public new static string[] Names => Lookup.Where(pair => ((EventBase)pair.Value)?.CommonEvent ?? false)
+            .OrderBy(p => p.Value?.TimeCreated)
+            .Select(pair => pair.Value?.Name ?? Deleted)
             .ToArray();
 
         public new static KeyValuePair<Guid, string>[] ItemPairs => Lookup
-            .Where( pair => ( (EventBase)pair.Value )?.CommonEvent ?? false )
-            .OrderBy( p => p.Value?.TimeCreated )
-            .Select( pair => new KeyValuePair<Guid, string>( pair.Key, pair.Value?.Name ?? Deleted ) )
+            .Where(pair => ((EventBase)pair.Value)?.CommonEvent ?? false)
+            .OrderBy(p => p.Value?.TimeCreated)
+            .Select(pair => new KeyValuePair<Guid, string>(pair.Key, pair.Value?.Name ?? Deleted))
             .ToArray();
 
         [JsonIgnore]
@@ -135,18 +135,18 @@ namespace Intersect.GameObjects.Events
         /// <inheritdoc />
         public string Folder { get; set; } = "";
 
-        public new static Guid IdFromList( int listIndex )
+        public new static Guid IdFromList(int listIndex)
         {
-            if( listIndex < 0 )
+            if (listIndex < 0)
             {
                 return Guid.Empty;
             }
 
-            var commonEvents = Lookup.Where( pair => ( (EventBase)pair.Value )?.CommonEvent ?? false )
-                .OrderBy( p => p.Value?.TimeCreated )
+            var commonEvents = Lookup.Where(pair => ((EventBase)pair.Value)?.CommonEvent ?? false)
+                .OrderBy(p => p.Value?.TimeCreated)
                 .ToArray();
 
-            if( listIndex > commonEvents.Length )
+            if (listIndex > commonEvents.Length)
             {
                 return Guid.Empty;
             }
@@ -154,20 +154,20 @@ namespace Intersect.GameObjects.Events
             return commonEvents[listIndex].Value?.Id ?? Guid.Empty;
         }
 
-        public new static EventBase FromList( int listIndex )
+        public new static EventBase FromList(int listIndex)
         {
-            return Get( IdFromList( listIndex ) );
+            return Get(IdFromList(listIndex));
         }
 
-        public new static int ListIndex( Guid id )
+        public new static int ListIndex(Guid id)
         {
-            var commonEvents = Lookup.Where( pair => ( (EventBase)pair.Value )?.CommonEvent ?? false )
-                .OrderBy( p => p.Value?.TimeCreated )
+            var commonEvents = Lookup.Where(pair => ((EventBase)pair.Value)?.CommonEvent ?? false)
+                .OrderBy(p => p.Value?.TimeCreated)
                 .ToArray();
 
-            for( var i = 0; i < commonEvents.Length; i++ )
+            for (var i = 0; i < commonEvents.Length; i++)
             {
-                if( commonEvents[i].Key == id )
+                if (commonEvents[i].Key == id)
                 {
                     return i;
                 }
@@ -178,10 +178,10 @@ namespace Intersect.GameObjects.Events
 
         public new int ListIndex()
         {
-            return ListIndex( Id );
+            return ListIndex(Id);
         }
 
-        public override void Load( string json, bool keepCreationTime = false )
+        public override void Load(string json, bool keepCreationTime = false)
         {
             var oldTime = TimeCreated;
             JsonConvert.PopulateObject(
@@ -194,7 +194,7 @@ namespace Intersect.GameObjects.Events
                 }
             );
 
-            if( keepCreationTime )
+            if (keepCreationTime)
             {
                 TimeCreated = oldTime;
             }

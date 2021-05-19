@@ -28,9 +28,9 @@ namespace Intersect.Utilities
         /// Sets <see cref="TicksOffset"/>.
         /// </summary>
         /// <param name="remoteOffset">a point in time to synchronize to in ticks</param>
-        public void Synchronize( long remoteUtc, long remoteOffset )
+        public void Synchronize(long remoteUtc, long remoteOffset)
         {
-            TicksOffset = remoteOffset + ( TicksUTC - remoteUtc );
+            TicksOffset = remoteOffset + (TicksUTC - remoteUtc);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Intersect.Utilities
         /// </summary>
         public long Ticks
         {
-            [MethodImpl( MethodImplOptions.AggressiveInlining )]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => TicksUTC - TicksOffset;
         }
 
@@ -52,7 +52,7 @@ namespace Intersect.Utilities
         /// </summary>
         public long TicksUTC
         {
-            [MethodImpl( MethodImplOptions.AggressiveInlining )]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => DateTime.UtcNow.Ticks;
         }
 
@@ -61,7 +61,7 @@ namespace Intersect.Utilities
         /// </summary>
         public long Milliseconds
         {
-            [MethodImpl( MethodImplOptions.AggressiveInlining )]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => Ticks / TimeSpan.TicksPerMillisecond;
         }
 
@@ -70,7 +70,7 @@ namespace Intersect.Utilities
         /// </summary>
         public long MillisecondsOffset
         {
-            [MethodImpl( MethodImplOptions.AggressiveInlining )]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => TicksOffset / TimeSpan.TicksPerMillisecond;
         }
 
@@ -79,7 +79,7 @@ namespace Intersect.Utilities
         /// </summary>
         public long MillisecondsUTC
         {
-            [MethodImpl( MethodImplOptions.AggressiveInlining )]
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => TicksUTC / TimeSpan.TicksPerMillisecond;
         }
     }

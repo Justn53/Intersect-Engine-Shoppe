@@ -39,75 +39,75 @@ namespace Intersect.Client.Maps
 
         private int yVelocity;
 
-        public WeatherParticle( List<WeatherParticle> RemoveParticle, int xvelocity, int yvelocity, AnimationBase anim )
+        public WeatherParticle(List<WeatherParticle> RemoveParticle, int xvelocity, int yvelocity, AnimationBase anim)
         {
             TransmittionTimer = Globals.System.GetTimeMs();
-            bounds = new Rectangle( 0, 0, Graphics.Renderer.GetScreenWidth(), Graphics.Renderer.GetScreenHeight() );
+            bounds = new Rectangle(0, 0, Graphics.Renderer.GetScreenWidth(), Graphics.Renderer.GetScreenHeight());
 
             xVelocity = xvelocity;
             yVelocity = yvelocity;
 
-            animInstance = new Animation( anim, true, false );
+            animInstance = new Animation(anim, true, false);
             var animSize = animInstance.AnimationSize();
             partSize = animSize;
 
-            if( xVelocity > 0 )
+            if (xVelocity > 0)
             {
                 originalX = Globals.Random.Next(
                     -Graphics.Renderer.GetScreenWidth() / 4 - animSize.X,
                     Graphics.Renderer.GetScreenWidth() + animSize.X
                 );
             }
-            else if( xVelocity < 0 )
+            else if (xVelocity < 0)
             {
                 originalX = Globals.Random.Next(
-                    animSize.X, (int)( Graphics.Renderer.GetScreenWidth() * 1.25f ) + animSize.X
+                    animSize.X, (int)(Graphics.Renderer.GetScreenWidth() * 1.25f) + animSize.X
                 );
             }
             else
             {
-                originalX = Globals.Random.Next( -animSize.X, Graphics.Renderer.GetScreenWidth() + animSize.X );
+                originalX = Globals.Random.Next(-animSize.X, Graphics.Renderer.GetScreenWidth() + animSize.X);
             }
 
-            if( yVelocity > 0 )
+            if (yVelocity > 0)
             {
                 originalY = -animSize.Y;
             }
-            else if( yVelocity < 0 )
+            else if (yVelocity < 0)
             {
                 originalY = Graphics.Renderer.GetScreenHeight() + animSize.Y;
             }
             else
             {
-                originalY = Globals.Random.Next( -animSize.Y, Graphics.Renderer.GetScreenHeight() + animSize.Y );
-                if( xVelocity > 0 )
+                originalY = Globals.Random.Next(-animSize.Y, Graphics.Renderer.GetScreenHeight() + animSize.Y);
+                if (xVelocity > 0)
                 {
                     originalX = -animSize.X;
                 }
-                else if( xVelocity < 0 )
+                else if (xVelocity < 0)
                 {
                     originalX = Graphics.Renderer.GetScreenWidth();
                 }
             }
 
-            if( originalX < 0 )
+            if (originalX < 0)
             {
                 bounds.X = originalX;
-                bounds.Width += Math.Abs( originalX );
+                bounds.Width += Math.Abs(originalX);
             }
 
-            if( originalY < 0 )
+            if (originalY < 0)
             {
                 bounds.Y = originalY;
-                bounds.Height += Math.Abs( originalY );
+                bounds.Height += Math.Abs(originalY);
             }
 
-            if( originalY > Graphics.Renderer.GetScreenHeight() )
+            if (originalY > Graphics.Renderer.GetScreenHeight())
             {
                 bounds.Height = originalY;
             }
 
-            if( originalX > Graphics.Renderer.GetScreenWidth() )
+            if (originalX > Graphics.Renderer.GetScreenWidth())
             {
                 bounds.Width = originalX;
             }
@@ -128,19 +128,19 @@ namespace Intersect.Client.Maps
         {
             //Check if out of bounds
             var newBounds = new Rectangle(
-                bounds.X + ( (int)Graphics.Renderer.GetView().Left - (int)cameraSpawnX ),
-                bounds.Y + ( (int)Graphics.Renderer.GetView().Top - (int)cameraSpawnY ), bounds.Width, bounds.Height
+                bounds.X + ((int)Graphics.Renderer.GetView().Left - (int)cameraSpawnX),
+                bounds.Y + ((int)Graphics.Renderer.GetView().Top - (int)cameraSpawnY), bounds.Width, bounds.Height
             );
 
-            if( !newBounds.IntersectsWith( new Rectangle( (int)X, (int)Y, partSize.X, partSize.Y ) ) )
+            if (!newBounds.IntersectsWith(new Rectangle((int)X, (int)Y, partSize.X, partSize.Y)))
             {
-                _RemoveParticle.Add( this );
+                _RemoveParticle.Add(this);
             }
             else
             {
-                X = originalX + xVelocity * (int)( ( Globals.System.GetTimeMs() - TransmittionTimer ) / 10f );
-                Y = originalY + yVelocity * (int)( ( Globals.System.GetTimeMs() - TransmittionTimer ) / 10f );
-                animInstance.SetPosition( cameraSpawnX + X, cameraSpawnY + Y, -1, -1, Guid.Empty, -1, 0 );
+                X = originalX + xVelocity * (int)((Globals.System.GetTimeMs() - TransmittionTimer) / 10f);
+                Y = originalY + yVelocity * (int)((Globals.System.GetTimeMs() - TransmittionTimer) / 10f);
+                animInstance.SetPosition(cameraSpawnX + X, cameraSpawnY + Y, -1, -1, Guid.Empty, -1, 0);
                 animInstance.Update();
             }
         }

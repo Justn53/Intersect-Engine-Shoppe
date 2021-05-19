@@ -15,7 +15,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Initializes a new instance of the <see cref="PropertyRowLabel" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public PropertyRowLabel( PropertyRow parent ) : base( parent )
+        public PropertyRowLabel(PropertyRow parent) : base(parent)
         {
             AutoSizeToContents = false;
             Alignment = Pos.Left | Pos.CenterV;
@@ -27,21 +27,21 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         /// </summary>
         public override void UpdateColors()
         {
-            if( IsDisabled )
+            if (IsDisabled)
             {
                 TextColor = Skin.Colors.Button.Disabled;
 
                 return;
             }
 
-            if( mPropertyRow != null && mPropertyRow.IsEditing )
+            if (mPropertyRow != null && mPropertyRow.IsEditing)
             {
                 TextColor = Skin.Colors.Properties.LabelSelected;
 
                 return;
             }
 
-            if( mPropertyRow != null && mPropertyRow.IsHovered )
+            if (mPropertyRow != null && mPropertyRow.IsHovered)
             {
                 TextColor = Skin.Colors.Properties.LabelHover;
 

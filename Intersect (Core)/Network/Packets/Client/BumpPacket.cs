@@ -11,16 +11,16 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public BumpPacket( Guid mapId, Guid eventId )
+        public BumpPacket(Guid mapId, Guid eventId)
         {
             MapId = mapId;
             EventId = eventId;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid MapId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public Guid EventId { get; set; }
 
     }

@@ -15,7 +15,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="ListBoxRow" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ListBoxRow( Base parent ) : base( parent )
+        public ListBoxRow(Base parent) : base(parent)
         {
             MouseInputEnabled = true;
             IsSelected = false;
@@ -34,9 +34,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawListBoxLine( this, IsSelected, EvenRow );
+            skin.DrawListBoxLine(this, IsSelected, EvenRow);
         }
 
         /// <summary>
@@ -45,10 +45,10 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        protected override void OnMouseClickedLeft( int x, int y, bool down, bool automated = false )
+        protected override void OnMouseClickedLeft(int x, int y, bool down, bool automated = false)
         {
-            base.OnMouseClickedLeft( x, y, down );
-            if( down )
+            base.OnMouseClickedLeft(x, y, down);
+            if (down)
             {
                 //IsSelected = true; // [omeg] ListBox manages that
                 OnRowSelected();

@@ -10,16 +10,16 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public CraftingTablePacket( string tableData, bool close )
+        public CraftingTablePacket(string tableData, bool close)
         {
             TableData = tableData;
             Close = close;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public string TableData { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public bool Close { get; set; }
 
     }

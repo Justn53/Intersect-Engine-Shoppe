@@ -14,25 +14,25 @@ namespace Intersect.Client.Framework.Graphics
 
         public readonly ushort Y;
 
-        public Resolution( long x = 800, long y = 600 )
+        public Resolution(long x = 800, long y = 600)
         {
-            X = (ushort)( x & 0xFFFF );
-            Y = (ushort)( y & 0xFFFF );
+            X = (ushort)(x & 0xFFFF);
+            Y = (ushort)(y & 0xFFFF);
         }
 
-        public Resolution( ulong x = 800, ulong y = 600 )
+        public Resolution(ulong x = 800, ulong y = 600)
         {
-            X = (ushort)( x & 0xFFFF );
-            Y = (ushort)( y & 0xFFFF );
+            X = (ushort)(x & 0xFFFF);
+            Y = (ushort)(y & 0xFFFF);
         }
 
-        public Resolution( Resolution resolution, long overrideX = 0, long overrideY = 0 )
+        public Resolution(Resolution resolution, long overrideX = 0, long overrideY = 0)
             : this(
                 overrideX > 0 ? overrideX : resolution.X, overrideY > 0 ? overrideY : resolution.Y
             )
         { }
 
-        public Resolution( Resolution resolution, Resolution? overrideResolution = null )
+        public Resolution(Resolution resolution, Resolution? overrideResolution = null)
         {
             var x = overrideResolution?.X ?? resolution.X;
             X = x > 0 ? x : resolution.X;
@@ -41,39 +41,39 @@ namespace Intersect.Client.Framework.Graphics
             Y = y > 0 ? y : resolution.Y;
         }
 
-        public override bool Equals( object obj ) => obj is Resolution resolution && Equals( resolution );
+        public override bool Equals(object obj) => obj is Resolution resolution && Equals(resolution);
 
-        public bool Equals( Resolution other ) => X == other.X && Y == other.Y;
+        public bool Equals(Resolution other) => X == other.X && Y == other.Y;
 
-        public override int GetHashCode() => ( X << 16 ) & Y;
+        public override int GetHashCode() => (X << 16) & Y;
 
         public override string ToString() => $"{X},{Y}";
 
-        public static Resolution Parse( string resolution )
+        public static Resolution Parse(string resolution)
         {
-            var split = resolution?.Split( Separators );
+            var split = resolution?.Split(Separators);
             string xString = split?[0], yString = split?[1];
 
-            if( string.IsNullOrWhiteSpace( xString ) )
+            if (string.IsNullOrWhiteSpace(xString))
             {
-                throw new ArgumentNullException( nameof( xString ) );
+                throw new ArgumentNullException(nameof(xString));
             }
 
-            if( string.IsNullOrWhiteSpace( yString ) )
+            if (string.IsNullOrWhiteSpace(yString))
             {
-                throw new ArgumentNullException( nameof( xString ) );
+                throw new ArgumentNullException(nameof(xString));
             }
 
-            var x = ushort.Parse( xString );
-            var y = ushort.Parse( yString );
-            return new Resolution( x, y );
+            var x = ushort.Parse(xString);
+            var y = ushort.Parse(yString);
+            return new Resolution(x, y);
         }
 
-        public static bool TryParse( string resolutionString, out Resolution resolution )
+        public static bool TryParse(string resolutionString, out Resolution resolution)
         {
             try
             {
-                resolution = Parse( resolutionString );
+                resolution = Parse(resolutionString);
                 return true;
             }
             catch
@@ -84,10 +84,10 @@ namespace Intersect.Client.Framework.Graphics
             }
         }
 
-        public static bool operator ==( Resolution left, Resolution right ) =>
+        public static bool operator ==(Resolution left, Resolution right) =>
             left.X == right.X && left.Y == right.Y;
 
-        public static bool operator !=( Resolution left, Resolution right ) =>
+        public static bool operator !=(Resolution left, Resolution right) =>
             left.X != right.X && left.Y != right.Y;
     }
 

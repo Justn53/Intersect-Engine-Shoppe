@@ -26,23 +26,23 @@ namespace Intersect.GameObjects
         }
 
         [JsonConstructor]
-        public ItemBase( Guid id ) : base( id )
+        public ItemBase(Guid id) : base(id)
         {
             Initialize();
         }
 
-        [Column( "Animation" )]
+        [Column("Animation")]
         public Guid AnimationId { get; set; }
 
         [NotMapped]
         [JsonIgnore]
         public AnimationBase Animation
         {
-            get => AnimationBase.Get( AnimationId );
+            get => AnimationBase.Get(AnimationId);
             set => AnimationId = value?.Id ?? Guid.Empty;
         }
 
-        [Column( "AttackAnimation" )]
+        [Column("AttackAnimation")]
         [JsonProperty]
         public Guid AttackAnimationId { get; set; }
 
@@ -50,18 +50,18 @@ namespace Intersect.GameObjects
         [JsonIgnore]
         public AnimationBase AttackAnimation
         {
-            get => AnimationBase.Get( AttackAnimationId );
+            get => AnimationBase.Get(AttackAnimationId);
             set => AttackAnimationId = value?.Id ?? Guid.Empty;
         }
 
-        [Column( "EquipmentAnimation" )]
+        [Column("EquipmentAnimation")]
         public Guid EquipmentAnimationId { get; set; }
 
         [NotMapped]
         [JsonIgnore]
         public AnimationBase EquipmentAnimation
         {
-            get => AnimationBase.Get( EquipmentAnimationId );
+            get => AnimationBase.Get(EquipmentAnimationId);
             set => EquipmentAnimationId = value?.Id ?? Guid.Empty;
         }
 
@@ -101,7 +101,7 @@ namespace Intersect.GameObjects
 
         public int SlotCount { get; set; }
 
-        [Column( "Spell" )]
+        [Column("Spell")]
         [JsonProperty]
         public Guid SpellId { get; set; }
 
@@ -109,22 +109,22 @@ namespace Intersect.GameObjects
         [JsonIgnore]
         public SpellBase Spell
         {
-            get => SpellBase.Get( SpellId );
+            get => SpellBase.Get(SpellId);
             set => SpellId = value?.Id ?? Guid.Empty;
         }
 
         public bool QuickCast { get; set; }
 
-        [Column( "DestroySpell" )]
+        [Column("DestroySpell")]
         public bool SingleUse { get; set; } = true;
 
-        [Column( "InteractOnGround" )]
+        [Column("InteractOnGround")]
         public bool InteractOnGround { get; set; } = true;
 
-        [Column( "DoesNotDespawn" )]
+        [Column("DoesNotDespawn")]
         public bool DoesNotDespawn { get; set; } = false;
 
-        [Column( "Event" )]
+        [Column("Event")]
         [JsonProperty]
         public Guid EventId { get; set; }
 
@@ -132,7 +132,7 @@ namespace Intersect.GameObjects
         [JsonIgnore]
         public EventBase Event
         {
-            get => EventBase.Get( EventId );
+            get => EventBase.Get(EventId);
             set => EventId = value?.Id ?? Guid.Empty;
         }
 
@@ -149,12 +149,12 @@ namespace Intersect.GameObjects
         /// <summary>
         /// The database compatible version of <see cref="Color"/>
         /// </summary>
-        [Column( "Color" )]
+        [Column("Color")]
         [JsonIgnore]
         public string JsonColor
         {
-            get => JsonConvert.SerializeObject( Color );
-            set => Color = JsonConvert.DeserializeObject<Color>( value );
+            get => JsonConvert.SerializeObject(Color);
+            set => Color = JsonConvert.DeserializeObject<Color>(value);
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace Intersect.GameObjects
 
         public int Rarity { get; set; }
 
-        [Column( "Projectile" )]
+        [Column("Projectile")]
         [JsonProperty]
         public Guid ProjectileId { get; set; }
 
@@ -175,7 +175,7 @@ namespace Intersect.GameObjects
         [JsonIgnore]
         public ProjectileBase Projectile
         {
-            get => ProjectileBase.Get( ProjectileId );
+            get => ProjectileBase.Get(ProjectileId);
             set => ProjectileId = value?.Id ?? Guid.Empty;
         }
 
@@ -191,71 +191,71 @@ namespace Intersect.GameObjects
 
         public int Tool { get; set; } = -1;
 
-        [Column( "VitalsGiven" )]
+        [Column("VitalsGiven")]
         [JsonIgnore]
         public string VitalsJson
         {
-            get => DatabaseUtils.SaveIntArray( VitalsGiven, (int)Vitals.VitalCount );
-            set => VitalsGiven = DatabaseUtils.LoadIntArray( value, (int)Vitals.VitalCount );
+            get => DatabaseUtils.SaveIntArray(VitalsGiven, (int)Vitals.VitalCount);
+            set => VitalsGiven = DatabaseUtils.LoadIntArray(value, (int)Vitals.VitalCount);
         }
 
         [NotMapped]
         public int[] VitalsGiven { get; set; }
 
-        [Column( "VitalsRegen" )]
+        [Column("VitalsRegen")]
         [JsonIgnore]
         public string VitalsRegenJson
         {
-            get => DatabaseUtils.SaveIntArray( VitalsRegen, (int)Vitals.VitalCount );
-            set => VitalsRegen = DatabaseUtils.LoadIntArray( value, (int)Vitals.VitalCount );
+            get => DatabaseUtils.SaveIntArray(VitalsRegen, (int)Vitals.VitalCount);
+            set => VitalsRegen = DatabaseUtils.LoadIntArray(value, (int)Vitals.VitalCount);
         }
 
         [NotMapped]
         public int[] VitalsRegen { get; set; }
 
-        [Column( "PercentageVitalsGiven" )]
+        [Column("PercentageVitalsGiven")]
         [JsonIgnore]
         public string PercentageVitalsJson
         {
-            get => DatabaseUtils.SaveIntArray( PercentageVitalsGiven, (int)Vitals.VitalCount );
-            set => PercentageVitalsGiven = DatabaseUtils.LoadIntArray( value, (int)Vitals.VitalCount );
+            get => DatabaseUtils.SaveIntArray(PercentageVitalsGiven, (int)Vitals.VitalCount);
+            set => PercentageVitalsGiven = DatabaseUtils.LoadIntArray(value, (int)Vitals.VitalCount);
         }
 
         [NotMapped]
         public int[] PercentageVitalsGiven { get; set; }
 
-        [Column( "StatsGiven" )]
+        [Column("StatsGiven")]
         [JsonIgnore]
         public string StatsJson
         {
-            get => DatabaseUtils.SaveIntArray( StatsGiven, (int)Stats.StatCount );
-            set => StatsGiven = DatabaseUtils.LoadIntArray( value, (int)Stats.StatCount );
+            get => DatabaseUtils.SaveIntArray(StatsGiven, (int)Stats.StatCount);
+            set => StatsGiven = DatabaseUtils.LoadIntArray(value, (int)Stats.StatCount);
         }
 
         [NotMapped]
         public int[] StatsGiven { get; set; }
 
-        [Column( "PercentageStatsGiven" )]
+        [Column("PercentageStatsGiven")]
         [JsonIgnore]
         public string PercentageStatsJson
         {
-            get => DatabaseUtils.SaveIntArray( PercentageStatsGiven, (int)Stats.StatCount );
-            set => PercentageStatsGiven = DatabaseUtils.LoadIntArray( value, (int)Stats.StatCount );
+            get => DatabaseUtils.SaveIntArray(PercentageStatsGiven, (int)Stats.StatCount);
+            set => PercentageStatsGiven = DatabaseUtils.LoadIntArray(value, (int)Stats.StatCount);
         }
 
         [NotMapped]
         public int[] PercentageStatsGiven { get; set; }
 
-        [Column( "UsageRequirements" )]
+        [Column("UsageRequirements")]
         [JsonIgnore]
         public string JsonUsageRequirements
         {
             get => UsageRequirements.Data();
-            set => UsageRequirements.Load( value );
+            set => UsageRequirements.Load(value);
         }
 
         [JsonIgnore, NotMapped]
-        public bool IsStackable => ( ItemType == ItemTypes.Currency || Stackable ) &&
+        public bool IsStackable => (ItemType == ItemTypes.Currency || Stackable) &&
                                    ItemType != ItemTypes.Equipment &&
                                    ItemType != ItemTypes.Bag;
 
@@ -267,17 +267,17 @@ namespace Intersect.GameObjects
         /// </summary>
         /// <param name="cooldownGroup">The cooldown group to search for.</param>
         /// <returns>Returns an array of <see cref="ItemBase"/> containing all items with the supplied cooldown group.</returns>
-        public static ItemBase[] GetCooldownGroup( string cooldownGroup )
+        public static ItemBase[] GetCooldownGroup(string cooldownGroup)
         {
             cooldownGroup = cooldownGroup.Trim();
 
             // No point looking for nothing.
-            if( string.IsNullOrWhiteSpace( cooldownGroup ) )
+            if (string.IsNullOrWhiteSpace(cooldownGroup))
             {
                 return Array.Empty<ItemBase>();
             }
 
-            return Lookup.Where( i => ( (ItemBase)i.Value ).CooldownGroup.Trim() == cooldownGroup ).Select( i => (ItemBase)i.Value ).ToArray();
+            return Lookup.Where(i => ((ItemBase)i.Value).CooldownGroup.Trim() == cooldownGroup).Select(i => (ItemBase)i.Value).ToArray();
         }
 
         private void Initialize()
@@ -291,7 +291,7 @@ namespace Intersect.GameObjects
             PercentageVitalsGiven = new int[(int)Vitals.VitalCount];
             Consumable = new ConsumableData();
             Effect = new EffectData();
-            Color = new Color( 255, 255, 255, 255 );
+            Color = new Color(255, 255, 255, 255);
         }
 
     }

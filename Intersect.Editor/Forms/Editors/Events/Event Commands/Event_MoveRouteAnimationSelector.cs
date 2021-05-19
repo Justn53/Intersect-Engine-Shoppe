@@ -25,11 +25,11 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
         {
             InitializeComponent();
             cmbAnimation.Items.Clear();
-            cmbAnimation.Items.Add( Strings.General.none );
-            cmbAnimation.Items.AddRange( AnimationBase.Names );
-            if( !newAction )
+            cmbAnimation.Items.Add(Strings.General.none);
+            cmbAnimation.Items.AddRange(AnimationBase.Names);
+            if (!newAction)
             {
-                cmbAnimation.SelectedIndex = AnimationBase.ListIndex( action.AnimationId ) + 1;
+                cmbAnimation.SelectedIndex = AnimationBase.ListIndex(action.AnimationId) + 1;
             }
 
             mNewAction = newAction;
@@ -46,16 +46,16 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             btnCancel.Text = Strings.EventSetAnimation.cancel;
         }
 
-        private void btnOkay_Click( object sender, EventArgs e )
+        private void btnOkay_Click(object sender, EventArgs e)
         {
-            mMyAction.AnimationId = AnimationBase.IdFromList( cmbAnimation.SelectedIndex - 1 );
-            mRouteDesigner.Controls.Remove( this );
+            mMyAction.AnimationId = AnimationBase.IdFromList(cmbAnimation.SelectedIndex - 1);
+            mRouteDesigner.Controls.Remove(this);
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mRouteDesigner.RemoveLastAction();
-            mRouteDesigner.Controls.Remove( this );
+            mRouteDesigner.Controls.Remove(this);
         }
 
     }

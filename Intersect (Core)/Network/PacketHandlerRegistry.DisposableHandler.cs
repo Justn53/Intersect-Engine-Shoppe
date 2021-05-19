@@ -12,16 +12,16 @@ namespace Intersect.Network
 
             public IDisposable Reference { get; }
 
-            public DisposableHandler( Type packetType, IDisposable reference )
+            public DisposableHandler(Type packetType, IDisposable reference)
             {
-                PacketType = packetType ?? throw new ArgumentNullException( nameof( packetType ) );
-                Reference = reference ?? throw new ArgumentNullException( nameof( reference ) );
+                PacketType = packetType ?? throw new ArgumentNullException(nameof(packetType));
+                Reference = reference ?? throw new ArgumentNullException(nameof(reference));
             }
 
             public void Dispose()
             {
                 Reference.Dispose();
-                GC.SuppressFinalize( this );
+                GC.SuppressFinalize(this);
             }
         }
 

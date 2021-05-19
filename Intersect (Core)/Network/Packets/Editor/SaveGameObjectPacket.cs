@@ -13,20 +13,20 @@ namespace Intersect.Network.Packets.Editor
         {
         }
 
-        public SaveGameObjectPacket( GameObjectType type, Guid id, string data )
+        public SaveGameObjectPacket(GameObjectType type, Guid id, string data)
         {
             Type = type;
             Id = id;
             Data = data;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public GameObjectType Type { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public Guid Id { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public string Data { get; set; }
 
     }

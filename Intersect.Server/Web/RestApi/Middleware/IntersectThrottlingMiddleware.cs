@@ -32,7 +32,7 @@ namespace Intersect.Server.Web.RestApi.Middleware
             string header,
             string fallbackClientKey,
             IThrottleRepository throttleRepository
-        ) : base( next, policy, null, throttleRepository ?? DefaultRepository, null, null )
+        ) : base(next, policy, null, throttleRepository ?? DefaultRepository, null, null)
         {
             mHeader = header ?? DefaultHeader;
             mFallbackClientKey = fallbackClientKey ?? DefaultFallbackClientKey;
@@ -43,7 +43,7 @@ namespace Intersect.Server.Web.RestApi.Middleware
             get => mHeader;
             set
             {
-                if( !string.IsNullOrWhiteSpace( value ) )
+                if (!string.IsNullOrWhiteSpace(value))
                 {
                     mHeader = value;
                 }
@@ -55,30 +55,30 @@ namespace Intersect.Server.Web.RestApi.Middleware
             get => mFallbackClientKey;
             set
             {
-                if( !string.IsNullOrWhiteSpace( value ) )
+                if (!string.IsNullOrWhiteSpace(value))
                 {
                     mFallbackClientKey = value;
                 }
             }
         }
 
-        protected override RequestIdentity SetIdentity( IOwinRequest request )
+        protected override RequestIdentity SetIdentity(IOwinRequest request)
         {
-            if( request.Headers == null )
+            if (request.Headers == null)
             {
-                throw new ArgumentNullException( nameof( request.Headers ) );
+                throw new ArgumentNullException(nameof(request.Headers));
             }
 
             string clientKey = null;
-            if( request.Headers.TryGetValue( Header, out var clientKeys ) )
+            if (request.Headers.TryGetValue(Header, out var clientKeys))
             {
                 clientKey = clientKeys.FirstOrDefault();
             }
 
-            if( string.IsNullOrWhiteSpace( clientKey ) &&
-                request.Headers.TryGetValue( "Authorization", out var authorizationHeaders ) )
+            if (string.IsNullOrWhiteSpace(clientKey) &&
+                request.Headers.TryGetValue("Authorization", out var authorizationHeaders))
             {
-                if( authorizationHeaders.Any( HeaderHelper.IsValidAuthorizationBearerHeader ) )
+                if (authorizationHeaders.Any(HeaderHelper.IsValidAuthorizationBearerHeader))
                 {
                     clientKey = DefaultAuthorizedFallbackClientKey;
                 }

@@ -13,7 +13,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Initializes a new instance of the <see cref="RightArrow" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public RightArrow( Base parent ) : base( parent )
+        public RightArrow(Base parent) : base(parent)
         {
             MouseInputEnabled = false;
         }
@@ -22,9 +22,9 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawMenuRightArrow( this );
+            skin.DrawMenuRightArrow(this);
         }
 
     }

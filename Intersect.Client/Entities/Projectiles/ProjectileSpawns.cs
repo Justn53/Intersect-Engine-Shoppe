@@ -62,11 +62,11 @@ namespace Intersect.Client.Entities.Projectiles
             MapId = mapId;
             SpawnMapId = MapId;
             Dir = dir;
-            Anim = new Animation( animBase, true, autoRotate, Z, parent );
+            Anim = new Animation(animBase, true, autoRotate, Z, parent);
             AutoRotate = autoRotate;
             ProjectileBase = projectileBase;
             TransmittionTimer = Globals.System.GetTimeMs() +
-                                (long)( (float)ProjectileBase.Speed / (float)ProjectileBase.Range );
+                                (long)((float)ProjectileBase.Speed / (float)ProjectileBase.Range);
         }
 
         public void Dispose()

@@ -15,12 +15,12 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public DirectionPacket( byte dir )
+        public DirectionPacket(byte dir)
         {
             Direction = dir;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public byte Direction { get; set; }
 
         public override Dictionary<string, SanitizedValue<object>> Sanitize()
@@ -28,7 +28,7 @@ namespace Intersect.Network.Packets.Client
             var sanitizer = new Sanitizer();
 
             Direction = (byte)sanitizer.Clamp(
-                nameof( Direction ), Direction, 0, Enum.GetValues( typeof( Directions ) ).Length
+                nameof(Direction), Direction, 0, Enum.GetValues(typeof(Directions)).Length
             );
 
             return sanitizer.Sanitized;

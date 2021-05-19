@@ -13,12 +13,12 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Initializes a new instance of the <see cref="TreeNodeLabel" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public TreeNodeLabel( Base parent ) : base( parent )
+        public TreeNodeLabel(Base parent) : base(parent)
         {
             Alignment = Pos.Left | Pos.CenterV;
             ShouldDrawBackground = false;
             Height = 16;
-            TextPadding = new Padding( 3, 0, 3, 0 );
+            TextPadding = new Padding(3, 0, 3, 0);
         }
 
         /// <summary>
@@ -26,21 +26,21 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         /// </summary>
         public override void UpdateColors()
         {
-            if( IsDisabled )
+            if (IsDisabled)
             {
                 TextColor = Skin.Colors.Button.Disabled;
 
                 return;
             }
 
-            if( IsDepressed || ToggleState )
+            if (IsDepressed || ToggleState)
             {
                 TextColor = Skin.Colors.Tree.Selected;
 
                 return;
             }
 
-            if( IsHovered )
+            if (IsHovered)
             {
                 TextColor = Skin.Colors.Tree.Hover;
 

@@ -17,7 +17,7 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
         ///     Initializes a new instance of the <see cref="Splitter" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Splitter( Base parent ) : base( parent )
+        public Splitter(Base parent) : base(parent)
         {
             mPanel = new Base[2];
             mScale = new bool[2];
@@ -31,17 +31,17 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
         /// <param name="panelIndex">Panel index (0-1).</param>
         /// <param name="panel">Panel contents.</param>
         /// <param name="noScale">Determines whether the content is to be scaled.</param>
-        public void SetPanel( int panelIndex, Base panel, bool noScale = false )
+        public void SetPanel(int panelIndex, Base panel, bool noScale = false)
         {
-            if( panelIndex < 0 || panelIndex > 1 )
+            if (panelIndex < 0 || panelIndex > 1)
             {
-                throw new ArgumentException( "Invalid panel index", "panelIndex" );
+                throw new ArgumentException("Invalid panel index", "panelIndex");
             }
 
             mPanel[panelIndex] = panel;
             mScale[panelIndex] = !noScale;
 
-            if( null != mPanel[panelIndex] )
+            if (null != mPanel[panelIndex])
             {
                 mPanel[panelIndex].Parent = this;
             }
@@ -52,11 +52,11 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
         /// </summary>
         /// <param name="panelIndex">Panel index (0-1).</param>
         /// <returns></returns>
-        Base GetPanel( int panelIndex )
+        Base GetPanel(int panelIndex)
         {
-            if( panelIndex < 0 || panelIndex > 1 )
+            if (panelIndex < 0 || panelIndex > 1)
             {
-                throw new ArgumentException( "Invalid panel index", "panelIndex" );
+                throw new ArgumentException("Invalid panel index", "panelIndex");
             }
 
             return mPanel[panelIndex];
@@ -66,44 +66,44 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
         ///     Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout( Skin.Base skin )
+        protected override void Layout(Skin.Base skin)
         {
-            LayoutVertical( skin );
+            LayoutVertical(skin);
         }
 
-        protected virtual void LayoutVertical( Skin.Base skin )
+        protected virtual void LayoutVertical(Skin.Base skin)
         {
             var w = Width;
             var h = Height;
 
-            if( mPanel[0] != null )
+            if (mPanel[0] != null)
             {
                 var m = mPanel[0].Margin;
-                if( mScale[0] )
+                if (mScale[0])
                 {
-                    mPanel[0].SetBounds( m.Left, m.Top, w - m.Left - m.Right, h * 0.5f - m.Top - m.Bottom );
+                    mPanel[0].SetBounds(m.Left, m.Top, w - m.Left - m.Right, h * 0.5f - m.Top - m.Bottom);
                 }
                 else
                 {
-                    mPanel[0].Position( Pos.Center, 0, (int)( h * -0.25f ) );
+                    mPanel[0].Position(Pos.Center, 0, (int)(h * -0.25f));
                 }
             }
 
-            if( mPanel[1] != null )
+            if (mPanel[1] != null)
             {
                 var m = mPanel[1].Margin;
-                if( mScale[1] )
+                if (mScale[1])
                 {
-                    mPanel[1].SetBounds( m.Left, m.Top + h * 0.5f, w - m.Left - m.Right, h * 0.5f - m.Top - m.Bottom );
+                    mPanel[1].SetBounds(m.Left, m.Top + h * 0.5f, w - m.Left - m.Right, h * 0.5f - m.Top - m.Bottom);
                 }
                 else
                 {
-                    mPanel[1].Position( Pos.Center, 0, (int)( h * 0.25f ) );
+                    mPanel[1].Position(Pos.Center, 0, (int)(h * 0.25f));
                 }
             }
         }
 
-        protected virtual void LayoutHorizontal( Skin.Base skin )
+        protected virtual void LayoutHorizontal(Skin.Base skin)
         {
             throw new NotImplementedException();
         }

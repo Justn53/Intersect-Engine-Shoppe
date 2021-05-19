@@ -28,14 +28,14 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
         ///     Initializes a new instance of the <see cref="Table" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Table( Base parent ) : base( parent )
+        public Table(Base parent) : base(parent)
         {
             mColumnCount = 1;
             mDefaultRowHeight = 22;
 
             mColumnWidth = new int[TableRow.MAX_COLUMNS];
 
-            for( var i = 0; i < TableRow.MAX_COLUMNS; i++ )
+            for (var i = 0; i < TableRow.MAX_COLUMNS; i++)
             {
                 mColumnWidth[i] = 20;
             }
@@ -51,7 +51,7 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
             get => mColumnCount;
             set
             {
-                SetColumnCount( value );
+                SetColumnCount(value);
                 Invalidate();
             }
         }
@@ -80,21 +80,21 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
         public override JObject GetJson()
         {
             var obj = base.GetJson();
-            obj.Add( "SizeToContents", mSizeToContents );
-            obj.Add( "DefaultRowHeight", mDefaultRowHeight );
+            obj.Add("SizeToContents", mSizeToContents);
+            obj.Add("DefaultRowHeight", mDefaultRowHeight);
 
-            return base.FixJson( obj );
+            return base.FixJson(obj);
         }
 
-        public override void LoadJson( JToken obj )
+        public override void LoadJson(JToken obj)
         {
-            base.LoadJson( obj );
-            if( obj["SizeToContents"] != null )
+            base.LoadJson(obj);
+            if (obj["SizeToContents"] != null)
             {
                 mSizeToContents = (bool)obj["SizeToContents"];
             }
 
-            if( obj["DefaultRowHeight"] != null )
+            if (obj["DefaultRowHeight"] != null)
             {
                 mDefaultRowHeight = (int)obj["DefaultRowHeight"];
             }
@@ -104,14 +104,14 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
         ///     Sets the number of columns.
         /// </summary>
         /// <param name="count">Number of columns.</param>
-        public void SetColumnCount( int count )
+        public void SetColumnCount(int count)
         {
-            if( mColumnCount == count )
+            if (mColumnCount == count)
             {
                 return;
             }
 
-            foreach( var row in Children.OfType<TableRow>() )
+            foreach (var row in Children.OfType<TableRow>())
             {
                 row.ColumnCount = count;
             }
@@ -124,9 +124,9 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
         /// </summary>
         /// <param name="column">Column index.</param>
         /// <param name="width">Column width.</param>
-        public void SetColumnWidth( int column, int width )
+        public void SetColumnWidth(int column, int width)
         {
-            if( mColumnWidth[column] == width )
+            if (mColumnWidth[column] == width)
             {
                 return;
             }
@@ -140,7 +140,7 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
         /// </summary>
         /// <param name="column">Column index.</param>
         /// <returns>Column width.</returns>
-        public int GetColumnWidth( int column )
+        public int GetColumnWidth(int column)
         {
             return mColumnWidth[column];
         }
@@ -151,7 +151,7 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
         /// <returns>Newly created row.</returns>
         public TableRow AddRow()
         {
-            var row = new TableRow( this );
+            var row = new TableRow(this);
             row.ColumnCount = mColumnCount;
             row.Height = mDefaultRowHeight;
             row.Dock = Pos.Top;
@@ -163,7 +163,7 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
         ///     Adds a new row.
         /// </summary>
         /// <param name="row">Row to add.</param>
-        public void AddRow( TableRow row )
+        public void AddRow(TableRow row)
         {
             row.Parent = this;
             row.ColumnCount = mColumnCount;
@@ -176,10 +176,10 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
         /// </summary>
         /// <param name="text">Text to add.</param>
         /// <returns>New row.</returns>
-        public TableRow AddRow( string text )
+        public TableRow AddRow(string text)
         {
             var row = AddRow();
-            row.SetCellText( 0, text );
+            row.SetCellText(0, text);
 
             return row;
         }
@@ -188,19 +188,19 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
         ///     Removes a row by reference.
         /// </summary>
         /// <param name="row">Row to remove.</param>
-        public void RemoveRow( TableRow row )
+        public void RemoveRow(TableRow row)
         {
-            RemoveChild( row, true );
+            RemoveChild(row, true);
         }
 
         /// <summary>
         ///     Removes a row by index.
         /// </summary>
         /// <param name="idx">Row index.</param>
-        public void RemoveRow( int idx )
+        public void RemoveRow(int idx)
         {
             var row = Children[idx];
-            RemoveRow( row as TableRow );
+            RemoveRow(row as TableRow);
         }
 
         /// <summary>
@@ -208,9 +208,9 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
         /// </summary>
         public void RemoveAll()
         {
-            while( RowCount > 0 )
+            while (RowCount > 0)
             {
-                RemoveRow( 0 );
+                RemoveRow(0);
             }
         }
 
@@ -219,35 +219,35 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
         /// </summary>
         /// <param name="row">Row to search for.</param>
         /// <returns>Row index if found, -1 otherwise.</returns>
-        public int GetRowIndex( TableRow row )
+        public int GetRowIndex(TableRow row)
         {
-            return Children.IndexOf( row );
+            return Children.IndexOf(row);
         }
 
         /// <summary>
         ///     Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout( Skin.Base skin )
+        protected override void Layout(Skin.Base skin)
         {
-            base.Layout( skin );
+            base.Layout(skin);
 
             var even = false;
-            foreach( TableRow row in Children )
+            foreach (TableRow row in Children)
             {
                 row.EvenRow = even;
                 even = !even;
-                for( var i = 0; i < mColumnCount; i++ )
+                for (var i = 0; i < mColumnCount; i++)
                 {
-                    row.SetColumnWidth( i, mColumnWidth[i] );
+                    row.SetColumnWidth(i, mColumnWidth[i]);
                 }
             }
         }
 
-        protected override void PostLayout( Skin.Base skin )
+        protected override void PostLayout(Skin.Base skin)
         {
-            base.PostLayout( skin );
-            if( mSizeToContents )
+            base.PostLayout(skin);
+            if (mSizeToContents)
             {
                 DoSizeToContents();
                 mSizeToContents = false;
@@ -257,7 +257,7 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
         /// <summary>
         ///     Sizes to fit contents.
         /// </summary>
-        public void SizeToContents( int maxWidth )
+        public void SizeToContents(int maxWidth)
         {
             mMaxWidth = maxWidth;
             mSizeToContents = true;
@@ -269,16 +269,16 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
             var height = 0;
             var width = 0;
 
-            foreach( TableRow row in Children )
+            foreach (TableRow row in Children)
             {
                 row.SizeToContents(); // now all columns fit but only in this particular row
 
-                for( var i = 0; i < ColumnCount; i++ )
+                for (var i = 0; i < ColumnCount; i++)
                 {
-                    Base cell = row.GetColumn( i );
-                    if( null != cell )
+                    Base cell = row.GetColumn(i);
+                    if (null != cell)
                     {
-                        if( i < ColumnCount - 1 || mMaxWidth == 0 )
+                        if (i < ColumnCount - 1 || mMaxWidth == 0)
                         {
                             mColumnWidth[i] = Math.Max(
                                 mColumnWidth[i], cell.Width + cell.Margin.Left + cell.Margin.Right
@@ -295,12 +295,12 @@ namespace Intersect.Client.Framework.Gwen.Control.Layout
             }
 
             // sum all column widths 
-            for( var i = 0; i < ColumnCount; i++ )
+            for (var i = 0; i < ColumnCount; i++)
             {
                 width += mColumnWidth[i];
             }
 
-            SetSize( width, height );
+            SetSize(width, height);
 
             //InvalidateParent();
         }

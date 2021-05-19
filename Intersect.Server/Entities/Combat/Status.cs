@@ -47,7 +47,7 @@ namespace Intersect.Server.Entities.Combat
             StatusTypes.Stun,
         };
 
-        public Status( Entity en, Entity attacker, SpellBase spell, StatusTypes type, int duration, string data )
+        public Status(Entity en, Entity attacker, SpellBase spell, StatusTypes type, int duration, string data)
         {
             mEntity = en;
             Attacker = attacker;
@@ -57,60 +57,60 @@ namespace Intersect.Server.Entities.Combat
 
             // Handle Player specific stuff, such as interrupting spellcasts 
             var tenacity = 0.0;
-            if( en is Player player )
+            if (en is Player player)
             {
                 // Get our player's Tenacity stat!
-                if( !Status.TenacityExcluded.Contains( type ) )
+                if (!Status.TenacityExcluded.Contains(type))
                 {
                     tenacity = player.GetTenacity();
                 }
 
                 // Interrupt their spellcast if we are running a Silence, Sleep or Stun!
-                if( Status.InterruptStatusses.Contains( type ) )
+                if (Status.InterruptStatusses.Contains(type))
                 {
                     player.CastTime = 0;
                     player.CastTarget = null;
                     player.SpellCastSlot = -1;
-                    PacketSender.SendEntityCancelCast( player );
+                    PacketSender.SendEntityCancelCast(player);
                 }
             }
 
             // Handle Npc specific stuff, such as loot tables!
-            if( en is Npc npc )
+            if (en is Npc npc)
             {
                 // Add to loot map if not already eligible.
-                if( !npc.LootMap.ContainsKey( Attacker.Id ) )
+                if (!npc.LootMap.ContainsKey(Attacker.Id))
                 {
-                    npc.LootMap.TryAdd( Attacker.Id, true );
+                    npc.LootMap.TryAdd(Attacker.Id, true);
                     npc.LootMapCache = npc.LootMap.Keys.ToArray();
                 }
             }
 
-            if( type == StatusTypes.Shield )
+            if (type == StatusTypes.Shield)
             {
-                for( var i = (int)Vitals.Health; i < (int)Vitals.VitalCount; i++ )
+                for (var i = (int)Vitals.Health; i < (int)Vitals.VitalCount; i++)
                 {
                     var vitalDiff = spell.Combat.VitalDiff[i];
 
-                    shield[i] = Math.Abs( vitalDiff ) +
-                                (int)( spell.Combat.Scaling * en.Stat[spell.Combat.ScalingStat].BaseStat / 100f );
+                    shield[i] = Math.Abs(vitalDiff) +
+                                (int)(spell.Combat.Scaling * en.Stat[spell.Combat.ScalingStat].BaseStat / 100f);
                 }
             }
 
             //If new Cleanse spell, remove all opposite statusses. (ie friendly dispels unfriendly and vice versa)
-            if( Type == StatusTypes.Cleanse )
+            if (Type == StatusTypes.Cleanse)
             {
-                foreach( var status in en.CachedStatuses )
+                foreach (var status in en.CachedStatuses)
                 {
-                    if( spell.Combat.Friendly != status.Spell.Combat.Friendly )
+                    if (spell.Combat.Friendly != status.Spell.Combat.Friendly)
                     {
                         status.RemoveStatus();
                     }
                 }
 
-                foreach( var dot in en.CachedDots )
+                foreach (var dot in en.CachedDots)
                 {
-                    if( spell.Combat.Friendly != dot.SpellBase.Combat.Friendly )
+                    if (spell.Combat.Friendly != dot.SpellBase.Combat.Friendly)
                     {
                         dot.Expire();
                     }
@@ -119,11 +119,11 @@ namespace Intersect.Server.Entities.Combat
 
             // Remove existing taunts if this is one and there are any others.
             // We'll be overwriting it, baby!
-            if( Type == StatusTypes.Taunt )
+            if (Type == StatusTypes.Taunt)
             {
-                foreach( var status in en.CachedStatuses )
+                foreach (var status in en.CachedStatuses)
                 {
-                    if( status.Type == StatusTypes.Taunt )
+                    if (status.Type == StatusTypes.Taunt)
                     {
                         status.RemoveStatus();
                     }
@@ -131,8 +131,8 @@ namespace Intersect.Server.Entities.Combat
             }
 
             // Calculate our final duration and pass it on!
-            var finalDuration = duration - ( duration * ( tenacity / 100f ) );
-            if( en.Statuses.ContainsKey( spell ) )
+            var finalDuration = duration - (duration * (tenacity / 100f));
+            if (en.Statuses.ContainsKey(spell))
             {
                 en.Statuses[spell].StartTime = Timing.Global.Milliseconds;
                 en.Statuses[spell].Duration = Timing.Global.Milliseconds + (long)finalDuration;
@@ -143,39 +143,39 @@ namespace Intersect.Server.Entities.Combat
             {
                 StartTime = Timing.Global.Milliseconds;
                 Duration = Timing.Global.Milliseconds + (long)finalDuration;
-                en.Statuses.TryAdd( Spell, this );
+                en.Statuses.TryAdd(Spell, this);
                 en.CachedStatuses = en.Statuses.Values.ToArray();
             }
 
             // If this is a taunt, force the target properly for players and NPCs
-            if( Type == StatusTypes.Taunt )
+            if (Type == StatusTypes.Taunt)
             {
 
                 // If player, force send target!
-                if( en is Player targetPlayer )
+                if (en is Player targetPlayer)
                 {
                     en.Target = Attacker;
-                    PacketSender.SetPlayerTarget( targetPlayer, Attacker.Id );
+                    PacketSender.SetPlayerTarget(targetPlayer, Attacker.Id);
                 }
                 // If NPC, force assign target and make sure we have the highest threat +1 so we in theory have the highest threat.. for now..
-                else if( en is Npc targetNpc )
+                else if (en is Npc targetNpc)
                 {
-                    targetNpc.AssignTarget( Attacker );
+                    targetNpc.AssignTarget(Attacker);
 
-                    if( !targetNpc.DamageMap.ContainsKey( Attacker ) )
+                    if (!targetNpc.DamageMap.ContainsKey(Attacker))
                     {
-                        if( targetNpc.DamageMap.Count > 0 )
+                        if (targetNpc.DamageMap.Count > 0)
                         {
-                            targetNpc.DamageMap.TryAdd( Attacker, targetNpc.DamageMap.ToArray().Max( x => x.Value ) + 1 );
+                            targetNpc.DamageMap.TryAdd(Attacker, targetNpc.DamageMap.ToArray().Max(x => x.Value) + 1);
                         }
                         else
                         {
-                            targetNpc.DamageMap.TryAdd( Attacker, 1 );
+                            targetNpc.DamageMap.TryAdd(Attacker, 1);
                         }
                     }
                     else
                     {
-                        targetNpc.DamageMap[Attacker] = targetNpc.DamageMap.ToArray().Max( x => x.Value ) + 1;
+                        targetNpc.DamageMap[Attacker] = targetNpc.DamageMap.ToArray().Max(x => x.Value) + 1;
                     }
                 }
                 else
@@ -190,17 +190,17 @@ namespace Intersect.Server.Entities.Combat
 
         public void TryRemoveStatus()
         {
-            if( Duration <= Globals.Timing.Milliseconds ) //Check the timer
+            if (Duration <= Globals.Timing.Milliseconds) //Check the timer
             {
                 RemoveStatus();
             }
 
             //If shield check for out of hp
-            if( Type == StatusTypes.Shield )
+            if (Type == StatusTypes.Shield)
             {
-                for( var i = (int)Vitals.Health; i < (int)Vitals.VitalCount; i++ )
+                for (var i = (int)Vitals.Health; i < (int)Vitals.VitalCount; i++)
                 {
-                    if( shield[i] > 0 )
+                    if (shield[i] > 0)
                     {
                         return;
                     }
@@ -212,22 +212,22 @@ namespace Intersect.Server.Entities.Combat
 
         public void RemoveStatus()
         {
-            mEntity.Statuses.TryRemove( Spell, out Status val );
+            mEntity.Statuses.TryRemove(Spell, out Status val);
             mEntity.CachedStatuses = mEntity.Statuses.Values.ToArray();
 
             // if this was a taunt status being removed, we have to scan for a new target!
-            if( mEntity is Npc npc && Type == StatusTypes.Taunt )
+            if (mEntity is Npc npc && Type == StatusTypes.Taunt)
             {
-                npc.TryFindNewTarget( 0, Guid.Empty, true );
+                npc.TryFindNewTarget(0, Guid.Empty, true);
             }
         }
 
-        public void DamageShield( Vitals vital, ref int amount )
+        public void DamageShield(Vitals vital, ref int amount)
         {
-            if( Type == StatusTypes.Shield )
+            if (Type == StatusTypes.Shield)
             {
                 shield[(int)vital] -= amount;
-                if( shield[(int)vital] <= 0 )
+                if (shield[(int)vital] <= 0)
                 {
                     amount = -shield[(int)vital]; //Return piercing damage.
                     shield[(int)vital] = 0;

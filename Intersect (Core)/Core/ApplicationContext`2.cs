@@ -45,7 +45,7 @@ namespace Intersect.Core
         /// <param name="startupOptions">the <typeparamref name="TStartupOptions"/> the application was started with</param>
         /// <param name="logger">the application-level <see cref="Logger"/></param>
         /// <param name="networkHelper"></param>
-        protected ApplicationContext( TStartupOptions startupOptions, Logger logger, INetworkHelper networkHelper )
+        protected ApplicationContext(TStartupOptions startupOptions, Logger logger, INetworkHelper networkHelper)
         {
             mDisposeLock = new object();
             mShutdownLock = new object();
@@ -56,7 +56,7 @@ namespace Intersect.Core
             Logger = logger;
             NetworkHelper = networkHelper;
 
-            ConcurrentInstance.Set( This );
+            ConcurrentInstance.Set(This);
         }
 
         ICommandLineOptions IApplicationContext.StartupOptions => StartupOptions;
@@ -112,7 +112,7 @@ namespace Intersect.Core
         /// <inheritdoc />
         public TApplicationService GetService<TApplicationService>() where TApplicationService : IApplicationService
         {
-            if( mServices.TryGetValue( typeof( TApplicationService ), out var service ) )
+            if (mServices.TryGetValue(typeof(TApplicationService), out var service))
             {
                 return (TApplicationService)service;
             }
@@ -129,14 +129,14 @@ namespace Intersect.Core
         protected TApplicationService GetExpectedService<TApplicationService>()
             where TApplicationService : IApplicationService
         {
-            var service = (TApplicationService)mServices[typeof( TApplicationService )];
-            if( service != null )
+            var service = (TApplicationService)mServices[typeof(TApplicationService)];
+            if (service != null)
             {
                 return service;
             }
 
             throw new AccessViolationException(
-                $@"Missing expected service of type {typeof( TApplicationService ).FullName}."
+                $@"Missing expected service of type {typeof(TApplicationService).FullName}."
             );
         }
 
@@ -145,16 +145,16 @@ namespace Intersect.Core
         /// </summary>
         /// <returns>interesting assemblies</returns>
         protected virtual IEnumerable<Assembly> GetAssemblies() =>
-            new List<Assembly> { typeof( IApplicationContext ).Assembly, typeof( TContext ).Assembly };
+            new List<Assembly> { typeof(IApplicationContext).Assembly, typeof(TContext).Assembly };
 
-        private void AddService( Type type, IApplicationService service )
+        private void AddService(Type type, IApplicationService service)
         {
-            if( mServices.ContainsKey( type ) )
+            if (mServices.ContainsKey(type))
             {
                 return;
             }
 
-            mServices.Add( type, service );
+            mServices.Add(type, service);
         }
 
         /// <summary>
@@ -162,48 +162,48 @@ namespace Intersect.Core
         /// </summary>
         protected virtual void DiscoverServices() =>
             GetAssemblies()
-                .SelectMany( AssemblyExtensions.FindDefinedSubtypesOf<IApplicationService> )
+                .SelectMany(AssemblyExtensions.FindDefinedSubtypesOf<IApplicationService>)
                 .ToList()
                 .ForEach(
                     serviceType =>
                     {
-                        Debug.Assert( serviceType != null, nameof( serviceType ) + " != null" );
-                        if( !( Activator.CreateInstance( serviceType ) is IApplicationService service ) )
+                        Debug.Assert(serviceType != null, nameof(serviceType) + " != null");
+                        if (!(Activator.CreateInstance(serviceType) is IApplicationService service))
                         {
                             throw new InvalidOperationException(
                                 $@"Failed to create service of type {serviceType.FullName}."
                             );
                         }
 
-                        AddService( service.ServiceType, service );
+                        AddService(service.ServiceType, service);
                     }
                 );
 
-        private void RunOnAllServices( Action<IApplicationService> action, bool isRunning, bool force = true ) =>
-            Services.Where( service => ( default != service ) && service.IsEnabled && ( force || ( isRunning == service.IsRunning ) ) ).ToList().ForEach( action );
+        private void RunOnAllServices(Action<IApplicationService> action, bool isRunning, bool force = true) =>
+            Services.Where(service => (default != service) && service.IsEnabled && (force || (isRunning == service.IsRunning))).ToList().ForEach(action);
 
         /// <summary>
         /// Run the bootstrap lifecycle method on all enabled services.
         /// </summary>
-        protected virtual void BootstrapServices() => RunOnAllServices( service => service?.Bootstrap( this ), false );
+        protected virtual void BootstrapServices() => RunOnAllServices(service => service?.Bootstrap(this), false);
 
         /// <summary>
         /// Run the startup lifecycle method on all enabled services.
         /// </summary>
-        protected virtual void StartServices() => RunOnAllServices( service => service?.Start( this ), false );
+        protected virtual void StartServices() => RunOnAllServices(service => service?.Start(this), false);
 
         /// <summary>
         /// Run the shutdown lifecycle method on all enabled services.
         /// </summary>
         /// <param name="force">if the service should be forced to stop no matter its status</param>
-        protected virtual void StopServices( bool force = false ) => RunOnAllServices( service => service?.Stop( this ), true, force );
+        protected virtual void StopServices(bool force = false) => RunOnAllServices(service => service?.Stop(this), true, force);
 
         #endregion Service
 
         #region Lifecycle
 
         /// <inheritdoc />
-        public void Start( bool lockUntilShutdown = true )
+        public void Start(bool lockUntilShutdown = true)
         {
             IsStarted = true;
 
@@ -213,22 +213,22 @@ namespace Intersect.Core
             {
                 BootstrapServices();
 
-                PackedIntersectPacket.AddKnownTypes( NetworkHelper.AvailablePacketTypes );
+                PackedIntersectPacket.AddKnownTypes(NetworkHelper.AvailablePacketTypes);
 
                 try
                 {
                     // If UsesMainThread is true, this does not return until shutdown.
                     InternalStart();
                 }
-                catch( Exception exception )
+                catch (Exception exception)
                 {
-                    Logger.Error( exception );
+                    Logger.Error(exception);
                     return;
                 }
 
                 // When UsesMainThread is true, we only reach this point until
                 // we are shutting down, so we should just short-circuit here.
-                if( UsesMainThread )
+                if (UsesMainThread)
                 {
                     return;
                 }
@@ -236,9 +236,9 @@ namespace Intersect.Core
                 // Must be manually invoked if UsesMainThread is true.
                 PostStartup();
             }
-            catch( ServiceLifecycleFailureException serviceLifecycleFailureException )
+            catch (ServiceLifecycleFailureException serviceLifecycleFailureException)
             {
-                Logger.Error( serviceLifecycleFailureException );
+                Logger.Error(serviceLifecycleFailureException);
                 return;
             }
 
@@ -246,15 +246,15 @@ namespace Intersect.Core
 
             mNeedsLockPulse = lockUntilShutdown;
 
-            if( !mNeedsLockPulse )
+            if (!mNeedsLockPulse)
             {
                 return;
             }
 
-            lock( mShutdownLock )
+            lock (mShutdownLock)
             {
-                Monitor.Wait( mShutdownLock );
-                Log.Diagnostic( DeveloperStrings.ApplicationContextExited );
+                Monitor.Wait(mShutdownLock);
+                Log.Diagnostic(DeveloperStrings.ApplicationContextExited);
             }
 
             #endregion Wait for application thread
@@ -270,11 +270,11 @@ namespace Intersect.Core
         /// <inheritdoc />
         public LockingActionQueue StartWithActionQueue()
         {
-            Start( false );
+            Start(false);
 
             mNeedsLockPulse = true;
 
-            return new LockingActionQueue( mShutdownLock );
+            return new LockingActionQueue(mShutdownLock);
         }
 
         /// <summary>
@@ -286,13 +286,13 @@ namespace Intersect.Core
         /// Request shutdown of the application.
         /// </summary>
         /// <param name="join">optionally join the current thread, default false</param>
-        public void RequestShutdown( bool join = false )
+        public void RequestShutdown(bool join = false)
         {
             Task disposeTask;
 
-            lock( mDisposeLock )
+            lock (mDisposeLock)
             {
-                if( IsDisposed || IsDisposing || IsShutdownRequested )
+                if (IsDisposed || IsDisposing || IsShutdownRequested)
                 {
                     return;
                 }
@@ -303,9 +303,9 @@ namespace Intersect.Core
                     {
                         Dispose();
 
-                        lock( mShutdownLock )
+                        lock (mShutdownLock)
                         {
-                            Monitor.PulseAll( mShutdownLock );
+                            Monitor.PulseAll(mShutdownLock);
                         }
                     }
                 );
@@ -313,7 +313,7 @@ namespace Intersect.Core
                 disposeTask.Start();
             }
 
-            if( join )
+            if (join)
             {
                 disposeTask.Wait();
             }
@@ -355,29 +355,29 @@ namespace Intersect.Core
         /// </summary>
         protected virtual void NotifyNonTerminatingExceptionOccurred() { }
 
-        internal static void ProcessUnhandledException( object sender, Exception exception )
+        internal static void ProcessUnhandledException(object sender, Exception exception)
         {
             var currentException = exception;
             var innerException = false;
 
-            while( currentException != null )
+            while (currentException != null)
             {
-                Log.Error( innerException ? "Caused by:" : $"Received unhandled exception from {sender}." );
-                Log.Error( currentException );
+                Log.Error(innerException ? "Caused by:" : $"Received unhandled exception from {sender}.");
+                Log.Error(currentException);
 
                 currentException = currentException.InnerException;
                 innerException = true;
             }
         }
 
-        private void SafeAbort( bool hasErrors )
+        private void SafeAbort(bool hasErrors)
         {
             HasErrors |= hasErrors;
 
             // Dispose before waiting, under no circumstances do we want the application to continue.
-            if( !IsDisposed )
+            if (!IsDisposed)
             {
-                RequestShutdown( true );
+                RequestShutdown(true);
             }
         }
 
@@ -392,24 +392,24 @@ namespace Intersect.Core
             UnhandledExceptionEventArgs unhandledExceptionEvent
         )
         {
-            if( !( unhandledExceptionEvent.ExceptionObject is Exception unhandledException ) )
+            if (!(unhandledExceptionEvent.ExceptionObject is Exception unhandledException))
             {
-                throw new ArgumentNullException( nameof( unhandledExceptionEvent.ExceptionObject ) );
+                throw new ArgumentNullException(nameof(unhandledExceptionEvent.ExceptionObject));
             }
 
-            ProcessUnhandledException( sender, unhandledException );
+            ProcessUnhandledException(sender, unhandledException);
 
-            if( !ConcurrentInstance.HasInstance )
+            if (!ConcurrentInstance.HasInstance)
             {
                 return;
             }
 
-            if( !unhandledExceptionEvent.IsTerminating )
+            if (!unhandledExceptionEvent.IsTerminating)
             {
                 ConcurrentInstance.Instance.NotifyNonTerminatingExceptionOccurred();
             }
 
-            ConcurrentInstance.Instance.SafeAbort( true );
+            ConcurrentInstance.Instance.SafeAbort(true);
         }
 
         private static void HandleUnobservedTaskException(
@@ -420,39 +420,39 @@ namespace Intersect.Core
             ProcessUnhandledException(
                 sender,
                 unobservedTaskExceptionEvent.Exception ??
-                throw new ArgumentNullException( nameof( unobservedTaskExceptionEvent.Exception ) )
+                throw new ArgumentNullException(nameof(unobservedTaskExceptionEvent.Exception))
             );
 
-            if( !ConcurrentInstance.HasInstance )
+            if (!ConcurrentInstance.HasInstance)
             {
                 return;
             }
 
-            ConcurrentInstance.Instance.SafeAbort( true );
+            ConcurrentInstance.Instance.SafeAbort(true);
         }
 
         #endregion Application-Level Exception Handling
 
         #region Assembly Processing
 
-        private static Assembly HandleAssemblyResolve( object sender, ResolveEventArgs args )
+        private static Assembly HandleAssemblyResolve(object sender, ResolveEventArgs args)
         {
             // Ignore missing resources
-            if( args.Name?.Contains( ".resources" ) ?? false )
+            if (args.Name?.Contains(".resources") ?? false)
             {
                 return null;
             }
 
             // check for assemblies already loaded
             var assembly = AppDomain.CurrentDomain.GetAssemblies()
-                .FirstOrDefault( fodAssembly => fodAssembly?.FullName == args.Name );
+                .FirstOrDefault(fodAssembly => fodAssembly?.FullName == args.Name);
 
-            if( assembly != null )
+            if (assembly != null)
             {
                 return assembly;
             }
 
-            var filename = args.Name?.Split( ',' )[0] + ".dll";
+            var filename = args.Name?.Split(',')[0] + ".dll";
 
             // Try Loading from libs/server first
             Debug.Assert(
@@ -460,20 +460,20 @@ namespace Intersect.Core
                 "AppDomain.CurrentDomain.SetupInformation.ApplicationBase != null"
             );
 
-            var libsFolder = Path.Combine( AppDomain.CurrentDomain.SetupInformation.ApplicationBase, "libs", "server" );
-            if( File.Exists( Path.Combine( libsFolder, filename ) ) )
+            var libsFolder = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, "libs", "server");
+            if (File.Exists(Path.Combine(libsFolder, filename)))
             {
-                return Assembly.LoadFile( Path.Combine( libsFolder, filename ) );
+                return Assembly.LoadFile(Path.Combine(libsFolder, filename));
             }
 
             var archSpecificPath = Path.Combine(
                 AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
                 Environment.Is64BitProcess
-                    ? Path.Combine( "libs", "server", "x64" )
-                    : Path.Combine( "libs", "server", "x86" ), filename
+                    ? Path.Combine("libs", "server", "x64")
+                    : Path.Combine("libs", "server", "x86"), filename
             );
 
-            return File.Exists( archSpecificPath ) ? Assembly.LoadFile( archSpecificPath ) : null;
+            return File.Exists(archSpecificPath) ? Assembly.LoadFile(archSpecificPath) : null;
         }
 
         #endregion Assembly Processing
@@ -502,14 +502,14 @@ namespace Intersect.Core
         /// <inheritdoc />
         public void Dispose()
         {
-            if( IsDisposed )
+            if (IsDisposed)
             {
-                throw new ObjectDisposedException( typeof( TContext ).Name );
+                throw new ObjectDisposedException(typeof(TContext).Name);
             }
 
-            lock( mDisposeLock )
+            lock (mDisposeLock)
             {
-                if( IsDisposing )
+                if (IsDisposing)
                 {
                     return;
                 }
@@ -519,27 +519,27 @@ namespace Intersect.Core
 
             IsRunning = false;
 
-            ConcurrentInstance.ClearWith( This, InternalDispose );
+            ConcurrentInstance.ClearWith(This, InternalDispose);
         }
 
         private void InternalDispose()
         {
             try
             {
-                StopServices( IsRunning );
+                StopServices(IsRunning);
             }
-            catch( ServiceLifecycleFailureException serviceLifecycleFailureException )
+            catch (ServiceLifecycleFailureException serviceLifecycleFailureException)
             {
-                Logger.Error( serviceLifecycleFailureException );
+                Logger.Error(serviceLifecycleFailureException);
             }
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            Log.Info( $@"Beginning context dispose. ({stopwatch.ElapsedMilliseconds}ms)" );
-            Dispose( true );
-            Log.Info( $@"GC.SuppressFinalize ({stopwatch.ElapsedMilliseconds}ms)" );
-            GC.SuppressFinalize( this );
-            Log.Info( $@"InternalDispose() completed. ({stopwatch.ElapsedMilliseconds}ms)" );
+            Log.Info($@"Beginning context dispose. ({stopwatch.ElapsedMilliseconds}ms)");
+            Dispose(true);
+            Log.Info($@"GC.SuppressFinalize ({stopwatch.ElapsedMilliseconds}ms)");
+            GC.SuppressFinalize(this);
+            Log.Info($@"InternalDispose() completed. ({stopwatch.ElapsedMilliseconds}ms)");
 
             IsDisposed = true;
         }
@@ -548,9 +548,9 @@ namespace Intersect.Core
         /// Dispose of internal resources.
         /// </summary>
         /// <param name="disposing">if we are actively disposing</param>
-        protected virtual void Dispose( bool disposing )
+        protected virtual void Dispose(bool disposing)
         {
-            if( disposing )
+            if (disposing)
             {
                 // Do nothing currently
             }

@@ -18,9 +18,9 @@ namespace Intersect.Server.Utilities
 
         public const string PARAM_LEVEL = "Level";
 
-        public ExperienceCurve( string source = DEFAULT_EXPERIENCE_FORMULA )
+        public ExperienceCurve(string source = DEFAULT_EXPERIENCE_FORMULA)
         {
-            if( string.IsNullOrEmpty( source ) )
+            if (string.IsNullOrEmpty(source))
             {
                 return;
             }
@@ -44,37 +44,37 @@ namespace Intersect.Server.Utilities
 
         public double Gain { get; set; }
 
-        protected virtual void Exp( FunctionArgs args )
+        protected virtual void Exp(FunctionArgs args)
         {
-            if( args.Parameters == null || args.Parameters.Length < 3 )
+            if (args.Parameters == null || args.Parameters.Length < 3)
             {
-                Log.Error( "Tried to execute Exp with fewer than three arguments." );
+                Log.Error("Tried to execute Exp with fewer than three arguments.");
                 args.Result = 0L;
             }
 
-            var level = (int)( args.Parameters?[0]?.Evaluate() ?? -1 );
-            var baseExperience = (long)( args.Parameters?[1]?.Evaluate() ?? -1 );
-            var gain = (double)( args.Parameters?[2]?.Evaluate() ?? -1 );
-            args.Result = Calculate( level, baseExperience, gain );
+            var level = (int)(args.Parameters?[0]?.Evaluate() ?? -1);
+            var baseExperience = (long)(args.Parameters?[1]?.Evaluate() ?? -1);
+            var gain = (double)(args.Parameters?[2]?.Evaluate() ?? -1);
+            args.Result = Calculate(level, baseExperience, gain);
         }
 
-        public long Calculate( int level )
+        public long Calculate(int level)
         {
-            return Calculate( level, BaseExperience, Gain );
+            return Calculate(level, BaseExperience, Gain);
         }
 
-        public long Calculate( int level, long baseExperience )
+        public long Calculate(int level, long baseExperience)
         {
-            return Calculate( level, baseExperience, Gain );
+            return Calculate(level, baseExperience, Gain);
         }
 
-        public long Calculate( int level, long baseExperience, double gain )
+        public long Calculate(int level, long baseExperience, double gain)
         {
             //Formula.RegisterParameter(PARAM_BASE_EXP, baseExperience, true);
             //Formula.RegisterParameter(PARAM_GAIN, gain, true);
             //Formula.RegisterParameter(PARAM_LEVEL, level, true);
             //return Formula.Evaluate<long>();
-            return (long)Math.Floor( baseExperience * Math.Pow( gain, level - 1 ) );
+            return (long)Math.Floor(baseExperience * Math.Pow(gain, level - 1));
         }
 
     }

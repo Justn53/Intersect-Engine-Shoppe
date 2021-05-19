@@ -20,23 +20,23 @@ namespace Intersect.Plugins.Manifests
         )
         {
             var filename = $@"{VirtualTestManifest.Namespace}.{resourceName}";
-            using( var stream = typeof( JsonManifestTests ).Assembly.GetManifestResourceStream( filename ) )
+            using (var stream = typeof(JsonManifestTests).Assembly.GetManifestResourceStream(filename))
             {
-                if( stream == null )
+                if (stream == null)
                 {
-                    Assert.Fail( "Could not load resources for testing, is it marked as an embedded resource?" );
+                    Assert.Fail("Could not load resources for testing, is it marked as an embedded resource?");
                 }
 
-                using( var reader = new StreamReader( stream ) )
+                using (var reader = new StreamReader(stream))
                 {
                     var contents = reader.ReadToEnd();
-                    if( resource != null )
+                    if (resource != null)
                     {
-                        JsonConvert.PopulateObject( contents, resource );
+                        JsonConvert.PopulateObject(contents, resource);
                     }
                     else
                     {
-                        resource = JsonConvert.DeserializeObject<TResourceType>( contents );
+                        resource = JsonConvert.DeserializeObject<TResourceType>(contents);
                     }
 
                     return resource;
@@ -47,45 +47,45 @@ namespace Intersect.Plugins.Manifests
         [Test]
         public void CanBeDeserialized_WellFormed()
         {
-            var manifest = LoadResource<JsonManifest>( "manifest.well-formed.json" );
-            Assert.NotNull( manifest );
-            Assert.AreEqual( "Test Manifest", manifest.Name );
-            Assert.AreEqual( "AscensionGameDev.Intersect.Tests", manifest.Key );
-            Assert.AreEqual( new SemVersion( 1 ), manifest.Version );
-            Assert.AreEqual( "https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage );
+            var manifest = LoadResource<JsonManifest>("manifest.well-formed.json");
+            Assert.NotNull(manifest);
+            Assert.AreEqual("Test Manifest", manifest.Name);
+            Assert.AreEqual("AscensionGameDev.Intersect.Tests", manifest.Key);
+            Assert.AreEqual(new SemVersion(1), manifest.Version);
+            Assert.AreEqual("https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage);
         }
 
         [Test]
         public void CanBeDeserialized_CaseInsensitive()
         {
-            var manifest = LoadResource<JsonManifest>( "manifest.lowercase.json" );
-            Assert.NotNull( manifest );
-            Assert.AreEqual( "Test Manifest", manifest.Name );
-            Assert.AreEqual( "AscensionGameDev.Intersect.Tests", manifest.Key );
-            Assert.AreEqual( new SemVersion( 1 ), manifest.Version );
-            Assert.AreEqual( "https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage );
+            var manifest = LoadResource<JsonManifest>("manifest.lowercase.json");
+            Assert.NotNull(manifest);
+            Assert.AreEqual("Test Manifest", manifest.Name);
+            Assert.AreEqual("AscensionGameDev.Intersect.Tests", manifest.Key);
+            Assert.AreEqual(new SemVersion(1), manifest.Version);
+            Assert.AreEqual("https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage);
         }
 
         [Test]
         public void CanBePopulated_WellFormed()
         {
             var manifest = new JsonManifest();
-            LoadResource( "manifest.well-formed.json", manifest );
-            Assert.AreEqual( "Test Manifest", manifest.Name );
-            Assert.AreEqual( "AscensionGameDev.Intersect.Tests", manifest.Key );
-            Assert.AreEqual( new SemVersion( 1 ), manifest.Version );
-            Assert.AreEqual( "https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage );
+            LoadResource("manifest.well-formed.json", manifest);
+            Assert.AreEqual("Test Manifest", manifest.Name);
+            Assert.AreEqual("AscensionGameDev.Intersect.Tests", manifest.Key);
+            Assert.AreEqual(new SemVersion(1), manifest.Version);
+            Assert.AreEqual("https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage);
         }
 
         [Test]
         public void CanBePopulated_CaseInsensitive()
         {
             var manifest = new JsonManifest();
-            LoadResource( "manifest.lowercase.json", manifest );
-            Assert.AreEqual( "Test Manifest", manifest.Name );
-            Assert.AreEqual( "AscensionGameDev.Intersect.Tests", manifest.Key );
-            Assert.AreEqual( new SemVersion( 1 ), manifest.Version );
-            Assert.AreEqual( "https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage );
+            LoadResource("manifest.lowercase.json", manifest);
+            Assert.AreEqual("Test Manifest", manifest.Name);
+            Assert.AreEqual("AscensionGameDev.Intersect.Tests", manifest.Key);
+            Assert.AreEqual(new SemVersion(1), manifest.Version);
+            Assert.AreEqual("https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage);
         }
 
     }

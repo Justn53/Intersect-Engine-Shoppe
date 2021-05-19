@@ -12,12 +12,12 @@ namespace Intersect.Network.Packets.Client
 
         }
 
-        public AbandonQuestPacket( Guid questId )
+        public AbandonQuestPacket(Guid questId)
         {
             QuestId = questId;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid QuestId { get; set; }
 
     }

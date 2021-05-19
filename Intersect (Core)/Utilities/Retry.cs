@@ -10,11 +10,11 @@ namespace Intersect.Utilities
     public static class Retry
     {
 
-        public delegate bool TryParameterlessAction<TResult>( out TResult result );
+        public delegate bool TryParameterlessAction<TResult>(out TResult result);
 
-        private static void DumpExceptions( List<Exception> exceptions )
+        private static void DumpExceptions(List<Exception> exceptions)
         {
-            exceptions?.ForEach( exception => Log.Error( exception ) );
+            exceptions?.ForEach(exception => Log.Error(exception));
         }
 
         public static TResult Execute<TResult>(
@@ -25,33 +25,33 @@ namespace Intersect.Utilities
             int consecutiveFailuresUntilAbort = 10
         )
         {
-            if( retryInterval.TotalMilliseconds < 1000 )
+            if (retryInterval.TotalMilliseconds < 1000)
             {
-                throw new InvalidOperationException( "You should not use this class for small intervals." );
+                throw new InvalidOperationException("You should not use this class for small intervals.");
             }
 
-            if( retryInterval.TotalMilliseconds < 2000 )
+            if (retryInterval.TotalMilliseconds < 2000)
             {
-                Log.Warn( "You should probably not be using Retry if you need such short intervals." );
+                Log.Warn("You should probably not be using Retry if you need such short intervals.");
             }
 
-            if( action == null )
+            if (action == null)
             {
-                throw new ArgumentNullException( nameof( action ) );
+                throw new ArgumentNullException(nameof(action));
             }
 
-            var result = default( TResult );
+            var result = default(TResult);
 
             var caughtExceptions = new List<Exception>();
             var consecutiveExceptions = 0;
             var retriesRemaining = retryCount;
-            while( retriesRemaining == -1 || 0 < retriesRemaining )
+            while (retriesRemaining == -1 || 0 < retriesRemaining)
             {
                 try
                 {
-                    Thread.Sleep( retryInterval );
+                    Thread.Sleep(retryInterval);
 
-                    if( action( out result ) )
+                    if (action(out result))
                     {
                         return result;
                     }
@@ -59,31 +59,31 @@ namespace Intersect.Utilities
                     consecutiveExceptions = 0;
                     caughtExceptions.Clear();
                 }
-                catch( Exception exception )
+                catch (Exception exception)
                 {
-                    caughtExceptions.Add( exception );
-                    if( ++consecutiveExceptions >= consecutiveFailuresUntilAbort )
+                    caughtExceptions.Add(exception);
+                    if (++consecutiveExceptions >= consecutiveFailuresUntilAbort)
                     {
-                        DumpExceptions( caughtExceptions );
+                        DumpExceptions(caughtExceptions);
 
-                        throw new OperationCanceledException( "Failed too many times consecutively, aborting." );
+                        throw new OperationCanceledException("Failed too many times consecutively, aborting.");
                     }
                 }
 
-                if( --retriesRemaining == 0 )
+                if (--retriesRemaining == 0)
                 {
                     break;
                 }
             }
 
-            if( caughtExceptions.Count <= 0 || suppressExceptions )
+            if (caughtExceptions.Count <= 0 || suppressExceptions)
             {
                 return result;
             }
 
-            DumpExceptions( caughtExceptions );
+            DumpExceptions(caughtExceptions);
 
-            throw caughtExceptions.FindLast( e => true ) ?? new InvalidOperationException( "Bad Retry state!" );
+            throw caughtExceptions.FindLast(e => true) ?? new InvalidOperationException("Bad Retry state!");
         }
 
         public static TResult Execute<TResult>(
@@ -95,7 +95,7 @@ namespace Intersect.Utilities
         )
         {
             return Execute(
-                action, new TimeSpan( retryIntervalMs * TimeSpan.TicksPerMillisecond ), retryCount, suppressExceptions,
+                action, new TimeSpan(retryIntervalMs * TimeSpan.TicksPerMillisecond), retryCount, suppressExceptions,
                 consecutiveFailuresUntilAbort
             );
         }

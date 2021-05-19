@@ -6,34 +6,34 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace Intersect.Editor.Forms
 {
-	partial class FrmMain
-	{
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private IContainer components = null;
+    partial class FrmMain
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private IContainer components = null;
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing && (components != null))
-			{
-				components.Dispose();
-			}
-			base.Dispose(disposing);
-		}
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
-		#region Windows Form Designer generated code
+        #region Windows Form Designer generated code
 
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.statusStrip1 = new DarkUI.Controls.DarkStatusStrip();
             this.toolStripLabelCoords = new System.Windows.Forms.ToolStripStatusLabel();
@@ -1036,95 +1036,95 @@ namespace Intersect.Editor.Forms
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
+        }
 
-		#endregion
-		private System.Windows.Forms.ToolStripMenuItem hihiToolStripMenuItem;
-		private DarkStatusStrip statusStrip1;
-		public ToolStripStatusLabel toolStripLabelCoords;
-		private ToolStripSeparator toolStripSeparator7;
-		public ToolStripStatusLabel toolStripLabelFPS;
-		private ToolStripSeparator toolStripSeparator8;
-		public ToolStripStatusLabel toolStripLabelDebug;
-		public ToolStripStatusLabel toolStripLabelRevision;
-		private ToolStripSeparator toolStripSeparator9;
-		private WeifenLuo.WinFormsUI.Docking.DockPanel dockLeft;
-		private ToolStripButton toolStripBtnNewMap;
-		private ToolStripButton toolStripBtnSaveMap;
-		private ToolStripSeparator toolStripSeparator1;
-		public ToolStripButton toolStripBtnCut;
-		public ToolStripButton toolStripBtnCopy;
-		public ToolStripButton toolStripBtnPaste;
-		private ToolStripSeparator toolStripSeparator2;
-		public ToolStripButton toolStripBtnUndo;
-		public ToolStripButton toolStripBtnRedo;
-		private ToolStripSeparator toolStripSeparator3;
-		public ToolStripButton toolStripBtnPen;
-		public ToolStripButton toolStripBtnSelect;
-		public ToolStripButton toolStripBtnRect;
-		private ToolStripSeparator toolStripSeparator4;
-		public ToolStripButton toolStripBtnFill;
-		public ToolStripButton toolStripBtnErase;
-		private ToolStripButton toolStripBtnEyeDrop;
-		private ToolStripSeparator toolStripSeparator5;
-		private ToolStripDropDownButton toolStripTimeButton;
-		private ToolStripSeparator toolStripSeparator6;
-		private ToolStripButton toolStripBtnScreenshot;
-		private ToolStripSeparator toolStripSeparator10;
-		private ToolStripButton toolStripBtnRun;
-		private ToolStripButton toolStripButtonBug;
-		private ToolStripSeparator toolStripSeparator11;
-		private ToolStripButton toolStripButtonQuestion;
-		private DarkToolStrip toolStrip1;
-		private ToolStripMenuItem fileToolStripMenuItem;
-		private ToolStripMenuItem saveMapToolStripMenuItem;
-		private ToolStripMenuItem newMapToolStripMenuItem;
-		private ToolStripMenuItem importMapToolStripMenuItem;
-		private ToolStripMenuItem exportMapToolStripMenuItem;
-		private ToolStripMenuItem optionsToolStripMenuItem;
-		private ToolStripMenuItem exitToolStripMenuItem;
-		private ToolStripMenuItem editToolStripMenuItem;
-		private ToolStripMenuItem undoToolStripMenuItem;
-		private ToolStripMenuItem redoToolStripMenuItem;
-		private ToolStripMenuItem cutToolStripMenuItem;
-		private ToolStripMenuItem copyToolStripMenuItem;
-		private ToolStripMenuItem pasteToolStripMenuItem;
-		public ToolStripMenuItem fillToolStripMenuItem;
-		public ToolStripMenuItem eraseLayerToolStripMenuItem;
-		private ToolStripMenuItem selectToolStripMenuItem;
-		private ToolStripMenuItem allLayersToolStripMenuItem;
-		private ToolStripMenuItem currentLayerOnlyToolStripMenuItem;
-		private ToolStripMenuItem viewToolStripMenuItem;
-		private ToolStripMenuItem hideDarknessToolStripMenuItem;
-		private ToolStripMenuItem hideFogToolStripMenuItem;
-		private ToolStripMenuItem hideOverlayToolStripMenuItem;
-		private ToolStripMenuItem hideTilePreviewToolStripMenuItem;
-		private ToolStripMenuItem hideResourcesToolStripMenuItem;
-		private ToolStripMenuItem mapGridToolStripMenuItem;
-		private ToolStripMenuItem contentEditorsToolStripMenuItem;
-		private ToolStripMenuItem animationEditorToolStripMenuItem;
-		private ToolStripMenuItem classEditorToolStripMenuItem;
-		private ToolStripMenuItem commonEventEditorToolStripMenuItem;
-		private ToolStripMenuItem craftingTableEditorToolStripMenuItem;
-		private ToolStripMenuItem itemEditorToolStripMenuItem;
-		private ToolStripMenuItem npcEditorToolStripMenuItem;
-		private ToolStripMenuItem projectileEditorToolStripMenuItem;
-		private ToolStripMenuItem questEditorToolStripMenuItem;
-		private ToolStripMenuItem resourceEditorToolStripMenuItem;
-		private ToolStripMenuItem shopEditorToolStripMenuItem;
-		private ToolStripMenuItem spellEditorToolStripMenuItem;
-		private ToolStripMenuItem variableEditorToolStripMenuItem;
-		private ToolStripMenuItem timeEditorToolStripMenuItem;
-		private ToolStripMenuItem helpToolStripMenuItem;
-		private ToolStripMenuItem postQuestionToolStripMenuItem;
-		private ToolStripMenuItem reportBugToolStripMenuItem;
-		private ToolStripMenuItem aboutToolStripMenuItem;
-		private DarkMenuStrip menuStrip;
-		private ToolStripMenuItem toolsToolStripMenuItem;
-		private ToolStripButton toolStripBtnFlipHorizontal;
-		private ToolStripButton toolStripBtnFlipVertical;
-		private ToolStripSeparator toolStripSeparator13;
-		private ToolStripMenuItem craftsEditorToolStripMenuItem;
+        #endregion
+        private System.Windows.Forms.ToolStripMenuItem hihiToolStripMenuItem;
+        private DarkStatusStrip statusStrip1;
+        public ToolStripStatusLabel toolStripLabelCoords;
+        private ToolStripSeparator toolStripSeparator7;
+        public ToolStripStatusLabel toolStripLabelFPS;
+        private ToolStripSeparator toolStripSeparator8;
+        public ToolStripStatusLabel toolStripLabelDebug;
+        public ToolStripStatusLabel toolStripLabelRevision;
+        private ToolStripSeparator toolStripSeparator9;
+        private WeifenLuo.WinFormsUI.Docking.DockPanel dockLeft;
+        private ToolStripButton toolStripBtnNewMap;
+        private ToolStripButton toolStripBtnSaveMap;
+        private ToolStripSeparator toolStripSeparator1;
+        public ToolStripButton toolStripBtnCut;
+        public ToolStripButton toolStripBtnCopy;
+        public ToolStripButton toolStripBtnPaste;
+        private ToolStripSeparator toolStripSeparator2;
+        public ToolStripButton toolStripBtnUndo;
+        public ToolStripButton toolStripBtnRedo;
+        private ToolStripSeparator toolStripSeparator3;
+        public ToolStripButton toolStripBtnPen;
+        public ToolStripButton toolStripBtnSelect;
+        public ToolStripButton toolStripBtnRect;
+        private ToolStripSeparator toolStripSeparator4;
+        public ToolStripButton toolStripBtnFill;
+        public ToolStripButton toolStripBtnErase;
+        private ToolStripButton toolStripBtnEyeDrop;
+        private ToolStripSeparator toolStripSeparator5;
+        private ToolStripDropDownButton toolStripTimeButton;
+        private ToolStripSeparator toolStripSeparator6;
+        private ToolStripButton toolStripBtnScreenshot;
+        private ToolStripSeparator toolStripSeparator10;
+        private ToolStripButton toolStripBtnRun;
+        private ToolStripButton toolStripButtonBug;
+        private ToolStripSeparator toolStripSeparator11;
+        private ToolStripButton toolStripButtonQuestion;
+        private DarkToolStrip toolStrip1;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem saveMapToolStripMenuItem;
+        private ToolStripMenuItem newMapToolStripMenuItem;
+        private ToolStripMenuItem importMapToolStripMenuItem;
+        private ToolStripMenuItem exportMapToolStripMenuItem;
+        private ToolStripMenuItem optionsToolStripMenuItem;
+        private ToolStripMenuItem exitToolStripMenuItem;
+        private ToolStripMenuItem editToolStripMenuItem;
+        private ToolStripMenuItem undoToolStripMenuItem;
+        private ToolStripMenuItem redoToolStripMenuItem;
+        private ToolStripMenuItem cutToolStripMenuItem;
+        private ToolStripMenuItem copyToolStripMenuItem;
+        private ToolStripMenuItem pasteToolStripMenuItem;
+        public ToolStripMenuItem fillToolStripMenuItem;
+        public ToolStripMenuItem eraseLayerToolStripMenuItem;
+        private ToolStripMenuItem selectToolStripMenuItem;
+        private ToolStripMenuItem allLayersToolStripMenuItem;
+        private ToolStripMenuItem currentLayerOnlyToolStripMenuItem;
+        private ToolStripMenuItem viewToolStripMenuItem;
+        private ToolStripMenuItem hideDarknessToolStripMenuItem;
+        private ToolStripMenuItem hideFogToolStripMenuItem;
+        private ToolStripMenuItem hideOverlayToolStripMenuItem;
+        private ToolStripMenuItem hideTilePreviewToolStripMenuItem;
+        private ToolStripMenuItem hideResourcesToolStripMenuItem;
+        private ToolStripMenuItem mapGridToolStripMenuItem;
+        private ToolStripMenuItem contentEditorsToolStripMenuItem;
+        private ToolStripMenuItem animationEditorToolStripMenuItem;
+        private ToolStripMenuItem classEditorToolStripMenuItem;
+        private ToolStripMenuItem commonEventEditorToolStripMenuItem;
+        private ToolStripMenuItem craftingTableEditorToolStripMenuItem;
+        private ToolStripMenuItem itemEditorToolStripMenuItem;
+        private ToolStripMenuItem npcEditorToolStripMenuItem;
+        private ToolStripMenuItem projectileEditorToolStripMenuItem;
+        private ToolStripMenuItem questEditorToolStripMenuItem;
+        private ToolStripMenuItem resourceEditorToolStripMenuItem;
+        private ToolStripMenuItem shopEditorToolStripMenuItem;
+        private ToolStripMenuItem spellEditorToolStripMenuItem;
+        private ToolStripMenuItem variableEditorToolStripMenuItem;
+        private ToolStripMenuItem timeEditorToolStripMenuItem;
+        private ToolStripMenuItem helpToolStripMenuItem;
+        private ToolStripMenuItem postQuestionToolStripMenuItem;
+        private ToolStripMenuItem reportBugToolStripMenuItem;
+        private ToolStripMenuItem aboutToolStripMenuItem;
+        private DarkMenuStrip menuStrip;
+        private ToolStripMenuItem toolsToolStripMenuItem;
+        private ToolStripButton toolStripBtnFlipHorizontal;
+        private ToolStripButton toolStripBtnFlipVertical;
+        private ToolStripSeparator toolStripSeparator13;
+        private ToolStripMenuItem craftsEditorToolStripMenuItem;
         private ToolStripMenuItem packageUpdateToolStripMenuItem;
         private ToolStripMenuItem layersToolStripMenuItem;
         private ToolStripMenuItem hideEventsToolStripMenuItem;

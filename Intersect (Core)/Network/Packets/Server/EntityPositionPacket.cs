@@ -36,31 +36,31 @@ namespace Intersect.Network.Packets.Server
             Run = run;
         }
 
-        [Key( 3 )]
+        [Key(3)]
         public Guid Id { get; set; }
 
-        [Key( 4 )]
+        [Key(4)]
         public EntityTypes Type { get; set; }
 
-        [Key( 5 )]
+        [Key(5)]
         public Guid MapId { get; set; }
 
-        [Key( 6 )]
+        [Key(6)]
         public byte X { get; set; }
 
-        [Key( 7 )]
+        [Key(7)]
         public byte Y { get; set; }
 
-        [Key( 8 )]
+        [Key(8)]
         public byte Direction { get; set; }
 
-        [Key( 9 )]
+        [Key(9)]
         public bool Passable { get; set; }
 
-        [Key( 10 )]
+        [Key(10)]
         public bool HideName { get; set; }
-        
-        [Key( 11 )]
+
+        [Key(11)]
         public byte Run { get; set; }
 
     }

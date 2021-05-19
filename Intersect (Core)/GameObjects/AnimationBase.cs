@@ -18,7 +18,7 @@ namespace Intersect.GameObjects
         {
             Lights = new LightBase[FrameCount];
 
-            for( var frame = 0; frame < FrameCount; ++frame )
+            for (var frame = 0; frame < FrameCount; ++frame)
             {
                 Lights[frame] = new LightBase();
             }
@@ -43,8 +43,8 @@ namespace Intersect.GameObjects
         [JsonIgnore]
         public string Light
         {
-            get => JsonConvert.SerializeObject( Lights );
-            set => Lights = JsonConvert.DeserializeObject<LightBase[]>( value );
+            get => JsonConvert.SerializeObject(Lights);
+            set => Lights = JsonConvert.DeserializeObject<LightBase[]>(value);
         }
 
         [NotMapped]
@@ -56,7 +56,7 @@ namespace Intersect.GameObjects
     {
 
         [JsonConstructor]
-        public AnimationBase( Guid id ) : base( id )
+        public AnimationBase(Guid id) : base(id)
         {
             // TODO: localize this
             Name = "New Animation";

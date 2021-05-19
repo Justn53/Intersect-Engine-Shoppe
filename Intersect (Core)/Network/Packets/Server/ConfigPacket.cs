@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public ConfigPacket( string config )
+        public ConfigPacket(string config)
         {
             Config = config;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public string Config { get; set; }
 
     }

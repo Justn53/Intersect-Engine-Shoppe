@@ -8,7 +8,7 @@ namespace Intersect.Editor.Maps
     public class MapGridItem
     {
 
-        public MapGridItem( Guid id, string name = "", int revision = 0 )
+        public MapGridItem(Guid id, string name = "", int revision = 0)
         {
             MapId = id;
             this.Name = name;

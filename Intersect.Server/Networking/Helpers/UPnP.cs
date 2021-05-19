@@ -27,77 +27,77 @@ namespace Intersect.Server.Networking.Helpers
             try
             {
                 var nat = new NatDiscoverer();
-                var cts = new CancellationTokenSource( 5000 );
-                sDevice = await nat.DiscoverDeviceAsync( PortMapper.Upnp, cts );
-                sExternalIp = ( await sDevice.GetExternalIPAsync() ).ToString();
-                Log.Pretty.Info( Strings.Upnp.initialized );
-                sLog.AppendLine( "Connected to UPnP device: " + sDevice.ToString() );
+                var cts = new CancellationTokenSource(5000);
+                sDevice = await nat.DiscoverDeviceAsync(PortMapper.Upnp, cts);
+                sExternalIp = (await sDevice.GetExternalIPAsync()).ToString();
+                Log.Pretty.Info(Strings.Upnp.initialized);
+                sLog.AppendLine("Connected to UPnP device: " + sDevice.ToString());
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                Log.Pretty.Error( exception, Strings.Upnp.initializationfailed );
-                sLog.AppendLine( Strings.Upnp.initializationfailed );
-                sLog.AppendLine( "UPnP Initialization Error: " + exception.ToString() );
+                Log.Pretty.Error(exception, Strings.Upnp.initializationfailed);
+                sLog.AppendLine(Strings.Upnp.initializationfailed);
+                sLog.AppendLine("UPnP Initialization Error: " + exception.ToString());
             }
 
             return null;
         }
 
-        public static async Task<NatDevice> OpenServerPort( int port, Protocol protocol )
+        public static async Task<NatDevice> OpenServerPort(int port, Protocol protocol)
         {
-            if( sDevice == null )
+            if (sDevice == null)
             {
                 return null;
             }
 
             try
             {
-                var map = await sDevice.GetSpecificMappingAsync( protocol, port );
-                if( map != null )
+                var map = await sDevice.GetSpecificMappingAsync(protocol, port);
+                if (map != null)
                 {
-                    await sDevice.DeletePortMapAsync( map );
+                    await sDevice.DeletePortMapAsync(map);
                 }
 
-                await sDevice.CreatePortMapAsync( new Mapping( protocol, port, port, "Intersect Engine" ) );
-                switch( protocol )
+                await sDevice.CreatePortMapAsync(new Mapping(protocol, port, port, "Intersect Engine"));
+                switch (protocol)
                 {
                     case Protocol.Tcp:
-                        Log.Pretty.Info( Strings.Upnp.forwardedtcp.ToString( port ) );
-                        sLog.AppendLine( Strings.Upnp.forwardedtcp.ToString( port ) );
+                        Log.Pretty.Info(Strings.Upnp.forwardedtcp.ToString(port));
+                        sLog.AppendLine(Strings.Upnp.forwardedtcp.ToString(port));
 
                         break;
 
                     case Protocol.Udp:
-                        Log.Pretty.Info( Strings.Upnp.forwardedudp.ToString( port ) );
-                        sLog.AppendLine( Strings.Upnp.forwardedudp.ToString( port ) );
+                        Log.Pretty.Info(Strings.Upnp.forwardedudp.ToString(port));
+                        sLog.AppendLine(Strings.Upnp.forwardedudp.ToString(port));
                         sPortForwarded = true;
 
                         break;
 
                     default:
-                        throw new ArgumentOutOfRangeException( nameof( protocol ), protocol, null );
+                        throw new ArgumentOutOfRangeException(nameof(protocol), protocol, null);
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                switch( protocol )
+                switch (protocol)
                 {
                     case Protocol.Tcp:
-                        Log.Pretty.Warn( Strings.Upnp.failedforwardingtcp.ToString( port ) );
-                        Log.Warn( "UPnP Could Not Open TCP Port " + port + Environment.NewLine + ex.ToString() );
-                        sLog.AppendLine( "UPnP Could Not Open TCP Port " + port + Environment.NewLine + ex.ToString() );
+                        Log.Pretty.Warn(Strings.Upnp.failedforwardingtcp.ToString(port));
+                        Log.Warn("UPnP Could Not Open TCP Port " + port + Environment.NewLine + ex.ToString());
+                        sLog.AppendLine("UPnP Could Not Open TCP Port " + port + Environment.NewLine + ex.ToString());
 
                         break;
 
                     case Protocol.Udp:
-                        Log.Pretty.Warn( Strings.Upnp.failedforwardingudp.ToString( port ) );
-                        Log.Warn( "UPnP Could Not Open UDP Port " + port + Environment.NewLine + ex.ToString() );
-                        sLog.AppendLine( "UPnP Could Not Open UDP Port " + port + Environment.NewLine + ex.ToString() );
+                        Log.Pretty.Warn(Strings.Upnp.failedforwardingudp.ToString(port));
+                        Log.Warn("UPnP Could Not Open UDP Port " + port + Environment.NewLine + ex.ToString());
+                        sLog.AppendLine("UPnP Could Not Open UDP Port " + port + Environment.NewLine + ex.ToString());
 
                         break;
 
                     default:
-                        throw new ArgumentOutOfRangeException( nameof( protocol ), protocol, null );
+                        throw new ArgumentOutOfRangeException(nameof(protocol), protocol, null);
                 }
             }
 

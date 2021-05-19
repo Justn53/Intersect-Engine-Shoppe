@@ -62,7 +62,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Initializes a new instance of the <see cref="Dragger" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Dragger( Base parent, string name = "" ) : base( parent, name )
+        public Dragger(Base parent, string name = "") : base(parent, name)
         {
             MouseInputEnabled = true;
             mHeld = false;
@@ -90,24 +90,24 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        protected override void OnMouseClickedLeft( int x, int y, bool down, bool automated = false )
+        protected override void OnMouseClickedLeft(int x, int y, bool down, bool automated = false)
         {
-            if( null == mTarget )
+            if (null == mTarget)
             {
                 return;
             }
 
-            if( down )
+            if (down)
             {
                 mHeld = true;
 
                 //Play Mouse Down Sound
-                if( !automated )
+                if (!automated)
                 {
-                    base.PlaySound( mMouseDownSound );
+                    base.PlaySound(mMouseDownSound);
                 }
 
-                mHoldPos = mTarget.CanvasPosToLocal( new Point( x, y ) );
+                mHoldPos = mTarget.CanvasPosToLocal(new Point(x, y));
                 InputHandler.MouseFocus = this;
             }
             else
@@ -115,7 +115,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
                 mHeld = false;
 
                 //Play Mouse Up Sound
-                base.PlaySound( mMouseUpSound );
+                base.PlaySound(mMouseUpSound);
                 InputHandler.MouseFocus = null;
             }
         }
@@ -127,31 +127,31 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         /// <param name="y">Y coordinate.</param>
         /// <param name="dx">X change.</param>
         /// <param name="dy">Y change.</param>
-        protected override void OnMouseMoved( int x, int y, int dx, int dy )
+        protected override void OnMouseMoved(int x, int y, int dx, int dy)
         {
-            if( null == mTarget )
+            if (null == mTarget)
             {
                 return;
             }
 
-            if( !mHeld )
+            if (!mHeld)
             {
                 return;
             }
 
-            var p = new Point( x - mHoldPos.X, y - mHoldPos.Y );
+            var p = new Point(x - mHoldPos.X, y - mHoldPos.Y);
 
             // Translate to parent
-            if( mTarget.Parent != null )
+            if (mTarget.Parent != null)
             {
-                p = mTarget.Parent.CanvasPosToLocal( p );
+                p = mTarget.Parent.CanvasPosToLocal(p);
             }
 
             //m_Target->SetPosition( p.x, p.y );
-            mTarget.MoveTo( p.X, p.Y );
-            if( Dragged != null )
+            mTarget.MoveTo(p.X, p.Y);
+            if (Dragged != null)
             {
-                Dragged.Invoke( this, EventArgs.Empty );
+                Dragged.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -159,28 +159,28 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
         }
 
         public override JObject GetJson()
         {
             var obj = base.GetJson();
-            obj.Add( "NormalImage", GetImageFilename( ControlState.Normal ) );
-            obj.Add( "HoveredImage", GetImageFilename( ControlState.Hovered ) );
-            obj.Add( "ClickedImage", GetImageFilename( ControlState.Clicked ) );
-            obj.Add( "DisabledImage", GetImageFilename( ControlState.Disabled ) );
-            obj.Add( "HoverSound", mHoverSound );
-            obj.Add( "MouseUpSound", mMouseUpSound );
-            obj.Add( "MouseDownSound", mMouseDownSound );
+            obj.Add("NormalImage", GetImageFilename(ControlState.Normal));
+            obj.Add("HoveredImage", GetImageFilename(ControlState.Hovered));
+            obj.Add("ClickedImage", GetImageFilename(ControlState.Clicked));
+            obj.Add("DisabledImage", GetImageFilename(ControlState.Disabled));
+            obj.Add("HoverSound", mHoverSound);
+            obj.Add("MouseUpSound", mMouseUpSound);
+            obj.Add("MouseDownSound", mMouseDownSound);
 
-            return base.FixJson( obj );
+            return base.FixJson(obj);
         }
 
-        public override void LoadJson( JToken obj )
+        public override void LoadJson(JToken obj)
         {
-            base.LoadJson( obj );
-            if( obj["NormalImage"] != null )
+            base.LoadJson(obj);
+            if (obj["NormalImage"] != null)
             {
                 SetImage(
                     GameContentManager.Current.GetTexture(
@@ -189,7 +189,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
                 );
             }
 
-            if( obj["HoveredImage"] != null )
+            if (obj["HoveredImage"] != null)
             {
                 SetImage(
                     GameContentManager.Current.GetTexture(
@@ -198,7 +198,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
                 );
             }
 
-            if( obj["ClickedImage"] != null )
+            if (obj["ClickedImage"] != null)
             {
                 SetImage(
                     GameContentManager.Current.GetTexture(
@@ -207,7 +207,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
                 );
             }
 
-            if( obj["DisabledImage"] != null )
+            if (obj["DisabledImage"] != null)
             {
                 SetImage(
                     GameContentManager.Current.GetTexture(
@@ -216,17 +216,17 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
                 );
             }
 
-            if( obj["HoverSound"] != null )
+            if (obj["HoverSound"] != null)
             {
                 mHoverSound = (string)obj["HoverSound"];
             }
 
-            if( obj["MouseUpSound"] != null )
+            if (obj["MouseUpSound"] != null)
             {
                 mMouseUpSound = (string)obj["MouseUpSound"];
             }
 
-            if( obj["MouseDownSound"] != null )
+            if (obj["MouseDownSound"] != null)
             {
                 mMouseDownSound = (string)obj["MouseDownSound"];
             }
@@ -241,9 +241,9 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Sets the button's image.
         /// </summary>
         /// <param name="textureName">Texture name. Null to remove.</param>
-        public virtual void SetImage( GameTexture texture, string fileName, ControlState state )
+        public virtual void SetImage(GameTexture texture, string fileName, ControlState state)
         {
-            switch( state )
+            switch (state)
             {
                 case ControlState.Normal:
                     mNormalImageFilename = fileName;
@@ -266,13 +266,13 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
 
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException( nameof( state ), state, null );
+                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }
         }
 
-        public virtual GameTexture GetImage( ControlState state )
+        public virtual GameTexture GetImage(ControlState state)
         {
-            switch( state )
+            switch (state)
             {
                 case ControlState.Normal:
                     return mNormalImage;
@@ -287,9 +287,9 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
             }
         }
 
-        public virtual string GetImageFilename( ControlState state )
+        public virtual string GetImageFilename(ControlState state)
         {
-            switch( state )
+            switch (state)
             {
                 case ControlState.Normal:
                     return mNormalImageFilename;
@@ -309,9 +309,9 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
             base.OnMouseEntered();
 
             //Play Mouse Entered Sound
-            if( ShouldDrawHover )
+            if (ShouldDrawHover)
             {
-                base.PlaySound( mHoverSound );
+                base.PlaySound(mHoverSound);
             }
         }
 

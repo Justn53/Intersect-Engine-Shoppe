@@ -18,25 +18,25 @@ namespace Intersect.Server.Database.PlayerData.Players
         {
         }
 
-        public Friend( Player me, Player friend )
+        public Friend(Player me, Player friend)
         {
             Owner = me;
             Target = friend;
         }
 
-        [JsonProperty( nameof( Owner ) )]
+        [JsonProperty(nameof(Owner))]
 
         // Note: Do not change to OwnerId or it collides with the hidden
         // one that Entity Framework expects/creates under the covers.
         private Guid JsonOwnerId => Owner?.Id ?? Guid.Empty;
 
-        [JsonProperty( nameof( Target ) )]
+        [JsonProperty(nameof(Target))]
 
         // Note: Do not change to TargetId or it collides with the hidden
         // one that Entity Framework expects/creates under the covers.
         private Guid JsonTargetId => Target?.Id ?? Guid.Empty;
 
-        [DatabaseGenerated( DatabaseGeneratedOption.Identity )]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; private set; }
 
         [JsonIgnore]

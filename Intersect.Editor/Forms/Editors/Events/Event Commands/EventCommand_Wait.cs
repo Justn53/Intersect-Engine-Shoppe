@@ -14,7 +14,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private WaitCommand mMyCommand;
 
-        public EventCommandWait( WaitCommand refCommand, FrmEvent editor )
+        public EventCommandWait(WaitCommand refCommand, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
@@ -32,18 +32,18 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             btnCancel.Text = Strings.EventWait.cancel;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
             mMyCommand.Time = (int)nudWait.Value;
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }
 
-        private void nudWait_ValueChanged( object sender, EventArgs e )
+        private void nudWait_ValueChanged(object sender, EventArgs e)
         {
         }
 

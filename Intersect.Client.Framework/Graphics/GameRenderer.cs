@@ -17,7 +17,7 @@ namespace Intersect.Client.Framework.Graphics
 
         public List<Stream> ScreenshotRequests { get; }
 
-        public Resolution ActiveResolution => new Resolution( PreferredResolution, OverrideResolution );
+        public Resolution ActiveResolution => new Resolution(PreferredResolution, OverrideResolution);
 
         public bool HasOverrideResolution => OverrideResolution != Resolution.Empty;
 
@@ -45,13 +45,13 @@ namespace Intersect.Client.Framework.Graphics
         /// <summary>
         ///     Clears everything off the render target with a specified color.
         /// </summary>
-        public abstract void Clear( Color color );
+        public abstract void Clear(Color color);
 
-        public abstract void SetView( FloatRect view );
+        public abstract void SetView(FloatRect view);
 
         public abstract FloatRect GetView();
 
-        public abstract GameFont LoadFont( string filename );
+        public abstract GameFont LoadFont(string filename);
 
         public abstract void DrawTexture(
             GameTexture tex,
@@ -82,9 +82,9 @@ namespace Intersect.Client.Framework.Graphics
 
         public abstract bool DisplayModeChanged();
 
-        public abstract GameRenderTexture CreateRenderTexture( int width, int height );
+        public abstract GameRenderTexture CreateRenderTexture(int width, int height);
 
-        public abstract GameTexture LoadTexture( string filename, string realFilename );
+        public abstract GameTexture LoadTexture(string filename, string realFilename);
 
         public abstract GameTexture LoadTexture(
             string assetName,
@@ -93,7 +93,7 @@ namespace Intersect.Client.Framework.Graphics
 
         public abstract GameTexture GetWhiteTexture();
 
-        public abstract Pointf MeasureText( string text, GameFont gameFont, float fontScale );
+        public abstract Pointf MeasureText(string text, GameFont gameFont, float fontScale);
 
         public abstract void DrawString(
             string text,
@@ -123,19 +123,19 @@ namespace Intersect.Client.Framework.Graphics
         //Buffers
         public abstract GameTileBuffer CreateTileBuffer();
 
-        public abstract void DrawTileBuffer( GameTileBuffer buffer );
+        public abstract void DrawTileBuffer(GameTileBuffer buffer);
 
         public abstract void Close();
 
         public abstract List<string> GetValidVideoModes();
 
-        public abstract GameShader LoadShader( string shaderName );
+        public abstract GameShader LoadShader(string shaderName);
 
-        public void RequestScreenshot( string screenshotDir = "screenshots" )
+        public void RequestScreenshot(string screenshotDir = "screenshots")
         {
-            if( !Directory.Exists( screenshotDir ) )
+            if (!Directory.Exists(screenshotDir))
             {
-                Directory.CreateDirectory( screenshotDir ?? "" );
+                Directory.CreateDirectory(screenshotDir ?? "");
             }
 
             var screenshotNumber = 0;
@@ -147,9 +147,9 @@ namespace Intersect.Client.Framework.Graphics
                 );
 
                 ++screenshotNumber;
-            } while( File.Exists( screenshotFile ) && screenshotNumber < 4 );
+            } while (File.Exists(screenshotFile) && screenshotNumber < 4);
 
-            ScreenshotRequests.Add( File.OpenWrite( screenshotFile ) );
+            ScreenshotRequests.Add(File.OpenWrite(screenshotFile));
         }
 
     }

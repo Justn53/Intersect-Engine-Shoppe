@@ -10,27 +10,27 @@ namespace Intersect.Server.Core.Commands
     internal class ApiRolesCommand : TargetUserCommand
     {
 
-        public ApiRolesCommand() : base( Strings.Commands.ApiRoles, Strings.Commands.Arguments.TargetApi )
+        public ApiRolesCommand() : base(Strings.Commands.ApiRoles, Strings.Commands.Arguments.TargetApi)
         {
         }
 
-        protected override void HandleTarget( ServerContext context, ParserResult result, User target )
+        protected override void HandleTarget(ServerContext context, ParserResult result, User target)
         {
-            if( target == null )
+            if (target == null)
             {
-                Console.WriteLine( $@"    {Strings.Account.notfound}" );
+                Console.WriteLine($@"    {Strings.Account.notfound}");
 
                 return;
             }
 
-            if( target.Power == null )
+            if (target.Power == null)
             {
-                throw new ArgumentNullException( nameof( target.Power ) );
+                throw new ArgumentNullException(nameof(target.Power));
             }
 
-            Console.WriteLine( Strings.Commandoutput.apiroles.ToString( target.Name ) );
-            Console.WriteLine( "users.query: " + target.Power.ApiRoles.UserQuery );
-            Console.WriteLine( "users.manage: " + target.Power.ApiRoles.UserManage );
+            Console.WriteLine(Strings.Commandoutput.apiroles.ToString(target.Name));
+            Console.WriteLine("users.query: " + target.Power.ApiRoles.UserQuery);
+            Console.WriteLine("users.manage: " + target.Power.ApiRoles.UserManage);
         }
 
     }

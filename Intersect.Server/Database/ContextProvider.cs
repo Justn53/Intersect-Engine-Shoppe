@@ -17,14 +17,14 @@ namespace Intersect.Server.Database
             ContextInterfaceTypes = new Dictionary<Type, Type>();
         }
 
-        public void Add<TContext>( TContext context ) where TContext : IntersectDbContext<TContext>
+        public void Add<TContext>(TContext context) where TContext : IntersectDbContext<TContext>
         {
-            var contextType = typeof( TContext );
+            var contextType = typeof(TContext);
             var contextInterfaceType = contextType.GetInterfaces()
-                .FirstOrDefault( type => typeof( IDbContext ) != type && typeof( IDbContext ).IsAssignableFrom( type ) );
-            if( Contexts.ContainsKey( contextInterfaceType ) )
+                .FirstOrDefault(type => typeof(IDbContext) != type && typeof(IDbContext).IsAssignableFrom(type));
+            if (Contexts.ContainsKey(contextInterfaceType))
             {
-                throw new Exception( $"Context for {contextInterfaceType.Name} already exists." );
+                throw new Exception($"Context for {contextInterfaceType.Name} already exists.");
             }
 
             Contexts[contextInterfaceType] = context;
@@ -34,12 +34,12 @@ namespace Intersect.Server.Database
 
         public TContext Access<TContext, TContextInterface>() where TContext : class, IDbContext
         {
-            if( !Contexts.TryGetValue( typeof( TContext ), out var context ) )
+            if (!Contexts.TryGetValue(typeof(TContext), out var context))
             {
-                throw new Exception( $"No context of type {typeof( TContext ).Name} exists." );
+                throw new Exception($"No context of type {typeof(TContext).Name} exists.");
             }
 
-            return Activator.CreateInstance( typeof( TContextInterface ), new object[] { context } ) as TContext;
+            return Activator.CreateInstance(typeof(TContextInterface), new object[] { context }) as TContext;
         }
 
         #endregion

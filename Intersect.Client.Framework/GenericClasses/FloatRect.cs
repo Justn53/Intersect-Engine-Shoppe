@@ -48,7 +48,7 @@ namespace Intersect.Client.Framework.GenericClasses
 
         public static FloatRect Empty => new FloatRect();
 
-        public FloatRect( float x, float y, float w, float h )
+        public FloatRect(float x, float y, float w, float h)
         {
             mX = x;
             mY = y;
@@ -56,34 +56,34 @@ namespace Intersect.Client.Framework.GenericClasses
             mHeight = h;
         }
 
-        public static FloatRect Intersect( FloatRect a, FloatRect b )
+        public static FloatRect Intersect(FloatRect a, FloatRect b)
         {
             // MS.NET returns a non-empty rectangle if the two rectangles
             // touch each other
-            if( !a.IntersectsWithInclusive( b ) )
+            if (!a.IntersectsWithInclusive(b))
             {
                 return Empty;
             }
 
             return FloatRect.FromLtrb(
-                Math.Max( a.Left, b.Left ), Math.Max( a.Top, b.Top ), Math.Min( a.Right, b.Right ),
-                Math.Min( a.Bottom, b.Bottom )
+                Math.Max(a.Left, b.Left), Math.Max(a.Top, b.Top), Math.Min(a.Right, b.Right),
+                Math.Min(a.Bottom, b.Bottom)
             );
         }
 
-        public static FloatRect FromLtrb( float left, float top, float right, float bottom )
+        public static FloatRect FromLtrb(float left, float top, float right, float bottom)
         {
-            return new FloatRect( left, top, right - left, bottom - top );
+            return new FloatRect(left, top, right - left, bottom - top);
         }
 
-        public bool IntersectsWith( FloatRect rect )
+        public bool IntersectsWith(FloatRect rect)
         {
-            return !( Left >= rect.Right || Right <= rect.Left || Top >= rect.Bottom || Bottom <= rect.Top );
+            return !(Left >= rect.Right || Right <= rect.Left || Top >= rect.Bottom || Bottom <= rect.Top);
         }
 
-        private bool IntersectsWithInclusive( FloatRect r )
+        private bool IntersectsWithInclusive(FloatRect r)
         {
-            return !( Left > r.Right || Right < r.Left || Top > r.Bottom || Bottom < r.Top );
+            return !(Left > r.Right || Right < r.Left || Top > r.Bottom || Bottom < r.Top);
         }
 
         public void Reset()
@@ -100,7 +100,7 @@ namespace Intersect.Client.Framework.GenericClasses
         /// <remarks>
         ///     Checks if an x,y coordinate lies within this Rectangle.
         /// </remarks>
-        public bool Contains( float x, float y )
+        public bool Contains(float x, float y)
         {
             return x >= Left && x < Right && y >= Top && y < Bottom;
         }
@@ -111,9 +111,9 @@ namespace Intersect.Client.Framework.GenericClasses
         /// <remarks>
         ///     Checks if a Pofloat lies within this Rectangle.
         /// </remarks>
-        public bool Contains( Point pt )
+        public bool Contains(Point pt)
         {
-            return Contains( pt.X, pt.Y );
+            return Contains(pt.X, pt.Y);
         }
 
     }

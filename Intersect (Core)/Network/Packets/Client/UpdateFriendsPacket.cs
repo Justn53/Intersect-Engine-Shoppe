@@ -10,16 +10,16 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public UpdateFriendsPacket( string name, bool adding )
+        public UpdateFriendsPacket(string name, bool adding)
         {
             Name = name;
             Adding = adding;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public string Name { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public bool Adding { get; set; }
 
     }

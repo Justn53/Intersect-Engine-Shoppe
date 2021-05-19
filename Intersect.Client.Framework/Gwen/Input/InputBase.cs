@@ -26,22 +26,22 @@ namespace Intersect.Client.Framework.Gwen.Input
         /// </summary>
         /// <param name="canvas">Canvas to use.</param>
         /// <param name="target">Rander target (needed for scaling).</param>
-        public abstract void Initialize( Canvas canvas );
+        public abstract void Initialize(Canvas canvas);
 
         /// <summary>
         ///     Translates control key code to GWEN's code.
         /// </summary>
-        public abstract Key TranslateKeyCode( object sfKey );
+        public abstract Key TranslateKeyCode(object sfKey);
 
         /// <summary>
         ///     Translates alphanumeric key code to character value.
         /// </summary>
-        public abstract char TranslateChar( object sfKey );
+        public abstract char TranslateChar(object sfKey);
 
         /// <summary>
         ///     Main entrypoint for processing input events. Call from your RenderWindow's event handlers.
         /// </summary>
-        public abstract bool ProcessMessage( object message );
+        public abstract bool ProcessMessage(object message);
 
     }
 

@@ -17,7 +17,7 @@ namespace Intersect.Core.ExperimentalFeatures
         /// </summary>
         /// <param name="enabled">the new enablement state</param>
         /// <returns>a clone of this flag with the new enablement state</returns>
-        IExperimentalFlag With( bool enabled );
+        IExperimentalFlag With(bool enabled);
 
     }
 

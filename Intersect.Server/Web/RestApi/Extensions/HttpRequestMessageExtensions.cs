@@ -13,7 +13,7 @@ namespace Intersect.Server.Web.RestApi.Extensions
             string message
         )
         {
-            return request.CreateResponse( statusCode, new { Message = message } );
+            return request.CreateResponse(statusCode, new { Message = message });
         }
 
     }

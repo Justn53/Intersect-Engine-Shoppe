@@ -12,12 +12,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public QuestProgressPacket( Dictionary<Guid, string> quests )
+        public QuestProgressPacket(Dictionary<Guid, string> quests)
         {
             Quests = quests;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Dictionary<Guid, string> Quests { get; set; }
 
     }

@@ -40,108 +40,108 @@ namespace Intersect.Building
         /// <inheritdoc />
         public override bool Execute()
         {
-            if( string.IsNullOrWhiteSpace( OutputDirectory ) )
+            if (string.IsNullOrWhiteSpace(OutputDirectory))
             {
-                Log?.LogError( KeyGenerationTaskStrings.OutputDirectoryInvalid );
+                Log?.LogError(KeyGenerationTaskStrings.OutputDirectoryInvalid);
 
                 return false;
             }
 
-            if( !Directory.Exists( OutputDirectory ) )
+            if (!Directory.Exists(OutputDirectory))
             {
                 try
                 {
-                    Directory.CreateDirectory( OutputDirectory );
+                    Directory.CreateDirectory(OutputDirectory);
                 }
-                catch( Exception exception )
+                catch (Exception exception)
                 {
-                    Log?.LogError( KeyGenerationTaskStrings.ErrorCreatingOutputDirectory, OutputDirectory );
-                    Log?.LogErrorFromException( exception );
+                    Log?.LogError(KeyGenerationTaskStrings.ErrorCreatingOutputDirectory, OutputDirectory);
+                    Log?.LogErrorFromException(exception);
                 }
             }
 
-            var power = Math.Log( KeySize, 0 );
-            if( KeySize % 2 != 0 || power < 10 || power - Math.Floor( power ) > 0.001 )
+            var power = Math.Log(KeySize, 0);
+            if (KeySize % 2 != 0 || power < 10 || power - Math.Floor(power) > 0.001)
             {
-                Log?.LogError( KeyGenerationTaskStrings.KeySizeInvalid, KeySize );
+                Log?.LogError(KeyGenerationTaskStrings.KeySizeInvalid, KeySize);
 
                 return false;
             }
 
-            var pathPrivateKey = Path.Combine( OutputDirectory, "network.handshake.bkey" );
-            var pathPublicKey = Path.Combine( OutputDirectory, "network.handshake.bkey.pub" );
+            var pathPrivateKey = Path.Combine(OutputDirectory, "network.handshake.bkey");
+            var pathPublicKey = Path.Combine(OutputDirectory, "network.handshake.bkey.pub");
 
-            using( var rsa = new RSACryptoServiceProvider( KeySize ) )
+            using (var rsa = new RSACryptoServiceProvider(KeySize))
             {
                 var writePrivateKey = true;
-                if( !GenerateEachBuild )
+                if (!GenerateEachBuild)
                 {
-                    if( File.Exists( pathPrivateKey ) )
+                    if (File.Exists(pathPrivateKey))
                     {
-                        if( File.Exists( pathPublicKey ) )
+                        if (File.Exists(pathPublicKey))
                         {
                             return true;
                         }
 
-                        Log?.LogWarning( KeyGenerationTaskStrings.PublicKeyMissing );
+                        Log?.LogWarning(KeyGenerationTaskStrings.PublicKeyMissing);
                     }
 
                     try
                     {
-                        using( var stream = File.OpenRead( pathPrivateKey ) )
+                        using (var stream = File.OpenRead(pathPrivateKey))
                         {
                             var privateKey = new RsaKey();
-                            privateKey.Read( stream );
+                            privateKey.Read(stream);
 
-                            if( privateKey.IsPublic || privateKey.Format != KeyFormat.Rsa )
+                            if (privateKey.IsPublic || privateKey.Format != KeyFormat.Rsa)
                             {
-                                Log?.LogWarning( KeyGenerationTaskStrings.PrivateKeyInvalid );
+                                Log?.LogWarning(KeyGenerationTaskStrings.PrivateKeyInvalid);
                             }
                             else
                             {
-                                rsa.ImportParameters( privateKey.Parameters );
+                                rsa.ImportParameters(privateKey.Parameters);
                                 writePrivateKey = false;
                             }
                         }
                     }
-                    catch( Exception exception )
+                    catch (Exception exception)
                     {
-                        Log?.LogWarning( KeyGenerationTaskStrings.ErrorReadingPrivateKey );
-                        Log?.LogWarningFromException( exception );
+                        Log?.LogWarning(KeyGenerationTaskStrings.ErrorReadingPrivateKey);
+                        Log?.LogWarningFromException(exception);
                     }
                 }
 
-                if( writePrivateKey )
+                if (writePrivateKey)
                 {
-                    var privateKey = new RsaKey( rsa.ExportParameters( true ) );
+                    var privateKey = new RsaKey(rsa.ExportParameters(true));
                     try
                     {
-                        using( var stream = File.OpenWrite( pathPrivateKey ) )
+                        using (var stream = File.OpenWrite(pathPrivateKey))
                         {
-                            privateKey.Write( stream );
+                            privateKey.Write(stream);
                         }
                     }
-                    catch( Exception exception )
+                    catch (Exception exception)
                     {
-                        Log?.LogError( KeyGenerationTaskStrings.ErrorWritingPrivateKey );
-                        Log?.LogErrorFromException( exception );
+                        Log?.LogError(KeyGenerationTaskStrings.ErrorWritingPrivateKey);
+                        Log?.LogErrorFromException(exception);
 
                         return false;
                     }
                 }
 
-                var publicKey = new RsaKey( rsa.ExportParameters( false ) );
+                var publicKey = new RsaKey(rsa.ExportParameters(false));
                 try
                 {
-                    using( var stream = File.OpenWrite( pathPublicKey ) )
+                    using (var stream = File.OpenWrite(pathPublicKey))
                     {
-                        publicKey.Write( stream );
+                        publicKey.Write(stream);
                     }
                 }
-                catch( Exception exception )
+                catch (Exception exception)
                 {
-                    Log?.LogError( KeyGenerationTaskStrings.ErrorWritingPublicKey );
-                    Log?.LogErrorFromException( exception );
+                    Log?.LogError(KeyGenerationTaskStrings.ErrorWritingPublicKey);
+                    Log?.LogErrorFromException(exception);
 
                     return false;
                 }

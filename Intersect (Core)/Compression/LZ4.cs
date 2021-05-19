@@ -10,24 +10,24 @@ namespace Intersect.Compression
 {
     public static class LZ4
     {
-        public static byte[] Pickle( byte[] data )
+        public static byte[] Pickle(byte[] data)
         {
-            return LZ4Pickler.Pickle( data, LZ4Level.L12_MAX );
+            return LZ4Pickler.Pickle(data, LZ4Level.L12_MAX);
         }
 
-        public static byte[] UnPickle( byte[] data )
+        public static byte[] UnPickle(byte[] data)
         {
-            return LZ4Pickler.Unpickle( data );
+            return LZ4Pickler.Unpickle(data);
         }
 
-        public static byte[] PickleString( string data )
+        public static byte[] PickleString(string data)
         {
-            return LZ4Pickler.Pickle( Encoding.Default.GetBytes( data ), LZ4Level.L00_FAST );
+            return LZ4Pickler.Pickle(Encoding.Default.GetBytes(data), LZ4Level.L00_FAST);
         }
 
-        public static string UnPickleString( byte[] data )
+        public static string UnPickleString(byte[] data)
         {
-            return Encoding.Default.GetString( LZ4Pickler.Unpickle( data ) );
+            return Encoding.Default.GetString(LZ4Pickler.Unpickle(data));
         }
     }
 }

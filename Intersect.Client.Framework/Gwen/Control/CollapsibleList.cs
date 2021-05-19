@@ -15,10 +15,10 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="CollapsibleList" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public CollapsibleList( Base parent ) : base( parent )
+        public CollapsibleList(Base parent) : base(parent)
         {
             MouseInputEnabled = true;
-            EnableScroll( false, true );
+            EnableScroll(false, true);
             AutoHideBars = true;
         }
 
@@ -39,17 +39,17 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         public Button GetSelectedButton()
         {
-            foreach( var child in Children )
+            foreach (var child in Children)
             {
                 var cat = child as CollapsibleCategory;
-                if( cat == null )
+                if (cat == null)
                 {
                     continue;
                 }
 
                 var button = cat.GetSelectedButton();
 
-                if( button != null )
+                if (button != null)
                 {
                     return button;
                 }
@@ -62,11 +62,11 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Adds a category to the list.
         /// </summary>
         /// <param name="category">Category control to add.</param>
-        protected virtual void Add( CollapsibleCategory category )
+        protected virtual void Add(CollapsibleCategory category)
         {
             category.Parent = this;
             category.Dock = Pos.Top;
-            category.Margin = new Margin( 1, 0, 1, 1 );
+            category.Margin = new Margin(1, 0, 1, 1);
             category.Selected += OnCategorySelected;
             category.Collapsed += OnCategoryCollapsed;
 
@@ -78,11 +78,11 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         /// <param name="categoryName">Name of the category.</param>
         /// <returns>Newly created control.</returns>
-        public virtual CollapsibleCategory Add( string categoryName )
+        public virtual CollapsibleCategory Add(string categoryName)
         {
-            var cat = new CollapsibleCategory( this );
+            var cat = new CollapsibleCategory(this);
             cat.Text = categoryName;
-            Add( cat );
+            Add(cat);
 
             return cat;
         }
@@ -91,10 +91,10 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawCategoryHolder( this );
-            base.Render( skin );
+            skin.DrawCategoryHolder(this);
+            base.Render(skin);
         }
 
         /// <summary>
@@ -102,10 +102,10 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         public virtual void UnselectAll()
         {
-            foreach( var child in Children )
+            foreach (var child in Children)
             {
                 var cat = child as CollapsibleCategory;
-                if( cat == null )
+                if (cat == null)
                 {
                     continue;
                 }
@@ -118,17 +118,17 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Handler for ItemSelected event.
         /// </summary>
         /// <param name="control">Event source: <see cref="CollapsibleList" />.</param>
-        protected virtual void OnCategorySelected( Base control, EventArgs args )
+        protected virtual void OnCategorySelected(Base control, EventArgs args)
         {
             var cat = control as CollapsibleCategory;
-            if( cat == null )
+            if (cat == null)
             {
                 return;
             }
 
-            if( ItemSelected != null )
+            if (ItemSelected != null)
             {
-                ItemSelected.Invoke( this, new ItemSelectedEventArgs( cat ) );
+                ItemSelected.Invoke(this, new ItemSelectedEventArgs(cat));
             }
         }
 
@@ -136,17 +136,17 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Handler for category collapsed event.
         /// </summary>
         /// <param name="control">Event source: <see cref="CollapsibleCategory" />.</param>
-        protected virtual void OnCategoryCollapsed( Base control, EventArgs args )
+        protected virtual void OnCategoryCollapsed(Base control, EventArgs args)
         {
             var cat = control as CollapsibleCategory;
-            if( cat == null )
+            if (cat == null)
             {
                 return;
             }
 
-            if( CategoryCollapsed != null )
+            if (CategoryCollapsed != null)
             {
-                CategoryCollapsed.Invoke( control, EventArgs.Empty );
+                CategoryCollapsed.Invoke(control, EventArgs.Empty);
             }
         }
 

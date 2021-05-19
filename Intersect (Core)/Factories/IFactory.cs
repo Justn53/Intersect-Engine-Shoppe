@@ -11,6 +11,6 @@
         /// </summary>
         /// <param name="args">the optional arguments used in creating a <typeparamref name="TValue"/></param>
         /// <returns>a not-null <typeparamref name="TValue"/></returns>
-        TValue Create( params object[] args );
+        TValue Create(params object[] args);
     }
 }

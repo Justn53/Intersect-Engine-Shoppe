@@ -18,22 +18,22 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="LabeledRadioButton" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public LabeledRadioButton( Base parent ) : base( parent )
+        public LabeledRadioButton(Base parent) : base(parent)
         {
             MouseInputEnabled = true;
-            SetSize( 100, 20 );
+            SetSize(100, 20);
 
-            mRadioButton = new RadioButton( this );
+            mRadioButton = new RadioButton(this);
 
             //m_RadioButton.Dock = Pos.Left; // no docking, it causes resizing
             //m_RadioButton.Margin = new Margin(0, 2, 2, 2);
             mRadioButton.IsTabable = false;
             mRadioButton.KeyboardInputEnabled = false;
 
-            mLabel = new Label( this );
+            mLabel = new Label(this);
             mLabel.Alignment = Pos.CenterV | Pos.Left;
             mLabel.Text = "Radio Button";
-            mLabel.Clicked += delegate ( Base control, ClickedEventArgs args ) { mRadioButton.Press( control ); };
+            mLabel.Clicked += delegate (Base control, ClickedEventArgs args) { mRadioButton.Press(control); };
             mLabel.IsTabable = false;
             mLabel.KeyboardInputEnabled = false;
         }
@@ -50,37 +50,37 @@ namespace Intersect.Client.Framework.Gwen.Control
         // todo: would be nice to remove that
         internal RadioButton RadioButton => mRadioButton;
 
-        protected override void Layout( Skin.Base skin )
+        protected override void Layout(Skin.Base skin)
         {
             // ugly stuff because we don't have anchoring without docking (docking resizes children)
-            if( mLabel.Height > mRadioButton.Height
+            if (mLabel.Height > mRadioButton.Height
             ) // usually radio is smaller than label so it gets repositioned to avoid clipping with negative Y
             {
-                mRadioButton.Y = ( mLabel.Height - mRadioButton.Height ) / 2;
+                mRadioButton.Y = (mLabel.Height - mRadioButton.Height) / 2;
             }
 
-            Align.PlaceRightBottom( mLabel, mRadioButton );
+            Align.PlaceRightBottom(mLabel, mRadioButton);
             SizeToChildren();
-            base.Layout( skin );
+            base.Layout(skin);
         }
 
         /// <summary>
         ///     Renders the focus overlay.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void RenderFocus( Skin.Base skin )
+        protected override void RenderFocus(Skin.Base skin)
         {
-            if( InputHandler.KeyboardFocus != this )
+            if (InputHandler.KeyboardFocus != this)
             {
                 return;
             }
 
-            if( !IsTabable )
+            if (!IsTabable)
             {
                 return;
             }
 
-            skin.DrawKeyboardHighlight( this, RenderBounds, 0 );
+            skin.DrawKeyboardHighlight(this, RenderBounds, 0);
         }
 
         /// <summary>
@@ -90,9 +90,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeySpace( bool down )
+        protected override bool OnKeySpace(bool down)
         {
-            if( down )
+            if (down)
             {
                 mRadioButton.IsChecked = !mRadioButton.IsChecked;
             }

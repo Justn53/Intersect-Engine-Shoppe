@@ -11,7 +11,7 @@
         MoveDown,
 
         MoveRight,
-        
+
         Running,
 
         AttackInteract,

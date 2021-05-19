@@ -27,24 +27,24 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="NumericUpDown" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public NumericUpDown( Base parent ) : base( parent )
+        public NumericUpDown(Base parent) : base(parent)
         {
-            SetSize( 100, 20 );
+            SetSize(100, 20);
 
-            mSplitter = new Splitter( this );
+            mSplitter = new Splitter(this);
             mSplitter.Dock = Pos.Right;
-            mSplitter.SetSize( 13, 13 );
+            mSplitter.SetSize(13, 13);
 
-            mUp = new UpDownButtonUp( mSplitter );
+            mUp = new UpDownButtonUp(mSplitter);
             mUp.Clicked += OnButtonUp;
             mUp.IsTabable = false;
-            mSplitter.SetPanel( 0, mUp, false );
+            mSplitter.SetPanel(0, mUp, false);
 
-            mDown = new UpDownButtonDown( mSplitter );
+            mDown = new UpDownButtonDown(mSplitter);
             mDown.Clicked += OnButtonDown;
             mDown.IsTabable = false;
-            mDown.Padding = new Padding( 0, 1, 1, 0 );
-            mSplitter.SetPanel( 1, mDown, false );
+            mDown.Padding = new Padding(0, 1, 1, 0);
+            mSplitter.SetPanel(1, mDown, false);
 
             mMax = 100;
             mMin = 0;
@@ -78,17 +78,17 @@ namespace Intersect.Client.Framework.Gwen.Control
             get => base.Value;
             set
             {
-                if( value < mMin )
+                if (value < mMin)
                 {
                     value = mMin;
                 }
 
-                if( value > mMax )
+                if (value > mMax)
                 {
                     value = mMax;
                 }
 
-                if( value == mValue )
+                if (value == mValue)
                 {
                     return;
                 }
@@ -109,11 +109,11 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyUp( bool down )
+        protected override bool OnKeyUp(bool down)
         {
-            if( down )
+            if (down)
             {
-                OnButtonUp( null, EventArgs.Empty );
+                OnButtonUp(null, EventArgs.Empty);
             }
 
             return true;
@@ -126,11 +126,11 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyDown( bool down )
+        protected override bool OnKeyDown(bool down)
         {
-            if( down )
+            if (down)
             {
-                OnButtonDown( null, new ClickedEventArgs( 0, 0, true ) );
+                OnButtonDown(null, new ClickedEventArgs(0, 0, true));
             }
 
             return true;
@@ -140,7 +140,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Handler for the button up event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnButtonUp( Base control, EventArgs args )
+        protected virtual void OnButtonUp(Base control, EventArgs args)
         {
             Value = mValue + 1;
         }
@@ -149,7 +149,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Handler for the button down event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnButtonDown( Base control, ClickedEventArgs args )
+        protected virtual void OnButtonDown(Base control, ClickedEventArgs args)
         {
             Value = mValue - 1;
         }
@@ -159,20 +159,20 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         /// <param name="str">Text to evaluate.</param>
         /// <returns>True if the text is allowed.</returns>
-        protected override bool IsTextAllowed( string str )
+        protected override bool IsTextAllowed(string str)
         {
             float d;
-            if( !float.TryParse( str, out d ) )
+            if (!float.TryParse(str, out d))
             {
                 return false;
             }
 
-            if( d < mMin )
+            if (d < mMin)
             {
                 return false;
             }
 
-            if( d > mMax )
+            if (d > mMax)
             {
                 return false;
             }
@@ -186,9 +186,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         protected override void OnTextChanged()
         {
             base.OnTextChanged();
-            if( ValueChanged != null )
+            if (ValueChanged != null)
             {
-                ValueChanged.Invoke( this, EventArgs.Empty );
+                ValueChanged.Invoke(this, EventArgs.Empty);
             }
         }
 

@@ -43,21 +43,21 @@ namespace Intersect.Core
         /// </summary>
         /// <param name="applicationContext">the current application context</param>
         /// <returns>if bootstrapping was successful</returns>
-        bool Bootstrap( IApplicationContext applicationContext );
+        bool Bootstrap(IApplicationContext applicationContext);
 
         /// <summary>
         /// Startup lifecycle method for application services.
         /// </summary>
         /// <param name="applicationContext">the current application context</param>
         /// <returns>if startup was successful</returns>
-        bool Start( IApplicationContext applicationContext );
+        bool Start(IApplicationContext applicationContext);
 
         /// <summary>
         /// Shutdown lifecycle method for application services.
         /// </summary>
         /// <param name="applicationContext">the current application context</param>
         /// <returns>if shutdown was successful</returns>
-        bool Stop( IApplicationContext applicationContext );
+        bool Stop(IApplicationContext applicationContext);
 
         #endregion Lifecycle Methods
     }

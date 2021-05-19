@@ -15,18 +15,18 @@ namespace Intersect.Client.MonoGame.Graphics
 
         private SpriteFont mFont;
 
-        public MonoFont( string fontName, string fileName, int fontSize, ContentManager contentManager ) : base(
+        public MonoFont(string fontName, string fileName, int fontSize, ContentManager contentManager) : base(
             fontName, fontSize
         )
         {
             try
             {
-                fileName = GameContentManager.RemoveExtension( fileName );
-                mFont = contentManager.Load<SpriteFont>( fileName );
+                fileName = GameContentManager.RemoveExtension(fileName);
+                mFont = contentManager.Load<SpriteFont>(fileName);
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Trace( ex );
+                Log.Trace(ex);
             }
         }
 

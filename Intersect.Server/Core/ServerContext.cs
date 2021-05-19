@@ -40,21 +40,21 @@ namespace Intersect.Server.Core
     /// </summary>
     internal sealed class ServerContext : ApplicationContext<ServerContext, ServerCommandLineOptions>, IServerContext
     {
-        internal ServerContext( ServerCommandLineOptions startupOptions, Logger logger, INetworkHelper networkHelper ) : base(
+        internal ServerContext(ServerCommandLineOptions startupOptions, Logger logger, INetworkHelper networkHelper) : base(
             startupOptions, logger, networkHelper
         )
         {
             // Register the factory for creating service plugin contexts
-            FactoryRegistry<IPluginContext>.RegisterFactory( new ServerPluginContext.Factory() );
+            FactoryRegistry<IPluginContext>.RegisterFactory(new ServerPluginContext.Factory());
 
-            if( startupOptions.Port > 0 )
+            if (startupOptions.Port > 0)
             {
                 Options.ServerPort = startupOptions.Port;
             }
 
-            RestApi = new RestApi( startupOptions.ApiPort );
+            RestApi = new RestApi(startupOptions.ApiPort);
 
-            Network = CreateNetwork( networkHelper );
+            Network = CreateNetwork(networkHelper);
         }
 
         public IConsoleService ConsoleService => GetExpectedService<IConsoleService>();
@@ -73,9 +73,9 @@ namespace Intersect.Server.Core
             {
                 InternalStartNetworking();
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                Log.Error( exception );
+                Log.Error(exception);
                 Dispose();
 
                 throw;
@@ -86,18 +86,18 @@ namespace Intersect.Server.Core
 
         #region Dispose
 
-        protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            if( disposing )
+            if (disposing)
             {
                 #region CLEAN THIS UP
 
                 // TODO: This may actually be fine here? Might want to move it into Bootstrapper though as "PrintShutdown()"
                 Console.WriteLine();
-                Console.WriteLine( Strings.Commands.exiting );
+                Console.WriteLine(Strings.Commands.exiting);
                 Console.WriteLine();
 
 #if WEBSOCKETS
@@ -106,70 +106,70 @@ namespace Intersect.Server.Core
 #endif
 
                 // Except this line, this line is fine.
-                Log.Info( "Disposing network..." + $" ({stopwatch.ElapsedMilliseconds}ms)" );
+                Log.Info("Disposing network..." + $" ({stopwatch.ElapsedMilliseconds}ms)");
                 Network.Dispose();
 
                 // TODO: This probably also needs to not be a global, but will require more work to clean up.
-                Log.Info( "Saving online users/players..." + $" ({stopwatch.ElapsedMilliseconds}ms)" );
+                Log.Info("Saving online users/players..." + $" ({stopwatch.ElapsedMilliseconds}ms)");
 
                 var savingTasks = new List<Task>();
-                foreach( var user in Database.PlayerData.User.OnlineList.ToArray() )
+                foreach (var user in Database.PlayerData.User.OnlineList.ToArray())
                 {
-                    savingTasks.Add( Task.Run( () => user.Save() ) );
+                    savingTasks.Add(Task.Run(() => user.Save()));
                 }
 
-                Task.WaitAll( savingTasks.ToArray() );
+                Task.WaitAll(savingTasks.ToArray());
 
                 // TODO: This probably also needs to not be a global, but will require more work to clean up.
-                Log.Info( "Online users/players saved." + $" ({stopwatch.ElapsedMilliseconds}ms)" );
+                Log.Info("Online users/players saved." + $" ({stopwatch.ElapsedMilliseconds}ms)");
 
 
                 //Disconnect All Clients
                 //Will kill their packet handling threads so we have a clean shutdown
-                lock( Globals.ClientLock )
+                lock (Globals.ClientLock)
                 {
                     var clients = Globals.Clients.ToArray();
-                    foreach( var client in clients )
+                    foreach (var client in clients)
                     {
-                        client.Disconnect( "Server Shutdown", true );
+                        client.Disconnect("Server Shutdown", true);
                     }
                 }
 
 
                 // TODO: This needs to not be a global. I'm also in the middle of rewriting the API anyway.
-                Log.Info( "Shutting down the API..." + $" ({stopwatch.ElapsedMilliseconds}ms)" );
+                Log.Info("Shutting down the API..." + $" ({stopwatch.ElapsedMilliseconds}ms)");
                 RestApi.Dispose();
 
                 #endregion
 
-                if( ThreadConsole?.IsAlive ?? false )
+                if (ThreadConsole?.IsAlive ?? false)
                 {
-                    Log.Info( "Shutting down the console thread..." + $" ({stopwatch.ElapsedMilliseconds}ms)" );
-                    if( !ThreadConsole.Join( 1000 ) )
+                    Log.Info("Shutting down the console thread..." + $" ({stopwatch.ElapsedMilliseconds}ms)");
+                    if (!ThreadConsole.Join(1000))
                     {
                         try
                         {
                             ThreadConsole.Abort();
                         }
-                        catch( ThreadAbortException threadAbortException )
+                        catch (ThreadAbortException threadAbortException)
                         {
-                            Log.Error( threadAbortException, $"{nameof( ThreadConsole )} aborted." );
+                            Log.Error(threadAbortException, $"{nameof(ThreadConsole)} aborted.");
                         }
                     }
                 }
 
-                if( ThreadLogic?.IsAlive ?? false )
+                if (ThreadLogic?.IsAlive ?? false)
                 {
-                    Log.Info( "Shutting down the logic thread..." + $" ({stopwatch.ElapsedMilliseconds}ms)" );
-                    if( !ThreadLogic.Join( 10000 ) )
+                    Log.Info("Shutting down the logic thread..." + $" ({stopwatch.ElapsedMilliseconds}ms)");
+                    if (!ThreadLogic.Join(10000))
                     {
                         try
                         {
                             ThreadLogic.Abort();
                         }
-                        catch( ThreadAbortException threadAbortException )
+                        catch (ThreadAbortException threadAbortException)
                         {
-                            Log.Error( threadAbortException, $"{nameof( ThreadLogic )} aborted." );
+                            Log.Error(threadAbortException, $"{nameof(ThreadLogic)} aborted.");
                         }
                     }
                 }
@@ -177,11 +177,11 @@ namespace Intersect.Server.Core
                 NetworkHelper.HandlerRegistry.Dispose();
             }
 
-            Log.Info( "Base dispose." + $" ({stopwatch.ElapsedMilliseconds}ms)" );
-            base.Dispose( disposing );
-            Log.Info( "Finished disposing server context." + $" ({stopwatch.ElapsedMilliseconds}ms)" );
-            Console.WriteLine( Strings.Commands.exited );
-            System.Environment.Exit( -1 );
+            Log.Info("Base dispose." + $" ({stopwatch.ElapsedMilliseconds}ms)");
+            base.Dispose(disposing);
+            Log.Info("Finished disposing server context." + $" ({stopwatch.ElapsedMilliseconds}ms)");
+            Console.WriteLine(Strings.Commands.exited);
+            System.Environment.Exit(-1);
         }
 
         #endregion
@@ -196,7 +196,7 @@ namespace Intersect.Server.Core
 
         #region Network
 
-        private ServerNetwork CreateNetwork( INetworkHelper networkHelper )
+        private ServerNetwork CreateNetwork(INetworkHelper networkHelper)
         {
             ServerNetwork network;
 
@@ -209,18 +209,18 @@ namespace Intersect.Server.Core
             #region Create Network
 
             var assembly = Assembly.GetExecutingAssembly();
-            using( var stream = assembly.GetManifestResourceStream( "Intersect.Server.network.handshake.bkey" ) )
+            using (var stream = assembly.GetManifestResourceStream("Intersect.Server.network.handshake.bkey"))
             {
-                var rsaKey = EncryptionKey.FromStream<RsaKey>( stream ?? throw new InvalidOperationException() );
-                Debug.Assert( rsaKey != null, "rsaKey != null" );
-                network = new ServerNetwork( this, networkHelper, new NetworkConfiguration( Options.ServerPort ), rsaKey.Parameters );
+                var rsaKey = EncryptionKey.FromStream<RsaKey>(stream ?? throw new InvalidOperationException());
+                Debug.Assert(rsaKey != null, "rsaKey != null");
+                network = new ServerNetwork(this, networkHelper, new NetworkConfiguration(Options.ServerPort), rsaKey.Parameters);
             }
 
             #endregion
 
             #region Configure Packet Handlers
 
-            var packetHandler = new PacketHandler( this, networkHelper.HandlerRegistry );
+            var packetHandler = new PacketHandler(this, networkHelper.HandlerRegistry);
             network.Handler = packetHandler.HandlePacket;
             network.PreProcessHandler = packetHandler.PreProcessPacket;
 
@@ -235,13 +235,13 @@ namespace Intersect.Server.Core
         {
             Console.WriteLine();
 
-            if( !Network.Listen() )
+            if (!Network.Listen())
             {
-                Log.Error( "An error occurred while attempting to connect." );
+                Log.Error("An error occurred while attempting to connect.");
             }
             else
             {
-                Console.WriteLine( Strings.Intro.started.ToString( Options.ServerPort ) );
+                Console.WriteLine(Strings.Intro.started.ToString(Options.ServerPort));
             }
 
 #if WEBSOCKETS
@@ -252,23 +252,23 @@ namespace Intersect.Server.Core
 
             RestApi.Start();
 
-            if( !Options.UPnP || Instance.StartupOptions.NoNatPunchthrough )
+            if (!Options.UPnP || Instance.StartupOptions.NoNatPunchthrough)
             {
                 return;
             }
 
             Console.WriteLine();
 
-            UpnP.ConnectNatDevice().Wait( 5000 );
+            UpnP.ConnectNatDevice().Wait(5000);
 #if WEBSOCKETS
             UpnP.OpenServerPort(Options.ServerPort, Protocol.Tcp).Wait(5000);
 #endif
-            UpnP.OpenServerPort( Options.ServerPort, Protocol.Udp ).Wait( 5000 );
+            UpnP.OpenServerPort(Options.ServerPort, Protocol.Udp).Wait(5000);
 
-            if( RestApi.IsStarted )
+            if (RestApi.IsStarted)
             {
                 RestApi.Configuration.Ports.ToList()
-                    .ForEach( port => UpnP.OpenServerPort( port, Protocol.Tcp ).Wait( 5000 ) );
+                    .ForEach(port => UpnP.OpenServerPort(port, Protocol.Tcp).Wait(5000));
             }
 
             Console.WriteLine();
@@ -285,13 +285,13 @@ namespace Intersect.Server.Core
         #region Exception Handling
 
         protected override void NotifyNonTerminatingExceptionOccurred() =>
-            Console.WriteLine( Strings.Errors.errorlogged );
+            Console.WriteLine(Strings.Errors.errorlogged);
 
-        internal static void DispatchUnhandledException( Exception exception, bool isTerminating = true )
+        internal static void DispatchUnhandledException(Exception exception, bool isTerminating = true)
         {
             var sender = Thread.CurrentThread;
             Task.Factory.StartNew(
-                () => HandleUnhandledException( sender, new UnhandledExceptionEventArgs( exception, isTerminating ) )
+                () => HandleUnhandledException(sender, new UnhandledExceptionEventArgs(exception, isTerminating))
             );
         }
 

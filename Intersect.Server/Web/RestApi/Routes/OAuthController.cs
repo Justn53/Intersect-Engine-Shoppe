@@ -11,33 +11,33 @@ using Intersect.Server.Web.RestApi.Attributes;
 namespace Intersect.Server.Web.RestApi.Routes
 {
 
-    [RoutePrefix( "oauth" )]
+    [RoutePrefix("oauth")]
     [ConfigurableAuthorize]
     public sealed class OAuthController : ApiController
     {
 
         [Authorize]
         [HttpDelete]
-        [Route( "token/{username}" )]
-        public async Task<IHttpActionResult> DeleteToken( string username )
+        [Route("token/{username}")]
+        public async Task<IHttpActionResult> DeleteToken(string username)
         {
             User user;
 
-            user = Database.PlayerData.User.Find( username );
+            user = Database.PlayerData.User.Find(username);
 
-            if( user == null )
+            if (user == null)
             {
                 return Unauthorized();
             }
 
-            var refreshToken = RefreshToken.FindForUser( user ).FirstOrDefault();
+            var refreshToken = RefreshToken.FindForUser(user).FirstOrDefault();
 
-            if( refreshToken == null )
+            if (refreshToken == null)
             {
-                return StatusCode( HttpStatusCode.Gone );
+                return StatusCode(HttpStatusCode.Gone);
             }
 
-            if( RefreshToken.Remove( refreshToken, true ) )
+            if (RefreshToken.Remove(refreshToken, true))
             {
                 return Ok(
                     new
@@ -47,31 +47,31 @@ namespace Intersect.Server.Web.RestApi.Routes
                 );
             }
 
-            return StatusCode( HttpStatusCode.Gone );
+            return StatusCode(HttpStatusCode.Gone);
         }
 
         [AllowAnonymous]
         [HttpDelete]
-        [Route( "token/{username}/{tokenId:guid}" )]
-        public async Task<IHttpActionResult> DeleteToken( string username, Guid tokenId )
+        [Route("token/{username}/{tokenId:guid}")]
+        public async Task<IHttpActionResult> DeleteToken(string username, Guid tokenId)
         {
             User user;
 
-            user = Database.PlayerData.User.Find( username );
+            user = Database.PlayerData.User.Find(username);
 
-            if( user == null )
+            if (user == null)
             {
                 return Unauthorized();
             }
 
-            var refreshToken = RefreshToken.FindForUser( user ).FirstOrDefault();
+            var refreshToken = RefreshToken.FindForUser(user).FirstOrDefault();
 
-            if( refreshToken?.Id != tokenId )
+            if (refreshToken?.Id != tokenId)
             {
                 return Unauthorized();
             }
 
-            if( RefreshToken.Remove( refreshToken, true ) )
+            if (RefreshToken.Remove(refreshToken, true))
             {
                 return Ok(
                     new
@@ -82,7 +82,7 @@ namespace Intersect.Server.Web.RestApi.Routes
                 );
             }
 
-            return StatusCode( HttpStatusCode.Gone );
+            return StatusCode(HttpStatusCode.Gone);
         }
 
     }

@@ -30,60 +30,60 @@ namespace Intersect.Client.Interface.Game
 
         private readonly Label mTitle;
 
-        public EscapeMenu( Canvas gameCanvas ) : base( gameCanvas, "EscapeMenu" )
+        public EscapeMenu(Canvas gameCanvas) : base(gameCanvas, "EscapeMenu")
         {
-            Interface.InputBlockingElements?.Add( this );
+            Interface.InputBlockingElements?.Add(this);
 
             Width = gameCanvas.Width;
             Height = gameCanvas.Height;
 
-            mContainer = new ImagePanel( this, "EscapeMenu" );
+            mContainer = new ImagePanel(this, "EscapeMenu");
 
-            mTitle = new Label( mContainer, "TitleLabel" )
+            mTitle = new Label(mContainer, "TitleLabel")
             {
                 Text = Strings.EscapeMenu.Title,
             };
 
-            mOptionsWindow = new OptionsWindow( gameCanvas, null, null );
+            mOptionsWindow = new OptionsWindow(gameCanvas, null, null);
 
-            mOptions = new Button( mContainer, "OptionsButton" )
+            mOptions = new Button(mContainer, "OptionsButton")
             {
                 Text = Strings.EscapeMenu.Options
             };
 
             mOptions.Clicked += Options_Clicked;
 
-            mGoToCharacterSelect = new Button( mContainer, "CharacterSelectButton" )
+            mGoToCharacterSelect = new Button(mContainer, "CharacterSelectButton")
             {
                 Text = Strings.EscapeMenu.CharacterSelect
             };
 
             mGoToCharacterSelect.Clicked += GoToCharacterSelect_Clicked;
 
-            mLogout = new Button( mContainer, "LogoutButton" )
+            mLogout = new Button(mContainer, "LogoutButton")
             {
                 Text = Strings.EscapeMenu.Logout
             };
 
             mLogout.Clicked += Logout_Clicked;
 
-            mExitToDesktop = new Button( mContainer, "ExitToDesktopButton" )
+            mExitToDesktop = new Button(mContainer, "ExitToDesktopButton")
             {
                 Text = Strings.EscapeMenu.ExitToDesktop
             };
 
             mExitToDesktop.Clicked += ExitToDesktop_Clicked;
 
-            mClose = new Button( mContainer, "CloseButton" )
+            mClose = new Button(mContainer, "CloseButton")
             {
                 Text = Strings.EscapeMenu.Close
             };
 
             mClose.Clicked += Close_Clicked;
 
-            mContainer.LoadJsonUi( GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString() );
+            mContainer.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
 
-            if( Options.Player.MaxCharacters <= 1 )
+            if (Options.Player.MaxCharacters <= 1)
             {
                 mGoToCharacterSelect.IsDisabled = true;
             }
@@ -91,17 +91,17 @@ namespace Intersect.Client.Interface.Game
 
         public override void Invalidate()
         {
-            if( IsHidden )
+            if (IsHidden)
             {
                 RemoveModal();
             }
             else
             {
-                MakeModal( true );
+                MakeModal(true);
             }
 
             base.Invalidate();
-            if( Interface.GameUi != null && Interface.GameUi.GameCanvas != null )
+            if (Interface.GameUi != null && Interface.GameUi.GameCanvas != null)
             {
                 Interface.GameUi.GameCanvas.MouseInputEnabled = false;
                 Interface.GameUi.GameCanvas.MouseInputEnabled = true;
@@ -110,7 +110,7 @@ namespace Intersect.Client.Interface.Game
 
         public void Update()
         {
-            if( !IsHidden )
+            if (!IsHidden)
             {
                 BringToFront();
             }
@@ -118,7 +118,7 @@ namespace Intersect.Client.Interface.Game
             mGoToCharacterSelect.IsDisabled = Globals.Me?.CombatTimer > Globals.System.GetTimeMs();
         }
 
-        private void Options_Clicked( Base sender, ClickedEventArgs arguments )
+        private void Options_Clicked(Base sender, ClickedEventArgs arguments)
         {
             mOptionsWindow.Show();
             Interface.GameUi?.EscapeMenu?.Hide();
@@ -133,7 +133,7 @@ namespace Intersect.Client.Interface.Game
         /// <inheritdoc />
         public override void ToggleHidden()
         {
-            if( mOptionsWindow.IsVisible() )
+            if (mOptionsWindow.IsVisible())
             {
                 return;
             }
@@ -141,29 +141,29 @@ namespace Intersect.Client.Interface.Game
             base.ToggleHidden();
         }
 
-        private void LogoutToCharacterSelect( object sender, EventArgs e )
+        private void LogoutToCharacterSelect(object sender, EventArgs e)
         {
-            if( Globals.Me != null )
+            if (Globals.Me != null)
             {
                 Globals.Me.CombatTimer = 0;
             }
 
-            Main.Logout( true );
+            Main.Logout(true);
         }
 
-        private void LogoutToMainMenu( object sender, EventArgs e )
+        private void LogoutToMainMenu(object sender, EventArgs e)
         {
-            if( Globals.Me != null )
+            if (Globals.Me != null)
             {
                 Globals.Me.CombatTimer = 0;
             }
 
-            Main.Logout( false );
+            Main.Logout(false);
         }
 
-        private void ExitToDesktop( object sender, EventArgs e )
+        private void ExitToDesktop(object sender, EventArgs e)
         {
-            if( Globals.Me != null )
+            if (Globals.Me != null)
             {
                 Globals.Me.CombatTimer = 0;
             }
@@ -171,10 +171,10 @@ namespace Intersect.Client.Interface.Game
             Globals.IsRunning = false;
         }
 
-        private void GoToCharacterSelect_Clicked( Base sender, ClickedEventArgs arguments )
+        private void GoToCharacterSelect_Clicked(Base sender, ClickedEventArgs arguments)
         {
             ToggleHidden();
-            if( Globals.Me.CombatTimer > Globals.System.GetTimeMs() )
+            if (Globals.Me.CombatTimer > Globals.System.GetTimeMs())
             {
                 //Show Logout in Combat Warning
                 var box = new InputBox(
@@ -184,14 +184,14 @@ namespace Intersect.Client.Interface.Game
             }
             else
             {
-                LogoutToCharacterSelect( null, null );
+                LogoutToCharacterSelect(null, null);
             }
         }
 
-        private void Logout_Clicked( Base sender, ClickedEventArgs arguments )
+        private void Logout_Clicked(Base sender, ClickedEventArgs arguments)
         {
             ToggleHidden();
-            if( Globals.Me.CombatTimer > Globals.System.GetTimeMs() )
+            if (Globals.Me.CombatTimer > Globals.System.GetTimeMs())
             {
                 //Show Logout in Combat Warning
                 var box = new InputBox(
@@ -201,14 +201,14 @@ namespace Intersect.Client.Interface.Game
             }
             else
             {
-                LogoutToMainMenu( null, null );
+                LogoutToMainMenu(null, null);
             }
         }
 
-        private void ExitToDesktop_Clicked( Base sender, ClickedEventArgs arguments )
+        private void ExitToDesktop_Clicked(Base sender, ClickedEventArgs arguments)
         {
             ToggleHidden();
-            if( Globals.Me.CombatTimer > Globals.System.GetTimeMs() )
+            if (Globals.Me.CombatTimer > Globals.System.GetTimeMs())
             {
                 //Show Logout in Combat Warning
                 var box = new InputBox(
@@ -218,11 +218,11 @@ namespace Intersect.Client.Interface.Game
             }
             else
             {
-                ExitToDesktop( null, null );
+                ExitToDesktop(null, null);
             }
         }
 
-        private void Close_Clicked( Base sender, ClickedEventArgs arguments )
+        private void Close_Clicked(Base sender, ClickedEventArgs arguments)
         {
             Hide();
         }

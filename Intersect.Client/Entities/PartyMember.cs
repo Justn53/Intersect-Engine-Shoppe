@@ -18,7 +18,7 @@ namespace Intersect.Client.Entities
 
         public int[] Vital = new int[(int)Vitals.VitalCount];
 
-        public PartyMember( Guid id, string name, int[] vital, int[] maxVital, int level )
+        public PartyMember(Guid id, string name, int[] vital, int[] maxVital, int level)
         {
             Id = id;
             Name = name;

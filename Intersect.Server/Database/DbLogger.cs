@@ -10,17 +10,17 @@ namespace Intersect.Server.Database
 
         private Intersect.Logging.Logger _intersectLogger;
 
-        public DbLogger( Intersect.Logging.Logger intersectLogger )
+        public DbLogger(Intersect.Logging.Logger intersectLogger)
         {
             _intersectLogger = intersectLogger;
         }
 
-        public IDisposable BeginScope<TState>( TState state )
+        public IDisposable BeginScope<TState>(TState state)
         {
             return null;
         }
 
-        public bool IsEnabled( LogLevel logLevel )
+        public bool IsEnabled(LogLevel logLevel)
         {
             return true;
         }
@@ -33,38 +33,38 @@ namespace Intersect.Server.Database
             Func<TState, Exception, string> formatter
         )
         {
-            if( !IsEnabled( logLevel ) )
+            if (!IsEnabled(logLevel))
             {
                 return;
             }
 
-            if( _intersectLogger != null )
+            if (_intersectLogger != null)
             {
-                var msg = $"{eventId.Id} - {formatter( state, exception )}";
-                switch( logLevel )
+                var msg = $"{eventId.Id} - {formatter(state, exception)}";
+                switch (logLevel)
                 {
                     case LogLevel.Trace:
-                        _intersectLogger.Trace( msg );
+                        _intersectLogger.Trace(msg);
 
                         break;
                     case LogLevel.Debug:
-                        _intersectLogger.Debug( msg );
+                        _intersectLogger.Debug(msg);
 
                         break;
                     case LogLevel.Information:
-                        _intersectLogger.Info( msg );
+                        _intersectLogger.Info(msg);
 
                         break;
                     case LogLevel.Warning:
-                        _intersectLogger.Warn( msg );
+                        _intersectLogger.Warn(msg);
 
                         break;
                     case LogLevel.Error:
-                        _intersectLogger.Error( msg );
+                        _intersectLogger.Error(msg);
 
                         break;
                     case LogLevel.Critical:
-                        _intersectLogger.Error( msg );
+                        _intersectLogger.Error(msg);
 
                         break;
                     case LogLevel.None:

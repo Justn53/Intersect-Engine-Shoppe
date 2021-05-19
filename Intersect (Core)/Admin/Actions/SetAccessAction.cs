@@ -12,19 +12,19 @@ namespace Intersect.Admin.Actions
 
         }
 
-        public SetAccessAction( string name, string power )
+        public SetAccessAction(string name, string power)
         {
             Name = name;
             Power = power;
         }
 
-        [Key( 1 )]
+        [Key(1)]
         public override AdminActions Action { get; } = AdminActions.SetAccess;
 
-        [Key( 2 )]
+        [Key(2)]
         public string Name { get; set; }
 
-        [Key( 3 )]
+        [Key(3)]
         public string Power { get; set; }
 
     }

@@ -15,34 +15,34 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private ShowPictureCommand mMyCommand;
 
-        public EventCommand_ShowPicture( ShowPictureCommand refCommand, FrmEvent editor )
+        public EventCommand_ShowPicture(ShowPictureCommand refCommand, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
             mEventEditor = editor;
             cmbPicture.Items.Clear();
             cmbPicture.Items.AddRange(
-                GameContentManager.GetSmartSortedTextureNames( GameContentManager.TextureType.Image )
+                GameContentManager.GetSmartSortedTextureNames(GameContentManager.TextureType.Image)
             );
 
-            if( cmbPicture.Items.IndexOf( mMyCommand.File ) > -1 )
+            if (cmbPicture.Items.IndexOf(mMyCommand.File) > -1)
             {
-                cmbPicture.SelectedIndex = cmbPicture.Items.IndexOf( mMyCommand.File );
+                cmbPicture.SelectedIndex = cmbPicture.Items.IndexOf(mMyCommand.File);
             }
             else
             {
-                if( cmbPicture.Items.Count > 0 )
+                if (cmbPicture.Items.Count > 0)
                 {
                     cmbPicture.SelectedIndex = 0;
                 }
             }
 
             cmbSize.Items.Clear();
-            cmbSize.Items.Add( Strings.EventShowPicture.original );
-            cmbSize.Items.Add( Strings.EventShowPicture.fullscreen );
-            cmbSize.Items.Add( Strings.EventShowPicture.halfscreen );
-            cmbSize.Items.Add( Strings.EventShowPicture.stretchtofit );
-            if( mMyCommand.Size > -1 )
+            cmbSize.Items.Add(Strings.EventShowPicture.original);
+            cmbSize.Items.Add(Strings.EventShowPicture.fullscreen);
+            cmbSize.Items.Add(Strings.EventShowPicture.halfscreen);
+            cmbSize.Items.Add(Strings.EventShowPicture.stretchtofit);
+            if (mMyCommand.Size > -1)
             {
                 cmbSize.SelectedIndex = mMyCommand.Size;
             }
@@ -66,7 +66,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             lblSize.Text = Strings.EventShowPicture.size;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
             mMyCommand.File = cmbPicture.Text;
             mMyCommand.Size = cmbSize.SelectedIndex;
@@ -74,7 +74,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }

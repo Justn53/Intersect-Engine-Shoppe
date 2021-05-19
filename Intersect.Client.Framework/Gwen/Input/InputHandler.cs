@@ -72,19 +72,19 @@ namespace Intersect.Client.Framework.Gwen.Input
         /// <summary>
         ///     Indicates whether the shift key is down.
         /// </summary>
-        public static bool IsShiftDown => IsKeyDown( Key.Shift );
+        public static bool IsShiftDown => IsKeyDown(Key.Shift);
 
         /// <summary>
         ///     Indicates whether the control key is down.
         /// </summary>
-        public static bool IsControlDown => IsKeyDown( Key.Control );
+        public static bool IsControlDown => IsKeyDown(Key.Control);
 
         /// <summary>
         ///     Checks if the given key is pressed.
         /// </summary>
         /// <param name="key">Key to check.</param>
         /// <returns>True if the key is down.</returns>
-        public static bool IsKeyDown( Key key )
+        public static bool IsKeyDown(Key key)
         {
             return KeyData.KeyState[(int)key];
         }
@@ -95,52 +95,52 @@ namespace Intersect.Client.Framework.Gwen.Input
         /// <param name="canvas">Canvas.</param>
         /// <param name="chr">Input character.</param>
         /// <returns>True if the key was handled.</returns>
-        public static bool DoSpecialKeys( Base canvas, char chr )
+        public static bool DoSpecialKeys(Base canvas, char chr)
         {
-            if( null == KeyboardFocus )
+            if (null == KeyboardFocus)
             {
                 return false;
             }
 
-            if( KeyboardFocus.GetCanvas() != canvas )
+            if (KeyboardFocus.GetCanvas() != canvas)
             {
                 return false;
             }
 
-            if( !KeyboardFocus.IsVisible )
+            if (!KeyboardFocus.IsVisible)
             {
                 return false;
             }
 
-            if( !IsControlDown )
+            if (!IsControlDown)
             {
                 return false;
             }
 
-            if( chr == 'C' || chr == 'c' )
+            if (chr == 'C' || chr == 'c')
             {
-                KeyboardFocus.InputCopy( null );
+                KeyboardFocus.InputCopy(null);
 
                 return true;
             }
 
-            if( chr == 'V' || chr == 'v' )
+            if (chr == 'V' || chr == 'v')
             {
-                KeyboardFocus.InputPaste( null );
+                KeyboardFocus.InputPaste(null);
 
                 return true;
             }
 
-            if( chr == 'X' || chr == 'x' )
+            if (chr == 'X' || chr == 'x')
             {
-                KeyboardFocus.InputCut( null );
+                KeyboardFocus.InputCut(null);
 
                 return true;
             }
 
-            if( chr == 'A' || chr == 'a' )
+            if (chr == 'A' || chr == 'a')
             {
-                KeyboardFocus.InputSelectAll( null );
+                KeyboardFocus.InputSelectAll(null);
 
                 return true;
             }
@@ -154,38 +154,38 @@ namespace Intersect.Client.Framework.Gwen.Input
         /// <param name="canvas">Canvas.</param>
         /// <param name="chr">Input character.</param>
         /// <returns>True if the key was handled.</returns>
-        public static bool HandleAccelerator( Base canvas, char chr )
+        public static bool HandleAccelerator(Base canvas, char chr)
         {
             //Build the accelerator search string
             var accelString = new StringBuilder();
-            if( IsControlDown )
+            if (IsControlDown)
             {
-                accelString.Append( "CTRL+" );
+                accelString.Append("CTRL+");
             }
 
-            if( IsShiftDown )
+            if (IsShiftDown)
             {
-                accelString.Append( "SHIFT+" );
+                accelString.Append("SHIFT+");
             }
 
             // [omeg] todo: alt?
 
-            accelString.Append( chr );
+            accelString.Append(chr);
             var acc = accelString.ToString();
 
             //Debug::Msg("Accelerator string :%S\n", accelString.c_str());)
 
-            if( KeyboardFocus != null && KeyboardFocus.HandleAccelerator( acc ) )
+            if (KeyboardFocus != null && KeyboardFocus.HandleAccelerator(acc))
             {
                 return true;
             }
 
-            if( MouseFocus != null && MouseFocus.HandleAccelerator( acc ) )
+            if (MouseFocus != null && MouseFocus.HandleAccelerator(acc))
             {
                 return true;
             }
 
-            if( canvas.HandleAccelerator( acc ) )
+            if (canvas.HandleAccelerator(acc))
             {
                 return true;
             }
@@ -201,37 +201,37 @@ namespace Intersect.Client.Framework.Gwen.Input
         /// <param name="y"></param>
         /// <param name="dx"></param>
         /// <param name="dy"></param>
-        public static void OnMouseMoved( Base canvas, int x, int y, int dx, int dy )
+        public static void OnMouseMoved(Base canvas, int x, int y, int dx, int dy)
         {
             // Send input to canvas for study
             MousePosition.X = x;
             MousePosition.Y = y;
 
-            UpdateHoveredControl( canvas );
+            UpdateHoveredControl(canvas);
         }
 
         /// <summary>
         ///     Handles focus updating and key autorepeats.
         /// </summary>
         /// <param name="control">Unused.</param>
-        public static void OnCanvasThink( Base control )
+        public static void OnCanvasThink(Base control)
         {
-            if( MouseFocus != null && !MouseFocus.IsVisible )
+            if (MouseFocus != null && !MouseFocus.IsVisible)
             {
                 MouseFocus = null;
             }
 
-            if( KeyboardFocus != null && ( !KeyboardFocus.IsVisible || !KeyboardFocus.KeyboardInputEnabled ) )
+            if (KeyboardFocus != null && (!KeyboardFocus.IsVisible || !KeyboardFocus.KeyboardInputEnabled))
             {
                 KeyboardFocus = null;
             }
 
-            if( null == KeyboardFocus )
+            if (null == KeyboardFocus)
             {
                 return;
             }
 
-            if( KeyboardFocus.GetCanvas() != control )
+            if (KeyboardFocus.GetCanvas() != control)
             {
                 return;
             }
@@ -241,22 +241,22 @@ namespace Intersect.Client.Framework.Gwen.Input
             //
             // Simulate Key-Repeats
             //
-            for( var i = 0; i < (int)Key.Count; i++ )
+            for (var i = 0; i < (int)Key.Count; i++)
             {
-                if( KeyData.KeyState[i] && KeyData.Target != KeyboardFocus )
+                if (KeyData.KeyState[i] && KeyData.Target != KeyboardFocus)
                 {
                     KeyData.KeyState[i] = false;
 
                     continue;
                 }
 
-                if( KeyData.KeyState[i] && time > KeyData.NextRepeat[i] )
+                if (KeyData.KeyState[i] && time > KeyData.NextRepeat[i])
                 {
                     KeyData.NextRepeat[i] = Platform.Neutral.GetTimeInSeconds() + KeyRepeatRate;
 
-                    if( KeyboardFocus != null )
+                    if (KeyboardFocus != null)
                     {
-                        KeyboardFocus.InputKeyPressed( (Key)i );
+                        KeyboardFocus.InputKeyPressed((Key)i);
                     }
                 }
             }
@@ -269,45 +269,45 @@ namespace Intersect.Client.Framework.Gwen.Input
         /// <param name="mouseButton">Mouse button number.</param>
         /// <param name="down">Specifies if the button is down.</param>
         /// <returns>True if handled.</returns>
-        public static bool OnMouseClicked( Base canvas, int mouseButton, bool down )
+        public static bool OnMouseClicked(Base canvas, int mouseButton, bool down)
         {
             // If we click on a control that isn't a menu we want to close
             // all the open menus. Menus are children of the canvas.
-            if( down && ( null == HoveredControl || !HoveredControl.IsMenuComponent ) )
+            if (down && (null == HoveredControl || !HoveredControl.IsMenuComponent))
             {
                 canvas.CloseMenus();
             }
 
-            if( null == HoveredControl )
+            if (null == HoveredControl)
             {
                 return false;
             }
 
-            if( HoveredControl.GetCanvas() != canvas )
+            if (HoveredControl.GetCanvas() != canvas)
             {
                 return false;
             }
 
-            if( !HoveredControl.IsVisible )
+            if (!HoveredControl.IsVisible)
             {
                 return false;
             }
 
-            if( HoveredControl == canvas )
+            if (HoveredControl == canvas)
             {
                 return false;
             }
 
-            if( mouseButton > MaxMouseButtons )
+            if (mouseButton > MaxMouseButtons)
             {
                 return false;
             }
 
-            if( mouseButton == 0 )
+            if (mouseButton == 0)
             {
                 KeyData.LeftMouseDown = down;
             }
-            else if( mouseButton == 1 )
+            else if (mouseButton == 1)
             {
                 KeyData.RightMouseDown = down;
             }
@@ -316,23 +316,23 @@ namespace Intersect.Client.Framework.Gwen.Input
             // Todo: Shouldn't double click if mouse has moved significantly
             var isDoubleClick = false;
 
-            if( down &&
+            if (down &&
                 sLastClickPos.X == MousePosition.X &&
                 sLastClickPos.Y == MousePosition.Y &&
-                Platform.Neutral.GetTimeInSeconds() - LastClickTime[mouseButton] < DoubleClickSpeed )
+                Platform.Neutral.GetTimeInSeconds() - LastClickTime[mouseButton] < DoubleClickSpeed)
             {
                 isDoubleClick = true;
             }
 
-            if( down && !isDoubleClick )
+            if (down && !isDoubleClick)
             {
                 LastClickTime[mouseButton] = Platform.Neutral.GetTimeInSeconds();
                 sLastClickPos = MousePosition;
             }
 
-            if( down )
+            if (down)
             {
-                FindKeyboardFocus( HoveredControl );
+                FindKeyboardFocus(HoveredControl);
             }
 
             HoveredControl.UpdateCursor();
@@ -341,7 +341,7 @@ namespace Intersect.Client.Framework.Gwen.Input
             // in turn tells its parents, who tell their parents.
             // This is basically so that Windows can pop themselves
             // to the top when one of their children have been clicked.
-            if( down )
+            if (down)
             {
                 HoveredControl.Touch();
             }
@@ -355,22 +355,22 @@ namespace Intersect.Client.Framework.Gwen.Input
             }
 #endif
 
-            switch( mouseButton )
+            switch (mouseButton)
             {
                 case 0:
                     {
-                        if( DragAndDrop.OnMouseButton( HoveredControl, MousePosition.X, MousePosition.Y, down ) )
+                        if (DragAndDrop.OnMouseButton(HoveredControl, MousePosition.X, MousePosition.Y, down))
                         {
                             return true;
                         }
 
-                        if( isDoubleClick )
+                        if (isDoubleClick)
                         {
-                            HoveredControl.InputMouseDoubleClickedLeft( MousePosition.X, MousePosition.Y );
+                            HoveredControl.InputMouseDoubleClickedLeft(MousePosition.X, MousePosition.Y);
                         }
                         else
                         {
-                            HoveredControl.InputMouseClickedLeft( MousePosition.X, MousePosition.Y, down );
+                            HoveredControl.InputMouseClickedLeft(MousePosition.X, MousePosition.Y, down);
                         }
 
                         return true;
@@ -378,13 +378,13 @@ namespace Intersect.Client.Framework.Gwen.Input
 
                 case 1:
                     {
-                        if( isDoubleClick )
+                        if (isDoubleClick)
                         {
-                            HoveredControl.InputMouseDoubleClickedRight( MousePosition.X, MousePosition.Y );
+                            HoveredControl.InputMouseDoubleClickedRight(MousePosition.X, MousePosition.Y);
                         }
                         else
                         {
-                            HoveredControl.InputMouseClickedRight( MousePosition.X, MousePosition.Y, down );
+                            HoveredControl.InputMouseClickedRight(MousePosition.X, MousePosition.Y, down);
                         }
 
                         return true;
@@ -401,10 +401,10 @@ namespace Intersect.Client.Framework.Gwen.Input
         /// <param name="mouseButton">Mouse button number.</param>
         /// <param name="down">Specifies if the button is down.</param>
         /// <returns>True if handled.</returns>
-        public static bool OnMouseScroll( Base canvas, int deltaX, int deltaY )
+        public static bool OnMouseScroll(Base canvas, int deltaX, int deltaY)
         {
 
-            if( canvas == null ||
+            if (canvas == null ||
                 HoveredControl == null ||
                 HoveredControl.GetCanvas() != canvas ||
                 !canvas.IsVisible
@@ -413,14 +413,14 @@ namespace Intersect.Client.Framework.Gwen.Input
                 return false;
             }
 
-            if( deltaY != 0 )
+            if (deltaY != 0)
             {
-                HoveredControl.InputMouseWheeled( deltaY );
+                HoveredControl.InputMouseWheeled(deltaY);
             }
 
-            if( deltaX != 0 )
+            if (deltaX != 0)
             {
-                HoveredControl.InputMouseHWheeled( deltaX );
+                HoveredControl.InputMouseHWheeled(deltaX);
             }
 
             return true;
@@ -433,38 +433,38 @@ namespace Intersect.Client.Framework.Gwen.Input
         /// <param name="key">Key.</param>
         /// <param name="down">True if the key is down.</param>
         /// <returns>True if handled.</returns>
-        public static bool OnKeyEvent( Base canvas, Key key, bool down )
+        public static bool OnKeyEvent(Base canvas, Key key, bool down)
         {
-            if( null == KeyboardFocus )
+            if (null == KeyboardFocus)
             {
                 return false;
             }
 
-            if( KeyboardFocus.GetCanvas() != canvas )
+            if (KeyboardFocus.GetCanvas() != canvas)
             {
                 return false;
             }
 
-            if( !KeyboardFocus.IsVisible )
+            if (!KeyboardFocus.IsVisible)
             {
                 return false;
             }
 
             var iKey = (int)key;
-            if( down )
+            if (down)
             {
-                if( !KeyData.KeyState[iKey] )
+                if (!KeyData.KeyState[iKey])
                 {
                     KeyData.KeyState[iKey] = true;
                     KeyData.NextRepeat[iKey] = Platform.Neutral.GetTimeInSeconds() + KeyRepeatDelay;
                     KeyData.Target = KeyboardFocus;
 
-                    return KeyboardFocus.InputKeyPressed( key );
+                    return KeyboardFocus.InputKeyPressed(key);
                 }
             }
             else
             {
-                if( KeyData.KeyState[iKey] )
+                if (KeyData.KeyState[iKey])
                 {
                     KeyData.KeyState[iKey] = false;
 
@@ -472,20 +472,20 @@ namespace Intersect.Client.Framework.Gwen.Input
                     // to not work. What is disabling it here breaking?
                     //m_KeyData.Target = NULL;
 
-                    return KeyboardFocus.InputKeyPressed( key, false );
+                    return KeyboardFocus.InputKeyPressed(key, false);
                 }
             }
 
             return false;
         }
 
-        private static void UpdateHoveredControl( Base inCanvas )
+        private static void UpdateHoveredControl(Base inCanvas)
         {
-            var hovered = inCanvas.GetControlAt( MousePosition.X, MousePosition.Y );
+            var hovered = inCanvas.GetControlAt(MousePosition.X, MousePosition.Y);
 
-            if( hovered != HoveredControl )
+            if (hovered != HoveredControl)
             {
-                if( HoveredControl != null )
+                if (HoveredControl != null)
                 {
                     var oldHover = HoveredControl;
                     HoveredControl = null;
@@ -494,15 +494,15 @@ namespace Intersect.Client.Framework.Gwen.Input
 
                 HoveredControl = hovered;
 
-                if( HoveredControl != null )
+                if (HoveredControl != null)
                 {
                     HoveredControl.InputMouseEntered();
                 }
             }
 
-            if( MouseFocus != null && MouseFocus.GetCanvas() == inCanvas )
+            if (MouseFocus != null && MouseFocus.GetCanvas() == inCanvas)
             {
-                if( HoveredControl != null )
+                if (HoveredControl != null)
                 {
                     var oldHover = HoveredControl;
                     HoveredControl = null;
@@ -513,17 +513,17 @@ namespace Intersect.Client.Framework.Gwen.Input
             }
         }
 
-        private static void FindKeyboardFocus( Base control )
+        private static void FindKeyboardFocus(Base control)
         {
-            if( null == control )
+            if (null == control)
             {
                 return;
             }
 
-            if( control.KeyboardInputEnabled )
+            if (control.KeyboardInputEnabled)
             {
                 //Make sure none of our children have keyboard focus first - todo recursive
-                if( control.Children.Any( child => child == KeyboardFocus ) )
+                if (control.Children.Any(child => child == KeyboardFocus))
                 {
                     return;
                 }
@@ -533,7 +533,7 @@ namespace Intersect.Client.Framework.Gwen.Input
                 return;
             }
 
-            FindKeyboardFocus( control.Parent );
+            FindKeyboardFocus(control.Parent);
 
             return;
         }

@@ -15,15 +15,15 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private StartCommmonEventCommand mMyCommand;
 
-        public EventCommandStartCommonEvent( StartCommmonEventCommand refCommand, FrmEvent editor )
+        public EventCommandStartCommonEvent(StartCommmonEventCommand refCommand, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
             mEventEditor = editor;
             InitLocalization();
             cmbEvent.Items.Clear();
-            cmbEvent.Items.AddRange( EventBase.Names );
-            cmbEvent.SelectedIndex = EventBase.ListIndex( refCommand.EventId );
+            cmbEvent.Items.AddRange(EventBase.Names);
+            cmbEvent.SelectedIndex = EventBase.ListIndex(refCommand.EventId);
         }
 
         private void InitLocalization()
@@ -34,13 +34,13 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             btnCancel.Text = Strings.EventStartCommonEvent.cancel;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            mMyCommand.EventId = EventBase.IdFromList( cmbEvent.SelectedIndex );
+            mMyCommand.EventId = EventBase.IdFromList(cmbEvent.SelectedIndex);
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }

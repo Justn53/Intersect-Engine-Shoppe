@@ -22,11 +22,11 @@ namespace Intersect.Tests.Server
             var actual = timing.MillisecondsUTC;
             stopwatch.Stop();
 
-            var errorDelta = (long)Math.Ceiling( stopwatch.Elapsed.TotalMilliseconds );
+            var errorDelta = (long)Math.Ceiling(stopwatch.Elapsed.TotalMilliseconds);
 
             Assert.IsTrue(
-                Math.Abs( expected - actual ) <= errorDelta,
-                $"Expected difference to be less than {errorDelta}ms but was {Math.Abs( expected - actual )}ms."
+                Math.Abs(expected - actual) <= errorDelta,
+                $"Expected difference to be less than {errorDelta}ms but was {Math.Abs(expected - actual)}ms."
             );
         }
     }

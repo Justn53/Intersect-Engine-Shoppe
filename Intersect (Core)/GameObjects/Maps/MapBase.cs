@@ -46,23 +46,23 @@ namespace Intersect.GameObjects.Maps
         [JsonIgnore] [NotMapped] protected object mMapLock = new object();
 
         [JsonConstructor]
-        public MapBase( Guid id ) : base( id )
+        public MapBase(Guid id) : base(id)
         {
             Name = "New Map";
 
             //Create empty tile array and then compress it down
-            if( Layers == null )
+            if (Layers == null)
             {
                 Layers = new Dictionary<string, Tile[,]>();
-                TileData = LZ4.PickleString( JsonConvert.SerializeObject( Layers, Formatting.None, mJsonSerializerSettings ) );
+                TileData = LZ4.PickleString(JsonConvert.SerializeObject(Layers, Formatting.None, mJsonSerializerSettings));
                 Layers = null;
             }
             else
             {
-                TileData = LZ4.PickleString( JsonConvert.SerializeObject( Layers, Formatting.None, mJsonSerializerSettings ) );
+                TileData = LZ4.PickleString(JsonConvert.SerializeObject(Layers, Formatting.None, mJsonSerializerSettings));
             }
 
-            mCachedAttributeData = LZ4.PickleString( JsonConvert.SerializeObject( Attributes, Formatting.None, mJsonSerializerSettings ) );
+            mCachedAttributeData = LZ4.PickleString(JsonConvert.SerializeObject(Attributes, Formatting.None, mJsonSerializerSettings));
         }
 
         //EF Constructor
@@ -71,31 +71,31 @@ namespace Intersect.GameObjects.Maps
             Name = "New Map";
         }
 
-        public MapBase( MapBase mapBase ) : base( mapBase?.Id ?? Guid.Empty )
+        public MapBase(MapBase mapBase) : base(mapBase?.Id ?? Guid.Empty)
         {
-            if( mapBase == null )
+            if (mapBase == null)
             {
                 return;
             }
 
-            lock( MapLock ?? throw new ArgumentNullException( nameof( MapLock ), @"this" ) )
+            lock (MapLock ?? throw new ArgumentNullException(nameof(MapLock), @"this"))
             {
-                lock( mapBase.MapLock ?? throw new ArgumentNullException( nameof( mapBase.MapLock ), nameof( mapBase ) ) )
+                lock (mapBase.MapLock ?? throw new ArgumentNullException(nameof(mapBase.MapLock), nameof(mapBase)))
                 {
                     Name = mapBase.Name;
                     Brightness = mapBase.Brightness;
                     IsIndoors = mapBase.IsIndoors;
-                    if( Layers != null && mapBase.Layers != null )
+                    if (Layers != null && mapBase.Layers != null)
                     {
 
                         Layers.Clear();
 
-                        foreach( var layer in mapBase.Layers )
+                        foreach (var layer in mapBase.Layers)
                         {
                             var tiles = new Tile[Options.MapWidth, Options.MapHeight];
-                            for( var x = 0; x < Options.MapWidth; x++ )
+                            for (var x = 0; x < Options.MapWidth; x++)
                             {
-                                for( var y = 0; y < Options.MapHeight; y++ )
+                                for (var y = 0; y < Options.MapHeight; y++)
                                 {
                                     tiles[x, y] = new Tile
                                     {
@@ -106,20 +106,20 @@ namespace Intersect.GameObjects.Maps
                                     };
                                 }
                             }
-                            Layers.Add( layer.Key, tiles );
+                            Layers.Add(layer.Key, tiles);
                         }
                     }
 
-                    for( var x = 0; x < Options.MapWidth; x++ )
+                    for (var x = 0; x < Options.MapWidth; x++)
                     {
-                        for( var y = 0; y < Options.MapHeight; y++ )
+                        for (var y = 0; y < Options.MapHeight; y++)
                         {
-                            if( Attributes == null )
+                            if (Attributes == null)
                             {
                                 continue;
                             }
 
-                            if( mapBase.Attributes?[x, y] == null )
+                            if (mapBase.Attributes?[x, y] == null)
                             {
                                 Attributes[x, y] = null;
                             }
@@ -130,24 +130,24 @@ namespace Intersect.GameObjects.Maps
                         }
                     }
 
-                    for( var i = 0; i < mapBase.Spawns?.Count; i++ )
+                    for (var i = 0; i < mapBase.Spawns?.Count; i++)
                     {
-                        Spawns.Add( new NpcSpawn( mapBase.Spawns[i] ) );
+                        Spawns.Add(new NpcSpawn(mapBase.Spawns[i]));
                     }
 
-                    for( var i = 0; i < mapBase.Lights?.Count; i++ )
+                    for (var i = 0; i < mapBase.Lights?.Count; i++)
                     {
-                        Lights.Add( new LightBase( mapBase.Lights[i] ) );
+                        Lights.Add(new LightBase(mapBase.Lights[i]));
                     }
 
-                    foreach( var record in mapBase.LocalEvents )
+                    foreach (var record in mapBase.LocalEvents)
                     {
-                        var evt = new EventBase( record.Key, record.Value?.JsonData );
-                        LocalEvents?.Add( record.Key, evt );
+                        var evt = new EventBase(record.Key, record.Value?.JsonData);
+                        LocalEvents?.Add(record.Key, evt);
                     }
 
                     EventIds?.Clear();
-                    EventIds?.AddRange( mapBase.EventIds?.ToArray() ?? new Guid[] { } );
+                    EventIds?.AddRange(mapBase.EventIds?.ToArray() ?? new Guid[] { });
                 }
             }
         }
@@ -166,15 +166,15 @@ namespace Intersect.GameObjects.Maps
 
         public int Revision { get; set; }
 
-        [Column( "Attributes" )]
+        [Column("Attributes")]
         [JsonIgnore]
         public byte[] AttributeData
         {
             get => GetAttributeData();
             set
             {
-                var str = LZ4.UnPickleString( value );
-                mAttributes = JsonConvert.DeserializeObject<MapAttribute[,]>( LZ4.UnPickleString( value ), mJsonSerializerSettings );
+                var str = LZ4.UnPickleString(value);
+                mAttributes = JsonConvert.DeserializeObject<MapAttribute[,]>(LZ4.UnPickleString(value), mJsonSerializerSettings);
                 mCachedAttributeData = value;
             }
         }
@@ -183,27 +183,27 @@ namespace Intersect.GameObjects.Maps
         [JsonIgnore]
         public MapAttribute[,] Attributes
         {
-            get => mAttributes ?? ( mAttributes = new MapAttribute[Options.MapWidth, Options.MapHeight] );
+            get => mAttributes ?? (mAttributes = new MapAttribute[Options.MapWidth, Options.MapHeight]);
 
             set
             {
                 mAttributes = value;
-                mCachedAttributeData = LZ4.PickleString( JsonConvert.SerializeObject( mAttributes, Formatting.None, mJsonSerializerSettings ) );
+                mCachedAttributeData = LZ4.PickleString(JsonConvert.SerializeObject(mAttributes, Formatting.None, mJsonSerializerSettings));
             }
         }
 
-        [Column( "Lights" )]
+        [Column("Lights")]
         [JsonIgnore]
         public string LightsJson
         {
-            get => JsonConvert.SerializeObject( Lights );
+            get => JsonConvert.SerializeObject(Lights);
             set
             {
                 Lights.Clear();
-                var lights = JsonConvert.DeserializeObject<List<LightBase>>( value );
-                if( lights != null )
+                var lights = JsonConvert.DeserializeObject<List<LightBase>>(value);
+                if (lights != null)
                 {
-                    Lights.AddRange( lights );
+                    Lights.AddRange(lights);
                 }
             }
         }
@@ -212,12 +212,12 @@ namespace Intersect.GameObjects.Maps
         [JsonProperty]
         public List<LightBase> Lights { get; private set; } = new List<LightBase>();
 
-        [Column( "Events" )]
+        [Column("Events")]
         [JsonIgnore]
         public string EventIdsJson
         {
-            get => JsonConvert.SerializeObject( EventIds );
-            set => EventIds = JsonConvert.DeserializeObject<List<Guid>>( value );
+            get => JsonConvert.SerializeObject(EventIds);
+            set => EventIds = JsonConvert.DeserializeObject<List<Guid>>(value);
         }
 
         [NotMapped]
@@ -243,19 +243,19 @@ namespace Intersect.GameObjects.Maps
             );
         }
 
-        [Column( "NpcSpawns" )]
+        [Column("NpcSpawns")]
         [JsonIgnore]
         public string NpcSpawnsJson
         {
-            get => JsonConvert.SerializeObject( Spawns );
+            get => JsonConvert.SerializeObject(Spawns);
             set
             {
                 Spawns.Clear();
 
-                var spawns = JsonConvert.DeserializeObject<List<NpcSpawn>>( value );
-                if( spawns != null )
+                var spawns = JsonConvert.DeserializeObject<List<NpcSpawn>>(value);
+                if (spawns != null)
                 {
-                    Spawns.AddRange( spawns );
+                    Spawns.AddRange(spawns);
                 }
             }
         }
@@ -299,12 +299,12 @@ namespace Intersect.GameObjects.Maps
 
         public float PlayerLightExpand { get; set; }
 
-        [Column( "PlayerLightColor" )]
+        [Column("PlayerLightColor")]
         [JsonIgnore]
         public string PlayerLightColorJson
         {
-            get => JsonConvert.SerializeObject( PlayerLightColor );
-            set => PlayerLightColor = JsonConvert.DeserializeObject<Color>( value );
+            get => JsonConvert.SerializeObject(PlayerLightColor);
+            set => PlayerLightColor = JsonConvert.DeserializeObject<Color>(value);
         }
 
         [NotMapped]
@@ -313,7 +313,7 @@ namespace Intersect.GameObjects.Maps
         public string OverlayGraphic { get; set; } = null;
 
         //Weather
-        [Column( "WeatherAnimation" )]
+        [Column("WeatherAnimation")]
         [JsonProperty]
         public Guid WeatherAnimationId { get; protected set; }
 
@@ -321,7 +321,7 @@ namespace Intersect.GameObjects.Maps
         [JsonIgnore]
         public AnimationBase WeatherAnimation
         {
-            get => AnimationBase.Get( WeatherAnimationId );
+            get => AnimationBase.Get(WeatherAnimationId);
             set => WeatherAnimationId = value?.Id ?? Guid.Empty;
         }
 
@@ -350,9 +350,9 @@ namespace Intersect.GameObjects.Maps
 
             private readonly DatabaseObjectLookup mBaseLookup;
 
-            public MapInstances( DatabaseObjectLookup baseLookup ) : base( baseLookup.StoredType )
+            public MapInstances(DatabaseObjectLookup baseLookup) : base(baseLookup.StoredType)
             {
-                if( baseLookup == null )
+                if (baseLookup == null)
                 {
                     throw new ArgumentNullException();
                 }
@@ -360,18 +360,18 @@ namespace Intersect.GameObjects.Maps
                 mBaseLookup = baseLookup;
             }
 
-            internal override bool InternalSet( IDatabaseObject value, bool overwrite )
+            internal override bool InternalSet(IDatabaseObject value, bool overwrite)
             {
-                mBaseLookup?.InternalSet( value, overwrite );
+                mBaseLookup?.InternalSet(value, overwrite);
 
-                return base.InternalSet( value, overwrite );
+                return base.InternalSet(value, overwrite);
             }
 
-            public override bool Delete( IDatabaseObject value )
+            public override bool Delete(IDatabaseObject value)
             {
-                mBaseLookup?.Delete( value );
+                mBaseLookup?.Delete(value);
 
-                return base.Delete( value );
+                return base.Delete(value);
             }
 
             public override void Clear()

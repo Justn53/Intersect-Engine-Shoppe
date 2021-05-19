@@ -16,14 +16,14 @@ namespace Intersect.IO.Files
 
         internal static IFileSystem FileSystem { get; set; } = new FileSystem();
 
-        public static string FormatSize( long bytes, bool binary = false )
+        public static string FormatSize(long bytes, bool binary = false)
         {
             double sizeBase = binary ? 1024 : 1000;
-            var group = Math.Max( 0, (long)Math.Floor( Math.Log( Math.Abs( Math.Max( -long.MaxValue, bytes ) ), sizeBase ) ) );
+            var group = Math.Max(0, (long)Math.Floor(Math.Log(Math.Abs(Math.Max(-long.MaxValue, bytes)), sizeBase)));
 
-            var prefix = SizePrefixes[group] + ( binary && group != 0 ? "i" : "" );
+            var prefix = SizePrefixes[group] + (binary && group != 0 ? "i" : "");
 
-            var fractional = bytes / Math.Max( 1, Math.Pow( sizeBase, group ) );
+            var fractional = bytes / Math.Max(1, Math.Pow(sizeBase, group));
 
             return $"{fractional:0.###}{prefix}B";
         }
@@ -36,100 +36,100 @@ namespace Intersect.IO.Files
         /// <code>false</code> if the path is a file or creation fails
         /// <code>true</code> if the path is a directory or creation succeeded
         /// </returns>
-        public static bool EnsureDirectoryExists( string directoryPath )
+        public static bool EnsureDirectoryExists(string directoryPath)
         {
-            Debug.Assert( FileSystem.Directory != null, "FileSystem.Directory != null" );
+            Debug.Assert(FileSystem.Directory != null, "FileSystem.Directory != null");
 
-            if( FileSystem.Directory.Exists( directoryPath ) )
+            if (FileSystem.Directory.Exists(directoryPath))
             {
                 return true;
             }
 
-            if( File.Exists( directoryPath ) )
+            if (File.Exists(directoryPath))
             {
                 return false;
             }
 
             try
             {
-                return FileSystem.Directory.CreateDirectory( directoryPath ).Exists;
+                return FileSystem.Directory.CreateDirectory(directoryPath).Exists;
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                Log.Error( exception );
+                Log.Error(exception);
 
                 return false;
             }
         }
 
-        public static string RelativePath( string from, string to )
+        public static string RelativePath(string from, string to)
         {
-            Contract.Requires( from != null );
-            Contract.Requires( to != null );
+            Contract.Requires(from != null);
+            Contract.Requires(to != null);
 
-            if( string.IsNullOrWhiteSpace( from ) )
+            if (string.IsNullOrWhiteSpace(from))
             {
-                throw new ArgumentException( nameof( from ) );
+                throw new ArgumentException(nameof(from));
             }
 
-            if( string.IsNullOrWhiteSpace( to ) )
+            if (string.IsNullOrWhiteSpace(to))
             {
-                throw new ArgumentException( nameof( to ) );
+                throw new ArgumentException(nameof(to));
             }
 
-            var fullFrom = CleanPath( Path.GetFullPath( from ) );
+            var fullFrom = CleanPath(Path.GetFullPath(from));
 
-            var uriFrom = new Uri( $"file://{fullFrom}" );
+            var uriFrom = new Uri($"file://{fullFrom}");
 
-            var fullTo = CleanPath( Path.GetFullPath( to ) );
+            var fullTo = CleanPath(Path.GetFullPath(to));
 
-            var uriTo = new Uri( $"file://{fullTo}" );
+            var uriTo = new Uri($"file://{fullTo}");
 
-            var uriRelative = uriFrom.MakeRelativeUri( uriTo );
+            var uriRelative = uriFrom.MakeRelativeUri(uriTo);
 
-            var relative = Uri.UnescapeDataString( uriRelative.ToString() )
-                .Replace( Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar );
+            var relative = Uri.UnescapeDataString(uriRelative.ToString())
+                .Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
 
             return relative;
         }
 
-        public static string CleanPath( string path )
+        public static string CleanPath(string path)
         {
-            Contract.Requires( path != null );
-            var cleaned = path.Replace( Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar );
+            Contract.Requires(path != null);
+            var cleaned = path.Replace(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
-            return cleaned.TerminateWith( Path.AltDirectorySeparatorChar, !IsFile( cleaned, false ) );
+            return cleaned.TerminateWith(Path.AltDirectorySeparatorChar, !IsFile(cleaned, false));
         }
 
-        public static bool IsFile( string path ) => IsFile( path, true );
+        public static bool IsFile(string path) => IsFile(path, true);
 
-        private static bool IsFile( string path, bool doClean )
+        private static bool IsFile(string path, bool doClean)
         {
-            Contract.Requires( path != null );
+            Contract.Requires(path != null);
 
-            if( string.IsNullOrWhiteSpace( path ) )
+            if (string.IsNullOrWhiteSpace(path))
             {
-                throw new ArgumentException( nameof( path ) );
+                throw new ArgumentException(nameof(path));
             }
 
-            var cleaned = doClean ? CleanPath( path ) : path;
+            var cleaned = doClean ? CleanPath(path) : path;
 
-            if( cleaned.EndsWith( Path.AltDirectorySeparatorChar.ToString() ) )
+            if (cleaned.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
             {
                 return false;
             }
 
-            if( Path.HasExtension( cleaned ) )
+            if (Path.HasExtension(cleaned))
             {
                 return true;
             }
 
             try
             {
-                Debug.Assert( FileSystem.File != null, "FileSystem.File != null" );
-                var attributes = FileSystem.File.GetAttributes( cleaned );
+                Debug.Assert(FileSystem.File != null, "FileSystem.File != null");
+                var attributes = FileSystem.File.GetAttributes(cleaned);
 
-                return !attributes.HasFlag( FileAttributes.Directory );
+                return !attributes.HasFlag(FileAttributes.Directory);
             }
             catch
             {
@@ -137,23 +137,23 @@ namespace Intersect.IO.Files
             }
         }
 
-        public static string WriteToTemporaryFolder( string name, Stream stream )
+        public static string WriteToTemporaryFolder(string name, Stream stream)
         {
-            var temporaryDirectoryPath = Path.Combine( Path.GetTempPath(), Assembly.GetEntryAssembly().GetName().Name );
-            if( !EnsureDirectoryExists( temporaryDirectoryPath ) )
+            var temporaryDirectoryPath = Path.Combine(Path.GetTempPath(), Assembly.GetEntryAssembly().GetName().Name);
+            if (!EnsureDirectoryExists(temporaryDirectoryPath))
             {
                 throw new Exception();
             }
 
-            var temporaryFilePath = Path.Combine( temporaryDirectoryPath, name );
+            var temporaryFilePath = Path.Combine(temporaryDirectoryPath, name);
 
             var buffer = new byte[4096];
             int read;
-            using( var temporaryFileStream = File.OpenWrite( temporaryFilePath ) )
+            using (var temporaryFileStream = File.OpenWrite(temporaryFilePath))
             {
-                while( 0 != ( read = stream.Read( buffer, 0, buffer.Length ) ) )
+                while (0 != (read = stream.Read(buffer, 0, buffer.Length)))
                 {
-                    temporaryFileStream.Write( buffer, 0, read );
+                    temporaryFileStream.Write(buffer, 0, read);
                 }
             }
 

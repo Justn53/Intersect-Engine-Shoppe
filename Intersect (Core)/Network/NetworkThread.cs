@@ -15,13 +15,13 @@ namespace Intersect.Network
 
         private bool mStarted;
 
-        public NetworkThread( PacketDispatcher dispatcher, string name = null )
+        public NetworkThread(PacketDispatcher dispatcher, string name = null)
         {
             mLifecycleLock = new object();
             mDispatcher = dispatcher;
 
             Name = name ?? "Network Worker Thread";
-            CurrentThread = new Thread( Loop );
+            CurrentThread = new Thread(Loop);
             Queue = new PacketQueue();
             Connections = new List<IConnection>();
         }
@@ -38,9 +38,9 @@ namespace Intersect.Network
 
         public void Start()
         {
-            lock( mLifecycleLock )
+            lock (mLifecycleLock)
             {
-                if( mStarted )
+                if (mStarted)
                 {
                     return;
                 }
@@ -54,7 +54,7 @@ namespace Intersect.Network
 
         public void Stop()
         {
-            lock( mLifecycleLock )
+            lock (mLifecycleLock)
             {
                 IsRunning = false;
             }
@@ -69,18 +69,18 @@ namespace Intersect.Network
             var last = 0L;
 #endif
             sw.Start();
-            while( IsRunning )
+            while (IsRunning)
             {
                 // ReSharper disable once PossibleNullReferenceException
-                if( !Queue.TryNext( out var packet ) )
+                if (!Queue.TryNext(out var packet))
                 {
                     continue;
                 }
 
                 //Log.Debug($"Dispatching packet '{packet.GetType().Name}' (size={(packet as BinaryPacket)?.Buffer?.Length() ?? -1}).");
-                if( !mDispatcher.Dispatch( packet ) )
+                if (!mDispatcher.Dispatch(packet))
                 {
-                    Log.Warn( $"Failed to dispatch packet '{packet}'." );
+                    Log.Warn($"Failed to dispatch packet '{packet}'.");
                 }
 
 #if DIAGNOSTIC
@@ -98,7 +98,7 @@ namespace Intersect.Network
 
             sw.Stop();
 
-            Log.Debug( $"Exiting network thread ({Name})." );
+            Log.Debug($"Exiting network thread ({Name}).");
         }
 
     }

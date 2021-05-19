@@ -34,31 +34,31 @@ namespace Intersect.Editor.Networking
 
         public static void InitNetwork()
         {
-            if( EditorLidgrenNetwork == null )
+            if (EditorLidgrenNetwork == null)
             {
                 var logger = Log.Default;
-                var packetTypeRegistry = new PacketTypeRegistry( logger );
-                if( !packetTypeRegistry.TryRegisterBuiltIn() )
+                var packetTypeRegistry = new PacketTypeRegistry(logger);
+                if (!packetTypeRegistry.TryRegisterBuiltIn())
                 {
-                    throw new Exception( "Failed to register built-in packets." );
+                    throw new Exception("Failed to register built-in packets.");
                 }
 
-                var packetHandlerRegistry = new PacketHandlerRegistry( packetTypeRegistry, logger );
-                var networkHelper = new NetworkHelper( packetTypeRegistry, packetHandlerRegistry );
-                PackedIntersectPacket.AddKnownTypes( networkHelper.AvailablePacketTypes );
-                var virtualEditorContext = new VirtualEditorContext( networkHelper, logger );
-                PacketHandler = new PacketHandler( virtualEditorContext, packetHandlerRegistry );
+                var packetHandlerRegistry = new PacketHandlerRegistry(packetTypeRegistry, logger);
+                var networkHelper = new NetworkHelper(packetTypeRegistry, packetHandlerRegistry);
+                PackedIntersectPacket.AddKnownTypes(networkHelper.AvailablePacketTypes);
+                var virtualEditorContext = new VirtualEditorContext(networkHelper, logger);
+                PacketHandler = new PacketHandler(virtualEditorContext, packetHandlerRegistry);
 
                 var config = new NetworkConfiguration(
                     ClientConfiguration.Instance.Host, ClientConfiguration.Instance.Port
                 );
 
                 var assembly = Assembly.GetExecutingAssembly();
-                using( var stream = assembly.GetManifestResourceStream( "Intersect.Editor.network.handshake.bkey.pub" ) )
+                using (var stream = assembly.GetManifestResourceStream("Intersect.Editor.network.handshake.bkey.pub"))
                 {
-                    var rsaKey = EncryptionKey.FromStream<RsaKey>( stream );
-                    Debug.Assert( rsaKey != null, "rsaKey != null" );
-                    EditorLidgrenNetwork = new ClientNetwork( networkHelper, config, rsaKey.Parameters );
+                    var rsaKey = EncryptionKey.FromStream<RsaKey>(stream);
+                    Debug.Assert(rsaKey != null, "rsaKey != null");
+                    EditorLidgrenNetwork = new ClientNetwork(networkHelper, config, rsaKey.Parameters);
                 }
 
                 EditorLidgrenNetwork.Handler = PacketHandler.HandlePacket;
@@ -70,19 +70,19 @@ namespace Intersect.Editor.Networking
                 };
             }
 
-            if( !Connected )
+            if (!Connected)
             {
                 Connecting = true;
-                if( !EditorLidgrenNetwork.Connect() )
+                if (!EditorLidgrenNetwork.Connect())
                 {
-                    Log.Error( "An error occurred while attempting to connect." );
+                    Log.Error("An error occurred while attempting to connect.");
                 }
             }
         }
 
         public static void Update()
         {
-            if( !Connected && !Connecting && !ConnectionDenied )
+            if (!Connected && !Connecting && !ConnectionDenied)
             {
                 InitNetwork();
             }
@@ -97,42 +97,42 @@ namespace Intersect.Editor.Networking
                 PacketHandler.Registry.Dispose();
                 PacketHandler = null;
             }
-            catch( Exception )
+            catch (Exception)
             {
                 // ignored
             }
         }
 
-        public static void HandleDc( INetworkLayerInterface sender, ConnectionEventArgs connectionEventArgs )
+        public static void HandleDc(INetworkLayerInterface sender, ConnectionEventArgs connectionEventArgs)
         {
             DestroyNetwork();
-            if( Globals.MainForm != null && Globals.MainForm.Visible )
+            if (Globals.MainForm != null && Globals.MainForm.Visible)
             {
-                if( Globals.MainForm.DisconnectDelegate != null )
+                if (Globals.MainForm.DisconnectDelegate != null)
                 {
-                    Globals.MainForm.BeginInvoke( Globals.MainForm.DisconnectDelegate );
+                    Globals.MainForm.BeginInvoke(Globals.MainForm.DisconnectDelegate);
                     Globals.MainForm.DisconnectDelegate = null;
                 }
             }
-            else if( Globals.LoginForm.Visible )
+            else if (Globals.LoginForm.Visible)
             {
                 Connecting = false;
                 InitNetwork();
             }
             else
             {
-                MessageBox.Show( @"Disconnected!" );
+                MessageBox.Show(@"Disconnected!");
                 Application.Exit();
             }
         }
 
-        public static void SendPacket( IntersectPacket packet )
+        public static void SendPacket(IntersectPacket packet)
         {
-            if( EditorLidgrenNetwork != null )
+            if (EditorLidgrenNetwork != null)
             {
-                if( !EditorLidgrenNetwork.Send( packet ) )
+                if (!EditorLidgrenNetwork.Send(packet))
                 {
-                    throw new Exception( "Beta 4 network send failed." );
+                    throw new Exception("Beta 4 network send failed.");
                 }
             }
         }
@@ -141,7 +141,7 @@ namespace Intersect.Editor.Networking
 
     internal sealed class VirtualEditorContext : IApplicationContext
     {
-        internal VirtualEditorContext( NetworkHelper networkHelper, Logger logger )
+        internal VirtualEditorContext(NetworkHelper networkHelper, Logger logger)
         {
             NetworkHelper = networkHelper;
             Logger = logger;
@@ -167,7 +167,7 @@ namespace Intersect.Editor.Networking
 
         public TApplicationService GetService<TApplicationService>() where TApplicationService : IApplicationService => default;
 
-        public void Start( bool lockUntilShutdown = true ) { }
+        public void Start(bool lockUntilShutdown = true) { }
 
         public LockingActionQueue StartWithActionQueue() => default;
     }

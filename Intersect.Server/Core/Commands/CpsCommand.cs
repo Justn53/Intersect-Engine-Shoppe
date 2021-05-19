@@ -15,7 +15,7 @@ namespace Intersect.Server.Core.Commands
         {
         }
 
-        protected override void HandleValue( ServerContext context, ParserResult result )
+        protected override void HandleValue(ServerContext context, ParserResult result)
         {
             //else if (operation == Strings.Commands.Arguments.CpsStatus)
             //{
@@ -24,7 +24,7 @@ namespace Intersect.Server.Core.Commands
             //        : Strings.Commandoutput.cpsunlocked);
             //}
             // TODO: Rethink what messages we want to display here. Confirmation of the change is ideal. To reuse code we effectively don't need to really handle status.
-            Console.WriteLine( Globals.Cps );
+            Console.WriteLine(Globals.Cps);
         }
 
     }

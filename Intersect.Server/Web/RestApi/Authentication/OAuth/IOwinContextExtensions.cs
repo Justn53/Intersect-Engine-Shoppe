@@ -20,12 +20,12 @@ namespace Intersect.Server.Web.RestApi.Authentication.OAuth
         /// </summary>
         /// <param name="owinContext"></param>
         /// <returns></returns>
-        public static async Task ConvertFromJsonToFormBody( this IOwinContext owinContext )
+        public static async Task ConvertFromJsonToFormBody(this IOwinContext owinContext)
         {
-            Debug.Assert( owinContext.Request != null );
+            Debug.Assert(owinContext.Request != null);
             var request = owinContext.Request;
 
-            var formParameters = string.Join( "&", await request.JsonBodyToEncodedParameterStrings() );
+            var formParameters = string.Join("&", await request.JsonBodyToEncodedParameterStrings());
             var formParametersBody = new StringContent(
                 formParameters, Encoding.UTF8, "application/x-www-form-urlencoded"
             );

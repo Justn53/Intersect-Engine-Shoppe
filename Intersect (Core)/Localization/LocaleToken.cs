@@ -15,23 +15,23 @@ namespace Intersect.Localization
         {
         }
 
-        public LocaleToken( string name )
+        public LocaleToken(string name)
         {
-            if( string.IsNullOrWhiteSpace( name ) )
+            if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentException( $@"Parameter '{nameof( name )}' cannot be null or whitespace." );
+                throw new ArgumentException($@"Parameter '{nameof(name)}' cannot be null or whitespace.");
             }
 
             mName = name.Trim();
         }
 
-        [JsonProperty( nameof( Name ), NullValueHandling = NullValueHandling.Ignore )]
+        [JsonProperty(nameof(Name), NullValueHandling = NullValueHandling.Ignore)]
         protected LocalizedString JsonName
         {
             get => mName;
             set
             {
-                if( value != null && value.ToString().Length < 2 )
+                if (value != null && value.ToString().Length < 2)
                 {
                     throw new ArgumentException(
                         $@"Token names must be at least 2 characters long, but '{value}' was provided."
@@ -48,7 +48,7 @@ namespace Intersect.Localization
             get => mName ?? throw new InvalidOperationException();
             set
             {
-                if( mName == null )
+                if (mName == null)
                 {
                     mName = value;
                 }

@@ -5,7 +5,7 @@ using Intersect.Localization;
 namespace Intersect.Server.Core.CommandParsing.Arguments
 {
 
-    public delegate bool ArgumentRequiredPredicate( ParserContext parserContext );
+    public delegate bool ArgumentRequiredPredicate(ParserContext parserContext);
 
     public abstract class CommandArgument<TValue> : ICommandArgument
     {
@@ -17,7 +17,7 @@ namespace Intersect.Server.Core.CommandParsing.Arguments
             bool required = false,
             bool positional = false,
             bool allowsMultiple = false,
-            TValue defaultValue = default( TValue )
+            TValue defaultValue = default(TValue)
         )
         {
             Localization = localization;
@@ -32,7 +32,7 @@ namespace Intersect.Server.Core.CommandParsing.Arguments
             ArgumentRequiredPredicate requiredPredicate,
             bool positional = false,
             bool allowsMultiple = false,
-            TValue defaultValue = default( TValue )
+            TValue defaultValue = default(TValue)
         )
         {
             Localization = localization;
@@ -51,9 +51,9 @@ namespace Intersect.Server.Core.CommandParsing.Arguments
 
         public string Description => Localization.Description;
 
-        public Type ValueType => typeof( TValue );
+        public Type ValueType => typeof(TValue);
 
-        public object ValueTypeDefault => default( TValue );
+        public object ValueTypeDefault => default(TValue);
 
         public object DefaultValue { get; }
 
@@ -71,19 +71,19 @@ namespace Intersect.Server.Core.CommandParsing.Arguments
 
         public bool IsRequiredByDefault { get; }
 
-        public bool IsRequired( ParserContext parserContext )
+        public bool IsRequired(ParserContext parserContext)
         {
-            return mRequiredPredicate?.Invoke( parserContext ) ?? IsRequiredByDefault;
+            return mRequiredPredicate?.Invoke(parserContext) ?? IsRequiredByDefault;
         }
 
         public bool IsPositional { get; }
 
         public TDefaultValue DefaultValueAsType<TDefaultValue>()
         {
-            return DefaultValue == null ? default( TDefaultValue ) : (TDefaultValue)DefaultValue;
+            return DefaultValue == null ? default(TDefaultValue) : (TDefaultValue)DefaultValue;
         }
 
-        public virtual bool IsValueAllowed( object value )
+        public virtual bool IsValueAllowed(object value)
         {
             return true;
         }
@@ -102,11 +102,11 @@ namespace Intersect.Server.Core.CommandParsing.Arguments
             LocaleArgument localization,
             int count,
             string delimeter = null
-        ) : base( localization )
+        ) : base(localization)
         {
-            if( count < 1 )
+            if (count < 1)
             {
-                throw new ArgumentOutOfRangeException( nameof( count ) );
+                throw new ArgumentOutOfRangeException(nameof(count));
             }
 
             Count = count;
@@ -124,7 +124,7 @@ namespace Intersect.Server.Core.CommandParsing.Arguments
     public abstract class CommandArgument : CommandArgument<object>
     {
 
-        protected CommandArgument( LocaleArgument localization ) : base( localization )
+        protected CommandArgument(LocaleArgument localization) : base(localization)
         {
         }
 

@@ -20,12 +20,12 @@ namespace Intersect.Server.Database.PlayerData.Players
         {
         }
 
-        public HotbarSlot( int slot )
+        public HotbarSlot(int slot)
         {
             Slot = slot;
         }
 
-        [DatabaseGenerated( DatabaseGeneratedOption.Identity )]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [JsonIgnore]
         public Guid Id { get; private set; }
 
@@ -33,12 +33,12 @@ namespace Intersect.Server.Database.PlayerData.Players
 
         public Guid BagId { get; set; } = Guid.Empty;
 
-        [Column( "PreferredStatBuffs" )]
+        [Column("PreferredStatBuffs")]
         [JsonIgnore]
         public string StatBuffsJson
         {
-            get => DatabaseUtils.SaveIntArray( PreferredStatBuffs, (int)Enums.Stats.StatCount );
-            set => PreferredStatBuffs = DatabaseUtils.LoadIntArray( value, (int)Enums.Stats.StatCount );
+            get => DatabaseUtils.SaveIntArray(PreferredStatBuffs, (int)Enums.Stats.StatCount);
+            set => PreferredStatBuffs = DatabaseUtils.LoadIntArray(value, (int)Enums.Stats.StatCount);
         }
 
         [NotMapped]
@@ -55,7 +55,7 @@ namespace Intersect.Server.Database.PlayerData.Players
 
         public string Data()
         {
-            return JsonConvert.SerializeObject( this );
+            return JsonConvert.SerializeObject(this);
         }
 
     }

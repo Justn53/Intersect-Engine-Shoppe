@@ -10,35 +10,35 @@ namespace Intersect.Server.Database.Logging
 {
     internal sealed class LoggingContext : IntersectDbContext<LoggingContext>, ILoggingContext
     {
-        public LoggingContext() : this( DefaultConnectionStringBuilder ) { }
+        public LoggingContext() : this(DefaultConnectionStringBuilder) { }
 
         /// <inheritdoc />
         public LoggingContext(
             DbConnectionStringBuilder connectionStringBuilder,
             DatabaseOptions.DatabaseType databaseType = DatabaseOptions.DatabaseType.SQLite
-        ) : base( connectionStringBuilder, databaseType, null, Intersect.Logging.LogLevel.None, false, true )
+        ) : base(connectionStringBuilder, databaseType, null, Intersect.Logging.LogLevel.None, false, true)
         {
         }
 
         public static DbConnectionStringBuilder DefaultConnectionStringBuilder =>
-            new SqliteConnectionStringBuilder( @"Data Source=resources/logging.db" );
+            new SqliteConnectionStringBuilder(@"Data Source=resources/logging.db");
 
         public DbSet<RequestLog> RequestLogs { get; set; }
 
         public DbSet<UserActivityHistory> UserActivityHistory { get; set; }
 
-        protected override void OnModelCreating( ModelBuilder modelBuilder )
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating( modelBuilder );
+            base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration( new RequestLog.Mapper() );
+            modelBuilder.ApplyConfiguration(new RequestLog.Mapper());
         }
     }
 
     internal sealed class LoggingContextInterface : ContextInterface<ILoggingContext>, ILoggingContext
     {
         /// <inheritdoc />
-        public LoggingContextInterface( ILoggingContext context ) : base( context )
+        public LoggingContextInterface(ILoggingContext context) : base(context)
         {
         }
 

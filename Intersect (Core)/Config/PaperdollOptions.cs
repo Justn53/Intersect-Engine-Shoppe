@@ -65,7 +65,7 @@ namespace Intersect.Config
         }
 
         [OnDeserializing]
-        internal void OnDeserializingMethod( StreamingContext context )
+        internal void OnDeserializingMethod(StreamingContext context)
         {
             Up.Clear();
             Down.Clear();
@@ -74,12 +74,12 @@ namespace Intersect.Config
         }
 
         [OnDeserialized]
-        internal void OnDeserializedMethod( StreamingContext context )
+        internal void OnDeserializedMethod(StreamingContext context)
         {
-            Up = new List<string>( Up.Distinct() );
-            Down = new List<string>( Down.Distinct() );
-            Left = new List<string>( Left.Distinct() );
-            Right = new List<string>( Right.Distinct() );
+            Up = new List<string>(Up.Distinct());
+            Down = new List<string>(Down.Distinct());
+            Left = new List<string>(Left.Distinct());
+            Right = new List<string>(Right.Distinct());
             Directions = new List<string>[]
             {
                 Up,
@@ -89,27 +89,27 @@ namespace Intersect.Config
             };
         }
 
-        public void Validate( EquipmentOptions equipment )
+        public void Validate(EquipmentOptions equipment)
         {
-            foreach( var direction in Directions )
+            foreach (var direction in Directions)
             {
                 var hasPlayer = false;
-                foreach( var item in direction )
+                foreach (var item in direction)
                 {
-                    if( item == "Player" )
+                    if (item == "Player")
                     {
                         hasPlayer = true;
                     }
 
-                    if( !equipment.Slots.Contains( item ) && item != "Player" )
+                    if (!equipment.Slots.Contains(item) && item != "Player")
                     {
-                        throw new Exception( $"Config Error: Paperdoll item {item} does not exist in equipment slots!" );
+                        throw new Exception($"Config Error: Paperdoll item {item} does not exist in equipment slots!");
                     }
                 }
 
-                if( !hasPlayer )
+                if (!hasPlayer)
                 {
-                    throw new Exception( $"Config Error: Paperdoll direction {direction} does not have Player listed!" );
+                    throw new Exception($"Config Error: Paperdoll direction {direction} does not have Player listed!");
                 }
             }
         }

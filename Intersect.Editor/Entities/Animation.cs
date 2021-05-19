@@ -39,7 +39,7 @@ namespace Intersect.Editor.Entities
 
         public AnimationBase MyBase;
 
-        public Animation( AnimationBase animBase, bool loopForever )
+        public Animation(AnimationBase animBase, bool loopForever)
         {
             MyBase = animBase;
             mLowerLoop = animBase.Lower.LoopCount;
@@ -49,32 +49,32 @@ namespace Intersect.Editor.Entities
             mInfiniteLoop = loopForever;
         }
 
-        public void Draw( RenderTarget2D target, bool upper = false, bool alternate = false )
+        public void Draw(RenderTarget2D target, bool upper = false, bool alternate = false)
         {
-            if( !upper && alternate != MyBase.Lower.AlternateRenderLayer )
+            if (!upper && alternate != MyBase.Lower.AlternateRenderLayer)
             {
                 return;
             }
 
-            if( upper && alternate != MyBase.Upper.AlternateRenderLayer )
+            if (upper && alternate != MyBase.Upper.AlternateRenderLayer)
             {
                 return;
             }
 
-            if( !upper )
+            if (!upper)
             {
                 //Draw Lower
-                var tex = GameContentManager.GetTexture( GameContentManager.TextureType.Animation, MyBase.Lower.Sprite );
-                if( mShowLower )
+                var tex = GameContentManager.GetTexture(GameContentManager.TextureType.Animation, MyBase.Lower.Sprite);
+                if (mShowLower)
                 {
-                    if( mLowerFrame >= MyBase.Lower.FrameCount )
+                    if (mLowerFrame >= MyBase.Lower.FrameCount)
                     {
                         return;
                     }
 
-                    if( tex != null )
+                    if (tex != null)
                     {
-                        if( MyBase.Lower.XFrames > 0 && MyBase.Lower.YFrames > 0 )
+                        if (MyBase.Lower.XFrames > 0 && MyBase.Lower.YFrames > 0)
                         {
                             var frameWidth = (int)tex.Width / MyBase.Lower.XFrames;
                             var frameHeight = (int)tex.Height / MyBase.Lower.YFrames;
@@ -82,7 +82,7 @@ namespace Intersect.Editor.Entities
                                 tex,
                                 new RectangleF(
                                     mLowerFrame % MyBase.Lower.XFrames * frameWidth,
-                                    (float)Math.Floor( (double)mLowerFrame / MyBase.Lower.XFrames ) * frameHeight,
+                                    (float)Math.Floor((double)mLowerFrame / MyBase.Lower.XFrames) * frameHeight,
                                     frameWidth, frameHeight
                                 ),
                                 new RectangleF(
@@ -107,17 +107,17 @@ namespace Intersect.Editor.Entities
             else
             {
                 //Draw Upper
-                var tex = GameContentManager.GetTexture( GameContentManager.TextureType.Animation, MyBase.Upper.Sprite );
-                if( mShowUpper )
+                var tex = GameContentManager.GetTexture(GameContentManager.TextureType.Animation, MyBase.Upper.Sprite);
+                if (mShowUpper)
                 {
-                    if( mUpperFrame >= MyBase.Upper.FrameCount )
+                    if (mUpperFrame >= MyBase.Upper.FrameCount)
                     {
                         return;
                     }
 
-                    if( tex != null )
+                    if (tex != null)
                     {
-                        if( MyBase.Upper.XFrames > 0 && MyBase.Upper.YFrames > 0 )
+                        if (MyBase.Upper.XFrames > 0 && MyBase.Upper.YFrames > 0)
                         {
                             var frameWidth = (int)tex.Width / MyBase.Upper.XFrames;
                             var frameHeight = (int)tex.Height / MyBase.Upper.YFrames;
@@ -125,7 +125,7 @@ namespace Intersect.Editor.Entities
                                 tex,
                                 new RectangleF(
                                     mUpperFrame % MyBase.Upper.XFrames * frameWidth,
-                                    (float)Math.Floor( (double)mUpperFrame / MyBase.Upper.XFrames ) * frameHeight,
+                                    (float)Math.Floor((double)mUpperFrame / MyBase.Upper.XFrames) * frameHeight,
                                     frameWidth, frameHeight
                                 ),
                                 new RectangleF(
@@ -149,7 +149,7 @@ namespace Intersect.Editor.Entities
             }
         }
 
-        public void SetPosition( float x, float y, int dir )
+        public void SetPosition(float x, float y, int dir)
         {
             mRenderX = x;
             mRenderY = y;
@@ -158,16 +158,16 @@ namespace Intersect.Editor.Entities
 
         public void Update()
         {
-            if( mLowerTimer < Globals.System.GetTimeMs() && mShowLower )
+            if (mLowerTimer < Globals.System.GetTimeMs() && mShowLower)
             {
                 mLowerFrame++;
-                if( mLowerFrame >= MyBase.Lower.FrameCount )
+                if (mLowerFrame >= MyBase.Lower.FrameCount)
                 {
                     mLowerLoop--;
                     mLowerFrame = 0;
-                    if( mLowerLoop < 0 )
+                    if (mLowerLoop < 0)
                     {
-                        if( mInfiniteLoop )
+                        if (mInfiniteLoop)
                         {
                             mLowerLoop = MyBase.Lower.LoopCount;
                         }
@@ -181,16 +181,16 @@ namespace Intersect.Editor.Entities
                 mLowerTimer = Globals.System.GetTimeMs() + MyBase.Lower.FrameSpeed;
             }
 
-            if( mUpperTimer < Globals.System.GetTimeMs() && mShowUpper )
+            if (mUpperTimer < Globals.System.GetTimeMs() && mShowUpper)
             {
                 mUpperFrame++;
-                if( mUpperFrame >= MyBase.Upper.FrameCount )
+                if (mUpperFrame >= MyBase.Upper.FrameCount)
                 {
                     mUpperLoop--;
                     mUpperFrame = 0;
-                    if( mUpperLoop < 0 )
+                    if (mUpperLoop < 0)
                     {
-                        if( mInfiniteLoop )
+                        if (mInfiniteLoop)
                         {
                             mUpperLoop = MyBase.Upper.LoopCount;
                         }

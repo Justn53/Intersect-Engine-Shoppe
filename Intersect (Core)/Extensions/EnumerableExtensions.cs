@@ -14,23 +14,23 @@ namespace Intersect.Extensions
         )
         {
             var range = enumerable;
-            if( where != null )
+            if (where != null)
             {
-                range = range.Where( where );
+                range = range.Where(where);
             }
 
-            return range.ToDictionary( pair => pair.Key, pair => pair.Value );
+            return range.ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
         // Not a very clean solution, but will do for now.
-        public static IEnumerable<T> SelectManyRecursive<T>( this IEnumerable<T> source, Func<T, IEnumerable<T>> selector )
+        public static IEnumerable<T> SelectManyRecursive<T>(this IEnumerable<T> source, Func<T, IEnumerable<T>> selector)
         {
-            var result = source.SelectMany( selector );
-            if( !result.Any() )
+            var result = source.SelectMany(selector);
+            if (!result.Any())
             {
                 return result;
             }
-            return result.Concat( result.SelectManyRecursive( selector ) );
+            return result.Concat(result.SelectManyRecursive(selector));
         }
     }
 }

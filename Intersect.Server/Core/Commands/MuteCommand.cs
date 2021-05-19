@@ -15,26 +15,26 @@ namespace Intersect.Server.Core.Commands
         {
         }
 
-        protected override void HandleClient( ServerContext context, Client target, int duration, bool ip, string reason )
+        protected override void HandleClient(ServerContext context, Client target, int duration, bool ip, string reason)
         {
-            if( target.Entity == null )
+            if (target.Entity == null)
             {
-                Console.WriteLine( $@"    {Strings.Player.offline}" );
+                Console.WriteLine($@"    {Strings.Player.offline}");
 
                 return;
             }
 
             // TODO: Refactor the global/console messages into ModeratorActionCommand
             var name = target.Entity.Name;
-            if( string.IsNullOrEmpty( Mute.FindMuteReason( target.User.Id, "" ) ) )
+            if (string.IsNullOrEmpty(Mute.FindMuteReason(target.User.Id, "")))
             {
-                Mute.Add( target, duration, reason, Strings.Commands.muteuser, ip ? target.GetIp() : "" );
-                PacketSender.SendGlobalMsg( Strings.Account.muted.ToString( name ) );
-                Console.WriteLine( $@"    {Strings.Account.muted.ToString( name )}" );
+                Mute.Add(target, duration, reason, Strings.Commands.muteuser, ip ? target.GetIp() : "");
+                PacketSender.SendGlobalMsg(Strings.Account.muted.ToString(name));
+                Console.WriteLine($@"    {Strings.Account.muted.ToString(name)}");
             }
             else
             {
-                Console.WriteLine( $@"    {Strings.Account.alreadymuted.ToString( name )}" );
+                Console.WriteLine($@"    {Strings.Account.alreadymuted.ToString(name)}");
             }
         }
 

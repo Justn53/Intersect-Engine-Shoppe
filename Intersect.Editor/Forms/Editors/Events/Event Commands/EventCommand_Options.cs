@@ -21,7 +21,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private ShowOptionsCommand mMyCommand;
 
-        public EventCommandOptions( ShowOptionsCommand refCommand, EventPage refPage, FrmEvent editor )
+        public EventCommandOptions(ShowOptionsCommand refCommand, EventPage refPage, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
@@ -34,11 +34,11 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             txtShowOptionsOpt3.Text = mMyCommand.Options[2];
             txtShowOptionsOpt4.Text = mMyCommand.Options[3];
             cmbFace.Items.Clear();
-            cmbFace.Items.Add( Strings.General.none );
-            cmbFace.Items.AddRange( GameContentManager.GetSmartSortedTextureNames( GameContentManager.TextureType.Face ) );
-            if( cmbFace.Items.IndexOf( TextUtils.NullToNone( mMyCommand.Face ) ) > -1 )
+            cmbFace.Items.Add(Strings.General.none);
+            cmbFace.Items.AddRange(GameContentManager.GetSmartSortedTextureNames(GameContentManager.TextureType.Face));
+            if (cmbFace.Items.IndexOf(TextUtils.NullToNone(mMyCommand.Face)) > -1)
             {
-                cmbFace.SelectedIndex = cmbFace.Items.IndexOf( TextUtils.NullToNone( mMyCommand.Face ) );
+                cmbFace.SelectedIndex = cmbFace.Items.IndexOf(TextUtils.NullToNone(mMyCommand.Face));
             }
             else
             {
@@ -64,38 +64,38 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private void UpdateFacePreview()
         {
-            if( pnlFace == null )
+            if (pnlFace == null)
             {
                 return;
             }
 
-            pnlFace.BackgroundImage = File.Exists( $"resources/faces/{cmbFace?.Text}" )
-                ? new Bitmap( $"resources/faces/{cmbFace?.Text}" )
+            pnlFace.BackgroundImage = File.Exists($"resources/faces/{cmbFace?.Text}")
+                ? new Bitmap($"resources/faces/{cmbFace?.Text}")
                 : null;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
             mMyCommand.Text = txtShowOptions.Text;
             mMyCommand.Options[0] = txtShowOptionsOpt1.Text;
             mMyCommand.Options[1] = txtShowOptionsOpt2.Text;
             mMyCommand.Options[2] = txtShowOptionsOpt3.Text;
             mMyCommand.Options[3] = txtShowOptionsOpt4.Text;
-            mMyCommand.Face = TextUtils.SanitizeNone( cmbFace.Text );
+            mMyCommand.Face = TextUtils.SanitizeNone(cmbFace.Text);
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }
 
-        private void cmbFace_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbFace_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateFacePreview();
         }
 
-        private void lblCommands_Click( object sender, EventArgs e )
+        private void lblCommands_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(
                 "http://www.ascensiongamedev.com/community/topic/749-event-text-variables/"

@@ -33,14 +33,14 @@ namespace Intersect.Client.MonoGame.Audio
 
 
 
-        public MonoMusicSource( string path, string realPath )
+        public MonoMusicSource(string path, string realPath)
         {
             mPath = path;
             mRealPath = realPath;
 
-            if( mUnderlyingThread == null )
+            if (mUnderlyingThread == null)
             {
-                mUnderlyingThread = new Thread( EnsureBuffersFilled )
+                mUnderlyingThread = new Thread(EnsureBuffersFilled)
                 {
                     Priority = ThreadPriority.Lowest,
                     IsBackground = true
@@ -52,33 +52,33 @@ namespace Intersect.Client.MonoGame.Audio
 
         public override GameAudioInstance CreateInstance()
         {
-            return new MonoMusicInstance( this );
+            return new MonoMusicInstance(this);
         }
 
         public DynamicSoundEffectInstance LoadSong()
         {
-            lock( mInstanceLock )
+            lock (mInstanceLock)
             {
                 try
                 {
-                    if( !string.IsNullOrWhiteSpace( mRealPath ) )
+                    if (!string.IsNullOrWhiteSpace(mRealPath))
                     {
 
-                        if( Reader == null )
+                        if (Reader == null)
                         {
                             // Do we have this cached?
-                            if( Globals.ContentManager.MusicPacks != null && Globals.ContentManager.MusicPacks.Contains( Path.GetFileName( mRealPath ) ) )
+                            if (Globals.ContentManager.MusicPacks != null && Globals.ContentManager.MusicPacks.Contains(Path.GetFileName(mRealPath)))
                             {
                                 // Read from cache, but close reader when we're done with it!
-                                Reader = new VorbisReader( Globals.ContentManager.MusicPacks.GetAsset( Path.GetFileName( mRealPath ) ), true );
+                                Reader = new VorbisReader(Globals.ContentManager.MusicPacks.GetAsset(Path.GetFileName(mRealPath)), true);
                             }
                             else
                             {
-                                Reader = new VorbisReader( mRealPath );
+                                Reader = new VorbisReader(mRealPath);
                             }
                         }
 
-                        if( Instance != null )
+                        if (Instance != null)
                         {
                             Instance.Dispose();
                             Instance = null;
@@ -92,12 +92,12 @@ namespace Intersect.Client.MonoGame.Audio
 
                     }
                 }
-                catch( Exception exception )
+                catch (Exception exception)
                 {
-                    Log.Error( $"Error loading '{mPath}'.", exception );
+                    Log.Error($"Error loading '{mPath}'.", exception);
                     ChatboxMsg.AddMessage(
                         new ChatboxMsg(
-                            $"{Strings.Errors.LoadFile.ToString( Strings.Words.lcase_sound )} [{mPath}]", new Color( 0xBF, 0x0, 0x0 ), Enums.ChatMessageType.Error
+                            $"{Strings.Errors.LoadFile.ToString(Strings.Words.lcase_sound)} [{mPath}]", new Color(0xBF, 0x0, 0x0), Enums.ChatMessageType.Error
                         )
                     );
                 }
@@ -108,7 +108,7 @@ namespace Intersect.Client.MonoGame.Audio
 
         public void Close()
         {
-            lock( mInstanceLock )
+            lock (mInstanceLock)
             {
                 Reader?.Dispose();
                 Reader = null;
@@ -126,41 +126,41 @@ namespace Intersect.Client.MonoGame.Audio
             var samples = 44100;
             var updateRate = 10;
 
-            while( Globals.IsRunning )
+            while (Globals.IsRunning)
             {
-                Thread.Sleep( (int)( 1000 / Math.Max( updateRate, 1 ) ) );
-                lock( mInstanceLock )
+                Thread.Sleep((int)(1000 / Math.Max(updateRate, 1)));
+                lock (mInstanceLock)
                 {
-                    if( mActiveSource != null )
+                    if (mActiveSource != null)
                     {
                         var reader = mActiveSource.Reader;
                         var soundInstance = mActiveSource.Instance;
 
-                        if( reader != null && soundInstance != null && !soundInstance.IsDisposed )
+                        if (reader != null && soundInstance != null && !soundInstance.IsDisposed)
                         {
                             float[] sampleBuffer = null;
-                            while( soundInstance.PendingBufferCount < buffers )
+                            while (soundInstance.PendingBufferCount < buffers)
                             {
-                                if( sampleBuffer == null )
+                                if (sampleBuffer == null)
                                     sampleBuffer = new float[samples];
 
-                                var read = reader.ReadSamples( sampleBuffer, 0, sampleBuffer.Length );
-                                if( read == 0 )
+                                var read = reader.ReadSamples(sampleBuffer, 0, sampleBuffer.Length);
+                                if (read == 0)
                                 {
                                     reader.DecodedPosition = 0;
                                     continue;
                                 }
 
                                 var dataBuffer = new byte[read << 1];
-                                for( var sampleIndex = 0; sampleIndex < read; ++sampleIndex )
+                                for (var sampleIndex = 0; sampleIndex < read; ++sampleIndex)
                                 {
-                                    var sample = (short)MathHelper.Clamp( sampleBuffer[sampleIndex] * 32767f, short.MinValue, short.MaxValue );
-                                    var sampleData = BitConverter.GetBytes( sample );
-                                    for( var sampleByteIndex = 0; sampleByteIndex < sampleData.Length; ++sampleByteIndex )
-                                        dataBuffer[( sampleIndex << 1 ) + sampleByteIndex] = sampleData[sampleByteIndex];
+                                    var sample = (short)MathHelper.Clamp(sampleBuffer[sampleIndex] * 32767f, short.MinValue, short.MaxValue);
+                                    var sampleData = BitConverter.GetBytes(sample);
+                                    for (var sampleByteIndex = 0; sampleByteIndex < sampleData.Length; ++sampleByteIndex)
+                                        dataBuffer[(sampleIndex << 1) + sampleByteIndex] = sampleData[sampleByteIndex];
                                 }
 
-                                soundInstance.SubmitBuffer( dataBuffer, 0, read << 1 );
+                                soundInstance.SubmitBuffer(dataBuffer, 0, read << 1);
                             }
                         }
                     }

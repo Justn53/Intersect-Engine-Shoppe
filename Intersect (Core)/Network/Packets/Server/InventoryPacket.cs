@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public InventoryPacket( InventoryUpdatePacket[] slots )
+        public InventoryPacket(InventoryUpdatePacket[] slots)
         {
             Slots = slots;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public InventoryUpdatePacket[] Slots { get; set; }
 
     }

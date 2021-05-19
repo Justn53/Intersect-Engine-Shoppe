@@ -12,19 +12,19 @@ namespace Intersect.Admin.Actions
 
         }
 
-        public SetSpriteAction( string name, string sprite )
+        public SetSpriteAction(string name, string sprite)
         {
             Name = name;
             Sprite = sprite;
         }
 
-        [Key( 1 )]
+        [Key(1)]
         public override AdminActions Action { get; } = AdminActions.SetSprite;
 
-        [Key( 2 )]
+        [Key(2)]
         public string Name { get; set; }
 
-        [Key( 3 )]
+        [Key(3)]
         public string Sprite { get; set; }
 
     }

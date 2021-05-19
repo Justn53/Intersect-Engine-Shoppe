@@ -15,45 +15,45 @@ namespace Intersect.Memory
 
         byte[] ToBytes();
 
-        bool Has( long bytes );
+        bool Has(long bytes);
 
         #region Read(out)
 
-        bool Read( out bool value );
+        bool Read(out bool value);
 
-        bool Read( out byte value );
+        bool Read(out byte value);
 
-        bool Read( out byte[] value );
+        bool Read(out byte[] value);
 
-        bool Read( out byte[] value, long count );
+        bool Read(out byte[] value, long count);
 
-        bool Read( ref byte[] value, long offset, long count );
+        bool Read(ref byte[] value, long offset, long count);
 
-        bool Read( out char value );
+        bool Read(out char value);
 
-        bool Read( out decimal value );
+        bool Read(out decimal value);
 
-        bool Read( out double value );
+        bool Read(out double value);
 
-        bool Read( out float value );
+        bool Read(out float value);
 
-        bool Read( out int value );
+        bool Read(out int value);
 
-        bool Read( out long value );
+        bool Read(out long value);
 
-        bool Read( out sbyte value );
+        bool Read(out sbyte value);
 
-        bool Read( out short value );
+        bool Read(out short value);
 
-        bool Read( out string value );
+        bool Read(out string value);
 
-        bool Read( out string value, Encoding encoding, bool nullTerminated = false );
+        bool Read(out string value, Encoding encoding, bool nullTerminated = false);
 
-        bool Read( out uint value );
+        bool Read(out uint value);
 
-        bool Read( out ulong value );
+        bool Read(out ulong value);
 
-        bool Read( out ushort value );
+        bool Read(out ushort value);
 
         #endregion
 
@@ -69,9 +69,9 @@ namespace Intersect.Memory
 
         byte[] ReadBytes();
 
-        byte[] ReadBytes( long count );
+        byte[] ReadBytes(long count);
 
-        byte[] ReadBytes( ref byte[] bytes, long offset, long count );
+        byte[] ReadBytes(ref byte[] bytes, long offset, long count);
 
         char ReadChar();
 
@@ -105,7 +105,7 @@ namespace Intersect.Memory
 
         string ReadString();
 
-        string ReadString( Encoding encoding, bool nullTerminated = false );
+        string ReadString(Encoding encoding, bool nullTerminated = false);
 
         uint ReadUInt();
 
@@ -125,41 +125,41 @@ namespace Intersect.Memory
 
         #region Write()
 
-        void Write( bool value );
+        void Write(bool value);
 
-        void Write( byte value );
+        void Write(byte value);
 
-        void Write( byte[] value );
+        void Write(byte[] value);
 
-        void Write( byte[] value, long count );
+        void Write(byte[] value, long count);
 
-        void Write( byte[] value, long offset, long count );
+        void Write(byte[] value, long offset, long count);
 
-        void Write( char value );
+        void Write(char value);
 
-        void Write( decimal value );
+        void Write(decimal value);
 
-        void Write( double value );
+        void Write(double value);
 
-        void Write( float value );
+        void Write(float value);
 
-        void Write( int value );
+        void Write(int value);
 
-        void Write( long value );
+        void Write(long value);
 
-        void Write( sbyte value );
+        void Write(sbyte value);
 
-        void Write( short value );
+        void Write(short value);
 
-        void Write( string value );
+        void Write(string value);
 
-        void Write( string value, Encoding encoding, bool nullTerminated = false );
+        void Write(string value, Encoding encoding, bool nullTerminated = false);
 
-        void Write( uint value );
+        void Write(uint value);
 
-        void Write( ulong value );
+        void Write(ulong value);
 
-        void Write( ushort value );
+        void Write(ushort value);
 
         #endregion
 

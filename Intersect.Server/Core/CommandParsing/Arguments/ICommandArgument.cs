@@ -34,11 +34,11 @@ namespace Intersect.Server.Core.CommandParsing.Arguments
 
         string Delimeter { get; }
 
-        bool IsRequired( ParserContext parserContext );
+        bool IsRequired(ParserContext parserContext);
 
         TValue DefaultValueAsType<TValue>();
 
-        bool IsValueAllowed( object value );
+        bool IsValueAllowed(object value);
 
     }
 

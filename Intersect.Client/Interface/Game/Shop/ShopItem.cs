@@ -44,7 +44,7 @@ namespace Intersect.Client.Interface.Game.Shop
 
         public ImagePanel Pnl;
 
-        public ShopItem( ShopWindow shopWindow, int index )
+        public ShopItem(ShopWindow shopWindow, int index)
         {
             mShopWindow = shopWindow;
             mMySlot = index;
@@ -52,40 +52,40 @@ namespace Intersect.Client.Interface.Game.Shop
 
         public void Setup()
         {
-            Pnl = new ImagePanel( Container, "ShopItemIcon" );
+            Pnl = new ImagePanel(Container, "ShopItemIcon");
             Pnl.HoverEnter += pnl_HoverEnter;
             Pnl.HoverLeave += pnl_HoverLeave;
             Pnl.RightClicked += Pnl_RightClicked;
             Pnl.DoubleClicked += Pnl_RightClicked; //Allow buying via double click OR right click
         }
 
-        private void Pnl_RightClicked( Base sender, ClickedEventArgs arguments )
+        private void Pnl_RightClicked(Base sender, ClickedEventArgs arguments)
         {
             //Confirm the purchase
-            var item = ItemBase.Get( Globals.GameShop.SellingItems[mMySlot].ItemId );
-            if( item != null )
+            var item = ItemBase.Get(Globals.GameShop.SellingItems[mMySlot].ItemId);
+            if (item != null)
             {
-                if( item.IsStackable )
+                if (item.IsStackable)
                 {
                     var iBox = new InputBox(
-                        Strings.Shop.buyitem, Strings.Shop.buyitemprompt.ToString( item.Name ), true,
+                        Strings.Shop.buyitem, Strings.Shop.buyitemprompt.ToString(item.Name), true,
                         InputBox.InputType.NumericInput, BuyItemInputBoxOkay, null, mMySlot
                     );
                 }
                 else
                 {
-                    PacketSender.SendBuyItem( mMySlot, 1 );
+                    PacketSender.SendBuyItem(mMySlot, 1);
                 }
             }
         }
 
         public void LoadItem()
         {
-            var item = ItemBase.Get( Globals.GameShop.SellingItems[mMySlot].ItemId );
-            if( item != null )
+            var item = ItemBase.Get(Globals.GameShop.SellingItems[mMySlot].ItemId);
+            if (item != null)
             {
-                var itemTex = Globals.ContentManager.GetTexture( GameContentManager.TextureType.Item, item.Icon );
-                if( itemTex != null )
+                var itemTex = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Item, item.Icon);
+                if (itemTex != null)
                 {
                     Pnl.Texture = itemTex;
                     Pnl.RenderColor = item.Color;
@@ -93,51 +93,51 @@ namespace Intersect.Client.Interface.Game.Shop
             }
         }
 
-        private void BuyItemInputBoxOkay( object sender, EventArgs e )
+        private void BuyItemInputBoxOkay(object sender, EventArgs e)
         {
-            var value = (int)( (InputBox)sender ).Value;
-            if( value > 0 )
+            var value = (int)((InputBox)sender).Value;
+            if (value > 0)
             {
-                PacketSender.SendBuyItem( (int)( (InputBox)sender ).UserData, value );
+                PacketSender.SendBuyItem((int)((InputBox)sender).UserData, value);
             }
         }
 
-        void pnl_HoverLeave( Base sender, EventArgs arguments )
+        void pnl_HoverLeave(Base sender, EventArgs arguments)
         {
             mMouseOver = false;
             mMouseX = -1;
             mMouseY = -1;
-            if( mDescWindow != null )
+            if (mDescWindow != null)
             {
                 mDescWindow.Dispose();
                 mDescWindow = null;
             }
         }
 
-        void pnl_HoverEnter( Base sender, EventArgs arguments )
+        void pnl_HoverEnter(Base sender, EventArgs arguments)
         {
-            if( InputHandler.MouseFocus != null )
+            if (InputHandler.MouseFocus != null)
             {
                 return;
             }
 
-            if( Globals.InputManager.MouseButtonDown( GameInput.MouseButtons.Left ) )
+            if (Globals.InputManager.MouseButtonDown(GameInput.MouseButtons.Left))
             {
                 return;
             }
 
-            if( mDescWindow != null )
+            if (mDescWindow != null)
             {
                 mDescWindow.Dispose();
                 mDescWindow = null;
             }
 
-            var item = ItemBase.Get( Globals.GameShop.SellingItems[mMySlot].CostItemId );
-            if( item != null && Globals.GameShop.SellingItems[mMySlot].Item != null )
+            var item = ItemBase.Get(Globals.GameShop.SellingItems[mMySlot].CostItemId);
+            if (item != null && Globals.GameShop.SellingItems[mMySlot].Item != null)
             {
                 mDescWindow = new ItemDescWindow(
                     Globals.GameShop.SellingItems[mMySlot].Item, 1, mShopWindow.X, mShopWindow.Y, item.StatsGiven, "",
-                    Strings.Shop.costs.ToString( Globals.GameShop.SellingItems[mMySlot].CostItemQuantity, item.Name )
+                    Strings.Shop.costs.ToString(Globals.GameShop.SellingItems[mMySlot].CostItemQuantity, item.Name)
                 );
             }
         }
@@ -146,8 +146,8 @@ namespace Intersect.Client.Interface.Game.Shop
         {
             var rect = new FloatRect()
             {
-                X = Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).X,
-                Y = Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).Y,
+                X = Pnl.LocalPosToCanvas(new Point(0, 0)).X,
+                Y = Pnl.LocalPosToCanvas(new Point(0, 0)).Y,
                 Width = Pnl.Width,
                 Height = Pnl.Height
             };

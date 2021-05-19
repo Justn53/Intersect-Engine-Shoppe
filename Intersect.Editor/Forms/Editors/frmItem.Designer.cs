@@ -2838,12 +2838,12 @@ namespace Intersect.Editor.Forms.Editors
         private Label lblPlus8;
         private Label lblPlus7;
         private Label lblPlus6;
-    private DarkGroupBox grpRegen;
-    private DarkNumericUpDown nudMpRegen;
-    private DarkNumericUpDown nudHPRegen;
-    private Label lblHpRegen;
-    private Label lblManaRegen;
-    private Label lblRegenHint;
+        private DarkGroupBox grpRegen;
+        private DarkNumericUpDown nudMpRegen;
+        private DarkNumericUpDown nudHPRegen;
+        private Label lblHpRegen;
+        private Label lblManaRegen;
+        private Label lblRegenHint;
         private DarkComboBox cmbCooldownGroup;
         private Label lblCooldownGroup;
         private DarkButton btnAddCooldownGroup;

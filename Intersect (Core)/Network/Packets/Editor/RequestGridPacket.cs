@@ -11,12 +11,12 @@ namespace Intersect.Network.Packets.Editor
         {
         }
 
-        public RequestGridPacket( Guid mapId )
+        public RequestGridPacket(Guid mapId)
         {
             MapId = mapId;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid MapId { get; set; }
 
     }

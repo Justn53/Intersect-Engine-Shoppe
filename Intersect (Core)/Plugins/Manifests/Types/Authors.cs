@@ -54,16 +54,16 @@ namespace Intersect.Plugins.Manifests.Types
         /// Initializes a new instance of the <see cref="Authors"/> structure.
         /// </summary>
         /// <param name="authors">the <see cref="Author"/>s in this list</param>
-        public Authors( params Author[] authors ) : this( authors as IEnumerable<Author> ) { }
+        public Authors(params Author[] authors) : this(authors as IEnumerable<Author>) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Authors"/> structure.
         /// </summary>
         /// <param name="authors">the <see cref="Author"/>s in this list</param>
-        public Authors( IEnumerable<Author> authors )
+        public Authors(IEnumerable<Author> authors)
         {
             mAuthors = authors.ToArray();
-            mHashCode = ValueUtils.ComputeHashCode( mAuthors );
+            mHashCode = ValueUtils.ComputeHashCode(mAuthors);
         }
 
         #endregion Constructors
@@ -85,78 +85,78 @@ namespace Intersect.Plugins.Manifests.Types
         #region Methods
 
         /// <inheritdoc cref="ICloneable.Clone" />
-        public Authors Clone() => new Authors( mAuthors.Select( author => author.Clone() ) );
+        public Authors Clone() => new Authors(mAuthors.Select(author => author.Clone()));
 
         object ICloneable.Clone() => Clone();
 
         /// <inheritdoc />
-        public int CompareTo( object other, IComparer comparer ) => comparer.Compare( this, other );
+        public int CompareTo(object other, IComparer comparer) => comparer.Compare(this, other);
 
         /// <inheritdoc />
-        public int CompareTo( IEnumerable<Author> other ) =>
-            other?.Select( CompareElement ).FirstOrDefault( comparison => comparison != 0 ) ?? 0;
+        public int CompareTo(IEnumerable<Author> other) =>
+            other?.Select(CompareElement).FirstOrDefault(comparison => comparison != 0) ?? 0;
 
         /// <inheritdoc />
-        public int CompareTo( IEnumerable<string> other ) =>
-            other?.Select( CompareElement ).FirstOrDefault( comparison => comparison != 0 ) ?? 0;
+        public int CompareTo(IEnumerable<string> other) =>
+            other?.Select(CompareElement).FirstOrDefault(comparison => comparison != 0) ?? 0;
 
         /// <inheritdoc />
-        public int CompareTo( object obj )
+        public int CompareTo(object obj)
         {
-            switch( obj )
+            switch (obj)
             {
                 case IEnumerable<Author> authors:
-                    return CompareTo( authors );
+                    return CompareTo(authors);
 
                 case IEnumerable<string> authorStrings:
-                    return CompareTo( authorStrings );
+                    return CompareTo(authorStrings);
 
                 default:
-                    throw new NotSupportedException( ExceptionComparisonNotSupported );
+                    throw new NotSupportedException(ExceptionComparisonNotSupported);
             }
         }
 
         /// <inheritdoc />
-        public bool Equals( object other, IEqualityComparer comparer ) => comparer.Equals( this, other );
+        public bool Equals(object other, IEqualityComparer comparer) => comparer.Equals(this, other);
 
         /// <inheritdoc />
-        public bool Equals( IEnumerable<Author> other ) => Equals( other, EqualsElement );
+        public bool Equals(IEnumerable<Author> other) => Equals(other, EqualsElement);
 
         /// <inheritdoc />
-        public bool Equals( IEnumerable<string> other ) => Equals( other, EqualsElement );
+        public bool Equals(IEnumerable<string> other) => Equals(other, EqualsElement);
 
         /// <inheritdoc />
-        public override bool Equals( object obj )
+        public override bool Equals(object obj)
         {
-            switch( obj )
+            switch (obj)
             {
                 case IEnumerable<Author> authors:
-                    return Equals( authors );
+                    return Equals(authors);
 
                 case IEnumerable<string> authorStrings:
-                    return Equals( authorStrings );
+                    return Equals(authorStrings);
 
                 default:
-                    throw new NotSupportedException( ExceptionComparisonNotSupported );
+                    throw new NotSupportedException(ExceptionComparisonNotSupported);
             }
         }
 
         /// <inheritdoc />
-        public bool Equals( string other ) => this == other;
+        public bool Equals(string other) => this == other;
 
         /// <inheritdoc />
-        public IEnumerator<Author> GetEnumerator() => ( (IEnumerable<Author>)mAuthors ).GetEnumerator();
+        public IEnumerator<Author> GetEnumerator() => ((IEnumerable<Author>)mAuthors).GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => mAuthors.GetEnumerator();
 
         /// <inheritdoc />
-        public int GetHashCode( IEqualityComparer comparer ) => comparer.GetHashCode( this );
+        public int GetHashCode(IEqualityComparer comparer) => comparer.GetHashCode(this);
 
         /// <inheritdoc />
         public override int GetHashCode() => mHashCode;
 
         /// <inheritdoc />
-        public override string ToString() => JsonConvert.SerializeObject( mAuthors );
+        public override string ToString() => JsonConvert.SerializeObject(mAuthors);
 
         /// <summary>
         /// Compares equality against the other <see cref="IEnumerable{T}"/>.
@@ -169,7 +169,7 @@ namespace Intersect.Plugins.Manifests.Types
             IEnumerable<TEnumerableValue> other,
             Func<TEnumerableValue, int, bool> comparisonFunc
         ) =>
-            other?.Select( comparisonFunc ).All( equality => equality ) ?? false;
+            other?.Select(comparisonFunc).All(equality => equality) ?? false;
 
         /// <summary>
         /// Compares <paramref name="author"/> to the <see cref="Author"/> located at <paramref name="index"/>.
@@ -179,8 +179,8 @@ namespace Intersect.Plugins.Manifests.Types
         /// <param name="author">the <see cref="Author"/> to compare</param>
         /// <param name="index">the index to compare at</param>
         /// <returns>the result of <see cref="Author.CompareTo(Author)"/> or -1 <paramref name="index"/> is out of bounds</returns>
-        private int CompareElement( Author author, int index ) =>
-            index < mAuthors.Length ? mAuthors[index].CompareTo( author ) : -1;
+        private int CompareElement(Author author, int index) =>
+            index < mAuthors.Length ? mAuthors[index].CompareTo(author) : -1;
 
         /// <summary>
         /// Compares <paramref name="authorString"/> to the <see cref="Author"/> located at <paramref name="index"/>.
@@ -190,8 +190,8 @@ namespace Intersect.Plugins.Manifests.Types
         /// <param name="authorString">the <see cref="Author"/> <see cref="string"/> to compare</param>
         /// <param name="index">the index to compare at</param>
         /// <returns>the result of <see cref="Author.CompareTo(Author)"/> or -1 <paramref name="index"/> is out of bounds</returns>
-        private int CompareElement( string authorString, int index ) =>
-            index < mAuthors.Length ? mAuthors[index].CompareTo( authorString ) : -1;
+        private int CompareElement(string authorString, int index) =>
+            index < mAuthors.Length ? mAuthors[index].CompareTo(authorString) : -1;
 
         /// <summary>
         /// Compares equality between <paramref name="author"/> and the <see cref="Author"/> located at <paramref name="index"/>.
@@ -199,8 +199,8 @@ namespace Intersect.Plugins.Manifests.Types
         /// <param name="author">the <see cref="Author"/> to compare</param>
         /// <param name="index">the index to compare at</param>
         /// <returns>the result of <see cref="Author.Equals(Author)"/> or false if <paramref name="index"/> is out of bounds</returns>
-        private bool EqualsElement( Author author, int index ) =>
-            index < mAuthors.Length && mAuthors[index].Equals( author );
+        private bool EqualsElement(Author author, int index) =>
+            index < mAuthors.Length && mAuthors[index].Equals(author);
 
         /// <summary>
         /// Compares equality between <paramref name="authorString"/> and the <see cref="Author"/> located at <paramref name="index"/>.
@@ -208,8 +208,8 @@ namespace Intersect.Plugins.Manifests.Types
         /// <param name="authorString">the <see cref="Author"/><see cref="string"/>  to compare</param>
         /// <param name="index">the index to compare at</param>
         /// <returns>the result of <see cref="Author.Equals(Author)"/> or false if <paramref name="index"/> is out of bounds</returns>
-        private bool EqualsElement( string authorString, int index ) =>
-            index < mAuthors.Length && mAuthors[index].Equals( authorString );
+        private bool EqualsElement(string authorString, int index) =>
+            index < mAuthors.Length && mAuthors[index].Equals(authorString);
 
         #endregion Methods
 
@@ -222,15 +222,15 @@ namespace Intersect.Plugins.Manifests.Types
         /// <returns>an <see cref="Authors"/> instance</returns>
         /// <seealso cref="Author(string)"/>
         /// <seealso cref="JsonConvert.DeserializeObject{T}(string)"/>
-        public static implicit operator Authors( string authorsString )
+        public static implicit operator Authors(string authorsString)
         {
             try
             {
-                return JsonConvert.DeserializeObject<Authors>( authorsString );
+                return JsonConvert.DeserializeObject<Authors>(authorsString);
             }
             catch
             {
-                return new Author( authorsString );
+                return new Author(authorsString);
             }
         }
 
@@ -239,8 +239,8 @@ namespace Intersect.Plugins.Manifests.Types
         /// </summary>
         /// <param name="author">an <see cref="Author"/></param>
         /// <returns>an <see cref="Authors"/> instance</returns>
-        public static implicit operator Authors( Author author ) =>
-            new Authors( author );
+        public static implicit operator Authors(Author author) =>
+            new Authors(author);
 
         /// <summary>
         /// Converts an array of <see cref="Author"/> <see cref="string"/>s to an instance of <see cref="Authors"/>.
@@ -248,22 +248,22 @@ namespace Intersect.Plugins.Manifests.Types
         /// <param name="authorStrings">an array of <see cref="Author"/> <see cref="string"/>s</param>
         /// <returns>an <see cref="Authors"/> instance</returns>
         /// <seealso cref="Author(string)"/>
-        public static implicit operator Authors( string[] authorStrings ) =>
-            new Authors( authorStrings.Select( authorString => new Author( authorString ) ) );
+        public static implicit operator Authors(string[] authorStrings) =>
+            new Authors(authorStrings.Select(authorString => new Author(authorString)));
 
         /// <summary>
         /// Converts an array of <see cref="Author"/>s to an instance of <see cref="Authors"/>.
         /// </summary>
         /// <param name="authors">an array of <see cref="Author"/>s</param>
         /// <returns>an <see cref="Author"/> array</returns>
-        public static implicit operator Authors( Author[] authors ) =>
-            new Authors( authors ?? Array.Empty<Author>() );
+        public static implicit operator Authors(Author[] authors) =>
+            new Authors(authors ?? Array.Empty<Author>());
 
         /// <summary>
         /// Converts <see cref="Authors"/> to <see cref="string"/> using <see cref="ToString"/>.
         /// </summary>
         /// <param name="authors">an <see cref="Authors"/> instance</param>
-        public static implicit operator string( Authors authors ) => authors.ToString();
+        public static implicit operator string(Authors authors) => authors.ToString();
 
         /// <summary>
         /// Checks if two <see cref="Authors"/> are not equal.
@@ -271,7 +271,7 @@ namespace Intersect.Plugins.Manifests.Types
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns>if any of the <see cref="Author"/>s are not equal</returns>
-        public static bool operator !=( Authors a, Authors b ) => !a.Equals( b as IEnumerable<Author> );
+        public static bool operator !=(Authors a, Authors b) => !a.Equals(b as IEnumerable<Author>);
 
         /// <summary>
         /// Checks if two <see cref="Authors"/> are equal.
@@ -279,7 +279,7 @@ namespace Intersect.Plugins.Manifests.Types
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns>if all of the <see cref="Author"/>s are equal</returns>
-        public static bool operator ==( Authors a, Authors b ) => a.Equals( b as IEnumerable<Author> );
+        public static bool operator ==(Authors a, Authors b) => a.Equals(b as IEnumerable<Author>);
 
         #endregion Operators
     }

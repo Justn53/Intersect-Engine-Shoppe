@@ -11,10 +11,10 @@ namespace Intersect.Server.Database
 
         int SaveChanges();
 
-        int SaveChanges( bool acceptAllChangesOnSuccess );
+        int SaveChanges(bool acceptAllChangesOnSuccess);
 
-        Task<int> SaveChangesAsync( bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default );
+        Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default);
 
-        Task<int> SaveChangesAsync( CancellationToken cancellationToken = default );
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

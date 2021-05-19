@@ -15,7 +15,7 @@ namespace Intersect.Network
         public static readonly MessagePacker Instance = new MessagePacker();
 
         private readonly MessagePackSerializerOptions mOptions = MessagePackSerializerOptions.Standard.
-            WithResolver( MessagePack.Resolvers.CompositeResolver.Create(
+            WithResolver(MessagePack.Resolvers.CompositeResolver.Create(
                 new IFormatterResolver[] {
                     MessagePack.Resolvers.NativeGuidResolver.Instance,
                     MessagePack.Resolvers.NativeDateTimeResolver.Instance,
@@ -24,29 +24,29 @@ namespace Intersect.Network
                 )
             );
 
-        private readonly MessagePackSerializerOptions mCompressedOptions = MessagePackSerializerOptions.Standard.WithCompression( MessagePackCompression.Lz4Block );
+        private readonly MessagePackSerializerOptions mCompressedOptions = MessagePackSerializerOptions.Standard.WithCompression(MessagePackCompression.Lz4Block);
 
-        public byte[] Serialize( IntersectPacket pkt )
+        public byte[] Serialize(IntersectPacket pkt)
         {
-            var packedPacket = new PackedIntersectPacket( pkt )
+            var packedPacket = new PackedIntersectPacket(pkt)
             {
-                Data = MessagePackSerializer.Serialize( (object)pkt, mOptions )
+                Data = MessagePackSerializer.Serialize((object)pkt, mOptions)
             };
 
-            return MessagePackSerializer.Serialize( (object)packedPacket, mCompressedOptions );
+            return MessagePackSerializer.Serialize((object)packedPacket, mCompressedOptions);
         }
 
-        public object Deserialize( byte[] data )
+        public object Deserialize(byte[] data)
         {
             try
             {
-                var packedPacket = MessagePackSerializer.Deserialize<PackedIntersectPacket>( data, mCompressedOptions );
-                var intersectPacket = MessagePackSerializer.Deserialize( packedPacket.PacketType, packedPacket.Data, mOptions );
+                var packedPacket = MessagePackSerializer.Deserialize<PackedIntersectPacket>(data, mCompressedOptions);
+                var intersectPacket = MessagePackSerializer.Deserialize(packedPacket.PacketType, packedPacket.Data, mOptions);
                 return intersectPacket;
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                Log.Error( exception );
+                Log.Error(exception);
 
                 return null;
             }

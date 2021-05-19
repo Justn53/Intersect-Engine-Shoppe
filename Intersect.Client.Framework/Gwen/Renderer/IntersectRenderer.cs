@@ -25,7 +25,7 @@ namespace Intersect.Client.Framework.Gwen.Renderer
         ///     Initializes a new instance of the <see cref="UnityGwenRenderer" /> class.
         /// </summary>
         /// <param name="target">Intersect render target.</param>
-        public IntersectRenderer( GameRenderTexture renderTarget, GameRenderer renderer )
+        public IntersectRenderer(GameRenderTexture renderTarget, GameRenderer renderer)
         {
             mRenderer = renderer;
             mRenderTarget = renderTarget;
@@ -36,20 +36,20 @@ namespace Intersect.Client.Framework.Gwen.Renderer
         /// </summary>
         public override Color DrawColor
         {
-            get => Color.FromArgb( mColor.A, mColor.R, mColor.G, mColor.B );
-            set => mColor = new Color( value.A, value.R, value.G, value.B );
+            get => Color.FromArgb(mColor.A, mColor.R, mColor.G, mColor.B);
+            set => mColor = new Color(value.A, value.R, value.G, value.B);
         }
 
-        public override Color PixelColor( GameTexture texture, uint x, uint y, Color defaultColor )
+        public override Color PixelColor(GameTexture texture, uint x, uint y, Color defaultColor)
         {
             var x1 = (int)x;
             var y1 = (int)y;
-            if( texture == null )
+            if (texture == null)
             {
                 return defaultColor;
             }
 
-            return texture.GetPixel( x1, y1 );
+            return texture.GetPixel(x1, y1);
         }
 
         /*
@@ -72,85 +72,85 @@ namespace Intersect.Client.Framework.Gwen.Renderer
         /// <returns>
         ///     Width and height of the rendered text.
         /// </returns>
-        public override Point MeasureText( GameFont font, string text, float scale = 1f )
+        public override Point MeasureText(GameFont font, string text, float scale = 1f)
         {
-            if( font == null )
+            if (font == null)
             {
                 return Point.Empty;
             }
 
-            var size = mRenderer.MeasureText( text, font, scale * Scale );
+            var size = mRenderer.MeasureText(text, font, scale * Scale);
 
-            return new Point( (int)size.X, (int)size.Y );
+            return new Point((int)size.X, (int)size.Y);
         }
 
-        public override void RenderText( GameFont font, Point pos, string text, float scale = 1f )
+        public override void RenderText(GameFont font, Point pos, string text, float scale = 1f)
         {
-            pos = Translate( pos );
-            var clip = new FloatRect( ClipRegion.X, ClipRegion.Y, ClipRegion.Width, ClipRegion.Height );
-            clip.X = (int)Math.Round( clip.X * Scale );
-            clip.Y = (int)Math.Round( clip.Y * Scale );
-            clip.Width = (int)Math.Round( clip.Width * Scale );
-            clip.Height = (int)Math.Round( clip.Height * Scale );
-            mRenderer.DrawString( text, font, pos.X, pos.Y, Scale * scale, mColor, false, mRenderTarget, clip );
+            pos = Translate(pos);
+            var clip = new FloatRect(ClipRegion.X, ClipRegion.Y, ClipRegion.Width, ClipRegion.Height);
+            clip.X = (int)Math.Round(clip.X * Scale);
+            clip.Y = (int)Math.Round(clip.Y * Scale);
+            clip.Width = (int)Math.Round(clip.Width * Scale);
+            clip.Height = (int)Math.Round(clip.Height * Scale);
+            mRenderer.DrawString(text, font, pos.X, pos.Y, Scale * scale, mColor, false, mRenderTarget, clip);
         }
 
-        public override void DrawFilledRect( Rectangle targetRect )
+        public override void DrawFilledRect(Rectangle targetRect)
         {
             var rect = new FloatRect(
-                Translate( targetRect ).X, Translate( targetRect ).Y, Translate( targetRect ).Width,
-                Translate( targetRect ).Height
+                Translate(targetRect).X, Translate(targetRect).Y, Translate(targetRect).Width,
+                Translate(targetRect).Height
             );
 
             //TODO
 
-            if( mClipping )
+            if (mClipping)
             {
-                var clip = new FloatRect( ClipRegion.X, ClipRegion.Y, ClipRegion.Width, ClipRegion.Height );
-                clip.X = (int)Math.Round( clip.X * Scale );
-                clip.Y = (int)Math.Round( clip.Y * Scale );
-                clip.Width = (int)Math.Round( clip.Width * Scale );
-                clip.Height = (int)Math.Round( clip.Height * Scale );
+                var clip = new FloatRect(ClipRegion.X, ClipRegion.Y, ClipRegion.Width, ClipRegion.Height);
+                clip.X = (int)Math.Round(clip.X * Scale);
+                clip.Y = (int)Math.Round(clip.Y * Scale);
+                clip.Width = (int)Math.Round(clip.Width * Scale);
+                clip.Height = (int)Math.Round(clip.Height * Scale);
 
                 float diff = 0;
-                if( rect.X < clip.X )
+                if (rect.X < clip.X)
                 {
                     diff = clip.X - rect.X;
                     rect.X += diff;
                     rect.Width -= diff;
                 }
 
-                if( rect.X + rect.Width > clip.X + clip.Width )
+                if (rect.X + rect.Width > clip.X + clip.Width)
                 {
-                    diff = rect.X + rect.Width - ( clip.X + clip.Width );
+                    diff = rect.X + rect.Width - (clip.X + clip.Width);
                     rect.Width -= diff;
                 }
 
-                if( rect.Y < clip.Y )
+                if (rect.Y < clip.Y)
                 {
                     diff = clip.Y - rect.Y;
                     rect.Y += diff;
                     rect.Height -= diff;
                 }
 
-                if( rect.Y + rect.Height > clip.Y + clip.Height )
+                if (rect.Y + rect.Height > clip.Y + clip.Height)
                 {
-                    diff = rect.Y + rect.Height - ( clip.Y + clip.Height );
+                    diff = rect.Y + rect.Height - (clip.Y + clip.Height);
                     rect.Height -= diff;
                 }
 
-                if( rect.Width <= 0 )
+                if (rect.Width <= 0)
                 {
                     return;
                 }
 
-                if( rect.Height <= 0 )
+                if (rect.Height <= 0)
                 {
                     return;
                 }
             }
 
-            if( mRenderTarget == null )
+            if (mRenderTarget == null)
             {
                 mRenderer.DrawTexture(
                     mRenderer.GetWhiteTexture(), 0, 0, 1, 1, rect.X, rect.Y, rect.Width, rect.Height, mColor,
@@ -177,11 +177,11 @@ namespace Intersect.Client.Framework.Gwen.Renderer
         )
         {
             var rect = new FloatRect(
-                Translate( targetRect ).X, Translate( targetRect ).Y, Translate( targetRect ).Width,
-                Translate( targetRect ).Height
+                Translate(targetRect).X, Translate(targetRect).Y, Translate(targetRect).Width,
+                Translate(targetRect).Height
             );
 
-            if( null == tex )
+            if (null == tex)
             {
                 //DrawMissingImage(targetRect);
                 return;
@@ -192,17 +192,17 @@ namespace Intersect.Client.Framework.Gwen.Renderer
             u2 *= tex.GetWidth();
             v2 *= tex.GetHeight();
 
-            if( mClipping )
+            if (mClipping)
             {
-                var clip = new FloatRect( ClipRegion.X, ClipRegion.Y, ClipRegion.Width, ClipRegion.Height );
-                clip.X = (int)Math.Round( clip.X * Scale );
-                clip.Y = (int)Math.Round( clip.Y * Scale );
-                clip.Width = (int)Math.Round( clip.Width * Scale );
-                clip.Height = (int)Math.Round( clip.Height * Scale );
+                var clip = new FloatRect(ClipRegion.X, ClipRegion.Y, ClipRegion.Width, ClipRegion.Height);
+                clip.X = (int)Math.Round(clip.X * Scale);
+                clip.Y = (int)Math.Round(clip.Y * Scale);
+                clip.Width = (int)Math.Round(clip.Width * Scale);
+                clip.Height = (int)Math.Round(clip.Height * Scale);
 
                 float diff = 0;
                 float vdiff = 0;
-                if( rect.X < clip.X )
+                if (rect.X < clip.X)
                 {
                     diff = clip.X - rect.X;
                     vdiff = diff;
@@ -211,15 +211,15 @@ namespace Intersect.Client.Framework.Gwen.Renderer
                     u1 += vdiff;
                 }
 
-                if( rect.X + rect.Width > clip.X + clip.Width )
+                if (rect.X + rect.Width > clip.X + clip.Width)
                 {
-                    diff = rect.X + rect.Width - ( clip.X + clip.Width );
+                    diff = rect.X + rect.Width - (clip.X + clip.Width);
                     vdiff = diff;
                     rect.Width -= diff;
                     u2 -= vdiff;
                 }
 
-                if( rect.Y < clip.Y )
+                if (rect.Y < clip.Y)
                 {
                     diff = clip.Y - rect.Y;
                     vdiff = diff;
@@ -228,20 +228,20 @@ namespace Intersect.Client.Framework.Gwen.Renderer
                     v1 += vdiff;
                 }
 
-                if( rect.Y + rect.Height > clip.Y + clip.Height )
+                if (rect.Y + rect.Height > clip.Y + clip.Height)
                 {
-                    diff = rect.Y + rect.Height - ( clip.Y + clip.Height );
+                    diff = rect.Y + rect.Height - (clip.Y + clip.Height);
                     vdiff = diff;
                     rect.Height -= diff;
                     v2 -= vdiff;
                 }
 
-                if( rect.Width <= 0 )
+                if (rect.Width <= 0)
                 {
                     return;
                 }
 
-                if( rect.Height <= 0 )
+                if (rect.Height <= 0)
                 {
                     return;
                 }
@@ -251,7 +251,7 @@ namespace Intersect.Client.Framework.Gwen.Renderer
             //v1 /= tex.GetHeight();
             //u2 /= tex.GetWidth();
             //v2 /= tex.GetHeight();
-            if( mRenderTarget == null )
+            if (mRenderTarget == null)
             {
                 mRenderer.DrawTexture(
                     tex, u1, v1, u2 - u1, v2 - v1, rect.X, rect.Y, rect.Width, rect.Height, mColor, mRenderTarget,
@@ -277,22 +277,22 @@ namespace Intersect.Client.Framework.Gwen.Renderer
             mClipping = false;
         }
 
-        private string RemoveExtension( string fileName )
+        private string RemoveExtension(string fileName)
         {
-            var fileExtPos = fileName.LastIndexOf( "." );
-            if( fileExtPos >= 0 )
+            var fileExtPos = fileName.LastIndexOf(".");
+            if (fileExtPos >= 0)
             {
-                fileName = fileName.Substring( 0, fileExtPos );
+                fileName = fileName.Substring(0, fileExtPos);
             }
 
             return fileName;
         }
 
-        private string RemoveResourcesSlash( string fileName )
+        private string RemoveResourcesSlash(string fileName)
         {
-            if( fileName.ToLower().StartsWith( "resources/" ) || fileName.ToLower().StartsWith( "resources\\" ) )
+            if (fileName.ToLower().StartsWith("resources/") || fileName.ToLower().StartsWith("resources\\"))
             {
-                fileName = fileName.Substring( 10 );
+                fileName = fileName.Substring(10);
             }
 
             return fileName;
@@ -320,9 +320,9 @@ namespace Intersect.Client.Framework.Gwen.Renderer
         public void ShutDown()
         {
             m_RT.Clear();
-            if( m_Stack.Count > 0 )
+            if (m_Stack.Count > 0)
             {
-                throw new InvalidOperationException( "Render stack not empty" );
+                throw new InvalidOperationException("Render stack not empty");
             }
         }
 
@@ -330,20 +330,20 @@ namespace Intersect.Client.Framework.Gwen.Renderer
         /// Called to set the target up for rendering.
         /// </summary>
         /// <param name="control">Control to be rendered.</param>
-        public void SetupCacheTexture( Control.Base control )
+        public void SetupCacheTexture(Control.Base control)
         {
             m_RealRT = mRenderTarget;
-            m_Stack.Push( mRenderTarget ); // save current RT
+            m_Stack.Push(mRenderTarget); // save current RT
             mRenderTarget = m_RT[control]; // make cache current RT
             mRenderTarget.Begin();
-            mRenderTarget.Clear( Color.Transparent );
+            mRenderTarget.Clear(Color.Transparent);
         }
 
         /// <summary>
         /// Called when cached rendering is done.
         /// </summary>
         /// <param name="control">Control to be rendered.</param>
-        public void FinishCacheTexture( Control.Base control )
+        public void FinishCacheTexture(Control.Base control)
         {
             mRenderTarget.End();
             mRenderTarget = m_Stack.Pop();
@@ -353,7 +353,7 @@ namespace Intersect.Client.Framework.Gwen.Renderer
         /// Called when gwen wants to draw the cached version of the control. 
         /// </summary>
         /// <param name="control">Control to be rendered.</param>
-        public void DrawCachedControlTexture( Control.Base control )
+        public void DrawCachedControlTexture(Control.Base control)
         {
             var ri = m_RT[control];
 
@@ -361,7 +361,7 @@ namespace Intersect.Client.Framework.Gwen.Renderer
             var rt = mRenderTarget;
             mRenderTarget = m_RealRT;
             mColor = Color.White;
-            DrawTexturedRect( ri, control.Bounds, Color.White );
+            DrawTexturedRect(ri, control.Bounds, Color.White);
 
             //DrawMissingImage(control.Bounds);
             mRenderTarget = rt;
@@ -371,34 +371,34 @@ namespace Intersect.Client.Framework.Gwen.Renderer
         /// Called to actually create a cached texture. 
         /// </summary>
         /// <param name="control">Control to be rendered.</param>
-        public void CreateControlCacheTexture( Control.Base control )
+        public void CreateControlCacheTexture(Control.Base control)
         {
             // initialize cache RT
-            if( !m_RT.ContainsKey( control ) )
+            if (!m_RT.ContainsKey(control))
             {
-                m_RT[control] = mRenderer.CreateRenderTexture( control.Width, control.Height );
-                m_RT[control].Clear( Color.Transparent );
+                m_RT[control] = mRenderer.CreateRenderTexture(control.Width, control.Height);
+                m_RT[control].Clear(Color.Transparent);
             }
 
             var ri = m_RT[control];
         }
 
-        public void DisposeCachedTexture( Control.Base control )
+        public void DisposeCachedTexture(Control.Base control)
         {
-            if( m_RT.ContainsKey( control ) )
+            if (m_RT.ContainsKey(control))
             {
                 var rt = m_RT[control];
                 rt.Dispose();
-                m_RT.Remove( control );
+                m_RT.Remove(control);
             }
         }
 
-        public void UpdateControlCacheTexture( Control.Base control )
+        public void UpdateControlCacheTexture(Control.Base control)
         {
             throw new NotImplementedException();
         }
 
-        public void SetRenderer( Base renderer )
+        public void SetRenderer(Base renderer)
         {
             throw new NotImplementedException();
         }

@@ -25,13 +25,13 @@ namespace Intersect.Server.Web.RestApi.Authentication.OAuth
         /// </summary>
         /// <param name="owinRequest"></param>
         /// <returns></returns>
-        public static async Task<Dictionary<string, string>> JsonBodyToMap( this IOwinRequest owinRequest )
+        public static async Task<Dictionary<string, string>> JsonBodyToMap(this IOwinRequest owinRequest)
         {
-            Debug.Assert( owinRequest.Body != null );
-            using( var streamReader = new StreamReader( owinRequest.Body ) )
+            Debug.Assert(owinRequest.Body != null);
+            using (var streamReader = new StreamReader(owinRequest.Body))
             {
                 return JsonConvert.DeserializeObject<Dictionary<string, string>>(
-                    await ( streamReader.ReadToEndAsync() ?? throw new InvalidOperationException( @"Task is null" ) )
+                    await (streamReader.ReadToEndAsync() ?? throw new InvalidOperationException(@"Task is null"))
                 );
             }
         }
@@ -45,9 +45,9 @@ namespace Intersect.Server.Web.RestApi.Authentication.OAuth
             this IOwinRequest owinRequest
         )
         {
-            return ( await owinRequest.JsonBodyToMap() ).Select(
+            return (await owinRequest.JsonBodyToMap()).Select(
                 parameter =>
-                    $"{HttpUtility.UrlEncode( (string)parameter.Key )}={HttpUtility.UrlEncode( (string)parameter.Value )}"
+                    $"{HttpUtility.UrlEncode((string)parameter.Key)}={HttpUtility.UrlEncode((string)parameter.Value)}"
             );
         }
 

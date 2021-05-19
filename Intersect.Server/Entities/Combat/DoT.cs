@@ -21,24 +21,24 @@ namespace Intersect.Server.Entities.Combat
 
         public SpellBase SpellBase;
 
-        public DoT( Entity attacker, Guid spellId, Entity target )
+        public DoT(Entity attacker, Guid spellId, Entity target)
         {
-            SpellBase = SpellBase.Get( spellId );
+            SpellBase = SpellBase.Get(spellId);
 
             Attacker = attacker;
             Target = target;
 
-            if( SpellBase == null || SpellBase.Combat.HotDotInterval < 1 )
+            if (SpellBase == null || SpellBase.Combat.HotDotInterval < 1)
             {
                 return;
             }
 
             // Does target have a cleanse buff? If so, do not allow this DoT when spell is unfriendly.
-            if( !SpellBase.Combat.Friendly )
+            if (!SpellBase.Combat.Friendly)
             {
-                foreach( var status in Target.CachedStatuses )
+                foreach (var status in Target.CachedStatuses)
                 {
-                    if( status.Type == StatusTypes.Cleanse )
+                    if (status.Type == StatusTypes.Cleanse)
                     {
                         return;
                     }
@@ -48,7 +48,7 @@ namespace Intersect.Server.Entities.Combat
 
             mInterval = Globals.Timing.Milliseconds + SpellBase.Combat.HotDotInterval;
             Count = SpellBase.Combat.Duration / SpellBase.Combat.HotDotInterval - 1;
-            target.DoT.TryAdd( Id, this );
+            target.DoT.TryAdd(Id, this);
             target.CachedDots = target.DoT.Values.ToArray();
 
             //Subtract 1 since the first tick always occurs when the spell is cast.
@@ -58,21 +58,21 @@ namespace Intersect.Server.Entities.Combat
 
         public void Expire()
         {
-            if( Target != null )
+            if (Target != null)
             {
-                Target.DoT?.TryRemove( Id, out DoT val );
+                Target.DoT?.TryRemove(Id, out DoT val);
                 Target.CachedDots = Target.DoT?.Values.ToArray() ?? new DoT[0];
             }
         }
 
         public bool CheckExpired()
         {
-            if( Target != null && !Target.DoT.ContainsKey( Id ) )
+            if (Target != null && !Target.DoT.ContainsKey(Id))
             {
                 return false;
             }
 
-            if( SpellBase == null || Count > 0 )
+            if (SpellBase == null || Count > 0)
             {
                 return false;
             }
@@ -84,22 +84,22 @@ namespace Intersect.Server.Entities.Combat
 
         public void Tick()
         {
-            if( CheckExpired() )
+            if (CheckExpired())
             {
                 return;
             }
 
-            if( mInterval > Globals.Timing.Milliseconds )
+            if (mInterval > Globals.Timing.Milliseconds)
             {
                 return;
             }
 
             var deadAnimations = new List<KeyValuePair<Guid, sbyte>>();
             var aliveAnimations = new List<KeyValuePair<Guid, sbyte>>();
-            if( SpellBase.HitAnimationId != Guid.Empty )
+            if (SpellBase.HitAnimationId != Guid.Empty)
             {
-                deadAnimations.Add( new KeyValuePair<Guid, sbyte>( SpellBase.HitAnimationId, (sbyte)Directions.Up ) );
-                aliveAnimations.Add( new KeyValuePair<Guid, sbyte>( SpellBase.HitAnimationId, (sbyte)Directions.Up ) );
+                deadAnimations.Add(new KeyValuePair<Guid, sbyte>(SpellBase.HitAnimationId, (sbyte)Directions.Up));
+                aliveAnimations.Add(new KeyValuePair<Guid, sbyte>(SpellBase.HitAnimationId, (sbyte)Directions.Up));
             }
 
             var damageHealth = SpellBase.Combat.VitalDiff[(int)Vitals.Health];

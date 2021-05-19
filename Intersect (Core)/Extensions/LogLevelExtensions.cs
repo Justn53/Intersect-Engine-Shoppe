@@ -6,9 +6,9 @@ namespace Intersect.Extensions
     public static class LogLevelExtensions
     {
 
-        public static Logging.LogLevel AsIntersectLogLevel( this Microsoft.Extensions.Logging.LogLevel logLevel )
+        public static Logging.LogLevel AsIntersectLogLevel(this Microsoft.Extensions.Logging.LogLevel logLevel)
         {
-            switch( logLevel )
+            switch (logLevel)
             {
                 case Microsoft.Extensions.Logging.LogLevel.Trace:
                     return Logging.LogLevel.Diagnostic;
@@ -31,7 +31,7 @@ namespace Intersect.Extensions
 
                 default:
 
-                    throw new ArgumentOutOfRangeException( nameof( logLevel ), logLevel, null );
+                    throw new ArgumentOutOfRangeException(nameof(logLevel), logLevel, null);
             }
         }
 

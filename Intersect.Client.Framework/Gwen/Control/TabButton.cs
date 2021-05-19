@@ -19,11 +19,11 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="TabButton" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public TabButton( Base parent ) : base( parent )
+        public TabButton(Base parent) : base(parent)
         {
-            DragAndDrop_SetPackage( true, "TabButtonMove" );
+            DragAndDrop_SetPackage(true, "TabButtonMove");
             Alignment = Pos.Top | Pos.Left;
-            TextPadding = new Padding( 5, 3, 3, 3 );
+            TextPadding = new Padding(5, 3, 3, 3);
             Padding = Padding.Two;
             KeyboardInputEnabled = true;
         }
@@ -39,14 +39,14 @@ namespace Intersect.Client.Framework.Gwen.Control
             get => mControl;
             set
             {
-                if( value == mControl )
+                if (value == mControl)
                 {
                     return;
                 }
 
-                if( mControl != null )
+                if (mControl != null)
                 {
-                    mControl.OnLoseTab( this );
+                    mControl.OnLoseTab(this);
                 }
 
                 mControl = value;
@@ -67,12 +67,12 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         protected override bool ShouldClip => false;
 
-        public override void DragAndDrop_StartDragging( DragDrop.Package package, int x, int y )
+        public override void DragAndDrop_StartDragging(DragDrop.Package package, int x, int y)
         {
             IsHidden = true;
         }
 
-        public override void DragAndDrop_EndDragging( bool success, int x, int y )
+        public override void DragAndDrop_EndDragging(bool success, int x, int y)
         {
             IsHidden = false;
             IsDepressed = false;
@@ -87,9 +87,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawTabButton( this, IsActive, mControl.TabStrip.Dock );
+            skin.DrawTabButton(this, IsActive, mControl.TabStrip.Dock);
         }
 
         /// <summary>
@@ -99,9 +99,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyDown( bool down )
+        protected override bool OnKeyDown(bool down)
         {
-            OnKeyRight( down );
+            OnKeyRight(down);
 
             return true;
         }
@@ -113,9 +113,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyUp( bool down )
+        protected override bool OnKeyUp(bool down)
         {
-            OnKeyLeft( down );
+            OnKeyLeft(down);
 
             return true;
         }
@@ -127,16 +127,16 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyRight( bool down )
+        protected override bool OnKeyRight(bool down)
         {
-            if( down )
+            if (down)
             {
                 var count = Parent.Children.Count;
-                var me = Parent.Children.IndexOf( this );
-                if( me + 1 < count )
+                var me = Parent.Children.IndexOf(this);
+                if (me + 1 < count)
                 {
                     var nextTab = Parent.Children[me + 1];
-                    TabControl.OnTabPressed( nextTab, EventArgs.Empty );
+                    TabControl.OnTabPressed(nextTab, EventArgs.Empty);
                     InputHandler.KeyboardFocus = nextTab;
                 }
             }
@@ -151,16 +151,16 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyLeft( bool down )
+        protected override bool OnKeyLeft(bool down)
         {
-            if( down )
+            if (down)
             {
                 var count = Parent.Children.Count;
-                var me = Parent.Children.IndexOf( this );
-                if( me - 1 >= 0 )
+                var me = Parent.Children.IndexOf(this);
+                if (me - 1 >= 0)
                 {
                     var prevTab = Parent.Children[me - 1];
-                    TabControl.OnTabPressed( prevTab, EventArgs.Empty );
+                    TabControl.OnTabPressed(prevTab, EventArgs.Empty);
                     InputHandler.KeyboardFocus = prevTab;
                 }
             }
@@ -173,23 +173,23 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         public override void UpdateColors()
         {
-            if( IsActive )
+            if (IsActive)
             {
-                if( IsDisabled )
+                if (IsDisabled)
                 {
                     TextColor = Skin.Colors.Tab.Active.Disabled;
 
                     return;
                 }
 
-                if( IsDepressed )
+                if (IsDepressed)
                 {
                     TextColor = Skin.Colors.Tab.Active.Down;
 
                     return;
                 }
 
-                if( IsHovered )
+                if (IsHovered)
                 {
                     TextColor = Skin.Colors.Tab.Active.Hover;
 
@@ -199,21 +199,21 @@ namespace Intersect.Client.Framework.Gwen.Control
                 TextColor = Skin.Colors.Tab.Active.Normal;
             }
 
-            if( IsDisabled )
+            if (IsDisabled)
             {
                 TextColor = Skin.Colors.Tab.Inactive.Disabled;
 
                 return;
             }
 
-            if( IsDepressed )
+            if (IsDepressed)
             {
                 TextColor = Skin.Colors.Tab.Inactive.Down;
 
                 return;
             }
 
-            if( IsHovered )
+            if (IsHovered)
             {
                 TextColor = Skin.Colors.Tab.Inactive.Hover;
 

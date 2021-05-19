@@ -24,39 +24,39 @@ namespace Intersect.Editor.Content
 
         private Texture2D mTexture;
 
-        public Texture( string path )
+        public Texture(string path)
         {
             mPath = path;
-            GameContentManager.AllTextures.Add( this );
+            GameContentManager.AllTextures.Add(this);
         }
 
         public void LoadTexture()
         {
             mLoadError = true;
-            if( string.IsNullOrWhiteSpace( mPath ) )
+            if (string.IsNullOrWhiteSpace(mPath))
             {
-                Log.Error( "Invalid texture path (empty/null)." );
+                Log.Error("Invalid texture path (empty/null).");
 
                 return;
             }
 
-            var relativePath = FileSystemHelper.RelativePath( Directory.GetCurrentDirectory(), mPath );
+            var relativePath = FileSystemHelper.RelativePath(Directory.GetCurrentDirectory(), mPath);
 
-            if( !File.Exists( mPath ) )
+            if (!File.Exists(mPath))
             {
-                Log.Error( $"Texture does not exist: {relativePath}" );
+                Log.Error($"Texture does not exist: {relativePath}");
 
                 return;
             }
 
-            using( var fileStream = File.Open( mPath, FileMode.Open, FileAccess.Read, FileShare.Read ) )
+            using (var fileStream = File.Open(mPath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 try
                 {
-                    mTexture = Texture2D.FromStream( Graphics.GetGraphicsDevice(), fileStream );
-                    if( mTexture == null )
+                    mTexture = Texture2D.FromStream(Graphics.GetGraphicsDevice(), fileStream);
+                    if (mTexture == null)
                     {
-                        Log.Error( $"Failed to load texture due to unknown error: {relativePath}" );
+                        Log.Error($"Failed to load texture due to unknown error: {relativePath}");
 
                         return;
                     }
@@ -65,11 +65,11 @@ namespace Intersect.Editor.Content
                     mHeight = mTexture.Height;
                     mLoadError = false;
                 }
-                catch( Exception exception )
+                catch (Exception exception)
                 {
                     Log.Error(
                         exception,
-                        $"Failed to load texture ({FileSystemHelper.FormatSize( fileStream.Length )}): {relativePath}"
+                        $"Failed to load texture ({FileSystemHelper.FormatSize(fileStream.Length)}): {relativePath}"
                     );
                 }
             }
@@ -85,17 +85,17 @@ namespace Intersect.Editor.Content
         public int GetWidth()
         {
             ResetAccessTime();
-            if( mWidth != -1 )
+            if (mWidth != -1)
             {
                 return mWidth;
             }
 
-            if( mTexture == null )
+            if (mTexture == null)
             {
                 LoadTexture();
             }
 
-            if( mLoadError )
+            if (mLoadError)
             {
                 mWidth = 0;
             }
@@ -106,17 +106,17 @@ namespace Intersect.Editor.Content
         public int GetHeight()
         {
             ResetAccessTime();
-            if( mHeight != -1 )
+            if (mHeight != -1)
             {
                 return mHeight;
             }
 
-            if( mTexture == null )
+            if (mTexture == null)
             {
                 LoadTexture();
             }
 
-            if( mLoadError )
+            if (mLoadError)
             {
                 mHeight = 0;
             }
@@ -127,7 +127,7 @@ namespace Intersect.Editor.Content
         public Texture2D GetTexture()
         {
             ResetAccessTime();
-            if( mTexture == null )
+            if (mTexture == null)
             {
                 LoadTexture();
             }
@@ -137,12 +137,12 @@ namespace Intersect.Editor.Content
 
         public void Update()
         {
-            if( mTexture == null )
+            if (mTexture == null)
             {
                 return;
             }
 
-            if( mLastAccessTime >= Globals.System.GetTimeMs() )
+            if (mLastAccessTime >= Globals.System.GetTimeMs())
             {
                 return;
             }

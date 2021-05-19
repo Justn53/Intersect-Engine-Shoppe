@@ -20,26 +20,26 @@ namespace Intersect.Server.Plugins
         internal sealed class Factory : IFactory<IPluginContext>
         {
             /// <inheritdoc />
-            public IPluginContext Create( params object[] args )
+            public IPluginContext Create(params object[] args)
             {
-                if( args.Length < 1 )
+                if (args.Length < 1)
                 {
-                    throw new ArgumentException( $@"Need to provide an instance of {nameof( IManifestHelper )}." );
+                    throw new ArgumentException($@"Need to provide an instance of {nameof(IManifestHelper)}.");
                 }
 
-                if( !( args[0] is Plugin plugin ) )
+                if (!(args[0] is Plugin plugin))
                 {
-                    throw new ArgumentException( $@"First argument needs to be non-null and of type {nameof( Plugin )}." );
+                    throw new ArgumentException($@"First argument needs to be non-null and of type {nameof(Plugin)}.");
                 }
 
-                return new ServerPluginContext( plugin );
+                return new ServerPluginContext(plugin);
             }
         }
 
         /// <inheritdoc />
-        public ServerPluginContext( Plugin plugin ) : base( plugin )
+        public ServerPluginContext(Plugin plugin) : base(plugin)
         {
-            Lifecycle = new ServerLifecycleHelper( this );
+            Lifecycle = new ServerLifecycleHelper(this);
         }
 
         /// <inheritdoc />

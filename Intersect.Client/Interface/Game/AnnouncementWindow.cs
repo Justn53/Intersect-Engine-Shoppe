@@ -36,13 +36,13 @@ namespace Intersect.Client.Interface.Game
         /// Create a new instance of the <see cref="AnnouncementWindow"/> class.
         /// </summary>
         /// <param name="gameCanvas">The <see cref="Canvas"/> to render this control on.</param>
-        public AnnouncementWindow( Canvas gameCanvas )
+        public AnnouncementWindow(Canvas gameCanvas)
         {
             mGameCanvas = gameCanvas;
-            mPicture = new ImagePanel( gameCanvas, "AnnouncementWindow" );
-            mLabel = new Label( mPicture, "AnnouncementLabel" );
+            mPicture = new ImagePanel(gameCanvas, "AnnouncementWindow");
+            mLabel = new Label(mPicture, "AnnouncementLabel");
 
-            mPicture.LoadJsonUi( GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString() );
+            mPicture.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
         }
 
         /// <summary>
@@ -51,12 +51,12 @@ namespace Intersect.Client.Interface.Game
         public void Update()
         {
             // Only update when we're visible to the user.
-            if( !mPicture.IsHidden )
+            if (!mPicture.IsHidden)
             {
                 mLabel.Text = mLabelText;
 
                 // Are we still supposed to be visible?
-                if( Timing.Global.Milliseconds > mDisplayUntil )
+                if (Timing.Global.Milliseconds > mDisplayUntil)
                 {
                     Hide();
                 }
@@ -68,7 +68,7 @@ namespace Intersect.Client.Interface.Game
         /// </summary>
         /// <param name="announcementText">The text to display.</param>
         /// <param name="displayTime">The time for which to display the announcement.</param>
-        public void ShowAnnouncement( string announcementText, long displayTime )
+        public void ShowAnnouncement(string announcementText, long displayTime)
         {
             mLabelText = announcementText;
             mDisplayUntil = Timing.Global.Milliseconds + displayTime;

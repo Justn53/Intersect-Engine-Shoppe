@@ -11,12 +11,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public PlayerDeathPacket( Guid playerId )
+        public PlayerDeathPacket(Guid playerId)
         {
             PlayerId = playerId;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid PlayerId { get; set; }
 
     }

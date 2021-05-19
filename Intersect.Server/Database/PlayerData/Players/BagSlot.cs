@@ -16,12 +16,12 @@ namespace Intersect.Server.Database.PlayerData.Players
         {
         }
 
-        public BagSlot( int slot )
+        public BagSlot(int slot)
         {
             Slot = slot;
         }
 
-        [DatabaseGenerated( DatabaseGeneratedOption.Identity ), JsonIgnore]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity), JsonIgnore]
         public Guid Id { get; private set; }
 
         [JsonIgnore]

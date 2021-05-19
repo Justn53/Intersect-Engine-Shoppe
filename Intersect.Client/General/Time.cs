@@ -18,7 +18,7 @@ namespace Intersect.Client.General
 
         private static long sUpdateTime;
 
-        public static void LoadTime( DateTime timeUpdate, Color clr, float rate )
+        public static void LoadTime(DateTime timeUpdate, Color clr, float rate)
         {
             sServerTime = timeUpdate;
             sTargetColor = clr;
@@ -28,28 +28,28 @@ namespace Intersect.Client.General
 
         public static void Update()
         {
-            if( sUpdateTime < Globals.System.GetTimeMs() )
+            if (sUpdateTime < Globals.System.GetTimeMs())
             {
-                var ts = new TimeSpan( 0, 0, 0, 0, (int)( 1000 * sRate ) );
-                sServerTime = sServerTime.Add( ts );
+                var ts = new TimeSpan(0, 0, 0, 0, (int)(1000 * sRate));
+                sServerTime = sServerTime.Add(ts);
                 sUpdateTime = Globals.System.GetTimeMs() + 1000;
             }
 
             float ecTime = Globals.System.GetTimeMs() - sColorUpdate;
             var valChange = 255 * ecTime / 10000f;
-            sCurrentColor.A = LerpVal( sCurrentColor.A, sTargetColor.A, valChange );
-            sCurrentColor.R = LerpVal( sCurrentColor.R, sTargetColor.R, valChange );
-            sCurrentColor.G = LerpVal( sCurrentColor.G, sTargetColor.G, valChange );
-            sCurrentColor.B = LerpVal( sCurrentColor.B, sTargetColor.B, valChange );
+            sCurrentColor.A = LerpVal(sCurrentColor.A, sTargetColor.A, valChange);
+            sCurrentColor.R = LerpVal(sCurrentColor.R, sTargetColor.R, valChange);
+            sCurrentColor.G = LerpVal(sCurrentColor.G, sTargetColor.G, valChange);
+            sCurrentColor.B = LerpVal(sCurrentColor.B, sTargetColor.B, valChange);
 
             sColorUpdate = Globals.System.GetTimeMs();
         }
 
-        private static float LerpVal( float val, float target, float amt )
+        private static float LerpVal(float val, float target, float amt)
         {
-            if( val < target )
+            if (val < target)
             {
-                if( val + amt > target )
+                if (val + amt > target)
                 {
                     val = target;
                 }
@@ -59,9 +59,9 @@ namespace Intersect.Client.General
                 }
             }
 
-            if( val > target )
+            if (val > target)
             {
-                if( val - amt < target )
+                if (val - amt < target)
                 {
                     val = target;
                 }
@@ -76,7 +76,7 @@ namespace Intersect.Client.General
 
         public static string GetTime()
         {
-            return sServerTime.ToString( "h:mm:ss tt" );
+            return sServerTime.ToString("h:mm:ss tt");
         }
 
         public static ColorF GetTintColor()

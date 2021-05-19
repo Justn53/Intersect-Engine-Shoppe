@@ -15,7 +15,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private ChangeGenderCommand mMyCommand;
 
-        public EventCommandChangeGender( ChangeGenderCommand refCommand, FrmEvent editor )
+        public EventCommandChangeGender(ChangeGenderCommand refCommand, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
@@ -28,9 +28,9 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
         {
             grpChangeGender.Text = Strings.EventChangeGender.title;
             cmbGender.Items.Clear();
-            for( var i = 0; i < Strings.EventChangeGender.genders.Count; i++ )
+            for (var i = 0; i < Strings.EventChangeGender.genders.Count; i++)
             {
-                cmbGender.Items.Add( Strings.EventChangeGender.genders[i] );
+                cmbGender.Items.Add(Strings.EventChangeGender.genders[i]);
             }
 
             lblGender.Text = Strings.EventChangeGender.label;
@@ -38,13 +38,13 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             btnCancel.Text = Strings.EventChangeGender.cancel;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
             mMyCommand.Gender = (Gender)cmbGender.SelectedIndex;
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }

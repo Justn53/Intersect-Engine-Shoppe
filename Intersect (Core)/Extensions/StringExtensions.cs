@@ -15,8 +15,8 @@ namespace Intersect.Extensions
         /// <param name="args">the format arguments</param>
         /// <returns>a formatted string</returns>
         /// <seealso cref="string.Format(IFormatProvider, string, object[])"/>
-        public static string Format( this string format, params object[] args ) =>
-            Format( format, CultureInfo.CurrentCulture );
+        public static string Format(this string format, params object[] args) =>
+            Format(format, CultureInfo.CurrentCulture);
 
         /// <summary>
         /// Formats the string with the provided <see cref="IFormatProvider"/> and arguments.
@@ -26,28 +26,28 @@ namespace Intersect.Extensions
         /// <param name="args">the format arguments</param>
         /// <returns>a formatted string</returns>
         /// <seealso cref="string.Format(IFormatProvider, string, object[])"/>
-        public static string Format( this string format, IFormatProvider formatProvider, params object[] args ) =>
-            string.Format( formatProvider, format, args );
+        public static string Format(this string format, IFormatProvider formatProvider, params object[] args) =>
+            string.Format(formatProvider, format, args);
 
-        public static string TerminateWith( this string self, char terminateWith, bool condition = true ) =>
-            TerminateWith( self, new[] { terminateWith }, condition );
+        public static string TerminateWith(this string self, char terminateWith, bool condition = true) =>
+            TerminateWith(self, new[] { terminateWith }, condition);
 
-        public static string TerminateWith( this string self, char[] terminateWith, bool condition = true ) =>
-            TerminateWith( self, new string( terminateWith ), condition );
+        public static string TerminateWith(this string self, char[] terminateWith, bool condition = true) =>
+            TerminateWith(self, new string(terminateWith), condition);
 
-        public static string TerminateWith( this string self, string terminateWith, bool condition = true )
+        public static string TerminateWith(this string self, string terminateWith, bool condition = true)
         {
-            if( !condition )
+            if (!condition)
             {
                 return self;
             }
 
-            if( string.IsNullOrWhiteSpace( self ) )
+            if (string.IsNullOrWhiteSpace(self))
             {
                 return terminateWith;
             }
 
-            if( self.EndsWith( terminateWith ) )
+            if (self.EndsWith(terminateWith))
             {
                 return self;
             }

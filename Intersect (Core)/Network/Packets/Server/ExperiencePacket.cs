@@ -10,16 +10,16 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public ExperiencePacket( long exp, long tnl )
+        public ExperiencePacket(long exp, long tnl)
         {
             Experience = exp;
             ExperienceToNextLevel = tnl;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public long Experience { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public long ExperienceToNextLevel { get; set; }
 
     }

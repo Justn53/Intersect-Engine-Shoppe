@@ -25,111 +25,111 @@ namespace Intersect.Server.Networking.Helpers
 
         public static void GenerateDebugFile()
         {
-            Console.WriteLine( Strings.NetDebug.pleasewait );
-            var hasteClient = new HasteBinClient( "https://hastebin.com" );
+            Console.WriteLine(Strings.NetDebug.pleasewait);
+            var hasteClient = new HasteBinClient("https://hastebin.com");
             var sb = new StringBuilder();
-            sb.AppendLine( "Intersect Network Diagnostics" );
+            sb.AppendLine("Intersect Network Diagnostics");
             sb.AppendLine();
             var externalIp = "";
-            var serverAccessible = PortChecker.CanYouSeeMe( Options.ServerPort, out externalIp );
+            var serverAccessible = PortChecker.CanYouSeeMe(Options.ServerPort, out externalIp);
             string localIP;
-            using( var socket = new Socket( AddressFamily.InterNetwork, SocketType.Dgram, 0 ) )
+            using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
             {
-                socket.Connect( "8.8.8.8", 65530 );
+                socket.Connect("8.8.8.8", 65530);
                 var endPoint = socket.LocalEndPoint as IPEndPoint;
                 localIP = endPoint.Address.ToString();
             }
 
-            sb.AppendLine( "External IP (from AGD): " + externalIp );
-            if( Options.UPnP && !string.IsNullOrEmpty( UpnP.GetExternalIp() ) )
+            sb.AppendLine("External IP (from AGD): " + externalIp);
+            if (Options.UPnP && !string.IsNullOrEmpty(UpnP.GetExternalIp()))
             {
-                sb.AppendLine( "Routers IP (from UPnP): " + UpnP.GetExternalIp() );
-                if( string.IsNullOrEmpty( externalIp ) )
+                sb.AppendLine("Routers IP (from UPnP): " + UpnP.GetExternalIp());
+                if (string.IsNullOrEmpty(externalIp))
                 {
                     externalIp = UpnP.GetExternalIp();
                 }
             }
 
-            sb.AppendLine( "Internal IP: " + localIP );
-            sb.AppendLine( "Server Port: " + Options.ServerPort );
+            sb.AppendLine("Internal IP: " + localIP);
+            sb.AppendLine("Server Port: " + Options.ServerPort);
             sb.AppendLine();
-            var canConnectVia127 = CheckServerPlayerCount( "127.0.0.1", Options.ServerPort ) > -1;
+            var canConnectVia127 = CheckServerPlayerCount("127.0.0.1", Options.ServerPort) > -1;
             sb.AppendLine(
                 "Server Status (connecting to self via localhost: 127.0.0.1:" +
                 Options.ServerPort +
                 "): " +
-                ( canConnectVia127 ? "Online" : "Offline" )
+                (canConnectVia127 ? "Online" : "Offline")
             );
 
-            var canConnectViaInternalIp = CheckServerPlayerCount( localIP, Options.ServerPort ) > -1;
+            var canConnectViaInternalIp = CheckServerPlayerCount(localIP, Options.ServerPort) > -1;
             sb.AppendLine(
                 "Server Status (connecting to self via internal ip: " +
                 localIP +
                 ":" +
                 Options.ServerPort +
                 "): " +
-                ( canConnectViaInternalIp ? "Online" : "Offline" )
+                (canConnectViaInternalIp ? "Online" : "Offline")
             );
 
-            if( Options.UPnP && !string.IsNullOrEmpty( UpnP.GetExternalIp() ) )
+            if (Options.UPnP && !string.IsNullOrEmpty(UpnP.GetExternalIp()))
             {
-                var canConnectViaRouterIp = CheckServerPlayerCount( UpnP.GetExternalIp(), Options.ServerPort ) > -1;
+                var canConnectViaRouterIp = CheckServerPlayerCount(UpnP.GetExternalIp(), Options.ServerPort) > -1;
                 sb.AppendLine(
                     "Server Status (connecting to self via router ip (from UPnP): " +
                     UpnP.GetExternalIp() +
                     ":" +
                     Options.ServerPort +
                     "): " +
-                    ( canConnectViaRouterIp ? "Online" : "Offline" )
+                    (canConnectViaRouterIp ? "Online" : "Offline")
                 );
             }
 
-            var canConnectViaExternalIp = CheckServerPlayerCount( externalIp, Options.ServerPort ) > -1;
+            var canConnectViaExternalIp = CheckServerPlayerCount(externalIp, Options.ServerPort) > -1;
             sb.AppendLine(
                 "Server Status (connecting to self via external ip (from AGD): " +
                 externalIp +
                 ":" +
                 Options.ServerPort +
                 "): " +
-                ( canConnectViaExternalIp ? "Online" : "Offline" )
+                (canConnectViaExternalIp ? "Online" : "Offline")
             );
 
-            sb.AppendLine( "Server Status (as seen by AGD): " + ( serverAccessible ? "Online" : "Offline" ) );
+            sb.AppendLine("Server Status (as seen by AGD): " + (serverAccessible ? "Online" : "Offline"));
             sb.AppendLine();
-            if( Options.UPnP )
+            if (Options.UPnP)
             {
-                sb.AppendLine( "UPnP Log:" );
-                sb.AppendLine( UpnP.GetLog() );
+                sb.AppendLine("UPnP Log:");
+                sb.AppendLine(UpnP.GetLog());
             }
             else
             {
-                sb.AppendLine( "UPnP: Disabled" );
+                sb.AppendLine("UPnP: Disabled");
             }
 
             sb.AppendLine();
-            sb.AppendLine( "Trace Route to AGD" );
-            foreach( var line in GetTraceRoute( "ascensiongamedev.com" ) )
+            sb.AppendLine("Trace Route to AGD");
+            foreach (var line in GetTraceRoute("ascensiongamedev.com"))
             {
-                sb.AppendLine( line.ToString() );
+                sb.AppendLine(line.ToString());
             }
 
-            var result = hasteClient.Post( sb.ToString() );
+            var result = hasteClient.Post(sb.ToString());
             result.Wait();
-            if( result.Result.IsSuccess )
+            if (result.Result.IsSuccess)
             {
                 Bootstrapper.MainThread.NextAction = () =>
                 {
-                    Console.WriteLine( Strings.NetDebug.hastebin.ToString( result.Result.FullUrl ) );
+                    Console.WriteLine(Strings.NetDebug.hastebin.ToString(result.Result.FullUrl));
                 };
             }
             else
             {
-                Console.WriteLine( Strings.NetDebug.savedtofile );
-                File.WriteAllText( "netdebug.txt", sb.ToString() );
+                Console.WriteLine(Strings.NetDebug.savedtofile);
+                File.WriteAllText("netdebug.txt", sb.ToString());
             }
         }
 
-        public static IEnumerable<IPAddress> GetTraceRoute( string hostname )
+        public static IEnumerable<IPAddress> GetTraceRoute(string hostname)
         {
             // following are the defaults for the "traceroute" command in unix.
             const int timeout = 10000;
@@ -137,15 +137,15 @@ namespace Intersect.Server.Networking.Helpers
             const int bufferSize = 32;
 
             var buffer = new byte[bufferSize];
-            new Random().NextBytes( buffer );
+            new Random().NextBytes(buffer);
             var pinger = new Ping();
 
-            for( var ttl = 1; ttl <= maxTTL; ttl++ )
+            for (var ttl = 1; ttl <= maxTTL; ttl++)
             {
-                var options = new PingOptions( ttl, true );
-                var reply = pinger.Send( hostname, timeout, buffer, options );
+                var options = new PingOptions(ttl, true);
+                var reply = pinger.Send(hostname, timeout, buffer, options);
 
-                if( reply.Status == IPStatus.Success )
+                if (reply.Status == IPStatus.Success)
                 {
                     // Success means the tracert has completed
                     yield return reply.Address;
@@ -153,7 +153,7 @@ namespace Intersect.Server.Networking.Helpers
                     break;
                 }
 
-                if( reply.Status == IPStatus.TtlExpired )
+                if (reply.Status == IPStatus.TtlExpired)
                 {
                     // TtlExpired means we've found an address, but there are more addresses
                     yield return reply.Address;
@@ -161,7 +161,7 @@ namespace Intersect.Server.Networking.Helpers
                     continue;
                 }
 
-                if( reply.Status == IPStatus.TimedOut )
+                if (reply.Status == IPStatus.TimedOut)
                 {
                     // TimedOut means this ttl is no good, we should continue searching
                     continue;
@@ -172,35 +172,35 @@ namespace Intersect.Server.Networking.Helpers
             }
         }
 
-        private static int CheckServerPlayerCount( string ip, int port )
+        private static int CheckServerPlayerCount(string ip, int port)
         {
             var players = -1;
-            if( string.IsNullOrEmpty( ip ) )
+            if (string.IsNullOrEmpty(ip))
             {
                 return -1;
             }
 
-            var config = new NetPeerConfiguration( "AGD_CanYouSeeMee" );
-            var client = new NetClient( config );
+            var config = new NetPeerConfiguration("AGD_CanYouSeeMee");
+            var client = new NetClient(config);
             try
             {
-                config.EnableMessageType( NetIncomingMessageType.UnconnectedData );
+                config.EnableMessageType(NetIncomingMessageType.UnconnectedData);
                 client.Start();
                 var msg = client.CreateMessage();
-                msg.Write( "status" );
+                msg.Write("status");
 
-                var receiver = new IPEndPoint( NetUtility.Resolve( ip ), port );
+                var receiver = new IPEndPoint(NetUtility.Resolve(ip), port);
 
-                client.SendUnconnectedMessage( msg, receiver );
+                client.SendUnconnectedMessage(msg, receiver);
 
                 NetIncomingMessage incomingmsg;
                 var watch = new Stopwatch();
                 watch.Start();
-                while( watch.ElapsedMilliseconds < 1250 )
+                while (watch.ElapsedMilliseconds < 1250)
                 {
-                    while( ( incomingmsg = client.ReadMessage() ) != null )
+                    while ((incomingmsg = client.ReadMessage()) != null)
                     {
-                        switch( incomingmsg.MessageType )
+                        switch (incomingmsg.MessageType)
                         {
                             case NetIncomingMessageType.UnconnectedData:
                                 players = incomingmsg.ReadVariableInt32();
@@ -208,17 +208,17 @@ namespace Intersect.Server.Networking.Helpers
                                 return players;
                         }
 
-                        client.Recycle( incomingmsg );
+                        client.Recycle(incomingmsg);
                     }
                 }
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                Log.Warn( exception );
+                Log.Warn(exception);
             }
             finally
             {
-                client.Shutdown( "bye" );
+                client.Shutdown("bye");
                 client = null;
             }
 
@@ -239,31 +239,31 @@ namespace Intersect.Server.Networking.Helpers
             _httpClient = new HttpClient();
         }
 
-        public HasteBinClient( string baseUrl )
+        public HasteBinClient(string baseUrl)
         {
             _baseUrl = baseUrl;
         }
 
-        public async Task<HasteBinResult> Post( string content )
+        public async Task<HasteBinResult> Post(string content)
         {
             var fullUrl = _baseUrl;
-            if( !fullUrl.EndsWith( "/" ) )
+            if (!fullUrl.EndsWith("/"))
             {
                 fullUrl += "/";
             }
 
             var postUrl = $"{fullUrl}documents";
 
-            var request = new HttpRequestMessage( HttpMethod.Post, new Uri( postUrl ) );
-            request.Content = new StringContent( content );
-            var result = await _httpClient.SendAsync( request );
+            var request = new HttpRequestMessage(HttpMethod.Post, new Uri(postUrl));
+            request.Content = new StringContent(content);
+            var result = await _httpClient.SendAsync(request);
 
-            if( result.IsSuccessStatusCode )
+            if (result.IsSuccessStatusCode)
             {
                 var json = await result.Content.ReadAsStringAsync();
-                var hasteBinResult = JsonConvert.DeserializeObject<HasteBinResult>( json );
+                var hasteBinResult = JsonConvert.DeserializeObject<HasteBinResult>(json);
 
-                if( hasteBinResult?.Key != null )
+                if (hasteBinResult?.Key != null)
                 {
                     hasteBinResult.FullUrl = $"{fullUrl}{hasteBinResult.Key}";
                     hasteBinResult.IsSuccess = true;

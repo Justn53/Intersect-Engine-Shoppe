@@ -34,9 +34,9 @@ namespace Intersect.Client.Framework.Input
 
         }
 
-        public abstract bool MouseButtonDown( MouseButtons mb );
+        public abstract bool MouseButtonDown(MouseButtons mb);
 
-        public abstract bool KeyDown( Keys key );
+        public abstract bool KeyDown(Keys key);
 
         public abstract Pointf GetMousePosition();
 

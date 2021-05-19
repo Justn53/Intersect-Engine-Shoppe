@@ -8,16 +8,16 @@ namespace Intersect.Utilities
     public static class ValueUtils
     {
 
-        public static void Swap<T>( ref T a, ref T b )
+        public static void Swap<T>(ref T a, ref T b)
         {
             var temp = a;
             a = b;
             b = temp;
         }
 
-        public static bool SetDefault<T>( bool condition, out T value )
+        public static bool SetDefault<T>(bool condition, out T value)
         {
-            value = default( T );
+            value = default(T);
 
             return condition;
         }
@@ -27,7 +27,7 @@ namespace Intersect.Utilities
         /// </summary>
         /// <param name="values">the set of values</param>
         /// <returns>the aggregate hash code</returns>
-        public static int ComputeHashCode( params object[] values ) => ComputeHashCode<object>( values );
+        public static int ComputeHashCode(params object[] values) => ComputeHashCode<object>(values);
 
         /// <summary>
         /// Computes the aggregate hash code for <paramref name="values"/>.
@@ -35,9 +35,9 @@ namespace Intersect.Utilities
         /// <typeparam name="TValue">the value type</typeparam>
         /// <param name="values">the enumerable set of values</param>
         /// <returns>the aggregate hash code</returns>
-        public static int ComputeHashCode<TValue>( IEnumerable<TValue> values ) =>
+        public static int ComputeHashCode<TValue>(IEnumerable<TValue> values) =>
             values?.Aggregate(
-                0, ( current, value ) => unchecked(current * (int)0xA5555529 + ( value?.GetHashCode() ?? 0 ))
+                0, (current, value) => unchecked(current * (int)0xA5555529 + (value?.GetHashCode() ?? 0))
             ) ??
             0;
 
@@ -54,39 +54,39 @@ namespace Intersect.Utilities
             StringComparison stringComparison = StringComparison.CurrentCulture
         )
         {
-            if( a == null )
+            if (a == null)
             {
                 return b == null ? 0 : -1;
             }
 
-            if( b == null )
+            if (b == null)
             {
                 return 1;
             }
 
             int comparison;
 
-            using( var enumeratorA = a.GetEnumerator() )
+            using (var enumeratorA = a.GetEnumerator())
             {
-                using( var enumeratorB = b.GetEnumerator() )
+                using (var enumeratorB = b.GetEnumerator())
                 {
                     do
                     {
                         var aHas = enumeratorA.MoveNext();
                         var bHas = enumeratorB.MoveNext();
 
-                        if( !aHas )
+                        if (!aHas)
                         {
                             return bHas ? -1 : 0;
                         }
 
-                        if( !bHas )
+                        if (!bHas)
                         {
                             return 1;
                         }
 
-                        comparison = string.Compare( enumeratorA.Current, enumeratorB.Current, stringComparison );
-                    } while( comparison == 0 );
+                        comparison = string.Compare(enumeratorA.Current, enumeratorB.Current, stringComparison);
+                    } while (comparison == 0);
                 }
             }
 

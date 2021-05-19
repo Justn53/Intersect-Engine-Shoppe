@@ -18,12 +18,12 @@ namespace Intersect.Server.Database.PlayerData.Players
         {
         }
 
-        public Switch( Guid id )
+        public Switch(Guid id)
         {
             SwitchId = id;
         }
 
-        [DatabaseGenerated( DatabaseGeneratedOption.Identity )]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; private set; }
 
         public Guid SwitchId { get; private set; }

@@ -11,13 +11,13 @@ namespace Intersect.Collections
 
         private readonly IList<TValue> mValues;
 
-        public SingleOrList( params TValue[] values ) : this(
+        public SingleOrList(params TValue[] values) : this(
             values as IEnumerable<TValue> ?? throw new InvalidOperationException()
         )
         {
         }
 
-        public SingleOrList( IEnumerable<TValue> values )
+        public SingleOrList(IEnumerable<TValue> values)
         {
             mValues = values.ToList();
         }
@@ -35,9 +35,9 @@ namespace Intersect.Collections
         }
 
         /// <inheritdoc />
-        public void Add( TValue item )
+        public void Add(TValue item)
         {
-            mValues.Add( item );
+            mValues.Add(item);
         }
 
         /// <inheritdoc />
@@ -47,21 +47,21 @@ namespace Intersect.Collections
         }
 
         /// <inheritdoc />
-        public bool Contains( TValue item )
+        public bool Contains(TValue item)
         {
-            return mValues.Contains( item );
+            return mValues.Contains(item);
         }
 
         /// <inheritdoc />
-        public void CopyTo( TValue[] array, int arrayIndex )
+        public void CopyTo(TValue[] array, int arrayIndex)
         {
-            mValues.CopyTo( array, arrayIndex );
+            mValues.CopyTo(array, arrayIndex);
         }
 
         /// <inheritdoc />
-        public bool Remove( TValue item )
+        public bool Remove(TValue item)
         {
-            return mValues.Remove( item );
+            return mValues.Remove(item);
         }
 
         /// <inheritdoc />
@@ -71,21 +71,21 @@ namespace Intersect.Collections
         public bool IsReadOnly => mValues.IsReadOnly;
 
         /// <inheritdoc />
-        public int IndexOf( TValue item )
+        public int IndexOf(TValue item)
         {
-            return mValues.IndexOf( item );
+            return mValues.IndexOf(item);
         }
 
         /// <inheritdoc />
-        public void Insert( int index, TValue item )
+        public void Insert(int index, TValue item)
         {
-            mValues.Insert( index, item );
+            mValues.Insert(index, item);
         }
 
         /// <inheritdoc />
-        public void RemoveAt( int index )
+        public void RemoveAt(int index)
         {
-            mValues.RemoveAt( index );
+            mValues.RemoveAt(index);
         }
 
         /// <inheritdoc />
@@ -95,14 +95,14 @@ namespace Intersect.Collections
             set => mValues[index] = value;
         }
 
-        public static implicit operator SingleOrList<TValue>( TValue value )
+        public static implicit operator SingleOrList<TValue>(TValue value)
         {
-            return new SingleOrList<TValue>( value );
+            return new SingleOrList<TValue>(value);
         }
 
-        public static implicit operator SingleOrList<TValue>( TValue[] values )
+        public static implicit operator SingleOrList<TValue>(TValue[] values)
         {
-            return new SingleOrList<TValue>( values );
+            return new SingleOrList<TValue>(values);
         }
 
     }

@@ -10,20 +10,20 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public ResetPasswordPacket( string nameOrEmail, string resetCode, string newPassword )
+        public ResetPasswordPacket(string nameOrEmail, string resetCode, string newPassword)
         {
             NameOrEmail = nameOrEmail;
             ResetCode = resetCode;
             NewPassword = newPassword;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public string NameOrEmail { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public string ResetCode { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public string NewPassword { get; set; }
 
     }

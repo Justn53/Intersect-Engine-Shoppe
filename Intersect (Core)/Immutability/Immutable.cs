@@ -15,9 +15,9 @@ namespace Intersect.Immutability
             get => mValue;
             set
             {
-                if( mInitialized )
+                if (mInitialized)
                 {
-                    throw new InvalidOperationException( @"Trying to modify immutable value after initialization." );
+                    throw new InvalidOperationException(@"Trying to modify immutable value after initialization.");
                 }
 
                 mInitialized = true;
@@ -25,13 +25,13 @@ namespace Intersect.Immutability
             }
         }
 
-        public Immutable( TValue value )
+        public Immutable(TValue value)
         {
             mInitialized = true;
             mValue = value;
         }
 
-        public static implicit operator TValue( Immutable<TValue> immutable )
+        public static implicit operator TValue(Immutable<TValue> immutable)
         {
             return immutable.mValue;
         }

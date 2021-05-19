@@ -24,12 +24,12 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         /// <param name="parent">Parent control.</param>
         /// <param name="prop">Property control associated with this row.</param>
-        public PropertyRow( Base parent, Property.Base prop ) : base( parent )
+        public PropertyRow(Base parent, Property.Base prop) : base(parent)
         {
-            var label = new PropertyRowLabel( this );
+            var label = new PropertyRowLabel(this);
             label.Dock = Pos.Left;
             label.Alignment = Pos.Left | Pos.Top;
-            label.Margin = new Margin( 2, 2, 0, 0 );
+            label.Margin = new Margin(2, 2, 0, 0);
             mLabel = label;
 
             mProperty = prop;
@@ -75,50 +75,50 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
             /* SORRY */
-            if( IsEditing != mLastEditing )
+            if (IsEditing != mLastEditing)
             {
                 OnEditingChanged();
                 mLastEditing = IsEditing;
             }
 
-            if( IsHovered != mLastHover )
+            if (IsHovered != mLastHover)
             {
                 OnHoverChanged();
                 mLastHover = IsHovered;
             }
             /* SORRY */
 
-            skin.DrawPropertyRow( this, mLabel.Right, IsEditing, IsHovered | mProperty.IsHovered );
+            skin.DrawPropertyRow(this, mLabel.Right, IsEditing, IsHovered | mProperty.IsHovered);
         }
 
         /// <summary>
         ///     Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout( Skin.Base skin )
+        protected override void Layout(Skin.Base skin)
         {
             var parent = Parent as Properties;
-            if( null == parent )
+            if (null == parent)
             {
                 return;
             }
 
             mLabel.Width = parent.SplitWidth;
 
-            if( mProperty != null )
+            if (mProperty != null)
             {
                 Height = mProperty.Height;
             }
         }
 
-        protected virtual void OnValueChanged( Base control, EventArgs args )
+        protected virtual void OnValueChanged(Base control, EventArgs args)
         {
-            if( ValueChanged != null )
+            if (ValueChanged != null)
             {
-                ValueChanged.Invoke( this, EventArgs.Empty );
+                ValueChanged.Invoke(this, EventArgs.Empty);
             }
         }
 

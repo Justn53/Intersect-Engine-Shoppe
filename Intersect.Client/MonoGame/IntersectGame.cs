@@ -61,21 +61,21 @@ namespace Intersect.Client.MonoGame
 
         private Action PostStartupAction { get; }
 
-        private IntersectGame( IClientContext context, Action postStartupAction )
+        private IntersectGame(IClientContext context, Action postStartupAction)
         {
             Context = context;
             PostStartupAction = postStartupAction;
 
             Strings.Load();
 
-            mGraphics = new GraphicsDeviceManager( this )
+            mGraphics = new GraphicsDeviceManager(this)
             {
                 PreferredBackBufferWidth = 800,
                 PreferredBackBufferHeight = 480,
                 PreferHalfPixelOffset = true
             };
 
-            mGraphics.PreparingDeviceSettings += ( s, args ) =>
+            mGraphics.PreparingDeviceSettings += (s, args) =>
             {
                 args.GraphicsDeviceInformation.PresentationParameters.RenderTargetUsage =
                     RenderTargetUsage.PreserveContents;
@@ -87,40 +87,40 @@ namespace Intersect.Client.MonoGame
             Globals.Database = new MonoDatabase();
 
             /* Load configuration */
-            ClientConfiguration.LoadAndSave( ClientConfiguration.DefaultPath );
+            ClientConfiguration.LoadAndSave(ClientConfiguration.DefaultPath);
 
             Globals.Database.LoadPreferences();
 
             Window.IsBorderless = Context.StartupOptions.BorderlessWindow;
 
-            var renderer = new MonoRenderer( mGraphics, Content, this )
+            var renderer = new MonoRenderer(mGraphics, Content, this)
             {
                 OverrideResolution = Context.StartupOptions.ScreenResolution
             };
 
-            Globals.InputManager = new MonoInput( this );
+            Globals.InputManager = new MonoInput(this);
             GameClipboard.Instance = new MonoClipboard();
 
             Core.Graphics.Renderer = renderer;
 
             Globals.System = new MonoSystem();
-            Interface.Interface.GwenRenderer = new IntersectRenderer( null, Core.Graphics.Renderer );
+            Interface.Interface.GwenRenderer = new IntersectRenderer(null, Core.Graphics.Renderer);
             Interface.Interface.GwenInput = new IntersectInput();
             Controls.Init();
 
-            Window.Position = new Microsoft.Xna.Framework.Point( -20, -2000 );
+            Window.Position = new Microsoft.Xna.Framework.Point(-20, -2000);
             Window.AllowAltF4 = false;
 
             // If we're going to be rendering a custom mouse cursor, hide the default one!
-            if( !string.IsNullOrWhiteSpace( ClientConfiguration.Instance.MouseCursor ) )
+            if (!string.IsNullOrWhiteSpace(ClientConfiguration.Instance.MouseCursor))
             {
                 IsMouseVisible = false;
             }
 
-            if( !string.IsNullOrWhiteSpace( ClientConfiguration.Instance.UpdateUrl ) )
+            if (!string.IsNullOrWhiteSpace(ClientConfiguration.Instance.UpdateUrl))
             {
                 mUpdater = new Updater.Updater(
-                    ClientConfiguration.Instance.UpdateUrl, Path.Combine( "version.json" ), true, 5
+                    ClientConfiguration.Instance.UpdateUrl, Path.Combine("version.json"), true, 5
                 );
             }
         }
@@ -135,7 +135,7 @@ namespace Intersect.Client.MonoGame
         {
             base.Initialize();
 
-            if( mUpdater != null )
+            if (mUpdater != null)
             {
                 LoadUpdaterContent();
 
@@ -150,20 +150,20 @@ namespace Intersect.Client.MonoGame
 
         private void IntersectInit()
         {
-            ( Core.Graphics.Renderer as MonoRenderer )?.Init( GraphicsDevice );
+            (Core.Graphics.Renderer as MonoRenderer)?.Init(GraphicsDevice);
 
             // TODO: Remove old netcode
-            Networking.Network.Socket = new MonoSocket( Context );
-            Networking.Network.Socket.Connected += ( sender, connectionEventArgs ) =>
-                MainMenu.SetNetworkStatus( connectionEventArgs.NetworkStatus );
+            Networking.Network.Socket = new MonoSocket(Context);
+            Networking.Network.Socket.Connected += (sender, connectionEventArgs) =>
+                MainMenu.SetNetworkStatus(connectionEventArgs.NetworkStatus);
 
-            Networking.Network.Socket.ConnectionFailed += ( sender, connectionEventArgs, denied ) =>
-                MainMenu.SetNetworkStatus( connectionEventArgs.NetworkStatus );
+            Networking.Network.Socket.ConnectionFailed += (sender, connectionEventArgs, denied) =>
+                MainMenu.SetNetworkStatus(connectionEventArgs.NetworkStatus);
 
-            Networking.Network.Socket.Disconnected += ( sender, connectionEventArgs ) =>
-                MainMenu.SetNetworkStatus( connectionEventArgs.NetworkStatus );
+            Networking.Network.Socket.Disconnected += (sender, connectionEventArgs) =>
+                MainMenu.SetNetworkStatus(connectionEventArgs.NetworkStatus);
 
-            Main.Start( Context );
+            Main.Start(Context);
 
             mInitialized = true;
 
@@ -175,28 +175,28 @@ namespace Intersect.Client.MonoGame
         ///     checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update( GameTime gameTime )
+        protected override void Update(GameTime gameTime)
         {
-            if( mUpdater != null )
+            if (mUpdater != null)
             {
-                if( mUpdater.CheckUpdaterContentLoaded() )
+                if (mUpdater.CheckUpdaterContentLoaded())
                 {
                     LoadUpdaterContent();
                 }
 
-                if( mUpdater.Status == UpdateStatus.Done || mUpdater.Status == UpdateStatus.None )
+                if (mUpdater.Status == UpdateStatus.Done || mUpdater.Status == UpdateStatus.None)
                 {
-                    if( updaterGraphicsReset == true )
+                    if (updaterGraphicsReset == true)
                     {
                         //Drew a frame, now let's initialize the engine
                         IntersectInit();
                         mUpdater = null;
                     }
                 }
-                else if( mUpdater.Status == UpdateStatus.Restart )
+                else if (mUpdater.Status == UpdateStatus.Restart)
                 {
                     //Auto relaunch on Windows
-                    switch( Environment.OSVersion.Platform )
+                    switch (Environment.OSVersion.Platform)
                     {
                         case PlatformID.Win32NT:
                         case PlatformID.Win32S:
@@ -205,7 +205,7 @@ namespace Intersect.Client.MonoGame
                             Process.Start(
                                 Environment.GetCommandLineArgs()[0],
                                 Environment.GetCommandLineArgs().Length > 1
-                                    ? string.Join( " ", Environment.GetCommandLineArgs().Skip( 1 ) )
+                                    ? string.Join(" ", Environment.GetCommandLineArgs().Skip(1))
                                     : null
                             );
 
@@ -215,18 +215,18 @@ namespace Intersect.Client.MonoGame
                 }
             }
 
-            if( mUpdater == null )
+            if (mUpdater == null)
             {
-                if( !mInitialized )
+                if (!mInitialized)
                 {
                     IntersectInit();
                 }
 
-                if( Globals.IsRunning )
+                if (Globals.IsRunning)
                 {
-                    if( mLastUpdateTime < gameTime.TotalGameTime.TotalMilliseconds )
+                    if (mLastUpdateTime < gameTime.TotalGameTime.TotalMilliseconds)
                     {
-                        lock( Globals.GameLock )
+                        lock (Globals.GameLock)
                         {
                             Main.Update();
                         }
@@ -240,29 +240,29 @@ namespace Intersect.Client.MonoGame
                 }
             }
 
-            base.Update( gameTime );
+            base.Update(gameTime);
         }
 
         /// <summary>
         ///     This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw( GameTime gameTime )
+        protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.BlendState = BlendState.NonPremultiplied;
 
-            GraphicsDevice.Clear( Microsoft.Xna.Framework.Color.Black );
+            GraphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
 
-            if( mUpdater != null )
+            if (mUpdater != null)
             {
-                if( mUpdater.Status == UpdateStatus.Done || mUpdater.Status == UpdateStatus.None )
+                if (mUpdater.Status == UpdateStatus.Done || mUpdater.Status == UpdateStatus.None)
                 {
-                    if( updaterGraphicsReset == false )
+                    if (updaterGraphicsReset == false)
                     {
-                        ( Core.Graphics.Renderer as MonoRenderer )?.Init( GraphicsDevice );
-                        ( Core.Graphics.Renderer as MonoRenderer )?.Init();
-                        ( Core.Graphics.Renderer as MonoRenderer )?.Begin();
-                        ( Core.Graphics.Renderer as MonoRenderer )?.End();
+                        (Core.Graphics.Renderer as MonoRenderer)?.Init(GraphicsDevice);
+                        (Core.Graphics.Renderer as MonoRenderer)?.Init();
+                        (Core.Graphics.Renderer as MonoRenderer)?.Begin();
+                        (Core.Graphics.Renderer as MonoRenderer)?.End();
                         updaterGraphicsReset = true;
                     }
                 }
@@ -273,21 +273,21 @@ namespace Intersect.Client.MonoGame
             }
             else
             {
-                if( Globals.IsRunning && mInitialized )
+                if (Globals.IsRunning && mInitialized)
                 {
-                    lock( Globals.GameLock )
+                    lock (Globals.GameLock)
                     {
                         Core.Graphics.Render();
                     }
                 }
             }
 
-            base.Draw( gameTime );
+            base.Draw(gameTime);
         }
 
-        private void ExitToDesktop( object sender, EventArgs e )
+        private void ExitToDesktop(object sender, EventArgs e)
         {
-            if( Globals.Me != null )
+            if (Globals.Me != null)
             {
                 Globals.Me.CombatTimer = 0;
             }
@@ -295,22 +295,22 @@ namespace Intersect.Client.MonoGame
             Globals.IsRunning = false;
         }
 
-        protected override void OnExiting( object sender, EventArgs args )
+        protected override void OnExiting(object sender, EventArgs args)
         {
-            if( Globals.Me != null && Globals.Me.CombatTimer > Globals.System?.GetTimeMs() )
+            if (Globals.Me != null && Globals.Me.CombatTimer > Globals.System?.GetTimeMs())
             {
                 //Try to prevent SDL Window Close
                 var exception = false;
                 try
                 {
                     var platform = GetType()
-                        .GetField( "Platform", BindingFlags.NonPublic | BindingFlags.Instance )
-                        .GetValue( this );
+                        .GetField("Platform", BindingFlags.NonPublic | BindingFlags.Instance)
+                        .GetValue(this);
 
                     var field = platform.GetType()
-                        .GetField( "_isExiting", BindingFlags.NonPublic | BindingFlags.Instance );
+                        .GetField("_isExiting", BindingFlags.NonPublic | BindingFlags.Instance);
 
-                    field.SetValue( platform, 0 );
+                    field.SetValue(platform, 0);
                 }
                 catch
                 {
@@ -318,7 +318,7 @@ namespace Intersect.Client.MonoGame
                     exception = true;
                 }
 
-                if( !exception )
+                if (!exception)
                 {
                     //Show Message Getting Exit Confirmation From Player to Leave in Combat
                     var box = new InputBox(
@@ -341,8 +341,8 @@ namespace Intersect.Client.MonoGame
             }
 
             //Just close if we don't need to show a combat warning
-            base.OnExiting( sender, args );
-            Networking.Network.Close( "quitting" );
+            base.OnExiting(sender, args);
+            Networking.Network.Close("quitting");
             Dispose();
         }
 
@@ -350,19 +350,19 @@ namespace Intersect.Client.MonoGame
         {
             //Draw updating text and show progress bar...
 
-            if( updateBatch == null )
+            if (updateBatch == null)
             {
-                updateBatch = new SpriteBatch( GraphicsDevice );
+                updateBatch = new SpriteBatch(GraphicsDevice);
             }
 
-            updateBatch.Begin( SpriteSortMode.Immediate );
+            updateBatch.Begin(SpriteSortMode.Immediate);
 
             //Default Window Size is 800x480
-            if( updaterBackground != null )
+            if (updaterBackground != null)
             {
                 updateBatch.Draw(
-                    updaterBackground, new Rectangle( 0, 0, 800, 480 ),
-                    new Rectangle?( new Rectangle( 0, 0, updaterBackground.Width, updaterBackground.Height ) ),
+                    updaterBackground, new Rectangle(0, 0, 800, 480),
+                    new Rectangle?(new Rectangle(0, 0, updaterBackground.Width, updaterBackground.Height)),
                     Microsoft.Xna.Framework.Color.White
                 );
             }
@@ -373,7 +373,7 @@ namespace Intersect.Client.MonoGame
             var filesRemaining = "";
             var sizeRemaining = "";
 
-            switch( mUpdater.Status )
+            switch (mUpdater.Status)
             {
                 case UpdateStatus.Checking:
                     status = Strings.Update.Checking;
@@ -382,21 +382,21 @@ namespace Intersect.Client.MonoGame
                 case UpdateStatus.Updating:
                     status = Strings.Update.Updating;
                     progressPercent = mUpdater.Progress / 100f;
-                    progress = Strings.Update.Percent.ToString( (int)mUpdater.Progress );
+                    progress = Strings.Update.Percent.ToString((int)mUpdater.Progress);
                     filesRemaining = mUpdater.FilesRemaining + " Files Remaining";
-                    sizeRemaining = mUpdater.GetHumanReadableFileSize( mUpdater.SizeRemaining ) + " Left";
+                    sizeRemaining = mUpdater.GetHumanReadableFileSize(mUpdater.SizeRemaining) + " Left";
                     break;
 
                 case UpdateStatus.Restart:
-                    status = Strings.Update.Restart.ToString( Strings.Main.gamename );
+                    status = Strings.Update.Restart.ToString(Strings.Main.gamename);
                     progressPercent = 100;
-                    progress = Strings.Update.Percent.ToString( 100 );
+                    progress = Strings.Update.Percent.ToString(100);
                     break;
 
                 case UpdateStatus.Done:
                     status = Strings.Update.Done;
                     progressPercent = 100;
-                    progress = Strings.Update.Percent.ToString( 100 );
+                    progress = Strings.Update.Percent.ToString(100);
                     break;
 
                 case UpdateStatus.Error:
@@ -413,46 +413,46 @@ namespace Intersect.Client.MonoGame
                     throw new ArgumentOutOfRangeException();
             }
 
-            if( updaterFont != null )
+            if (updaterFont != null)
             {
-                var size = updaterFont.MeasureString( status );
+                var size = updaterFont.MeasureString(status);
                 updateBatch.DrawString(
-                    updaterFont, status, new Vector2( 800 / 2 - size.X / 2, 360 ), Microsoft.Xna.Framework.Color.White
+                    updaterFont, status, new Vector2(800 / 2 - size.X / 2, 360), Microsoft.Xna.Framework.Color.White
                 );
             }
 
             //Bar will exist at 400 to 432
-            if( updaterProgressBar != null )
+            if (updaterProgressBar != null)
             {
                 updateBatch.Draw(
-                    updaterProgressBar, new Rectangle( 100, 400, (int)( 600 * progressPercent ), 32 ),
+                    updaterProgressBar, new Rectangle(100, 400, (int)(600 * progressPercent), 32),
                     new Rectangle?(
                         new Rectangle(
-                            0, 0, (int)( updaterProgressBar.Width * progressPercent ), updaterProgressBar.Height
+                            0, 0, (int)(updaterProgressBar.Width * progressPercent), updaterProgressBar.Height
                         )
                     ), Microsoft.Xna.Framework.Color.White
                 );
             }
 
             //Bar will be 600 pixels wide
-            if( updaterFontSmall != null )
+            if (updaterFontSmall != null)
             {
                 //Draw % in center of bar
-                var size = updaterFontSmall.MeasureString( progress );
+                var size = updaterFontSmall.MeasureString(progress);
                 updateBatch.DrawString(
-                    updaterFontSmall, progress, new Vector2( 800 / 2 - size.X / 2, 405 ),
+                    updaterFontSmall, progress, new Vector2(800 / 2 - size.X / 2, 405),
                     Microsoft.Xna.Framework.Color.White
                 );
 
                 //Draw files remaining on bottom left
                 updateBatch.DrawString(
-                    updaterFontSmall, filesRemaining, new Vector2( 100, 440 ), Microsoft.Xna.Framework.Color.White
+                    updaterFontSmall, filesRemaining, new Vector2(100, 440), Microsoft.Xna.Framework.Color.White
                 );
 
                 //Draw total remaining on bottom right
-                size = updaterFontSmall.MeasureString( sizeRemaining );
+                size = updaterFontSmall.MeasureString(sizeRemaining);
                 updateBatch.DrawString(
-                    updaterFontSmall, sizeRemaining, new Vector2( 700 - size.X, 440 ), Microsoft.Xna.Framework.Color.White
+                    updaterFontSmall, sizeRemaining, new Vector2(700 - size.X, 440), Microsoft.Xna.Framework.Color.White
                 );
             }
 
@@ -461,41 +461,41 @@ namespace Intersect.Client.MonoGame
 
         private void LoadUpdaterContent()
         {
-            if( File.Exists( Path.Combine( "resources", "updater", "background.png" ) ) )
+            if (File.Exists(Path.Combine("resources", "updater", "background.png")))
             {
                 updaterBackground = Texture2D.FromFile(
-                    GraphicsDevice, Path.Combine( "resources", "updater", "background.png" )
+                    GraphicsDevice, Path.Combine("resources", "updater", "background.png")
                 );
             }
 
-            if( File.Exists( Path.Combine( "resources", "updater", "progressbar.png" ) ) )
+            if (File.Exists(Path.Combine("resources", "updater", "progressbar.png")))
             {
                 updaterProgressBar = Texture2D.FromFile(
-                    GraphicsDevice, Path.Combine( "resources", "updater", "progressbar.png" )
+                    GraphicsDevice, Path.Combine("resources", "updater", "progressbar.png")
                 );
             }
 
-            if( File.Exists( Path.Combine( "resources", "updater", "font.xnb" ) ) )
+            if (File.Exists(Path.Combine("resources", "updater", "font.xnb")))
             {
-                updaterFont = Content.Load<SpriteFont>( Path.Combine( "resources", "updater", "font" ) );
+                updaterFont = Content.Load<SpriteFont>(Path.Combine("resources", "updater", "font"));
             }
 
-            if( File.Exists( Path.Combine( "resources", "updater", "fontsmall.xnb" ) ) )
+            if (File.Exists(Path.Combine("resources", "updater", "fontsmall.xnb")))
             {
-                updaterFontSmall = Content.Load<SpriteFont>( Path.Combine( "resources", "updater", "fontsmall" ) );
+                updaterFontSmall = Content.Load<SpriteFont>(Path.Combine("resources", "updater", "fontsmall"));
             }
         }
 
-        protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
-            base.Dispose( disposing );
+            base.Dispose(disposing);
 
-            if( !disposing )
+            if (!disposing)
             {
                 return;
             }
 
-            if( !Context.IsDisposed )
+            if (!Context.IsDisposed)
             {
                 Context.Dispose();
             }
@@ -507,9 +507,9 @@ namespace Intersect.Client.MonoGame
         internal class MonoGameRunner : IPlatformRunner
         {
             /// <inheritdoc />
-            public void Start( IClientContext context, Action postStartupAction )
+            public void Start(IClientContext context, Action postStartupAction)
             {
-                using( var game = new IntersectGame( context, postStartupAction ) )
+                using (var game = new IntersectGame(context, postStartupAction))
                 {
                     game.Run();
                 }

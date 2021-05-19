@@ -33,7 +33,7 @@ namespace Intersect.Client.Interface.Game.EntityPanel
 
         public Framework.Gwen.Control.Label TimeLabel;
 
-        public SpellStatus( EntityBox entityBox, Status status )
+        public SpellStatus(EntityBox entityBox, Status status)
         {
             mEntityBox = entityBox;
             mStatus = status;
@@ -41,24 +41,24 @@ namespace Intersect.Client.Interface.Game.EntityPanel
 
         public void Setup()
         {
-            Pnl = new ImagePanel( Container, "StatusIcon" );
+            Pnl = new ImagePanel(Container, "StatusIcon");
             Pnl.HoverEnter += pnl_HoverEnter;
             Pnl.HoverLeave += pnl_HoverLeave;
-            mDurationLabel = new Framework.Gwen.Control.Label( Container, "DurationLabel" );
+            mDurationLabel = new Framework.Gwen.Control.Label(Container, "DurationLabel");
         }
 
-        public void pnl_HoverLeave( Base sender, EventArgs arguments )
+        public void pnl_HoverLeave(Base sender, EventArgs arguments)
         {
-            if( mDescWindow != null )
+            if (mDescWindow != null)
             {
                 mDescWindow.Dispose();
                 mDescWindow = null;
             }
         }
 
-        void pnl_HoverEnter( Base sender, EventArgs arguments )
+        void pnl_HoverEnter(Base sender, EventArgs arguments)
         {
-            if( mDescWindow != null )
+            if (mDescWindow != null)
             {
                 mDescWindow.Dispose();
                 mDescWindow = null;
@@ -74,8 +74,8 @@ namespace Intersect.Client.Interface.Game.EntityPanel
         {
             var rect = new FloatRect
             {
-                X = Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).X,
-                Y = Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).Y,
+                X = Pnl.LocalPosToCanvas(new Point(0, 0)).X,
+                Y = Pnl.LocalPosToCanvas(new Point(0, 0)).Y,
                 Width = Pnl.Width,
                 Height = Pnl.Height
             };
@@ -83,50 +83,50 @@ namespace Intersect.Client.Interface.Game.EntityPanel
             return rect;
         }
 
-        public void UpdateStatus( Status status )
+        public void UpdateStatus(Status status)
         {
             mStatus = status;
         }
 
         public void Update()
         {
-            if( mStatus != null )
+            if (mStatus != null)
             {
                 var remaining = mStatus.RemainingMs();
-                var spell = SpellBase.Get( mStatus.SpellId );
+                var spell = SpellBase.Get(mStatus.SpellId);
                 var secondsRemaining = (float)remaining / 1000f;
-                if( secondsRemaining > 10f )
+                if (secondsRemaining > 10f)
                 {
                     mDurationLabel.Text =
-                        Strings.EntityBox.cooldown.ToString( ( (float)remaining / 1000f ).ToString( "N0" ) );
+                        Strings.EntityBox.cooldown.ToString(((float)remaining / 1000f).ToString("N0"));
                 }
                 else
                 {
                     mDurationLabel.Text = Strings.EntityBox.cooldown.ToString(
-                        ( (float)remaining / 1000f ).ToString( "N1" ).Replace( ".", Strings.Numbers.dec )
+                        ((float)remaining / 1000f).ToString("N1").Replace(".", Strings.Numbers.dec)
                     );
                 }
 
-                if( ( mTexLoaded != "" && spell == null ||
+                if ((mTexLoaded != "" && spell == null ||
                      spell != null && mTexLoaded != spell.Icon ||
-                     mCurrentSpellId != mStatus.SpellId ) &&
-                    remaining > 0 )
+                     mCurrentSpellId != mStatus.SpellId) &&
+                    remaining > 0)
                 {
                     Container.Show();
-                    if( spell != null )
+                    if (spell != null)
                     {
                         var spellTex = Globals.ContentManager.GetTexture(
                             GameContentManager.TextureType.Spell, spell.Icon
                         );
 
-                        if( spellTex != null )
+                        if (spellTex != null)
                         {
                             Pnl.Texture = spellTex;
                             Pnl.IsHidden = false;
                         }
                         else
                         {
-                            if( Pnl.Texture != null )
+                            if (Pnl.Texture != null)
                             {
                                 Pnl.Texture = null;
                             }
@@ -137,7 +137,7 @@ namespace Intersect.Client.Interface.Game.EntityPanel
                     }
                     else
                     {
-                        if( Pnl.Texture != null )
+                        if (Pnl.Texture != null)
                         {
                             Pnl.Texture = null;
                         }
@@ -145,9 +145,9 @@ namespace Intersect.Client.Interface.Game.EntityPanel
                         mTexLoaded = "";
                     }
                 }
-                else if( remaining <= 0 )
+                else if (remaining <= 0)
                 {
-                    if( Pnl.Texture != null )
+                    if (Pnl.Texture != null)
                     {
                         Pnl.Texture = null;
                     }

@@ -36,33 +36,33 @@ namespace Intersect.Server.Core
 
         public static LockingActionQueue MainThread { get; private set; }
 
-        public static void Start( params string[] args )
+        public static void Start(params string[] args)
         {
-            (string[] Args, Parser Parser, ServerCommandLineOptions CommandLineOptions) parsedArguments = ParseCommandLineArgs( args );
-            if( !string.IsNullOrWhiteSpace( parsedArguments.CommandLineOptions.WorkingDirectory ) )
+            (string[] Args, Parser Parser, ServerCommandLineOptions CommandLineOptions) parsedArguments = ParseCommandLineArgs(args);
+            if (!string.IsNullOrWhiteSpace(parsedArguments.CommandLineOptions.WorkingDirectory))
             {
                 var workingDirectory = parsedArguments.CommandLineOptions.WorkingDirectory.Trim();
-                if( Directory.Exists( workingDirectory ) )
+                if (Directory.Exists(workingDirectory))
                 {
-                    Directory.SetCurrentDirectory( workingDirectory );
+                    Directory.SetCurrentDirectory(workingDirectory);
                 }
             }
 
-            if( !PreContextSetup( args ) )
+            if (!PreContextSetup(args))
             {
                 return;
             }
 
             var logger = Log.Default;
-            var packetTypeRegistry = new PacketTypeRegistry( logger );
-            if( !packetTypeRegistry.TryRegisterBuiltIn() )
+            var packetTypeRegistry = new PacketTypeRegistry(logger);
+            if (!packetTypeRegistry.TryRegisterBuiltIn())
             {
-                logger.Error( "Failed to load built-in packet types." );
+                logger.Error("Failed to load built-in packet types.");
                 return;
             }
 
-            var packetHandlerRegistry = new PacketHandlerRegistry( packetTypeRegistry, logger );
-            var networkHelper = new NetworkHelper( packetTypeRegistry, packetHandlerRegistry );
+            var packetHandlerRegistry = new PacketHandlerRegistry(packetTypeRegistry, logger);
+            var networkHelper = new NetworkHelper(packetTypeRegistry, packetHandlerRegistry);
 
             FactoryRegistry<IPluginBootstrapContext>.RegisterFactory(
                 PluginBootstrapContext.CreateFactory(
@@ -72,48 +72,48 @@ namespace Intersect.Server.Core
                 )
             );
 
-            Context = new ServerContext( parsedArguments.CommandLineOptions, logger, networkHelper );
+            Context = new ServerContext(parsedArguments.CommandLineOptions, logger, networkHelper);
             var noHaltOnError = Context?.StartupOptions.DoNotHaltOnError ?? false;
 
-            if( !PostContextSetup() )
+            if (!PostContextSetup())
             {
                 return;
             }
 
             MainThread = Context.StartWithActionQueue();
             Action action;
-            while( null != ( action = MainThread.NextAction ) )
+            while (null != (action = MainThread.NextAction))
             {
                 action.Invoke();
             }
 
-            Log.Diagnostic( "Bootstrapper exited." );
+            Log.Diagnostic("Bootstrapper exited.");
 
             // At this point dbs should be saved and all threads should be killed. Give a message saying that the server has shutdown and to press any key to exit.
             // Having the message and the console.readline() allows the server to exit properly if the console has crashed, and it allows us to know that the server context has shutdown.
-            if( Context.HasErrors )
+            if (Context.HasErrors)
             {
-                if( noHaltOnError )
+                if (noHaltOnError)
                 {
-                    Console.WriteLine( Strings.Errors.errorservercrashnohalt );
+                    Console.WriteLine(Strings.Errors.errorservercrashnohalt);
                 }
                 else
                 {
-                    Console.WriteLine( Strings.Errors.errorservercrash );
+                    Console.WriteLine(Strings.Errors.errorservercrash);
                     Console.ReadLine();
                 }
             }
         }
 
-        private static ValueTuple<string[], Parser, ServerCommandLineOptions> ParseCommandLineArgs( params string[] args )
+        private static ValueTuple<string[], Parser, ServerCommandLineOptions> ParseCommandLineArgs(params string[] args)
         {
             var parser = new Parser(
                 parserSettings =>
                     {
-                        if( parserSettings == null )
+                        if (parserSettings == null)
                         {
                             throw new ArgumentNullException(
-                                nameof( parserSettings ), @"If this is null the CommandLineParser dependency is likely broken."
+                                nameof(parserSettings), @"If this is null the CommandLineParser dependency is likely broken."
                             );
                         }
 
@@ -124,8 +124,8 @@ namespace Intersect.Server.Core
                     }
                 );
 
-            var options = parser.ParseArguments<ServerCommandLineOptions>( args )
-                .MapResult( commandLineOptions => commandLineOptions, errors => default );
+            var options = parser.ParseArguments<ServerCommandLineOptions>(args)
+                .MapResult(commandLineOptions => commandLineOptions, errors => default);
 
             return (args, parser, options);
         }
@@ -135,39 +135,39 @@ namespace Intersect.Server.Core
         internal static void CheckNetwork()
         {
             //Check to see if AGD can see this server. If so let the owner know :)
-            if( Options.OpenPortChecker && !Context.StartupOptions.NoNetworkCheck )
+            if (Options.OpenPortChecker && !Context.StartupOptions.NoNetworkCheck)
             {
-                var serverAccessible = PortChecker.CanYouSeeMe( Options.ServerPort, out var externalIp );
+                var serverAccessible = PortChecker.CanYouSeeMe(Options.ServerPort, out var externalIp);
 
-                Console.WriteLine( Strings.Portchecking.connectioninfo );
-                if( !string.IsNullOrEmpty( externalIp ) )
+                Console.WriteLine(Strings.Portchecking.connectioninfo);
+                if (!string.IsNullOrEmpty(externalIp))
                 {
-                    Console.WriteLine( Strings.Portchecking.publicip, externalIp );
-                    Console.WriteLine( Strings.Portchecking.publicport, Options.ServerPort );
+                    Console.WriteLine(Strings.Portchecking.publicip, externalIp);
+                    Console.WriteLine(Strings.Portchecking.publicport, Options.ServerPort);
 
                     Console.WriteLine();
-                    if( serverAccessible )
+                    if (serverAccessible)
                     {
-                        Console.WriteLine( Strings.Portchecking.accessible );
-                        Console.WriteLine( Strings.Portchecking.letothersjoin );
+                        Console.WriteLine(Strings.Portchecking.accessible);
+                        Console.WriteLine(Strings.Portchecking.letothersjoin);
                     }
                     else
                     {
-                        Console.WriteLine( Strings.Portchecking.notaccessible );
-                        Console.WriteLine( Strings.Portchecking.debuggingsteps );
-                        Console.WriteLine( Strings.Portchecking.checkfirewalls );
-                        Console.WriteLine( Strings.Portchecking.checkantivirus );
-                        Console.WriteLine( Strings.Portchecking.screwed );
+                        Console.WriteLine(Strings.Portchecking.notaccessible);
+                        Console.WriteLine(Strings.Portchecking.debuggingsteps);
+                        Console.WriteLine(Strings.Portchecking.checkfirewalls);
+                        Console.WriteLine(Strings.Portchecking.checkantivirus);
+                        Console.WriteLine(Strings.Portchecking.screwed);
                         Console.WriteLine();
-                        if( !UpnP.ForwardingSucceeded() )
+                        if (!UpnP.ForwardingSucceeded())
                         {
-                            Console.WriteLine( Strings.Portchecking.checkrouterupnp );
+                            Console.WriteLine(Strings.Portchecking.checkrouterupnp);
                         }
                     }
                 }
                 else
                 {
-                    Console.WriteLine( Strings.Portchecking.notconnected );
+                    Console.WriteLine(Strings.Portchecking.notconnected);
                 }
 
                 Console.WriteLine();
@@ -183,7 +183,7 @@ namespace Intersect.Server.Core
             ConsoleCancelEventArgs cancelEvent
         )
         {
-            ServerContext.Instance.RequestShutdown( true );
+            ServerContext.Instance.RequestShutdown(true);
 
             //Shutdown();
             cancelEvent.Cancel = true;
@@ -193,39 +193,39 @@ namespace Intersect.Server.Core
 
         #region Pre-Context
 
-        private static bool PreContextSetup( params string[] args )
+        private static bool PreContextSetup(params string[] args)
         {
-            if( RunningOnWindows() )
+            if (RunningOnWindows())
             {
-                SetConsoleCtrlHandler( ConsoleCtrlHandler, true );
+                SetConsoleCtrlHandler(ConsoleCtrlHandler, true);
             }
 
-            if( !Strings.Load() )
+            if (!Strings.Load())
             {
-                Console.WriteLine( Strings.Errors.ErrorLoadingStrings );
+                Console.WriteLine(Strings.Errors.ErrorLoadingStrings);
                 Console.ReadKey();
 
                 return false;
             }
 
-            if( !Options.LoadFromDisk() )
+            if (!Options.LoadFromDisk())
             {
-                Console.WriteLine( Strings.Errors.errorloadingconfig );
+                Console.WriteLine(Strings.Errors.errorloadingconfig);
                 Console.ReadKey();
 
                 return false;
             }
 
-            if( !Directory.Exists( Path.Combine( "resources", "notifications" ) ) )
+            if (!Directory.Exists(Path.Combine("resources", "notifications")))
             {
-                Directory.CreateDirectory( Path.Combine( "resources", "notifications" ) );
+                Directory.CreateDirectory(Path.Combine("resources", "notifications"));
             }
 
-            if( !File.Exists( Path.Combine( "resources", "notifications", "PasswordReset.html" ) ) )
+            if (!File.Exists(Path.Combine("resources", "notifications", "PasswordReset.html")))
             {
                 ReflectionUtils.ExtractResource(
                     "Intersect.Server.Resources.notifications.PasswordReset.html",
-                    Path.Combine( "resources", "notifications", "PasswordReset.html" )
+                    Path.Combine("resources", "notifications", "PasswordReset.html")
                 );
             }
 
@@ -234,7 +234,7 @@ namespace Intersect.Server.Core
 
             PrintIntroduction();
 
-            ExportDependencies( args );
+            ExportDependencies(args);
 
             Formulas.LoadFormulas();
 
@@ -245,12 +245,12 @@ namespace Intersect.Server.Core
 
         private static bool PostContextSetup()
         {
-            if( Context == null )
+            if (Context == null)
             {
-                throw new ArgumentNullException( nameof( Context ) );
+                throw new ArgumentNullException(nameof(Context));
             }
 
-            if( !DbInterface.InitDatabase( Context ) )
+            if (!DbInterface.InitDatabase(Context))
             {
                 Console.ReadKey();
 
@@ -259,8 +259,8 @@ namespace Intersect.Server.Core
 
             Console.WriteLine();
 
-            Console.WriteLine( Strings.Commandoutput.playercount.ToString( Player.Count() ) );
-            Console.WriteLine( Strings.Commandoutput.gametime.ToString( Time.GetTime().ToString( "F" ) ) );
+            Console.WriteLine(Strings.Commandoutput.playercount.ToString(Player.Count()));
+            Console.WriteLine(Strings.Commandoutput.gametime.ToString(Time.GetTime().ToString("F")));
 
             Time.Update();
 
@@ -273,17 +273,17 @@ namespace Intersect.Server.Core
         {
             Console.Clear();
             Console.WriteLine();
-            Console.WriteLine( @"  _____       _                          _   " );
-            Console.WriteLine( @" |_   _|     | |                        | |  " );
-            Console.WriteLine( @"   | |  _ __ | |_ ___ _ __ ___  ___  ___| |_ " );
-            Console.WriteLine( @"   | | | '_ \| __/ _ \ '__/ __|/ _ \/ __| __|" );
-            Console.WriteLine( @"  _| |_| | | | ||  __/ |  \__ \  __/ (__| |_ " );
-            Console.WriteLine( @" |_____|_| |_|\__\___|_|  |___/\___|\___|\__|" );
-            Console.WriteLine( Strings.Intro.tagline );
-            Console.WriteLine( @"Copyright (C) 2020 Ascension Game Dev" );
-            Console.WriteLine( Strings.Intro.version.ToString( Assembly.GetExecutingAssembly().GetName().Version ) );
-            Console.WriteLine( Strings.Intro.support );
-            Console.WriteLine( Strings.Intro.loading );
+            Console.WriteLine(@"  _____       _                          _   ");
+            Console.WriteLine(@" |_   _|     | |                        | |  ");
+            Console.WriteLine(@"   | |  _ __ | |_ ___ _ __ ___  ___  ___| |_ ");
+            Console.WriteLine(@"   | | | '_ \| __/ _ \ '__/ __|/ _ \/ __| __|");
+            Console.WriteLine(@"  _| |_| | | | ||  __/ |  \__ \  __/ (__| |_ ");
+            Console.WriteLine(@" |_____|_| |_|\__\___|_|  |___/\___|\___|\__|");
+            Console.WriteLine(Strings.Intro.tagline);
+            Console.WriteLine(@"Copyright (C) 2020 Ascension Game Dev");
+            Console.WriteLine(Strings.Intro.version.ToString(Assembly.GetExecutingAssembly().GetName().Version));
+            Console.WriteLine(Strings.Intro.support);
+            Console.WriteLine(Strings.Intro.loading);
         }
 
         #endregion
@@ -292,16 +292,16 @@ namespace Intersect.Server.Core
 
         private static void ClearDlls()
         {
-            DeleteIfExists( "libe_sqlite3.so" );
-            DeleteIfExists( "e_sqlite3.dll" );
-            DeleteIfExists( "libe_sqlite3.dylib" );
+            DeleteIfExists("libe_sqlite3.so");
+            DeleteIfExists("e_sqlite3.dll");
+            DeleteIfExists("libe_sqlite3.dylib");
         }
 
-        private static string ReadProcessOutput( string name )
+        private static string ReadProcessOutput(string name)
         {
             try
             {
-                Debug.Assert( name != null, "name != null" );
+                Debug.Assert(name != null, "name != null");
                 var p = new Process
                 {
                     StartInfo =
@@ -330,14 +330,14 @@ namespace Intersect.Server.Core
             }
         }
 
-        internal static bool DeleteIfExists( string filename )
+        internal static bool DeleteIfExists(string filename)
         {
             try
             {
-                Debug.Assert( filename != null, "filename != null" );
-                if( File.Exists( filename ) )
+                Debug.Assert(filename != null, "filename != null");
+                if (File.Exists(filename))
                 {
-                    File.Delete( filename );
+                    File.Delete(filename);
                 }
 
                 return true;
@@ -348,15 +348,15 @@ namespace Intersect.Server.Core
             }
         }
 
-        private static void ExportDependencies( params string[] args )
+        private static void ExportDependencies(params string[] args)
         {
             ClearDlls();
 
             var platformId = Environment.OSVersion.Platform;
-            if( platformId == PlatformID.Unix )
+            if (platformId == PlatformID.Unix)
             {
-                var unixName = ReadProcessOutput( "uname" ) ?? "";
-                if( unixName.Contains( "Darwin" ) )
+                var unixName = ReadProcessOutput("uname") ?? "";
+                if (unixName.Contains("Darwin"))
                 {
                     platformId = PlatformID.MacOSX;
                 }
@@ -364,7 +364,7 @@ namespace Intersect.Server.Core
 
             string sqliteResourceName = null;
             string sqliteFileName = null;
-            switch( platformId )
+            switch (platformId)
             {
                 case PlatformID.Win32NT:
                 case PlatformID.Win32S:
@@ -391,22 +391,22 @@ namespace Intersect.Server.Core
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException( nameof( platformId ) );
+                    throw new ArgumentOutOfRangeException(nameof(platformId));
             }
 
-            if( string.IsNullOrWhiteSpace( sqliteResourceName ) || string.IsNullOrWhiteSpace( sqliteFileName ) )
+            if (string.IsNullOrWhiteSpace(sqliteResourceName) || string.IsNullOrWhiteSpace(sqliteFileName))
             {
                 return;
             }
 
             sqliteResourceName = $"Intersect.Server.Resources.{sqliteResourceName}";
-            if( ReflectionUtils.ExtractResource( sqliteResourceName, sqliteFileName ) )
+            if (ReflectionUtils.ExtractResource(sqliteResourceName, sqliteFileName))
             {
                 return;
             }
 
-            Log.Error( $"Failed to extract {sqliteFileName} library, terminating startup." );
-            Environment.Exit( -0x1000 );
+            Log.Error($"Failed to extract {sqliteFileName} library, terminating startup.");
+            Environment.Exit(-0x1000);
         }
 
         #endregion
@@ -416,12 +416,12 @@ namespace Intersect.Server.Core
         // Declare the SetConsoleCtrlHandler function
         // as external and receiving a delegate.
 
-        [DllImport( "Kernel32" )]
-        public static extern bool SetConsoleCtrlHandler( HandlerRoutine handler, bool add );
+        [DllImport("Kernel32")]
+        public static extern bool SetConsoleCtrlHandler(HandlerRoutine handler, bool add);
 
         // A delegate type to be used as the handler routine
         // for SetConsoleCtrlHandler.
-        public delegate bool HandlerRoutine( CtrlTypes ctrlType );
+        public delegate bool HandlerRoutine(CtrlTypes ctrlType);
 
         // An enumerated type for the control messages
         // sent to the handler routine.
@@ -442,9 +442,9 @@ namespace Intersect.Server.Core
 
         private static readonly HandlerRoutine ConsoleCtrlHandler = ConsoleCtrlCheck;
 
-        private static bool ConsoleCtrlCheck( CtrlTypes ctrlType )
+        private static bool ConsoleCtrlCheck(CtrlTypes ctrlType)
         {
-            switch( ctrlType )
+            switch (ctrlType)
             {
                 case CtrlTypes.CtrlCEvent:
                 case CtrlTypes.CtrlBreakEvent:
@@ -463,7 +463,7 @@ namespace Intersect.Server.Core
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException( nameof( ctrlType ), ctrlType, null );
+                    throw new ArgumentOutOfRangeException(nameof(ctrlType), ctrlType, null);
             }
 
             return true;
@@ -471,7 +471,7 @@ namespace Intersect.Server.Core
 
         private static bool RunningOnWindows()
         {
-            switch( Environment.OSVersion.Platform )
+            switch (Environment.OSVersion.Platform)
             {
                 case PlatformID.Win32NT:
                 case PlatformID.Win32S:

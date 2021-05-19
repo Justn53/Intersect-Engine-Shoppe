@@ -11,18 +11,18 @@ namespace Intersect.Network.Packets.Editor
         {
         }
 
-        public UnlinkMapPacket( Guid unlinkMapId, Guid currentMapId )
+        public UnlinkMapPacket(Guid unlinkMapId, Guid currentMapId)
         {
             MapId = unlinkMapId;
             CurrentMapId = currentMapId;
         }
 
         //Map we are unlinking
-        [Key( 0 )]
+        [Key(0)]
         public Guid MapId { get; set; }
 
         //Map we are currently editing
-        [Key( 1 )]
+        [Key(1)]
         public Guid CurrentMapId { get; set; }
 
     }

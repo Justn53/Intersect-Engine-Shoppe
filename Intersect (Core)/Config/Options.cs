@@ -14,57 +14,57 @@ namespace Intersect
         //Caching Json
         private static string optionsCompressed = "";
 
-        [JsonProperty( "AdminOnly", Order = -3 )]
+        [JsonProperty("AdminOnly", Order = -3)]
         protected bool _adminOnly = false;
 
         //Constantly Animated Sprites
-        [JsonProperty( "AnimatedSprites" )] protected List<string> _animatedSprites = new List<string>();
+        [JsonProperty("AnimatedSprites")] protected List<string> _animatedSprites = new List<string>();
 
-        [JsonProperty( "BlockClientRegistrations", Order = -2 )]
+        [JsonProperty("BlockClientRegistrations", Order = -2)]
         protected bool _blockClientRegistrations = false;
 
-        [JsonProperty( "ValidPasswordResetTimeMinutes" )]
+        [JsonProperty("ValidPasswordResetTimeMinutes")]
         protected ushort _passResetExpirationMin = 30;
 
-        [JsonProperty( "OpenPortChecker", Order = 0 )]
+        [JsonProperty("OpenPortChecker", Order = 0)]
         protected bool _portChecker = true;
 
-        [JsonProperty( "MaxClientConnections" )]
+        [JsonProperty("MaxClientConnections")]
         protected int _maxConnections = 100;
 
-        [JsonProperty( "MaximumLoggedinUsers" )]
+        [JsonProperty("MaximumLoggedinUsers")]
         protected int _maxUsers = 50;
 
-        [JsonProperty( "UPnP", Order = -1 )] protected bool _upnp = true;
+        [JsonProperty("UPnP", Order = -1)] protected bool _upnp = true;
 
-        [JsonProperty( "Chat" )] public ChatOptions ChatOpts = new ChatOptions();
+        [JsonProperty("Chat")] public ChatOptions ChatOpts = new ChatOptions();
 
-        [JsonProperty( "Combat" )] public CombatOptions CombatOpts = new CombatOptions();
+        [JsonProperty("Combat")] public CombatOptions CombatOpts = new CombatOptions();
 
-        [JsonProperty( "Equipment" )] public EquipmentOptions EquipmentOpts = new EquipmentOptions();
+        [JsonProperty("Equipment")] public EquipmentOptions EquipmentOpts = new EquipmentOptions();
 
-        [JsonProperty( "EventWatchdogKillThreshold" )]
+        [JsonProperty("EventWatchdogKillThreshold")]
         public int EventKillTheshhold = 5000;
 
         public DatabaseOptions GameDatabase = new DatabaseOptions();
 
-        [JsonProperty( "Map" )] public MapOptions MapOpts = new MapOptions();
+        [JsonProperty("Map")] public MapOptions MapOpts = new MapOptions();
 
         public DatabaseOptions PlayerDatabase = new DatabaseOptions();
 
-        [JsonProperty( "Player" )] public PlayerOptions PlayerOpts = new PlayerOptions();
+        [JsonProperty("Player")] public PlayerOptions PlayerOpts = new PlayerOptions();
 
-        [JsonProperty( "Party" )] public PartyOptions PartyOpts = new PartyOptions();
+        [JsonProperty("Party")] public PartyOptions PartyOpts = new PartyOptions();
 
-        [JsonProperty( "Security" )] public SecurityOptions SecurityOpts = new SecurityOptions();
+        [JsonProperty("Security")] public SecurityOptions SecurityOpts = new SecurityOptions();
 
-        [JsonProperty( "Loot" )] public LootOptions LootOpts = new LootOptions();
+        [JsonProperty("Loot")] public LootOptions LootOpts = new LootOptions();
 
         public ProcessingOptions Processing = new ProcessingOptions();
 
         public SpriteOptions Sprites = new SpriteOptions();
 
-        [JsonProperty( "Npc" )] public NpcOptions NpcOpts = new NpcOptions();
+        [JsonProperty("Npc")] public NpcOptions NpcOpts = new NpcOptions();
 
         public SmtpSettings SmtpSettings = new SmtpSettings();
 
@@ -192,10 +192,10 @@ namespace Intersect
 
         public static bool Loaded => Instance != null;
 
-        [JsonProperty( "GameName", Order = -5 )]
+        [JsonProperty("GameName", Order = -5)]
         public string GameName { get; set; } = DEFAULT_GAME_NAME;
 
-        [JsonProperty( "ServerPort", Order = -4 )]
+        [JsonProperty("ServerPort", Order = -4)]
         public ushort _serverPort { get; set; } = DEFAULT_SERVER_PORT;
 
         /// <summary>
@@ -209,7 +209,7 @@ namespace Intersect
 
         public void FixAnimatedSprites()
         {
-            for( var i = 0; i < _animatedSprites.Count; i++ )
+            for (var i = 0; i < _animatedSprites.Count; i++)
             {
                 _animatedSprites[i] = _animatedSprites[i].ToLower();
             }
@@ -218,22 +218,22 @@ namespace Intersect
         public static bool LoadFromDisk()
         {
             Instance = new Options();
-            if( !Directory.Exists( "resources" ) )
+            if (!Directory.Exists("resources"))
             {
-                Directory.CreateDirectory( "resources" );
+                Directory.CreateDirectory("resources");
             }
 
-            if( File.Exists( "resources/config.json" ) )
+            if (File.Exists("resources/config.json"))
             {
-                Instance = JsonConvert.DeserializeObject<Options>( File.ReadAllText( "resources/config.json" ) );
+                Instance = JsonConvert.DeserializeObject<Options>(File.ReadAllText("resources/config.json"));
             }
 
             Instance.SmtpValid = Instance.SmtpSettings.IsValid();
             Instance.SendingToClient = false;
             Instance.FixAnimatedSprites();
-            File.WriteAllText( "resources/config.json", JsonConvert.SerializeObject( Instance, Formatting.Indented ) );
+            File.WriteAllText("resources/config.json", JsonConvert.SerializeObject(Instance, Formatting.Indented));
             Instance.SendingToClient = true;
-            optionsCompressed = JsonConvert.SerializeObject( Instance );
+            optionsCompressed = JsonConvert.SerializeObject(Instance);
 
             return true;
         }
@@ -241,14 +241,14 @@ namespace Intersect
         public static void SaveToDisk()
         {
             Instance.SendingToClient = false;
-            File.WriteAllText( "resources/config.json", JsonConvert.SerializeObject( Instance, Formatting.Indented ) );
+            File.WriteAllText("resources/config.json", JsonConvert.SerializeObject(Instance, Formatting.Indented));
             Instance.SendingToClient = true;
-            optionsCompressed = JsonConvert.SerializeObject( Instance );
+            optionsCompressed = JsonConvert.SerializeObject(Instance);
         }
 
-        public static void LoadFromServer( string data )
+        public static void LoadFromServer(string data)
         {
-            Instance = JsonConvert.DeserializeObject<Options>( data );
+            Instance = JsonConvert.DeserializeObject<Options>(data);
         }
 
         // ReSharper disable once UnusedMember.Global

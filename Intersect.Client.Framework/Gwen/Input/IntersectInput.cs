@@ -35,15 +35,15 @@ namespace Intersect.Client.Framework.Gwen.Input
 
         private int mMouseY;
 
-        public override void Initialize( Canvas canvas )
+        public override void Initialize(Canvas canvas)
         {
             mCanvas = canvas;
             mInitialized = true;
         }
 
-        public override Key TranslateKeyCode( object sfKey )
+        public override Key TranslateKeyCode(object sfKey)
         {
-            switch( (Keys)sfKey )
+            switch ((Keys)sfKey)
             {
                 case Keys.Back:
                     return Key.Backspace;
@@ -80,27 +80,27 @@ namespace Intersect.Client.Framework.Gwen.Input
             return Key.Invalid;
         }
 
-        public override char TranslateChar( object sfKey )
+        public override char TranslateChar(object sfKey)
         {
             var keyCode = (Keys)sfKey;
-            if( keyCode >= Keys.A && keyCode <= Keys.Z )
+            if (keyCode >= Keys.A && keyCode <= Keys.Z)
             {
-                return (char)( 'A' + ( (int)keyCode - (int)Keys.A ) );
+                return (char)('A' + ((int)keyCode - (int)Keys.A));
             }
 
             return ' ';
         }
 
-        public override bool ProcessMessage( object message )
+        public override bool ProcessMessage(object message)
         {
-            if( !mInitialized || !HandleInput )
+            if (!mInitialized || !HandleInput)
             {
                 return false;
             }
 
             var msg = (GwenInputMessage)message;
             Key key;
-            switch( msg.Type )
+            switch (msg.Type)
             {
                 case InputEvent.MouseMove:
                     var dx = (int)(int)msg.MousePosition.X - mMouseX;
@@ -109,33 +109,33 @@ namespace Intersect.Client.Framework.Gwen.Input
                     mMouseX = (int)(int)msg.MousePosition.X;
                     mMouseY = (int)(int)msg.MousePosition.Y;
 
-                    return mCanvas.Input_MouseMoved( mMouseX, mMouseY, dx, dy );
+                    return mCanvas.Input_MouseMoved(mMouseX, mMouseY, dx, dy);
                 case InputEvent.MouseDown:
-                    return mCanvas.Input_MouseButton( (int)msg.MouseBtn, true );
+                    return mCanvas.Input_MouseButton((int)msg.MouseBtn, true);
                 case InputEvent.MouseUp:
-                    return mCanvas.Input_MouseButton( (int)msg.MouseBtn, false );
+                    return mCanvas.Input_MouseButton((int)msg.MouseBtn, false);
                 case InputEvent.TextEntered:
-                    return mCanvas.Input_Character( (char)msg.Unicode[0] );
+                    return mCanvas.Input_Character((char)msg.Unicode[0]);
                 case InputEvent.KeyDown:
-                    var ch = TranslateChar( msg.Key );
-                    if( (int)msg.MouseBtn > -1 && InputHandler.DoSpecialKeys( mCanvas, ch ) )
+                    var ch = TranslateChar(msg.Key);
+                    if ((int)msg.MouseBtn > -1 && InputHandler.DoSpecialKeys(mCanvas, ch))
                     {
                         return false;
                     }
 
-                    key = TranslateKeyCode( msg.Key );
-                    if( key == Key.Invalid || key == Key.Space )
+                    key = TranslateKeyCode(msg.Key);
+                    if (key == Key.Invalid || key == Key.Space)
                     {
-                        return InputHandler.HandleAccelerator( mCanvas, ch );
+                        return InputHandler.HandleAccelerator(mCanvas, ch);
                     }
 
-                    return mCanvas.Input_Key( key, true ); //TODO FIX THIS LAST PARAMETER
+                    return mCanvas.Input_Key(key, true); //TODO FIX THIS LAST PARAMETER
                 case InputEvent.KeyUp:
-                    key = TranslateKeyCode( msg.Key );
+                    key = TranslateKeyCode(msg.Key);
 
-                    return mCanvas.Input_Key( key, false ); //TODO FIX THIS LAST PARAMETER
+                    return mCanvas.Input_Key(key, false); //TODO FIX THIS LAST PARAMETER
                 case InputEvent.MouseScroll:
-                    return mCanvas.Input_MouseScroll( (int)msg.MousePosition.X, (int)msg.MousePosition.Y );
+                    return mCanvas.Input_MouseScroll((int)msg.MousePosition.X, (int)msg.MousePosition.Y);
                 default:
                     throw new ArgumentOutOfRangeException();
             }

@@ -16,18 +16,18 @@ namespace Intersect.Plugins
         /// Invoked during application bootstrapping before startup.
         /// </summary>
         /// <param name="context">the current plugin context</param>
-        void OnBootstrap( [ValidatedNotNull] IPluginBootstrapContext context );
+        void OnBootstrap([ValidatedNotNull] IPluginBootstrapContext context);
 
         /// <summary>
         /// Invoked during application startup after basic initialization.
         /// </summary>
         /// <param name="context">the current plugin context</param>
-        void OnStart( [ValidatedNotNull] IPluginContext context );
+        void OnStart([ValidatedNotNull] IPluginContext context);
 
         /// <summary>
         /// Invoked during application shutdown.
         /// </summary>
         /// <param name="context">the current plugin context</param>
-        void OnStop( [ValidatedNotNull] IPluginContext context );
+        void OnStop([ValidatedNotNull] IPluginContext context);
     }
 }

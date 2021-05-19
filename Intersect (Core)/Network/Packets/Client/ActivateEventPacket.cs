@@ -12,12 +12,12 @@ namespace Intersect.Network.Packets.Client
 
         }
 
-        public ActivateEventPacket( Guid eventId )
+        public ActivateEventPacket(Guid eventId)
         {
             EventId = eventId;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid EventId { get; set; }
 
     }

@@ -26,7 +26,7 @@ namespace Intersect.ErrorHandling
 
         public string Type { get; }
 
-        public ExceptionInfo( Exception exception )
+        public ExceptionInfo(Exception exception)
         {
             DataKeys = exception.Data.Count;
             MessageLength = exception.Message?.Length ?? -1;
@@ -38,34 +38,34 @@ namespace Intersect.ErrorHandling
             Type = exception.GetType().FullName;
         }
 
-        public static implicit operator JObject( ExceptionInfo exceptionInfo )
+        public static implicit operator JObject(ExceptionInfo exceptionInfo)
         {
             return new JObject
             {
-                [nameof( DataKeys )] = exceptionInfo.DataKeys,
-                [nameof( MessageLength )] = exceptionInfo.MessageLength,
-                [nameof( StackTraceLength )] = exceptionInfo.StackTraceLength,
-                [nameof( InnerException )] = exceptionInfo.InnerException,
-                [nameof( Source )] = exceptionInfo.Source,
-                [nameof( TargetSite )] = exceptionInfo.TargetSite,
-                [nameof( TargetSiteDeclaringType )] = exceptionInfo.TargetSiteDeclaringType,
-                [nameof( Type )] = exceptionInfo.Type
+                [nameof(DataKeys)] = exceptionInfo.DataKeys,
+                [nameof(MessageLength)] = exceptionInfo.MessageLength,
+                [nameof(StackTraceLength)] = exceptionInfo.StackTraceLength,
+                [nameof(InnerException)] = exceptionInfo.InnerException,
+                [nameof(Source)] = exceptionInfo.Source,
+                [nameof(TargetSite)] = exceptionInfo.TargetSite,
+                [nameof(TargetSiteDeclaringType)] = exceptionInfo.TargetSiteDeclaringType,
+                [nameof(Type)] = exceptionInfo.Type
             };
         }
 
-        public static implicit operator string( ExceptionInfo exceptionInfo )
+        public static implicit operator string(ExceptionInfo exceptionInfo)
         {
             return exceptionInfo.ToString();
         }
 
         public override string ToString()
         {
-            return ( (JObject)this ).ToString( Formatting.None ) ?? base.ToString();
+            return ((JObject)this).ToString(Formatting.None) ?? base.ToString();
         }
 
-        public string ToString( Formatting formatting )
+        public string ToString(Formatting formatting)
         {
-            return ( (JObject)this ).ToString( formatting );
+            return ((JObject)this).ToString(formatting);
         }
 
     }

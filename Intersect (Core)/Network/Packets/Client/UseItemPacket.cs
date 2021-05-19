@@ -11,16 +11,16 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public UseItemPacket( int slot, Guid targetId )
+        public UseItemPacket(int slot, Guid targetId)
         {
             Slot = slot;
             TargetId = targetId;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public int Slot { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public Guid TargetId { get; set; }
 
     }

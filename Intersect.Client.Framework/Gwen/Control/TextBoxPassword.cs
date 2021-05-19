@@ -20,7 +20,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="TextBoxPassword" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public TextBoxPassword( Base parent, string name = "" ) : base( parent, name )
+        public TextBoxPassword(Base parent, string name = "") : base(parent, name)
         {
             mMaskCharacter = '*';
         }
@@ -39,7 +39,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         protected override void OnTextChanged()
         {
-            mMask = new String( MaskCharacter, Text.Length );
+            mMask = new String(MaskCharacter, Text.Length);
             TextOverride = mMask;
             base.OnTextChanged();
 

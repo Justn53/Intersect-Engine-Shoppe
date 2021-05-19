@@ -41,10 +41,10 @@ namespace Intersect.Plugins.Contexts
         /// Instantiates a <see cref="PluginContext{TPluginContext, TLifecycleHelper}"/>.
         /// </summary>
         /// <param name="plugin">the <see cref="Plugin"/> this context will be used for</param>
-        protected PluginContext( Plugin plugin )
+        protected PluginContext(Plugin plugin)
         {
             Plugin = plugin;
-            EmbeddedResources = new EmbeddedResourceHelper( Assembly );
+            EmbeddedResources = new EmbeddedResourceHelper(Assembly);
         }
 
         /// <inheritdoc />

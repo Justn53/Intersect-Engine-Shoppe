@@ -15,7 +15,7 @@ namespace Intersect.GameObjects
         [NotMapped] public DbList<CraftBase> Crafts = new DbList<CraftBase>();
 
         [JsonConstructor]
-        public CraftingTableBase( Guid id ) : base( id )
+        public CraftingTableBase(Guid id) : base(id)
         {
             Name = "New Table";
         }
@@ -27,11 +27,11 @@ namespace Intersect.GameObjects
         }
 
         [JsonIgnore]
-        [Column( "Crafts" )]
+        [Column("Crafts")]
         public string CraftsJson
         {
-            get => JsonConvert.SerializeObject( Crafts, Formatting.None );
-            protected set => Crafts = JsonConvert.DeserializeObject<DbList<CraftBase>>( value );
+            get => JsonConvert.SerializeObject(Crafts, Formatting.None);
+            protected set => Crafts = JsonConvert.DeserializeObject<DbList<CraftBase>>(value);
         }
 
         /// <inheritdoc />

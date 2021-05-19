@@ -12,15 +12,15 @@ namespace Intersect.Admin.Actions
 
         }
 
-        public UnmuteAction( string name )
+        public UnmuteAction(string name)
         {
             Name = name;
         }
 
-        [Key( 1 )]
+        [Key(1)]
         public override AdminActions Action { get; } = AdminActions.UnMute;
 
-        [Key( 2 )]
+        [Key(2)]
         public string Name { get; set; }
 
     }

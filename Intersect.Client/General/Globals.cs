@@ -65,7 +65,7 @@ namespace Intersect.Client.General
         internal static void OnLifecycleChangeState()
         {
             ClientLifecycleHelpers.ForEach(
-                clientLifecycleHelper => clientLifecycleHelper?.OnLifecycleChangeState( GameState )
+                clientLifecycleHelper => clientLifecycleHelper?.OnLifecycleChangeState(GameState)
             );
         }
 
@@ -97,7 +97,7 @@ namespace Intersect.Client.General
 
         public static bool InTrade = false;
 
-        public static bool CanCloseInventory => !( InBag || InBank || InCraft || InShop || InTrade );
+        public static bool CanCloseInventory => !(InBag || InBank || InCraft || InShop || InTrade);
 
         public static GameInput InputManager;
 
@@ -153,19 +153,19 @@ namespace Intersect.Client.General
         //Scene management
         public static bool WaitingOnServer = false;
 
-        public static Entity GetEntity( Guid id, EntityTypes type )
+        public static Entity GetEntity(Guid id, EntityTypes type)
         {
-            if( Entities.ContainsKey( id ) )
+            if (Entities.ContainsKey(id))
             {
-                if( Entities[id].GetEntityType() == type )
+                if (Entities[id].GetEntityType() == type)
                 {
-                    EntitiesToDispose.Remove( Entities[id].Id );
+                    EntitiesToDispose.Remove(Entities[id].Id);
 
                     return Entities[id];
                 }
 
                 Entities[id].Dispose();
-                Entities.Remove( id );
+                Entities.Remove(id);
             }
 
             return null;

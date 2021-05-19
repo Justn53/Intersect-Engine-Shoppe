@@ -7,11 +7,11 @@ namespace Intersect.Server.Core.Commands
     internal sealed class ExitCommand : ServerCommand
     {
 
-        public ExitCommand() : base( Strings.Commands.Exit )
+        public ExitCommand() : base(Strings.Commands.Exit)
         {
         }
 
-        protected override void HandleValue( ServerContext context, ParserResult result )
+        protected override void HandleValue(ServerContext context, ParserResult result)
         {
             context.RequestShutdown();
         }

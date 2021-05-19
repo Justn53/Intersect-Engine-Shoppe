@@ -17,11 +17,11 @@
         ///     Initializes a new instance of the <see cref="ProgressBar" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ProgressBar( Base parent ) : base( parent )
+        public ProgressBar(Base parent) : base(parent)
         {
             AutoSizeToContents = false;
 
-            SetSize( 128, 32 );
+            SetSize(128, 32);
             TextPadding = Padding.Three;
             IsHorizontal = true;
 
@@ -47,20 +47,20 @@
             get => mProgress;
             set
             {
-                if( value < 0 )
+                if (value < 0)
                 {
                     value = 0;
                 }
 
-                if( value > 1 )
+                if (value > 1)
                 {
                     value = 1;
                 }
 
                 mProgress = value;
-                if( mAutoLabel )
+                if (mAutoLabel)
                 {
-                    var displayVal = (int)( mProgress * 100 );
+                    var displayVal = (int)(mProgress * 100);
                     Text = displayVal.ToString() + "%";
                 }
             }
@@ -79,9 +79,9 @@
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawProgressBar( this, mHorizontal, mProgress );
+            skin.DrawProgressBar(this, mHorizontal, mProgress);
         }
 
     }

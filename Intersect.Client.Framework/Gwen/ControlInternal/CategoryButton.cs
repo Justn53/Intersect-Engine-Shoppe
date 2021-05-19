@@ -15,27 +15,27 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Initializes a new instance of the <see cref="CategoryButton" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public CategoryButton( Base parent ) : base( parent )
+        public CategoryButton(Base parent) : base(parent)
         {
             Alignment = Pos.Left | Pos.CenterV;
             mAlt = false;
             IsToggle = true;
-            TextPadding = new Padding( 3, 0, 3, 0 );
+            TextPadding = new Padding(3, 0, 3, 0);
         }
 
         /// <summary>
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            if( mAlt )
+            if (mAlt)
             {
-                if( IsDepressed || ToggleState )
+                if (IsDepressed || ToggleState)
                 {
                     Skin.Renderer.DrawColor = skin.Colors.Category.LineAlt.ButtonSelected;
                 }
-                else if( IsHovered )
+                else if (IsHovered)
                 {
                     Skin.Renderer.DrawColor = skin.Colors.Category.LineAlt.ButtonHover;
                 }
@@ -46,11 +46,11 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
             }
             else
             {
-                if( IsDepressed || ToggleState )
+                if (IsDepressed || ToggleState)
                 {
                     Skin.Renderer.DrawColor = skin.Colors.Category.Line.ButtonSelected;
                 }
-                else if( IsHovered )
+                else if (IsHovered)
                 {
                     Skin.Renderer.DrawColor = skin.Colors.Category.Line.ButtonHover;
                 }
@@ -60,7 +60,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
                 }
             }
 
-            skin.Renderer.DrawFilledRect( RenderBounds );
+            skin.Renderer.DrawFilledRect(RenderBounds);
         }
 
         /// <summary>
@@ -68,16 +68,16 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         /// </summary>
         public override void UpdateColors()
         {
-            if( mAlt )
+            if (mAlt)
             {
-                if( IsDepressed || ToggleState )
+                if (IsDepressed || ToggleState)
                 {
                     TextColor = Skin.Colors.Category.LineAlt.TextSelected;
 
                     return;
                 }
 
-                if( IsHovered )
+                if (IsHovered)
                 {
                     TextColor = Skin.Colors.Category.LineAlt.TextHover;
 
@@ -89,14 +89,14 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
                 return;
             }
 
-            if( IsDepressed || ToggleState )
+            if (IsDepressed || ToggleState)
             {
                 TextColor = Skin.Colors.Category.Line.TextSelected;
 
                 return;
             }
 
-            if( IsHovered )
+            if (IsHovered)
             {
                 TextColor = Skin.Colors.Category.Line.TextHover;
 

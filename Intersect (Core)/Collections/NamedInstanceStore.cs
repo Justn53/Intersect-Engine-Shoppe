@@ -12,15 +12,15 @@ namespace Intersect.Collections
 
         private IDictionary<string, TInstance> mInstances;
 
-        public NamedInstanceStore( Func<TInstance> factory )
+        public NamedInstanceStore(Func<TInstance> factory)
         {
             mFactory = factory;
             mInstances = new ConcurrentDictionary<string, TInstance>();
         }
 
-        public bool TryGetValue( string name, out TInstance instance )
+        public bool TryGetValue(string name, out TInstance instance)
         {
-            if( !mInstances.TryGetValue( name, out instance ) )
+            if (!mInstances.TryGetValue(name, out instance))
             {
                 instance = mFactory();
             }
@@ -28,9 +28,9 @@ namespace Intersect.Collections
             return instance != null;
         }
 
-        public TInstance GetInstance( string name )
+        public TInstance GetInstance(string name)
         {
-            TryGetValue( name, out var instance );
+            TryGetValue(name, out var instance);
 
             return instance;
         }

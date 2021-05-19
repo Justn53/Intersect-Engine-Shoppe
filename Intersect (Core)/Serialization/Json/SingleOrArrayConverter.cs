@@ -12,9 +12,9 @@ namespace Intersect.Serialization.Json
 
         public override bool CanWrite => false;
 
-        public override bool CanConvert( Type objectType )
+        public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof( List<T> );
+            return objectType == typeof(List<T>);
         }
 
         public override object ReadJson(
@@ -24,9 +24,9 @@ namespace Intersect.Serialization.Json
             JsonSerializer serializer
         )
         {
-            var token = JToken.Load( reader );
+            var token = JToken.Load(reader);
 
-            if( token == null )
+            if (token == null)
             {
                 return new List<T>();
             }
@@ -34,7 +34,7 @@ namespace Intersect.Serialization.Json
             return token.Type == JTokenType.Array ? token.ToObject<List<T>>() : new List<T> { token.ToObject<T>() };
         }
 
-        public override void WriteJson( JsonWriter writer, object value, JsonSerializer serializer )
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }

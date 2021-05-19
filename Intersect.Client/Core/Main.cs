@@ -27,30 +27,30 @@ namespace Intersect.Client.Core
 
         private static bool _loadedTilesets;
 
-        internal static void Start( IClientContext context )
+        internal static void Start(IClientContext context)
         {
             //Load Graphics
             Graphics.InitGraphics();
 
             //Load Sounds
             Audio.Init();
-            Audio.PlayMusic( ClientConfiguration.Instance.MenuMusic, 3, 3, true );
+            Audio.PlayMusic(ClientConfiguration.Instance.MenuMusic, 3, 3, true);
 
             //Init Network
-            Networking.Network.InitNetwork( context );
+            Networking.Network.InitNetwork(context);
             Fade.FadeIn();
 
             //Make Json.Net Familiar with Our Object Types
             var id = Guid.NewGuid();
-            foreach( var val in Enum.GetValues( typeof( GameObjectType ) ) )
+            foreach (var val in Enum.GetValues(typeof(GameObjectType)))
             {
-                var type = ( (GameObjectType)val );
-                if( type != GameObjectType.Event && type != GameObjectType.Time )
+                var type = ((GameObjectType)val);
+                if (type != GameObjectType.Event && type != GameObjectType.Time)
                 {
                     var lookup = type.GetLookup();
-                    var item = lookup.AddNew( type.GetObjectType(), id );
-                    item.Load( item.JsonData );
-                    lookup.Delete( item );
+                    var item = lookup.AddNew(type.GetObjectType(), id);
+                    item.Load(item.JsonData);
+                    lookup.Delete(item);
                 }
             }
         }
@@ -66,14 +66,14 @@ namespace Intersect.Client.Core
 
         public static void Update()
         {
-            lock( Globals.GameLock )
+            lock (Globals.GameLock)
             {
                 Networking.Network.Update();
                 Globals.System.Update();
                 Fade.Update();
-                Interface.Interface.ToggleInput( Globals.GameState != GameStates.Intro );
+                Interface.Interface.ToggleInput(Globals.GameState != GameStates.Intro);
 
-                switch( Globals.GameState )
+                switch (Globals.GameState)
                 {
                     case GameStates.Intro:
                         ProcessIntro();
@@ -100,7 +100,7 @@ namespace Intersect.Client.Core
 
                     default:
                         throw new ArgumentOutOfRangeException(
-                            nameof( Globals.GameState ), $"Value {Globals.GameState} out of range."
+                            nameof(Globals.GameState), $"Value {Globals.GameState} out of range."
                         );
                 }
 
@@ -111,19 +111,19 @@ namespace Intersect.Client.Core
 
         private static void ProcessIntro()
         {
-            if( ClientConfiguration.Instance.IntroImages.Count > 0 )
+            if (ClientConfiguration.Instance.IntroImages.Count > 0)
             {
                 GameTexture imageTex = Globals.ContentManager.GetTexture(
                     GameContentManager.TextureType.Image, ClientConfiguration.Instance.IntroImages[Globals.IntroIndex]
                 );
 
-                if( imageTex != null )
+                if (imageTex != null)
                 {
-                    if( Globals.IntroStartTime == -1 )
+                    if (Globals.IntroStartTime == -1)
                     {
-                        if( Fade.DoneFading() )
+                        if (Fade.DoneFading())
                         {
-                            if( Globals.IntroComing )
+                            if (Globals.IntroComing)
                             {
                                 Globals.IntroStartTime = Globals.System.GetTimeMs();
                             }
@@ -137,7 +137,7 @@ namespace Intersect.Client.Core
                     }
                     else
                     {
-                        if( Globals.System.GetTimeMs() > Globals.IntroStartTime + Globals.IntroDelay )
+                        if (Globals.System.GetTimeMs() > Globals.IntroStartTime + Globals.IntroDelay)
                         {
                             //If we have shown an image long enough, fade to black -- keep track that the image is going
                             Fade.FadeOut();
@@ -151,7 +151,7 @@ namespace Intersect.Client.Core
                     Globals.IntroIndex++;
                 }
 
-                if( Globals.IntroIndex >= ClientConfiguration.Instance.IntroImages.Count )
+                if (Globals.IntroIndex >= ClientConfiguration.Instance.IntroImages.Count)
                 {
                     Globals.GameState = GameStates.Menu;
                 }
@@ -164,7 +164,7 @@ namespace Intersect.Client.Core
 
         private static void ProcessMenu()
         {
-            if( !Globals.JoiningGame )
+            if (!Globals.JoiningGame)
                 return;
 
             //if (GameGraphics.FadeAmt != 255f) return;
@@ -175,27 +175,27 @@ namespace Intersect.Client.Core
 
         private static void ProcessLoading()
         {
-            if( Globals.Me == null || Globals.Me.MapInstance == null )
+            if (Globals.Me == null || Globals.Me.MapInstance == null)
                 return;
 
-            if( !_loadedTilesets && Globals.HasGameData )
+            if (!_loadedTilesets && Globals.HasGameData)
             {
-                Globals.ContentManager.LoadTilesets( TilesetBase.GetNameList() );
+                Globals.ContentManager.LoadTilesets(TilesetBase.GetNameList());
                 _loadedTilesets = true;
             }
 
-            Audio.PlayMusic( MapInstance.Get( Globals.Me.CurrentMap ).Music, 3, 3, true );
+            Audio.PlayMusic(MapInstance.Get(Globals.Me.CurrentMap).Music, 3, 3, true);
             Globals.GameState = GameStates.InGame;
             Fade.FadeIn();
         }
 
         private static void ProcessGame()
         {
-            if( Globals.ConnectionLost )
+            if (Globals.ConnectionLost)
             {
-                Main.Logout( false );
+                Main.Logout(false);
                 Interface.Interface.MsgboxErrors.Add(
-                    new KeyValuePair<string, string>( "", Strings.Errors.lostconnection )
+                    new KeyValuePair<string, string>("", Strings.Errors.lostconnection)
                 );
 
                 Globals.ConnectionLost = false;
@@ -204,27 +204,27 @@ namespace Intersect.Client.Core
             }
 
             //If we are waiting on maps, lets see if we have them
-            if( Globals.NeedsMaps )
+            if (Globals.NeedsMaps)
             {
                 bool canShowWorld = true;
-                if( MapInstance.Get( Globals.Me.CurrentMap ) != null )
+                if (MapInstance.Get(Globals.Me.CurrentMap) != null)
                 {
-                    var gridX = MapInstance.Get( Globals.Me.CurrentMap ).MapGridX;
-                    var gridY = MapInstance.Get( Globals.Me.CurrentMap ).MapGridY;
-                    for( int x = gridX - 1; x <= gridX + 1; x++ )
+                    var gridX = MapInstance.Get(Globals.Me.CurrentMap).MapGridX;
+                    var gridY = MapInstance.Get(Globals.Me.CurrentMap).MapGridY;
+                    for (int x = gridX - 1; x <= gridX + 1; x++)
                     {
-                        for( int y = gridY - 1; y <= gridY + 1; y++ )
+                        for (int y = gridY - 1; y <= gridY + 1; y++)
                         {
-                            if( x >= 0 &&
+                            if (x >= 0 &&
                                 x < Globals.MapGridWidth &&
                                 y >= 0 &&
                                 y < Globals.MapGridHeight &&
-                                Globals.MapGrid[x, y] != Guid.Empty )
+                                Globals.MapGrid[x, y] != Guid.Empty)
                             {
-                                var map = MapInstance.Get( Globals.MapGrid[x, y] );
-                                if( map != null )
+                                var map = MapInstance.Get(Globals.MapGrid[x, y]);
+                                if (map != null)
                                 {
-                                    if( map.MapLoaded == false )
+                                    if (map.MapLoaded == false)
                                     {
                                         canShowWorld = false;
                                     }
@@ -243,7 +243,7 @@ namespace Intersect.Client.Core
                 }
 
                 canShowWorld = true;
-                if( canShowWorld )
+                if (canShowWorld)
                 {
                     Globals.NeedsMaps = false;
                     //Send ping to server, so it will resync time if needed as we load in
@@ -252,27 +252,27 @@ namespace Intersect.Client.Core
             }
             else
             {
-                if( MapInstance.Get( Globals.Me.CurrentMap ) != null )
+                if (MapInstance.Get(Globals.Me.CurrentMap) != null)
                 {
-                    var gridX = MapInstance.Get( Globals.Me.CurrentMap ).MapGridX;
-                    var gridY = MapInstance.Get( Globals.Me.CurrentMap ).MapGridY;
-                    for( int x = gridX - 1; x <= gridX + 1; x++ )
+                    var gridX = MapInstance.Get(Globals.Me.CurrentMap).MapGridX;
+                    var gridY = MapInstance.Get(Globals.Me.CurrentMap).MapGridY;
+                    for (int x = gridX - 1; x <= gridX + 1; x++)
                     {
-                        for( int y = gridY - 1; y <= gridY + 1; y++ )
+                        for (int y = gridY - 1; y <= gridY + 1; y++)
                         {
-                            if( x >= 0 &&
+                            if (x >= 0 &&
                                 x < Globals.MapGridWidth &&
                                 y >= 0 &&
                                 y < Globals.MapGridHeight &&
-                                Globals.MapGrid[x, y] != Guid.Empty )
+                                Globals.MapGrid[x, y] != Guid.Empty)
                             {
-                                var map = MapInstance.Get( Globals.MapGrid[x, y] );
-                                if( map == null &&
-                                    ( !MapInstance.MapRequests.ContainsKey( Globals.MapGrid[x, y] ) ||
-                                     MapInstance.MapRequests[Globals.MapGrid[x, y]] < Globals.System.GetTimeMs() ) )
+                                var map = MapInstance.Get(Globals.MapGrid[x, y]);
+                                if (map == null &&
+                                    (!MapInstance.MapRequests.ContainsKey(Globals.MapGrid[x, y]) ||
+                                     MapInstance.MapRequests[Globals.MapGrid[x, y]] < Globals.System.GetTimeMs()))
                                 {
                                     //Send for the map
-                                    PacketSender.SendNeedMap( Globals.MapGrid[x, y] );
+                                    PacketSender.SendNeedMap(Globals.MapGrid[x, y]);
                                 }
                             }
                         }
@@ -280,26 +280,26 @@ namespace Intersect.Client.Core
                 }
             }
 
-            if( !Globals.NeedsMaps )
+            if (!Globals.NeedsMaps)
             {
                 //Update All Entities
-                foreach( var en in Globals.Entities )
+                foreach (var en in Globals.Entities)
                 {
-                    if( en.Value == null )
+                    if (en.Value == null)
                         continue;
 
                     en.Value.Update();
                 }
 
-                for( int i = 0; i < Globals.EntitiesToDispose.Count; i++ )
+                for (int i = 0; i < Globals.EntitiesToDispose.Count; i++)
                 {
-                    if( Globals.Entities.ContainsKey( Globals.EntitiesToDispose[i] ) )
+                    if (Globals.Entities.ContainsKey(Globals.EntitiesToDispose[i]))
                     {
-                        if( Globals.EntitiesToDispose[i] == Globals.Me.Id )
+                        if (Globals.EntitiesToDispose[i] == Globals.Me.Id)
                             continue;
 
                         Globals.Entities[Globals.EntitiesToDispose[i]].Dispose();
-                        Globals.Entities.Remove( Globals.EntitiesToDispose[i] );
+                        Globals.Entities.Remove(Globals.EntitiesToDispose[i]);
                     }
                 }
 
@@ -307,20 +307,20 @@ namespace Intersect.Client.Core
 
                 //Update Maps
                 var maps = MapInstance.Lookup.Values.ToArray();
-                foreach( MapInstance map in maps )
+                foreach (MapInstance map in maps)
                 {
-                    if( map == null )
+                    if (map == null)
                         continue;
 
-                    map.Update( map.InView() );
+                    map.Update(map.InView());
                 }
             }
 
             //Update Game Animations
-            if( _animTimer < Globals.System.GetTimeMs() )
+            if (_animTimer < Globals.System.GetTimeMs())
             {
                 Globals.AnimFrame++;
-                if( Globals.AnimFrame == 3 )
+                if (Globals.AnimFrame == 3)
                 {
                     Globals.AnimFrame = 0;
                 }
@@ -330,18 +330,18 @@ namespace Intersect.Client.Core
 
             //Remove Event Holds If Invalid
             var removeHolds = new List<Guid>();
-            foreach( var hold in Globals.EventHolds )
+            foreach (var hold in Globals.EventHolds)
             {
                 //If hold.value is empty its a common event, ignore. Otherwise make sure we have the map else the hold doesnt matter
-                if( hold.Value != Guid.Empty && MapInstance.Get( hold.Value ) == null )
+                if (hold.Value != Guid.Empty && MapInstance.Get(hold.Value) == null)
                 {
-                    removeHolds.Add( hold.Key );
+                    removeHolds.Add(hold.Key);
                 }
             }
 
-            foreach( var hold in removeHolds )
+            foreach (var hold in removeHolds)
             {
-                Globals.EventHolds.Remove( hold );
+                Globals.EventHolds.Remove(hold);
             }
 
             Graphics.UpdatePlayerLight();
@@ -351,14 +351,14 @@ namespace Intersect.Client.Core
         public static void JoinGame()
         {
             Globals.LoggedIn = true;
-            Audio.StopMusic( 3f );
+            Audio.StopMusic(3f);
         }
 
-        public static void Logout( bool characterSelect )
+        public static void Logout(bool characterSelect)
         {
-            Audio.PlayMusic( ClientConfiguration.Instance.MenuMusic, 3, 3, true );
+            Audio.PlayMusic(ClientConfiguration.Instance.MenuMusic, 3, 3, true);
             Fade.FadeOut();
-            PacketSender.SendLogout( characterSelect );
+            PacketSender.SendLogout(characterSelect);
             Globals.LoggedIn = false;
             Globals.WaitingOnServer = false;
             Globals.GameState = GameStates.Menu;
@@ -370,13 +370,13 @@ namespace Intersect.Client.Core
             //Dump Game Objects
             Globals.Me = null;
             Globals.HasGameData = false;
-            foreach( var map in MapInstance.Lookup )
+            foreach (var map in MapInstance.Lookup)
             {
                 var mp = (MapInstance)map.Value;
-                mp.Dispose( false, true );
+                mp.Dispose(false, true);
             }
 
-            foreach( var en in Globals.Entities.ToArray() )
+            foreach (var en in Globals.Entities.ToArray())
             {
                 en.Value.Dispose();
             }

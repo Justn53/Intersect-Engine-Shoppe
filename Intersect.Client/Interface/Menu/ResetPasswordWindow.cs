@@ -53,59 +53,59 @@ namespace Intersect.Client.Interface.Menu
         private Label mWindowHeader;
 
         //Init
-        public ResetPasswordWindow( Canvas parent, MainMenu mainMenu, ImagePanel parentPanel )
+        public ResetPasswordWindow(Canvas parent, MainMenu mainMenu, ImagePanel parentPanel)
         {
             //Assign References
             mMainMenu = mainMenu;
 
             //Main Menu Window
-            mResetWindow = new ImagePanel( parent, "ResetPasswordWindow" );
+            mResetWindow = new ImagePanel(parent, "ResetPasswordWindow");
             mResetWindow.IsHidden = true;
 
             //Menu Header
-            mWindowHeader = new Label( mResetWindow, "Header" );
-            mWindowHeader.SetText( Strings.ResetPass.title );
+            mWindowHeader = new Label(mResetWindow, "Header");
+            mWindowHeader.SetText(Strings.ResetPass.title);
 
             //Code Fields/Labels
-            mCodeInputBackground = new ImagePanel( mResetWindow, "CodePanel" );
+            mCodeInputBackground = new ImagePanel(mResetWindow, "CodePanel");
 
-            mCodeInputLabel = new Label( mCodeInputBackground, "CodeLabel" );
-            mCodeInputLabel.SetText( Strings.ResetPass.code );
+            mCodeInputLabel = new Label(mCodeInputBackground, "CodeLabel");
+            mCodeInputLabel.SetText(Strings.ResetPass.code);
 
-            mCodeInputTextbox = new TextBox( mCodeInputBackground, "CodeField" );
+            mCodeInputTextbox = new TextBox(mCodeInputBackground, "CodeField");
             mCodeInputTextbox.SubmitPressed += Textbox_SubmitPressed;
             mCodeInputTextbox.Clicked += Textbox_Clicked;
 
             //Password Fields/Labels
             //Register Password Background
-            mPasswordBackground = new ImagePanel( mResetWindow, "Password1Panel" );
+            mPasswordBackground = new ImagePanel(mResetWindow, "Password1Panel");
 
-            mPasswordLabel = new Label( mPasswordBackground, "Password1Label" );
-            mPasswordLabel.SetText( Strings.ResetPass.password );
+            mPasswordLabel = new Label(mPasswordBackground, "Password1Label");
+            mPasswordLabel.SetText(Strings.ResetPass.password);
 
-            mPasswordTextbox = new TextBoxPassword( mPasswordBackground, "Password1Field" );
+            mPasswordTextbox = new TextBoxPassword(mPasswordBackground, "Password1Field");
             mPasswordTextbox.SubmitPressed += PasswordTextbox_SubmitPressed;
 
             //Confirm Password Fields/Labels
-            mPasswordBackground2 = new ImagePanel( mResetWindow, "Password2Panel" );
+            mPasswordBackground2 = new ImagePanel(mResetWindow, "Password2Panel");
 
-            mPasswordLabel2 = new Label( mPasswordBackground2, "Password2Label" );
-            mPasswordLabel2.SetText( Strings.ResetPass.password2 );
+            mPasswordLabel2 = new Label(mPasswordBackground2, "Password2Label");
+            mPasswordLabel2.SetText(Strings.ResetPass.password2);
 
-            mPasswordTextbox2 = new TextBoxPassword( mPasswordBackground2, "Password2Field" );
+            mPasswordTextbox2 = new TextBoxPassword(mPasswordBackground2, "Password2Field");
             mPasswordTextbox2.SubmitPressed += PasswordTextbox2_SubmitPressed;
 
             //Login - Send Login Button
-            mSubmitBtn = new Button( mResetWindow, "SubmitButton" );
-            mSubmitBtn.SetText( Strings.ResetPass.submit );
+            mSubmitBtn = new Button(mResetWindow, "SubmitButton");
+            mSubmitBtn.SetText(Strings.ResetPass.submit);
             mSubmitBtn.Clicked += SubmitBtn_Clicked;
 
             //Login - Back Button
-            mBackBtn = new Button( mResetWindow, "BackButton" );
-            mBackBtn.SetText( Strings.ResetPass.back );
+            mBackBtn = new Button(mResetWindow, "BackButton");
+            mBackBtn.SetText(Strings.ResetPass.back);
             mBackBtn.Clicked += BackBtn_Clicked;
 
-            mResetWindow.LoadJsonUi( GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString() );
+            mResetWindow.LoadJsonUi(GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString());
         }
 
         public bool IsHidden => mResetWindow.IsHidden;
@@ -113,7 +113,7 @@ namespace Intersect.Client.Interface.Menu
         //The username or email of the acc we are resetting the pass for
         public string Target { set; get; } = "";
 
-        private void Textbox_Clicked( Base sender, ClickedEventArgs arguments )
+        private void Textbox_Clicked(Base sender, ClickedEventArgs arguments)
         {
             Globals.InputManager.OpenKeyboard(
                 GameInput.KeyboardType.Normal, mCodeInputTextbox.Text, false, false, false
@@ -123,11 +123,11 @@ namespace Intersect.Client.Interface.Menu
         //Methods
         public void Update()
         {
-            if( !Networking.Network.Connected )
+            if (!Networking.Network.Connected)
             {
                 Hide();
                 mMainMenu.Show();
-                Interface.MsgboxErrors.Add( new KeyValuePair<string, string>( "", Strings.Errors.lostconnection ) );
+                Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", Strings.Errors.lostconnection));
             }
         }
 
@@ -144,73 +144,73 @@ namespace Intersect.Client.Interface.Menu
             mPasswordTextbox2.Text = "";
         }
 
-        void BackBtn_Clicked( Base sender, ClickedEventArgs arguments )
+        void BackBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
             Hide();
             Interface.MenuUi.MainMenu.NotifyOpenLogin();
         }
 
-        void Textbox_SubmitPressed( Base sender, EventArgs arguments )
+        void Textbox_SubmitPressed(Base sender, EventArgs arguments)
         {
             TrySendCode();
         }
 
-        void SubmitBtn_Clicked( Base sender, ClickedEventArgs arguments )
+        void SubmitBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
             TrySendCode();
         }
 
-        void PasswordTextbox_SubmitPressed( Base sender, EventArgs arguments )
+        void PasswordTextbox_SubmitPressed(Base sender, EventArgs arguments)
         {
             TrySendCode();
         }
 
-        void PasswordTextbox2_SubmitPressed( Base sender, EventArgs arguments )
+        void PasswordTextbox2_SubmitPressed(Base sender, EventArgs arguments)
         {
             TrySendCode();
         }
 
         public void TrySendCode()
         {
-            if( Globals.WaitingOnServer )
+            if (Globals.WaitingOnServer)
             {
                 return;
             }
 
-            if( !Networking.Network.Connected )
+            if (!Networking.Network.Connected)
             {
-                Interface.MsgboxErrors.Add( new KeyValuePair<string, string>( "", Strings.Errors.notconnected ) );
+                Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", Strings.Errors.notconnected));
 
                 return;
             }
 
-            if( string.IsNullOrEmpty( mCodeInputTextbox?.Text ) )
+            if (string.IsNullOrEmpty(mCodeInputTextbox?.Text))
             {
-                Interface.MsgboxErrors.Add( new KeyValuePair<string, string>( "", Strings.ResetPass.inputcode ) );
+                Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", Strings.ResetPass.inputcode));
 
                 return;
             }
 
-            if( mPasswordTextbox.Text != mPasswordTextbox2.Text )
+            if (mPasswordTextbox.Text != mPasswordTextbox2.Text)
             {
-                Interface.MsgboxErrors.Add( new KeyValuePair<string, string>( "", Strings.Registration.passwordmatch ) );
+                Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", Strings.Registration.passwordmatch));
 
                 return;
             }
 
-            if( !FieldChecking.IsValidPassword( mPasswordTextbox.Text, Strings.Regex.password ) )
+            if (!FieldChecking.IsValidPassword(mPasswordTextbox.Text, Strings.Regex.password))
             {
-                Interface.MsgboxErrors.Add( new KeyValuePair<string, string>( "", Strings.Errors.passwordinvalid ) );
+                Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", Strings.Errors.passwordinvalid));
 
                 return;
             }
 
-            using( var sha = new SHA256Managed() )
+            using (var sha = new SHA256Managed())
             {
                 PacketSender.SendResetPassword(
                     Target, mCodeInputTextbox?.Text,
-                    BitConverter.ToString( sha.ComputeHash( Encoding.UTF8.GetBytes( mPasswordTextbox.Text.Trim() ) ) )
-                        .Replace( "-", "" )
+                    BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(mPasswordTextbox.Text.Trim())))
+                        .Replace("-", "")
                 );
             }
 

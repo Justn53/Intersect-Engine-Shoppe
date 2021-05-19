@@ -16,10 +16,10 @@ namespace Intersect.Client.Interface.Game
 
         ImagePanel mPnl;
 
-        public Draggable( int x, int y, GameTexture tex )
+        public Draggable(int x, int y, GameTexture tex)
         {
-            mPnl = new ImagePanel( Interface.GameUi.GameCanvas, "Draggable" );
-            mPnl.LoadJsonUi( GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString() );
+            mPnl = new ImagePanel(Interface.GameUi.GameCanvas, "Draggable");
+            mPnl.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
             mPnl.SetPosition(
                 InputHandler.MousePosition.X - mPnl.Width / 2, InputHandler.MousePosition.Y - mPnl.Height / 2
             );
@@ -46,7 +46,7 @@ namespace Intersect.Client.Interface.Game
                 InputHandler.MousePosition.X - mPnl.Width / 2, InputHandler.MousePosition.Y - mPnl.Height / 2
             );
 
-            if( !Globals.InputManager.MouseButtonDown( GameInput.MouseButtons.Left ) )
+            if (!Globals.InputManager.MouseButtonDown(GameInput.MouseButtons.Left))
             {
                 return true;
             }
@@ -56,12 +56,12 @@ namespace Intersect.Client.Interface.Game
 
         public void Dispose()
         {
-            if( Active == this )
+            if (Active == this)
             {
                 Active = null;
             }
 
-            Interface.GameUi.GameCanvas.RemoveChild( mPnl, false );
+            Interface.GameUi.GameCanvas.RemoveChild(mPnl, false);
         }
 
     }

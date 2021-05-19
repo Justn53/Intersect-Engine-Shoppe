@@ -11,9 +11,9 @@ namespace Intersect.GameObjects.Maps
     {
         public abstract MapAttributes Type { get; }
 
-        public static MapAttribute CreateAttribute( MapAttributes type )
+        public static MapAttribute CreateAttribute(MapAttributes type)
         {
-            switch( type )
+            switch (type)
             {
                 case MapAttributes.Walkable:
                     return null;
@@ -44,12 +44,12 @@ namespace Intersect.GameObjects.Maps
 
         public virtual MapAttribute Clone()
         {
-            return CreateAttribute( this.Type );
+            return CreateAttribute(this.Type);
         }
 
         public string Data()
         {
-            return JsonConvert.SerializeObject( this );
+            return JsonConvert.SerializeObject(this);
         }
 
     }

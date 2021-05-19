@@ -20,7 +20,7 @@ namespace Intersect.Building.Properties
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute( "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0" )]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class KeyGenerationTaskStrings
@@ -30,7 +30,7 @@ namespace Intersect.Building.Properties
 
         private static global::System.Globalization.CultureInfo resourceCulture;
 
-        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" )]
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal KeyGenerationTaskStrings()
         {
         }
@@ -38,14 +38,14 @@ namespace Intersect.Building.Properties
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute( global::System.ComponentModel.EditorBrowsableState.Advanced )]
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Resources.ResourceManager ResourceManager
         {
             get
             {
-                if( object.ReferenceEquals( resourceMan, null ) )
+                if (object.ReferenceEquals(resourceMan, null))
                 {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager( "Intersect.Building.Properties.KeyGenerationTaskStrings", typeof( KeyGenerationTaskStrings ).Assembly );
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Intersect.Building.Properties.KeyGenerationTaskStrings", typeof(KeyGenerationTaskStrings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -56,7 +56,7 @@ namespace Intersect.Building.Properties
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute( global::System.ComponentModel.EditorBrowsableState.Advanced )]
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Globalization.CultureInfo Culture
         {
             get
@@ -76,7 +76,7 @@ namespace Intersect.Building.Properties
         {
             get
             {
-                return ResourceManager.GetString( "ErrorCreatingOutputDirectory", resourceCulture );
+                return ResourceManager.GetString("ErrorCreatingOutputDirectory", resourceCulture);
             }
         }
 
@@ -87,7 +87,7 @@ namespace Intersect.Building.Properties
         {
             get
             {
-                return ResourceManager.GetString( "ErrorReadingPrivateKey", resourceCulture );
+                return ResourceManager.GetString("ErrorReadingPrivateKey", resourceCulture);
             }
         }
 
@@ -98,7 +98,7 @@ namespace Intersect.Building.Properties
         {
             get
             {
-                return ResourceManager.GetString( "ErrorWritingPrivateKey", resourceCulture );
+                return ResourceManager.GetString("ErrorWritingPrivateKey", resourceCulture);
             }
         }
 
@@ -109,7 +109,7 @@ namespace Intersect.Building.Properties
         {
             get
             {
-                return ResourceManager.GetString( "ErrorWritingPublicKey", resourceCulture );
+                return ResourceManager.GetString("ErrorWritingPublicKey", resourceCulture);
             }
         }
 
@@ -120,7 +120,7 @@ namespace Intersect.Building.Properties
         {
             get
             {
-                return ResourceManager.GetString( "KeysAlreadyExist", resourceCulture );
+                return ResourceManager.GetString("KeysAlreadyExist", resourceCulture);
             }
         }
 
@@ -131,7 +131,7 @@ namespace Intersect.Building.Properties
         {
             get
             {
-                return ResourceManager.GetString( "KeysGenerated", resourceCulture );
+                return ResourceManager.GetString("KeysGenerated", resourceCulture);
             }
         }
 
@@ -142,7 +142,7 @@ namespace Intersect.Building.Properties
         {
             get
             {
-                return ResourceManager.GetString( "KeySizeInvalid", resourceCulture );
+                return ResourceManager.GetString("KeySizeInvalid", resourceCulture);
             }
         }
 
@@ -153,7 +153,7 @@ namespace Intersect.Building.Properties
         {
             get
             {
-                return ResourceManager.GetString( "OutputDirectoryInvalid", resourceCulture );
+                return ResourceManager.GetString("OutputDirectoryInvalid", resourceCulture);
             }
         }
 
@@ -164,7 +164,7 @@ namespace Intersect.Building.Properties
         {
             get
             {
-                return ResourceManager.GetString( "PrivateKeyInvalid", resourceCulture );
+                return ResourceManager.GetString("PrivateKeyInvalid", resourceCulture);
             }
         }
 
@@ -175,7 +175,7 @@ namespace Intersect.Building.Properties
         {
             get
             {
-                return ResourceManager.GetString( "PublicKeyMissing", resourceCulture );
+                return ResourceManager.GetString("PublicKeyMissing", resourceCulture);
             }
         }
 
@@ -186,7 +186,7 @@ namespace Intersect.Building.Properties
         {
             get
             {
-                return ResourceManager.GetString( "PublicKeyRegenerated", resourceCulture );
+                return ResourceManager.GetString("PublicKeyRegenerated", resourceCulture);
             }
         }
     }

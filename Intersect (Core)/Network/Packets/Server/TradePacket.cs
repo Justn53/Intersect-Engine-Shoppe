@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public TradePacket( string partnerName )
+        public TradePacket(string partnerName)
         {
             TradePartner = partnerName;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public string TradePartner { get; set; }
 
     }

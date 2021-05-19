@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public UnequipItemPacket( int slot )
+        public UnequipItemPacket(int slot)
         {
             Slot = slot;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public int Slot { get; set; }
 
     }

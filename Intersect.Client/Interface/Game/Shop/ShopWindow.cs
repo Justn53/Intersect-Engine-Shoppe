@@ -23,16 +23,16 @@ namespace Intersect.Client.Interface.Game.Shop
         private WindowControl mShopWindow;
 
         //Init
-        public ShopWindow( Canvas gameCanvas )
+        public ShopWindow(Canvas gameCanvas)
         {
-            mShopWindow = new WindowControl( gameCanvas, Globals.GameShop.Name, false, "ShopWindow" );
+            mShopWindow = new WindowControl(gameCanvas, Globals.GameShop.Name, false, "ShopWindow");
             mShopWindow.DisableResizing();
-            Interface.InputBlockingElements.Add( mShopWindow );
+            Interface.InputBlockingElements.Add(mShopWindow);
 
-            mItemContainer = new ScrollControl( mShopWindow, "ItemContainer" );
-            mItemContainer.EnableScroll( false, true );
+            mItemContainer = new ScrollControl(mShopWindow, "ItemContainer");
+            mItemContainer.EnableScroll(false, true);
 
-            mShopWindow.LoadJsonUi( GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString() );
+            mShopWindow.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
 
             InitItemContainer();
         }
@@ -59,13 +59,13 @@ namespace Intersect.Client.Interface.Game.Shop
 
         private void InitItemContainer()
         {
-            for( var i = 0; i < Globals.GameShop.SellingItems.Count; i++ )
+            for (var i = 0; i < Globals.GameShop.SellingItems.Count; i++)
             {
-                Items.Add( new ShopItem( this, i ) );
-                Items[i].Container = new ImagePanel( mItemContainer, "ShopItem" );
+                Items.Add(new ShopItem(this, i));
+                Items[i].Container = new ImagePanel(mItemContainer, "ShopItem");
                 Items[i].Setup();
 
-                Items[i].Container.LoadJsonUi( GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString() );
+                Items[i].Container.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
 
                 Items[i].LoadItem();
 
@@ -74,12 +74,12 @@ namespace Intersect.Client.Interface.Game.Shop
                 Items[i]
                     .Container.SetPosition(
                         i %
-                        ( mItemContainer.Width / ( Items[i].Container.Width + xPadding ) ) *
-                        ( Items[i].Container.Width + xPadding ) +
+                        (mItemContainer.Width / (Items[i].Container.Width + xPadding)) *
+                        (Items[i].Container.Width + xPadding) +
                         xPadding,
                         i /
-                        ( mItemContainer.Width / ( Items[i].Container.Width + xPadding ) ) *
-                        ( Items[i].Container.Height + yPadding ) +
+                        (mItemContainer.Width / (Items[i].Container.Width + xPadding)) *
+                        (Items[i].Container.Height + yPadding) +
                         yPadding
                     );
             }

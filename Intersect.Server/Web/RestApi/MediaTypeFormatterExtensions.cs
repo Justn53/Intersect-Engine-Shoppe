@@ -15,11 +15,11 @@ namespace Intersect.Server.Web.RestApi
         )
         {
             var mediaTypeHeaderValue =
-                mediaTypeFormatter.SupportedMediaTypes?.FirstOrDefault( FindMediaTypeHeaderValue( mimeType ) );
+                mediaTypeFormatter.SupportedMediaTypes?.FirstOrDefault(FindMediaTypeHeaderValue(mimeType));
 
-            if( mediaTypeHeaderValue == null )
+            if (mediaTypeHeaderValue == null)
             {
-                mediaTypeFormatter.SupportedMediaTypes?.Add( new MediaTypeHeaderValue( mimeType ) );
+                mediaTypeFormatter.SupportedMediaTypes?.Add(new MediaTypeHeaderValue(mimeType));
             }
 
             return mediaTypeFormatter;
@@ -31,11 +31,11 @@ namespace Intersect.Server.Web.RestApi
         )
         {
             var mediaTypeHeaderValue =
-                mediaTypeFormatter.SupportedMediaTypes?.FirstOrDefault( FindMediaTypeHeaderValue( mimeType ) );
+                mediaTypeFormatter.SupportedMediaTypes?.FirstOrDefault(FindMediaTypeHeaderValue(mimeType));
 
-            if( mediaTypeHeaderValue != null )
+            if (mediaTypeHeaderValue != null)
             {
-                mediaTypeFormatter.SupportedMediaTypes?.Remove( mediaTypeHeaderValue );
+                mediaTypeFormatter.SupportedMediaTypes?.Remove(mediaTypeHeaderValue);
             }
 
             return mediaTypeFormatter;
@@ -51,7 +51,7 @@ namespace Intersect.Server.Web.RestApi
         )
         {
             mediaTypeFormatter.MediaTypeMappings?.Add(
-                new RequestHeaderMapping( headerName, headerValue, valueComparison, isValueSubstring, mediaType )
+                new RequestHeaderMapping(headerName, headerValue, valueComparison, isValueSubstring, mediaType)
             );
 
             return mediaTypeFormatter;
@@ -66,18 +66,18 @@ namespace Intersect.Server.Web.RestApi
         {
             var requestHeaderMapping =
                 mediaTypeFormatter.MediaTypeMappings?.FirstOrDefault(
-                    FindRequestHeaderMapping( headerName, headerValue, mediaType )
+                    FindRequestHeaderMapping(headerName, headerValue, mediaType)
                 );
 
-            if( requestHeaderMapping != null )
+            if (requestHeaderMapping != null)
             {
-                mediaTypeFormatter.MediaTypeMappings?.Remove( requestHeaderMapping );
+                mediaTypeFormatter.MediaTypeMappings?.Remove(requestHeaderMapping);
             }
 
             return mediaTypeFormatter;
         }
 
-        public static Func<MediaTypeHeaderValue, bool> FindMediaTypeHeaderValue( string mimeType )
+        public static Func<MediaTypeHeaderValue, bool> FindMediaTypeHeaderValue(string mimeType)
         {
             return mediaTypeHeaderValue => string.Equals(
                 mediaTypeHeaderValue?.MediaType, mimeType, StringComparison.OrdinalIgnoreCase
@@ -92,17 +92,17 @@ namespace Intersect.Server.Web.RestApi
         {
             return mediaTypeMapping =>
             {
-                if( !( mediaTypeMapping is RequestHeaderMapping requestHeaderMapping ) )
+                if (!(mediaTypeMapping is RequestHeaderMapping requestHeaderMapping))
                 {
                     return false;
                 }
 
-                if( !string.Equals( requestHeaderMapping?.HeaderName, headerName, StringComparison.OrdinalIgnoreCase ) )
+                if (!string.Equals(requestHeaderMapping?.HeaderName, headerName, StringComparison.OrdinalIgnoreCase))
                 {
                     return false;
                 }
 
-                if( !string.Equals( requestHeaderMapping?.HeaderValue, headerValue, StringComparison.OrdinalIgnoreCase ) )
+                if (!string.Equals(requestHeaderMapping?.HeaderValue, headerValue, StringComparison.OrdinalIgnoreCase))
                 {
                     return false;
                 }

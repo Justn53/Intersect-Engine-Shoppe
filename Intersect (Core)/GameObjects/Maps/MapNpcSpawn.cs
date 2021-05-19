@@ -20,7 +20,7 @@ namespace Intersect.GameObjects.Maps
         {
         }
 
-        public NpcSpawn( NpcSpawn copy )
+        public NpcSpawn(NpcSpawn copy)
         {
             NpcId = copy.NpcId;
             X = copy.X;

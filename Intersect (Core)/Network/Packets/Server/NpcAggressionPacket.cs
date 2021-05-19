@@ -11,16 +11,16 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public NpcAggressionPacket( Guid entityId, int aggression )
+        public NpcAggressionPacket(Guid entityId, int aggression)
         {
             EntityId = entityId;
             Aggression = aggression;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid EntityId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public int Aggression { get; set; }
 
     }

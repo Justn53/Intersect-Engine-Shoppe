@@ -13,7 +13,7 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public EntityAttackPacket( Guid id, EntityTypes type, Guid mapId, int attackTimer )
+        public EntityAttackPacket(Guid id, EntityTypes type, Guid mapId, int attackTimer)
         {
             Id = id;
             Type = type;
@@ -21,16 +21,16 @@ namespace Intersect.Network.Packets.Server
             AttackTimer = attackTimer;
         }
 
-        [Key( 3 )]
+        [Key(3)]
         public Guid Id { get; set; }
 
-        [Key( 4 )]
+        [Key(4)]
         public EntityTypes Type { get; set; }
 
-        [Key( 5 )]
+        [Key(5)]
         public Guid MapId { get; set; }
 
-        [Key( 6 )]
+        [Key(6)]
         public int AttackTimer { get; set; }
 
     }

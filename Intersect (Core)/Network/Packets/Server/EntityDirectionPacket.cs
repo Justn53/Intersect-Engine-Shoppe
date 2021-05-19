@@ -13,7 +13,7 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public EntityDirectionPacket( Guid id, EntityTypes type, Guid mapId, byte direction )
+        public EntityDirectionPacket(Guid id, EntityTypes type, Guid mapId, byte direction)
         {
             Id = id;
             Type = type;
@@ -21,16 +21,16 @@ namespace Intersect.Network.Packets.Server
             Direction = direction;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid Id { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public EntityTypes Type { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public Guid MapId { get; set; }
 
-        [Key( 3 )]
+        [Key(3)]
         public byte Direction { get; set; }
 
     }

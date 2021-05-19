@@ -14,42 +14,42 @@ namespace Intersect.Server.Core.Commands
 
         public ExperimentsCommand() : base(
             Strings.Commands.Experiments, Strings.Commands.Arguments.TargetExperimentalFeature,
-            new VariableArgument<bool>( Strings.Commands.Arguments.EnablementBoolean, positional: true )
+            new VariableArgument<bool>(Strings.Commands.Arguments.EnablementBoolean, positional: true)
         )
         {
         }
 
         private VariableArgument<bool> Enablement => FindArgumentOrThrow<VariableArgument<bool>>();
 
-        protected override IExperimentalFlag FindTarget( ServerContext context, ParserResult result, string targetName )
+        protected override IExperimentalFlag FindTarget(ServerContext context, ParserResult result, string targetName)
         {
-            if( Guid.TryParse( targetName, out var flagId ) && Experiments.Instance.TryGet( flagId, out var flag ) )
+            if (Guid.TryParse(targetName, out var flagId) && Experiments.Instance.TryGet(flagId, out var flag))
             {
                 return flag;
             }
 
-            if( !string.IsNullOrWhiteSpace( targetName ) && Experiments.Instance.TryGet( targetName, out flag ) )
+            if (!string.IsNullOrWhiteSpace(targetName) && Experiments.Instance.TryGet(targetName, out flag))
             {
                 return flag;
             }
 
-            Console.WriteLine( $@"    {Strings.Commands.ExperimentalFlagNotFound.ToString( targetName )}" );
+            Console.WriteLine($@"    {Strings.Commands.ExperimentalFlagNotFound.ToString(targetName)}");
 
-            return default( IExperimentalFlag );
+            return default(IExperimentalFlag);
         }
 
-        protected override void HandleTarget( ServerContext context, ParserResult result, IExperimentalFlag target )
+        protected override void HandleTarget(ServerContext context, ParserResult result, IExperimentalFlag target)
         {
-            if( target == default( IExperimentalFlag ) )
+            if (target == default(IExperimentalFlag))
             {
                 return;
             }
 
-            if( result.TryFind( Enablement, out var enablement, allowImplicit: false ) )
+            if (result.TryFind(Enablement, out var enablement, allowImplicit: false))
             {
-                if( !Experiments.Instance.TrySet( target, enablement ) )
+                if (!Experiments.Instance.TrySet(target, enablement))
                 {
-                    throw new Exception( @"Unknown error occurred." );
+                    throw new Exception(@"Unknown error occurred.");
                 }
             }
             else
@@ -58,9 +58,9 @@ namespace Intersect.Server.Core.Commands
             }
 
             var statusString = enablement ? Strings.General.EnabledLowerCase : Strings.General.DisabledLowerCase;
-            var enabledString = Strings.Commandoutput.ExperimentalFeatureEnablement.ToString( target.Name, statusString );
+            var enabledString = Strings.Commandoutput.ExperimentalFeatureEnablement.ToString(target.Name, statusString);
 
-            Console.WriteLine( $@"    {enabledString}" );
+            Console.WriteLine($@"    {enabledString}");
         }
 
     }

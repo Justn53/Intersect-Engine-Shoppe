@@ -11,7 +11,7 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public InputVariablePacket( Guid eventId, string title, string prompt, Enums.VariableDataTypes type )
+        public InputVariablePacket(Guid eventId, string title, string prompt, Enums.VariableDataTypes type)
         {
             EventId = eventId;
             Title = title;
@@ -19,16 +19,16 @@ namespace Intersect.Network.Packets.Server
             Type = type;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid EventId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public string Title { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public string Prompt { get; set; }
 
-        [Key( 3 )]
+        [Key(3)]
         public Enums.VariableDataTypes Type { get; set; }
 
     }

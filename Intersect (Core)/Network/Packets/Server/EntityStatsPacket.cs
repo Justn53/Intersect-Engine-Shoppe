@@ -13,7 +13,7 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public EntityStatsPacket( Guid id, EntityTypes type, Guid mapId, int[] stats )
+        public EntityStatsPacket(Guid id, EntityTypes type, Guid mapId, int[] stats)
         {
             Id = id;
             Type = type;
@@ -21,16 +21,16 @@ namespace Intersect.Network.Packets.Server
             Stats = stats;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid Id { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public EntityTypes Type { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public Guid MapId { get; set; }
 
-        [Key( 3 )]
+        [Key(3)]
         public int[] Stats { get; set; }
 
     }

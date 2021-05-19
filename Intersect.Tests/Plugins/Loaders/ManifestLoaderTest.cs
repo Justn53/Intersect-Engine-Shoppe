@@ -19,7 +19,7 @@ namespace Intersect.Plugins.Loaders
 {
     internal class MockAssembly : Assembly
     {
-        public override string FullName => nameof( MockAssembly );
+        public override string FullName => nameof(MockAssembly);
 
         public Exception ExceptionGetTypes { get; set; } = null;
 
@@ -36,16 +36,16 @@ namespace Intersect.Plugins.Loaders
 
         public override Type[] GetTypes() => ExceptionGetTypes != null ? throw ExceptionGetTypes : MockTypes;
 
-        public override ManifestResourceInfo GetManifestResourceInfo( string resourceName ) =>
+        public override ManifestResourceInfo GetManifestResourceInfo(string resourceName) =>
             ExceptionGetManifestResourceInfo != null
                 ? throw ExceptionGetManifestResourceInfo
-                : ( MockManifestResourceInfo.ContainsKey( resourceName )
+                : (MockManifestResourceInfo.ContainsKey(resourceName)
                     ? MockManifestResourceInfo[resourceName]
-                    : default );
+                    : default);
 
-        public override Stream GetManifestResourceStream( string name ) => ExceptionGetManifestResourceStream != null
+        public override Stream GetManifestResourceStream(string name) => ExceptionGetManifestResourceStream != null
             ? throw ExceptionGetManifestResourceStream
-            : ( MockManifestResourceStream.ContainsKey( name ) ? MockManifestResourceStream[name] : default );
+            : (MockManifestResourceStream.ContainsKey(name) ? MockManifestResourceStream[name] : default);
     }
 
     internal interface IllegalVirtualManifestInterface
@@ -66,7 +66,7 @@ namespace Intersect.Plugins.Loaders
 
     internal class IllegalVirtualManifestNoSupportedConstructorsClass : IManifestHelper
     {
-        public IllegalVirtualManifestNoSupportedConstructorsClass( string name )
+        public IllegalVirtualManifestNoSupportedConstructorsClass(string name)
         {
             Name = name;
         }
@@ -117,22 +117,22 @@ namespace Intersect.Plugins.Loaders
         [Test]
         public void IsVirtualManifestType()
         {
-            Assert.IsFalse( ManifestLoader.IsVirtualManifestType( typeof( IllegalVirtualManifestAbstractClass ) ) );
-            Assert.IsFalse( ManifestLoader.IsVirtualManifestType( typeof( IllegalVirtualManifestDefinedClass ) ) );
-            Assert.IsFalse( ManifestLoader.IsVirtualManifestType( typeof( IllegalVirtualManifestGenericClass<string> ) ) );
-            Assert.IsFalse( ManifestLoader.IsVirtualManifestType( typeof( IllegalVirtualManifestInterface ) ) );
+            Assert.IsFalse(ManifestLoader.IsVirtualManifestType(typeof(IllegalVirtualManifestAbstractClass)));
+            Assert.IsFalse(ManifestLoader.IsVirtualManifestType(typeof(IllegalVirtualManifestDefinedClass)));
+            Assert.IsFalse(ManifestLoader.IsVirtualManifestType(typeof(IllegalVirtualManifestGenericClass<string>)));
+            Assert.IsFalse(ManifestLoader.IsVirtualManifestType(typeof(IllegalVirtualManifestInterface)));
             Assert.IsFalse(
-                ManifestLoader.IsVirtualManifestType( typeof( IllegalVirtualManifestNoSupportedConstructorsClass ) )
+                ManifestLoader.IsVirtualManifestType(typeof(IllegalVirtualManifestNoSupportedConstructorsClass))
             );
 
-            Assert.IsTrue( ManifestLoader.IsVirtualManifestType( typeof( VirtualManifestValueType ) ) );
-            Assert.IsTrue( ManifestLoader.IsVirtualManifestType( typeof( VirtualTestManifest ) ) );
+            Assert.IsTrue(ManifestLoader.IsVirtualManifestType(typeof(VirtualManifestValueType)));
+            Assert.IsTrue(ManifestLoader.IsVirtualManifestType(typeof(VirtualTestManifest)));
         }
 
         [Test]
         public void FindManifest_LoadsJsonManifest_WellFormed()
         {
-            ManifestLoader.ManifestLoaderDelegates.Add( ManifestLoader.LoadJsonManifestFrom );
+            ManifestLoader.ManifestLoaderDelegates.Add(ManifestLoader.LoadJsonManifestFrom);
             var mockAssembly = new MockAssembly
             {
                 MockManifestResourceInfo = new Dictionary<string, ManifestResourceInfo>
@@ -155,26 +155,26 @@ namespace Intersect.Plugins.Loaders
                 }
             };
 
-            var manifest = ManifestLoader.FindManifest( mockAssembly );
-            Assert.IsTrue( manifest is JsonManifest );
-            Assert.NotNull( manifest );
-            Assert.AreEqual( "Test Manifest", manifest.Name );
-            Assert.AreEqual( "AscensionGameDev.Intersect.Tests", manifest.Key );
-            Assert.AreEqual( new SemVersion( 1 ), manifest.Version );
-            Assert.AreEqual( "https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage );
+            var manifest = ManifestLoader.FindManifest(mockAssembly);
+            Assert.IsTrue(manifest is JsonManifest);
+            Assert.NotNull(manifest);
+            Assert.AreEqual("Test Manifest", manifest.Name);
+            Assert.AreEqual("AscensionGameDev.Intersect.Tests", manifest.Key);
+            Assert.AreEqual(new SemVersion(1), manifest.Version);
+            Assert.AreEqual("https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage);
         }
 
         [Test]
         public void FindManifest_ReturnsNullWhenNoManifestsFound()
         {
-            ManifestLoader.ManifestLoaderDelegates.Add( ManifestLoader.LoadJsonManifestFrom );
-            ManifestLoader.ManifestLoaderDelegates.Add( ManifestLoader.LoadVirtualManifestFrom );
+            ManifestLoader.ManifestLoaderDelegates.Add(ManifestLoader.LoadJsonManifestFrom);
+            ManifestLoader.ManifestLoaderDelegates.Add(ManifestLoader.LoadVirtualManifestFrom);
             var mockAssembly = new MockAssembly
             {
             };
 
-            var manifest = ManifestLoader.FindManifest( mockAssembly );
-            Assert.Null( manifest );
+            var manifest = ManifestLoader.FindManifest(mockAssembly);
+            Assert.Null(manifest);
         }
 
         [Test]
@@ -182,17 +182,17 @@ namespace Intersect.Plugins.Loaders
         {
             var mockLogger = new Mock<Logger>();
             Log.Default = mockLogger.Object;
-            var mockException = new Exception( "Delegate exception" );
-            ManifestLoader.ManifestLoaderDelegates.Add( ( Assembly assembly ) => throw mockException );
+            var mockException = new Exception("Delegate exception");
+            ManifestLoader.ManifestLoaderDelegates.Add((Assembly assembly) => throw mockException);
             var mockAssembly = new MockAssembly
             {
             };
 
-            var manifest = ManifestLoader.FindManifest( mockAssembly );
-            Assert.Null( manifest );
+            var manifest = ManifestLoader.FindManifest(mockAssembly);
+            Assert.Null(manifest);
             mockLogger.Verify(
                 l => l.Error(
-                    It.Is<Exception>( e => e.Message == mockException.Message ),
+                    It.Is<Exception>(e => e.Message == mockException.Message),
                     "Exception thrown by manifest loader delegate."
                 )
             );
@@ -201,7 +201,7 @@ namespace Intersect.Plugins.Loaders
         [Test]
         public void FindManifest_LoadsJsonManifest_Lowercase()
         {
-            ManifestLoader.ManifestLoaderDelegates.Add( ManifestLoader.LoadJsonManifestFrom );
+            ManifestLoader.ManifestLoaderDelegates.Add(ManifestLoader.LoadJsonManifestFrom);
             var mockAssembly = new MockAssembly
             {
                 MockManifestResourceInfo = new Dictionary<string, ManifestResourceInfo>
@@ -224,60 +224,60 @@ namespace Intersect.Plugins.Loaders
                 }
             };
 
-            var manifest = ManifestLoader.FindManifest( mockAssembly );
-            Assert.IsTrue( manifest is JsonManifest );
-            Assert.NotNull( manifest );
-            Assert.AreEqual( "Test Manifest", manifest.Name );
-            Assert.AreEqual( "AscensionGameDev.Intersect.Tests", manifest.Key );
-            Assert.AreEqual( new SemVersion( 1 ), manifest.Version );
-            Assert.AreEqual( "https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage );
+            var manifest = ManifestLoader.FindManifest(mockAssembly);
+            Assert.IsTrue(manifest is JsonManifest);
+            Assert.NotNull(manifest);
+            Assert.AreEqual("Test Manifest", manifest.Name);
+            Assert.AreEqual("AscensionGameDev.Intersect.Tests", manifest.Key);
+            Assert.AreEqual(new SemVersion(1), manifest.Version);
+            Assert.AreEqual("https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage);
         }
 
         [Test]
         public void FindManifest_LoadsVirtualManifest()
         {
-            ManifestLoader.ManifestLoaderDelegates.Add( ManifestLoader.LoadVirtualManifestFrom );
+            ManifestLoader.ManifestLoaderDelegates.Add(ManifestLoader.LoadVirtualManifestFrom);
             var mockAssembly = new MockAssembly
             {
-                MockTypes = new[] { typeof( VirtualTestManifest ) }
+                MockTypes = new[] { typeof(VirtualTestManifest) }
             };
 
-            var manifest = ManifestLoader.FindManifest( mockAssembly );
-            Assert.IsTrue( manifest is VirtualTestManifest );
-            Assert.NotNull( manifest );
-            Assert.AreEqual( "Test Manifest", manifest.Name );
-            Assert.AreEqual( "AscensionGameDev.Intersect.Tests", manifest.Key );
-            Assert.AreEqual( new SemVersion( 1 ), manifest.Version );
-            Assert.AreEqual( "https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage );
+            var manifest = ManifestLoader.FindManifest(mockAssembly);
+            Assert.IsTrue(manifest is VirtualTestManifest);
+            Assert.NotNull(manifest);
+            Assert.AreEqual("Test Manifest", manifest.Name);
+            Assert.AreEqual("AscensionGameDev.Intersect.Tests", manifest.Key);
+            Assert.AreEqual(new SemVersion(1), manifest.Version);
+            Assert.AreEqual("https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage);
         }
 
         [Test]
         public void FindManifest_LoadsVirtualManifestWhenJsonManifestNotFound()
         {
-            ManifestLoader.ManifestLoaderDelegates.Add( ManifestLoader.LoadJsonManifestFrom );
-            ManifestLoader.ManifestLoaderDelegates.Add( ManifestLoader.LoadVirtualManifestFrom );
+            ManifestLoader.ManifestLoaderDelegates.Add(ManifestLoader.LoadJsonManifestFrom);
+            ManifestLoader.ManifestLoaderDelegates.Add(ManifestLoader.LoadVirtualManifestFrom);
             var mockAssembly = new MockAssembly
             {
-                MockTypes = new[] { typeof( VirtualTestManifest ) }
+                MockTypes = new[] { typeof(VirtualTestManifest) }
             };
 
-            var manifest = ManifestLoader.FindManifest( mockAssembly );
-            Assert.IsTrue( manifest is VirtualTestManifest );
-            Assert.NotNull( manifest );
-            Assert.AreEqual( "Test Manifest", manifest.Name );
-            Assert.AreEqual( "AscensionGameDev.Intersect.Tests", manifest.Key );
-            Assert.AreEqual( new SemVersion( 1 ), manifest.Version );
-            Assert.AreEqual( "https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage );
+            var manifest = ManifestLoader.FindManifest(mockAssembly);
+            Assert.IsTrue(manifest is VirtualTestManifest);
+            Assert.NotNull(manifest);
+            Assert.AreEqual("Test Manifest", manifest.Name);
+            Assert.AreEqual("AscensionGameDev.Intersect.Tests", manifest.Key);
+            Assert.AreEqual(new SemVersion(1), manifest.Version);
+            Assert.AreEqual("https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage);
         }
 
         [Test]
         public void FindManifest_LoadsJsonManifestWhenFoundInsteadOfVirtualManifest()
         {
-            ManifestLoader.ManifestLoaderDelegates.Add( ManifestLoader.LoadJsonManifestFrom );
-            ManifestLoader.ManifestLoaderDelegates.Add( ManifestLoader.LoadVirtualManifestFrom );
+            ManifestLoader.ManifestLoaderDelegates.Add(ManifestLoader.LoadJsonManifestFrom);
+            ManifestLoader.ManifestLoaderDelegates.Add(ManifestLoader.LoadVirtualManifestFrom);
             var mockAssembly = new MockAssembly
             {
-                MockTypes = new[] { typeof( VirtualTestManifest ) },
+                MockTypes = new[] { typeof(VirtualTestManifest) },
                 MockManifestResourceInfo = new Dictionary<string, ManifestResourceInfo>
                 {
                     {
@@ -298,23 +298,23 @@ namespace Intersect.Plugins.Loaders
                 }
             };
 
-            var manifest = ManifestLoader.FindManifest( mockAssembly );
-            Assert.IsTrue( manifest is JsonManifest );
-            Assert.NotNull( manifest );
-            Assert.AreEqual( "Test Manifest", manifest.Name );
-            Assert.AreEqual( "AscensionGameDev.Intersect.Tests", manifest.Key );
-            Assert.AreEqual( new SemVersion( 1 ), manifest.Version );
-            Assert.AreEqual( "https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage );
+            var manifest = ManifestLoader.FindManifest(mockAssembly);
+            Assert.IsTrue(manifest is JsonManifest);
+            Assert.NotNull(manifest);
+            Assert.AreEqual("Test Manifest", manifest.Name);
+            Assert.AreEqual("AscensionGameDev.Intersect.Tests", manifest.Key);
+            Assert.AreEqual(new SemVersion(1), manifest.Version);
+            Assert.AreEqual("https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage);
         }
 
         [Test]
         public void FindManifest_LoadsVirtualManifestWhenFoundInsteadOfJsonManifest()
         {
-            ManifestLoader.ManifestLoaderDelegates.Add( ManifestLoader.LoadVirtualManifestFrom );
-            ManifestLoader.ManifestLoaderDelegates.Add( ManifestLoader.LoadJsonManifestFrom );
+            ManifestLoader.ManifestLoaderDelegates.Add(ManifestLoader.LoadVirtualManifestFrom);
+            ManifestLoader.ManifestLoaderDelegates.Add(ManifestLoader.LoadJsonManifestFrom);
             var mockAssembly = new MockAssembly
             {
-                MockTypes = new[] { typeof( VirtualTestManifest ) },
+                MockTypes = new[] { typeof(VirtualTestManifest) },
                 MockManifestResourceInfo = new Dictionary<string, ManifestResourceInfo>
                 {
                     {
@@ -335,28 +335,28 @@ namespace Intersect.Plugins.Loaders
                 }
             };
 
-            var manifest = ManifestLoader.FindManifest( mockAssembly );
-            Assert.IsTrue( manifest is VirtualTestManifest );
-            Assert.NotNull( manifest );
-            Assert.AreEqual( "Test Manifest", manifest.Name );
-            Assert.AreEqual( "AscensionGameDev.Intersect.Tests", manifest.Key );
-            Assert.AreEqual( new SemVersion( 1 ), manifest.Version );
-            Assert.AreEqual( "https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage );
+            var manifest = ManifestLoader.FindManifest(mockAssembly);
+            Assert.IsTrue(manifest is VirtualTestManifest);
+            Assert.NotNull(manifest);
+            Assert.AreEqual("Test Manifest", manifest.Name);
+            Assert.AreEqual("AscensionGameDev.Intersect.Tests", manifest.Key);
+            Assert.AreEqual(new SemVersion(1), manifest.Version);
+            Assert.AreEqual("https://github.com/AscensionGameDev/Intersect-Engine", manifest.Homepage);
         }
 
         [Test]
         public void FindManifest_ThrowsIfNoDelegates()
         {
             Assert.Throws<InvalidOperationException>(
-                () => ManifestLoader.FindManifest( new MockAssembly() ),
-                $"{nameof( ManifestLoader.ManifestLoaderDelegates )} was initialized with no pre-registered delegates, or the pre-defined delegates were removed and no alternatives were added."
+                () => ManifestLoader.FindManifest(new MockAssembly()),
+                $"{nameof(ManifestLoader.ManifestLoaderDelegates)} was initialized with no pre-registered delegates, or the pre-defined delegates were removed and no alternatives were added."
             );
         }
 
         [Test]
         public void LoadJsonManifestFrom_ReturnsNullIfNoManifest()
         {
-            Assert.IsNull( ManifestLoader.LoadJsonManifestFrom( new MockAssembly() ) );
+            Assert.IsNull(ManifestLoader.LoadJsonManifestFrom(new MockAssembly()));
         }
 
         [Test]
@@ -364,7 +364,7 @@ namespace Intersect.Plugins.Loaders
         {
             var mockLogger = new Mock<Logger>();
             Log.Default = mockLogger.Object;
-            var mockException = new Exception( nameof( MockAssembly.ExceptionGetManifestResourceInfo ) );
+            var mockException = new Exception(nameof(MockAssembly.ExceptionGetManifestResourceInfo));
             Assert.IsNull(
                 ManifestLoader.LoadJsonManifestFrom(
                     new MockAssembly
@@ -374,7 +374,7 @@ namespace Intersect.Plugins.Loaders
                 )
             );
 
-            mockLogger.Verify( l => l.Warn( mockException, "Failed to load manifest.json from MockAssembly." ) );
+            mockLogger.Verify(l => l.Warn(mockException, "Failed to load manifest.json from MockAssembly."));
         }
 
         [Test]
@@ -382,7 +382,7 @@ namespace Intersect.Plugins.Loaders
         {
             var mockLogger = new Mock<Logger>();
             Log.Default = mockLogger.Object;
-            var mockException = new InvalidDataException( "Manifest resource stream null when info exists." );
+            var mockException = new InvalidDataException("Manifest resource stream null when info exists.");
             Assert.IsNull(
                 ManifestLoader.LoadJsonManifestFrom(
                     new MockAssembly
@@ -402,7 +402,7 @@ namespace Intersect.Plugins.Loaders
 
             mockLogger.Verify(
                 l => l.Warn(
-                    It.Is<InvalidDataException>( e => e.Message == mockException.Message ),
+                    It.Is<InvalidDataException>(e => e.Message == mockException.Message),
                     "Failed to load manifest.json from MockAssembly."
                 )
             );
@@ -413,7 +413,7 @@ namespace Intersect.Plugins.Loaders
         {
             var mockLogger = new Mock<Logger>();
             Log.Default = mockLogger.Object;
-            var mockException = new InvalidDataException( "Manifest is empty or failed to load and is null." );
+            var mockException = new InvalidDataException("Manifest is empty or failed to load and is null.");
             Assert.IsNull(
                 ManifestLoader.LoadJsonManifestFrom(
                     new MockAssembly
@@ -437,7 +437,7 @@ namespace Intersect.Plugins.Loaders
 
             mockLogger.Verify(
                 l => l.Warn(
-                    It.Is<InvalidDataException>( e => e.Message == mockException.Message ),
+                    It.Is<InvalidDataException>(e => e.Message == mockException.Message),
                     "Failed to load manifest.json from MockAssembly."
                 )
             );
@@ -448,7 +448,7 @@ namespace Intersect.Plugins.Loaders
         {
             var mockLogger = new Mock<Logger>();
             Log.Default = mockLogger.Object;
-            var mockException = new Exception( nameof( MockAssembly.ExceptionGetManifestResourceStream ) );
+            var mockException = new Exception(nameof(MockAssembly.ExceptionGetManifestResourceStream));
             Assert.IsNull(
                 ManifestLoader.LoadJsonManifestFrom(
                     new MockAssembly
@@ -467,13 +467,13 @@ namespace Intersect.Plugins.Loaders
                 )
             );
 
-            mockLogger.Verify( l => l.Warn( mockException, "Failed to load manifest.json from MockAssembly." ) );
+            mockLogger.Verify(l => l.Warn(mockException, "Failed to load manifest.json from MockAssembly."));
         }
 
         [Test]
         public void LoadVirtualManifestFrom_ReturnsNullIfNoTypes()
         {
-            Assert.IsNull( ManifestLoader.LoadVirtualManifestFrom( new MockAssembly() ) );
+            Assert.IsNull(ManifestLoader.LoadVirtualManifestFrom(new MockAssembly()));
         }
 
         [Test]
@@ -481,7 +481,7 @@ namespace Intersect.Plugins.Loaders
         {
             var mockLogger = new Mock<Logger>();
             Log.Default = mockLogger.Object;
-            var mockException = new Exception( nameof( MockAssembly.ExceptionGetTypes ) );
+            var mockException = new Exception(nameof(MockAssembly.ExceptionGetTypes));
             Assert.IsNull(
                 ManifestLoader.LoadVirtualManifestFrom(
                     new MockAssembly
@@ -491,7 +491,7 @@ namespace Intersect.Plugins.Loaders
                 )
             );
 
-            mockLogger.Verify( l => l.Warn( mockException, "Failed to load virtual manifest from MockAssembly." ) );
+            mockLogger.Verify(l => l.Warn(mockException, "Failed to load virtual manifest from MockAssembly."));
         }
     }
 }

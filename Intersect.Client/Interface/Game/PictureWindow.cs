@@ -15,10 +15,10 @@ namespace Intersect.Client.Interface.Game
 
         private ImagePanel mPicture;
 
-        public PictureWindow( Canvas gameCanvas )
+        public PictureWindow(Canvas gameCanvas)
         {
             mGameCanvas = gameCanvas;
-            mPicture = new ImagePanel( gameCanvas );
+            mPicture = new ImagePanel(gameCanvas);
             mPicture.Clicked += MPicture_Clicked;
         }
 
@@ -28,55 +28,55 @@ namespace Intersect.Client.Interface.Game
 
         public bool Clickable { get; private set; }
 
-        public void Setup( string picture, int size, bool clickable )
+        public void Setup(string picture, int size, bool clickable)
         {
             Picture = picture;
             Size = size;
             Clickable = clickable;
 
-            mPicture.Texture = Globals.ContentManager.GetTexture( GameContentManager.TextureType.Image, picture );
-            if( mPicture.Texture != null )
+            mPicture.Texture = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Image, picture);
+            if (mPicture.Texture != null)
             {
-                mPicture.SetSize( mPicture.Texture.GetWidth(), mPicture.Texture.GetHeight() );
-                Align.Center( mPicture );
+                mPicture.SetSize(mPicture.Texture.GetWidth(), mPicture.Texture.GetHeight());
+                Align.Center(mPicture);
 
-                if( size != (int)PictureSize.Original ) // Don't scale if you want to keep the original size.
+                if (size != (int)PictureSize.Original) // Don't scale if you want to keep the original size.
                 {
-                    if( size == (int)PictureSize.StretchToFit )
+                    if (size == (int)PictureSize.StretchToFit)
                     {
-                        mPicture.SetSize( mGameCanvas.Width, mGameCanvas.Height );
-                        Align.Center( mPicture );
+                        mPicture.SetSize(mGameCanvas.Width, mGameCanvas.Height);
+                        Align.Center(mPicture);
                     }
                     else
                     {
                         var n = 1;
 
                         //If you want half fullscreen size set n to 2.
-                        if( size == (int)PictureSize.HalfScreen )
+                        if (size == (int)PictureSize.HalfScreen)
                         {
                             n = 2;
                         }
 
                         var ar = (float)mPicture.Width / (float)mPicture.Height;
                         var heightLimit = true;
-                        if( mGameCanvas.Width < mGameCanvas.Height * ar )
+                        if (mGameCanvas.Width < mGameCanvas.Height * ar)
                         {
                             heightLimit = false;
                         }
 
-                        if( heightLimit )
+                        if (heightLimit)
                         {
                             var height = mGameCanvas.Height;
                             var width = mGameCanvas.Height * ar;
-                            mPicture.SetSize( (int)( width / n ), (int)( height / n ) );
-                            Align.Center( mPicture );
+                            mPicture.SetSize((int)(width / n), (int)(height / n));
+                            Align.Center(mPicture);
                         }
                         else
                         {
                             var width = mGameCanvas.Width;
                             var height = width / ar;
-                            mPicture.SetSize( (int)( width / n ), (int)( height / n ) );
-                            Align.Center( mPicture );
+                            mPicture.SetSize((int)(width / n), (int)(height / n));
+                            Align.Center(mPicture);
                         }
                     }
                 }
@@ -90,9 +90,9 @@ namespace Intersect.Client.Interface.Game
             }
         }
 
-        private void MPicture_Clicked( Base sender, ClickedEventArgs arguments )
+        private void MPicture_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            if( Clickable )
+            if (Clickable)
             {
                 Close();
             }
@@ -100,7 +100,7 @@ namespace Intersect.Client.Interface.Game
 
         public void Close()
         {
-            if( Picture != null )
+            if (Picture != null)
             {
                 Globals.Picture = null;
                 Picture = null;

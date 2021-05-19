@@ -6,11 +6,11 @@ namespace Intersect.Network.Packets.Client
     public class SwapSpellsPacket : SlotSwapPacket
     {
         //Parameterless Constructor for MessagePack
-        public SwapSpellsPacket() : base( 0, 0 )
+        public SwapSpellsPacket() : base(0, 0)
         {
         }
 
-        public SwapSpellsPacket( int slot1, int slot2 ) : base( slot1, slot2 ) { }
+        public SwapSpellsPacket(int slot1, int slot2) : base(slot1, slot2) { }
 
     }
 

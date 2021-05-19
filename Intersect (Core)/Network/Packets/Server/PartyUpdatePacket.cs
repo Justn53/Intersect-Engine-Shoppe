@@ -10,16 +10,16 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public PartyUpdatePacket( int memberIndex, PartyMemberPacket memberData )
+        public PartyUpdatePacket(int memberIndex, PartyMemberPacket memberData)
         {
             MemberIndex = memberIndex;
             MemberData = memberData;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public int MemberIndex { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public PartyMemberPacket MemberData { get; set; }
 
     }

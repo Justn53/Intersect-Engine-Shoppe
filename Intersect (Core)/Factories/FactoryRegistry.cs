@@ -30,14 +30,14 @@ namespace Intersect.Factories
         /// <returns>an instance of <typeparamref name="TValue"/></returns>
         /// <see cref="IFactory{TValue}.Create(object[])"/>
         /// <exception cref="ArgumentNullException">thrown if there is no registered <see cref="IFactory{TValue}"/></exception>
-        public static TValue Create( params object[] args )
+        public static TValue Create(params object[] args)
         {
-            if( Factory == null )
+            if (Factory == null)
             {
-                throw new InvalidOperationException( $@"No factory registered for type: {typeof( TValue ).FullName}" );
+                throw new InvalidOperationException($@"No factory registered for type: {typeof(TValue).FullName}");
             }
 
-            return Factory.Create( args );
+            return Factory.Create(args);
         }
 
         /// <summary>
@@ -51,24 +51,24 @@ namespace Intersect.Factories
             "Design", "CA1031:Do not catch general exception types",
             Justification = "This exception is intended to log but not throw."
         )]
-        public static bool TryCreate( out TValue value, params object[] args )
+        public static bool TryCreate(out TValue value, params object[] args)
         {
             try
             {
-                value = Create( args );
+                value = Create(args);
                 return true;
             }
-            catch( InvalidOperationException exception )
+            catch (InvalidOperationException exception)
             {
-                Log.Warn( exception );
+                Log.Warn(exception);
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
                 Log.Error(
                     exception,
                     string.Format(
                         CultureInfo.CurrentCulture, ExceptionMessages.SwallowingExceptionFromWithQualifiedName,
-                        typeof( FactoryRegistry<TValue> ).QualifiedGenericName(), nameof( Create )
+                        typeof(FactoryRegistry<TValue>).QualifiedGenericName(), nameof(Create)
                     )
                 );
             }
@@ -83,9 +83,9 @@ namespace Intersect.Factories
         /// <param name="factory">the <see cref="IFactory{TValue}"/> instance to register</param>
         /// <param name="overrideExisting">if the current instance should be overwritten if it exists (default false)</param>
         /// <returns>true if registration was successful, false if a factory was already registered and <paramref name="overrideExisting"/> is false</returns>
-        public static bool RegisterFactory( IFactory<TValue> factory, bool overrideExisting = false )
+        public static bool RegisterFactory(IFactory<TValue> factory, bool overrideExisting = false)
         {
-            if( Factory != null && !overrideExisting )
+            if (Factory != null && !overrideExisting)
             {
                 return false;
             }

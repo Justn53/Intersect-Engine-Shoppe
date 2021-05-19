@@ -18,7 +18,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private EventPage mCurrentPage;
 
-        public EventCommandChangeName( ChangeNameCommand refCommand, EventPage refPage, FrmEvent editor )
+        public EventCommandChangeName(ChangeNameCommand refCommand, EventPage refPage, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
@@ -26,7 +26,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             mEventEditor = editor;
 
             cmbVariable.Items.Clear();
-            cmbVariable.Items.AddRange( PlayerVariableBase.Names );
+            cmbVariable.Items.AddRange(PlayerVariableBase.Names);
 
             InitLocalization();
         }
@@ -40,13 +40,13 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             lblVariable.Text = Strings.EventChangeName.variable;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            mMyCommand.VariableId = PlayerVariableBase.IdFromList( cmbVariable.SelectedIndex );
+            mMyCommand.VariableId = PlayerVariableBase.IdFromList(cmbVariable.SelectedIndex);
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }

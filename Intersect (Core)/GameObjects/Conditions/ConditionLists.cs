@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 namespace Intersect.GameObjects.Conditions
 {
 
-    [JsonConverter( typeof( ConditionListsSerializer ) )]
+    [JsonConverter(typeof(ConditionListsSerializer))]
     public class ConditionLists
     {
 
@@ -18,14 +18,14 @@ namespace Intersect.GameObjects.Conditions
         {
         }
 
-        public ConditionLists( string data )
+        public ConditionLists(string data)
         {
-            Load( data );
+            Load(data);
         }
 
         public int Count => Lists?.Count ?? 0;
 
-        public void Load( string data )
+        public void Load(string data)
         {
             Lists.Clear();
             JsonConvert.PopulateObject(
@@ -56,7 +56,7 @@ namespace Intersect.GameObjects.Conditions
     public class ConditionListsSerializer : JsonConverter
     {
 
-        public override bool CanConvert( Type objectType )
+        public override bool CanConvert(Type objectType)
         {
             return true;
         }
@@ -68,19 +68,19 @@ namespace Intersect.GameObjects.Conditions
             JsonSerializer serializer
         )
         {
-            var jsonObject = JObject.Load( reader );
+            var jsonObject = JObject.Load(reader);
             var properties = jsonObject.Properties().ToList();
             var lists = existingValue != null ? (ConditionLists)existingValue : new ConditionLists();
-            lists.Load( (string)properties[0].Value );
+            lists.Load((string)properties[0].Value);
 
             return lists;
         }
 
-        public override void WriteJson( JsonWriter writer, object value, JsonSerializer serializer )
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             writer.WriteStartObject();
-            writer.WritePropertyName( "Lists" );
-            serializer.Serialize( writer, ( (ConditionLists)value ).Data() );
+            writer.WritePropertyName("Lists");
+            serializer.Serialize(writer, ((ConditionLists)value).Data());
             writer.WriteEndObject();
         }
 

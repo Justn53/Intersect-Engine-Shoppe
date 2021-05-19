@@ -24,11 +24,11 @@ namespace Intersect.Server.Core.CommandParsing.Commands
 
         string Description { get; }
 
-        ICommandArgument FindArgument( char shortName );
+        ICommandArgument FindArgument(char shortName);
 
-        ICommandArgument FindArgument( string name );
+        ICommandArgument FindArgument(string name);
 
-        void Handle( IApplicationContext context, ParserResult result );
+        void Handle(IApplicationContext context, ParserResult result);
 
         string FormatUsage(
             ParserSettings parserSettings,

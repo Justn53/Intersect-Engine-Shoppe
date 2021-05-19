@@ -10,11 +10,11 @@ namespace Intersect.Crypto.Formats
     {
         private RSAParameters mParameters;
 
-        public RsaKey() : this( null )
+        public RsaKey() : this(null)
         {
         }
 
-        public RsaKey( RSAParameters? parameters ) : base( KeyFormat.Rsa )
+        public RsaKey(RSAParameters? parameters) : base(KeyFormat.Rsa)
         {
             Parameters = parameters ?? new RSAParameters();
         }
@@ -32,64 +32,64 @@ namespace Intersect.Crypto.Formats
                                 mParameters.P == null ||
                                 mParameters.Q == null;
 
-        protected override bool InternalRead( IBuffer buffer )
+        protected override bool InternalRead(IBuffer buffer)
         {
-            if( buffer == null )
+            if (buffer == null)
             {
                 throw new ArgumentNullException();
             }
 
-            if( !buffer.Read( out bool isPublic ) )
+            if (!buffer.Read(out bool isPublic))
             {
                 throw new EndOfStreamException();
             }
 
-            if( !buffer.Read( out ushort bits ) )
+            if (!buffer.Read(out ushort bits))
             {
                 throw new EndOfStreamException();
             }
 
-            if( !buffer.Read( ref mParameters.Modulus, 0, bits >> 3 ) )
+            if (!buffer.Read(ref mParameters.Modulus, 0, bits >> 3))
             {
                 throw new EndOfStreamException();
             }
 
-            if( !buffer.Read( ref mParameters.Exponent, 0, 3 ) )
+            if (!buffer.Read(ref mParameters.Exponent, 0, 3))
             {
                 throw new EndOfStreamException();
             }
 
-            if( isPublic )
+            if (isPublic)
             {
                 return true;
             }
 
-            if( !buffer.Read( ref mParameters.D, 0, bits >> 3 ) )
+            if (!buffer.Read(ref mParameters.D, 0, bits >> 3))
             {
                 throw new EndOfStreamException();
             }
 
-            if( !buffer.Read( ref mParameters.DP, 0, bits >> 4 ) )
+            if (!buffer.Read(ref mParameters.DP, 0, bits >> 4))
             {
                 throw new EndOfStreamException();
             }
 
-            if( !buffer.Read( ref mParameters.DQ, 0, bits >> 4 ) )
+            if (!buffer.Read(ref mParameters.DQ, 0, bits >> 4))
             {
                 throw new EndOfStreamException();
             }
 
-            if( !buffer.Read( ref mParameters.InverseQ, 0, bits >> 4 ) )
+            if (!buffer.Read(ref mParameters.InverseQ, 0, bits >> 4))
             {
                 throw new EndOfStreamException();
             }
 
-            if( !buffer.Read( ref mParameters.P, 0, bits >> 4 ) )
+            if (!buffer.Read(ref mParameters.P, 0, bits >> 4))
             {
                 throw new EndOfStreamException();
             }
 
-            if( !buffer.Read( ref mParameters.Q, 0, bits >> 4 ) )
+            if (!buffer.Read(ref mParameters.Q, 0, bits >> 4))
             {
                 throw new EndOfStreamException();
             }
@@ -97,45 +97,45 @@ namespace Intersect.Crypto.Formats
             return true;
         }
 
-        protected override bool InternalWrite( IBuffer buffer )
+        protected override bool InternalWrite(IBuffer buffer)
         {
-            if( buffer == null )
+            if (buffer == null)
             {
                 throw new ArgumentNullException();
             }
 
-            if( mParameters.Exponent == null || mParameters.Exponent.Length != 3 )
+            if (mParameters.Exponent == null || mParameters.Exponent.Length != 3)
             {
                 throw new ArgumentNullException(
-                    nameof( mParameters.Exponent ), @"Exponent not initialized (or properly)."
+                    nameof(mParameters.Exponent), @"Exponent not initialized (or properly)."
                 );
             }
 
-            if( mParameters.Modulus == null || mParameters.Modulus.Length % 2 != 0 )
+            if (mParameters.Modulus == null || mParameters.Modulus.Length % 2 != 0)
             {
                 throw new ArgumentNullException(
-                    nameof( mParameters.Exponent ), @"Modulus not initialized (or properly)."
+                    nameof(mParameters.Exponent), @"Modulus not initialized (or properly)."
                 );
             }
 
-            buffer.Write( IsPublic );
+            buffer.Write(IsPublic);
 
-            var bits = (ushort)( mParameters.Modulus.Length << 3 );
-            buffer.Write( bits );
-            buffer.Write( mParameters.Modulus, 0, bits >> 3 );
-            buffer.Write( mParameters.Exponent, 0, 3 );
+            var bits = (ushort)(mParameters.Modulus.Length << 3);
+            buffer.Write(bits);
+            buffer.Write(mParameters.Modulus, 0, bits >> 3);
+            buffer.Write(mParameters.Exponent, 0, 3);
 
-            if( IsPublic )
+            if (IsPublic)
             {
                 return true;
             }
 
-            buffer.Write( mParameters.D, 0, bits >> 3 );
-            buffer.Write( mParameters.DP, 0, bits >> 4 );
-            buffer.Write( mParameters.DQ, 0, bits >> 4 );
-            buffer.Write( mParameters.InverseQ, 0, bits >> 4 );
-            buffer.Write( mParameters.P, 0, bits >> 4 );
-            buffer.Write( mParameters.Q, 0, bits >> 4 );
+            buffer.Write(mParameters.D, 0, bits >> 3);
+            buffer.Write(mParameters.DP, 0, bits >> 4);
+            buffer.Write(mParameters.DQ, 0, bits >> 4);
+            buffer.Write(mParameters.InverseQ, 0, bits >> 4);
+            buffer.Write(mParameters.P, 0, bits >> 4);
+            buffer.Write(mParameters.Q, 0, bits >> 4);
 
             return true;
         }

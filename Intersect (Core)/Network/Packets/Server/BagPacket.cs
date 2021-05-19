@@ -10,16 +10,16 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public BagPacket( int slots, bool close )
+        public BagPacket(int slots, bool close)
         {
             Slots = slots;
             Close = close;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public int Slots { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public bool Close { get; set; }
 
     }

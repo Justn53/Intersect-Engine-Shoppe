@@ -16,7 +16,7 @@ namespace Intersect.Plugins
         /// Initializes this <see cref="PluginHelper"/>.
         /// </summary>
         /// <param name="logger">The <see cref="Logger"/> for this helper to use.</param>
-        protected PluginHelper( Logger logger )
+        protected PluginHelper(Logger logger)
         {
             Logger = logger;
         }

@@ -14,40 +14,40 @@ namespace Intersect.Server.Core.CommandParsing.Commands
     public abstract class Command<TContext> : ICommand where TContext : IApplicationContext
     {
 
-        protected Command( LocaleCommand localization, params ICommandArgument[] arguments )
+        protected Command(LocaleCommand localization, params ICommandArgument[] arguments)
         {
             Localization = localization;
 
             var argumentList = new List<ICommandArgument>(
-                ( arguments ?? Array.Empty<ICommandArgument>() ).Where( argument => argument != null )
+                (arguments ?? Array.Empty<ICommandArgument>()).Where(argument => argument != null)
             );
 
             UnsortedArguments = argumentList.ToImmutableList() ?? throw new InvalidOperationException();
 
             argumentList.Sort(
-                ( a, b ) =>
+                (a, b) =>
                 {
-                    if( a == null )
+                    if (a == null)
                     {
                         return 1;
                     }
 
-                    if( b == null )
+                    if (b == null)
                     {
                         return -1;
                     }
 
-                    if( a.IsRequiredByDefault && !b.IsRequiredByDefault )
+                    if (a.IsRequiredByDefault && !b.IsRequiredByDefault)
                     {
                         return -1;
                     }
 
-                    if( !a.IsRequiredByDefault && b.IsRequiredByDefault )
+                    if (!a.IsRequiredByDefault && b.IsRequiredByDefault)
                     {
                         return 1;
                     }
 
-                    if( a.IsPositional )
+                    if (a.IsPositional)
                     {
                         return b.IsPositional ? 0 : -1;
                     }
@@ -61,7 +61,7 @@ namespace Intersect.Server.Core.CommandParsing.Commands
             NamedArguments =
                 argumentList.Where(
                         argument => !argument?.IsPositional ??
-                                    throw new InvalidOperationException( @"No null arguments should be in the list." )
+                                    throw new InvalidOperationException(@"No null arguments should be in the list.")
                     )
                     .ToImmutableList() ??
                 throw new InvalidOperationException();
@@ -69,7 +69,7 @@ namespace Intersect.Server.Core.CommandParsing.Commands
             PositionalArguments =
                 argumentList.Where(
                         argument => argument?.IsPositional ??
-                                    throw new InvalidOperationException( @"No null arguments should be in the list." )
+                                    throw new InvalidOperationException(@"No null arguments should be in the list.")
                     )
                     .ToImmutableList() ??
                 throw new InvalidOperationException();
@@ -85,119 +85,119 @@ namespace Intersect.Server.Core.CommandParsing.Commands
 
         public ImmutableList<ICommandArgument> PositionalArguments { get; }
 
-        public Type ContextType => typeof( TContext );
+        public Type ContextType => typeof(TContext);
 
         public string Name => Localization.Name;
 
         public string Description => Localization.Description;
 
-        public ICommandArgument FindArgument( char shortName )
+        public ICommandArgument FindArgument(char shortName)
         {
-            return Arguments.FirstOrDefault( argument => argument?.ShortName == shortName );
+            return Arguments.FirstOrDefault(argument => argument?.ShortName == shortName);
         }
 
-        public ICommandArgument FindArgument( string name )
+        public ICommandArgument FindArgument(string name)
         {
-            return Arguments.FirstOrDefault( argument => argument?.Name == name );
+            return Arguments.FirstOrDefault(argument => argument?.Name == name);
         }
 
-        public string FormatUsage( ParserSettings parserSettings, ParserContext parserContext, bool formatPrint = false )
+        public string FormatUsage(ParserSettings parserSettings, ParserContext parserContext, bool formatPrint = false)
         {
-            var usageBuilder = new StringBuilder( Name );
+            var usageBuilder = new StringBuilder(Name);
 
             Arguments.ForEach(
                 argument =>
                 {
-                    if( argument == null )
+                    if (argument == null)
                     {
                         return;
                     }
 
-                    var argumentUsageBuilder = new StringBuilder( argument.Name );
-                    if( !argument.IsPositional )
+                    var argumentUsageBuilder = new StringBuilder(argument.Name);
+                    if (!argument.IsPositional)
                     {
-                        argumentUsageBuilder.Insert( 0, parserSettings.PrefixLong );
+                        argumentUsageBuilder.Insert(0, parserSettings.PrefixLong);
                     }
 
-                    if( !argument.IsFlag )
+                    if (!argument.IsFlag)
                     {
                         var typeName = argument.ValueType.Name;
-                        if( parserSettings.Localization.TypeNames.TryGetValue( typeName, out var localizedType ) )
+                        if (parserSettings.Localization.TypeNames.TryGetValue(typeName, out var localizedType))
                         {
                             typeName = localizedType;
                         }
 
-                        if( argument.IsPositional )
+                        if (argument.IsPositional)
                         {
-                            argumentUsageBuilder.Append( parserSettings.Localization.Formatting.Type.ToString( typeName ) );
+                            argumentUsageBuilder.Append(parserSettings.Localization.Formatting.Type.ToString(typeName));
                         }
                         else
                         {
-                            argumentUsageBuilder.Append( '=' );
-                            argumentUsageBuilder.Append( typeName );
+                            argumentUsageBuilder.Append('=');
+                            argumentUsageBuilder.Append(typeName);
                         }
                     }
 
                     var argumentUsage = argumentUsageBuilder.ToString();
-                    if( !argument.IsRequired( parserContext ) )
+                    if (!argument.IsRequired(parserContext))
                     {
-                        argumentUsage = parserSettings.Localization.Formatting.Optional.ToString( argumentUsage );
+                        argumentUsage = parserSettings.Localization.Formatting.Optional.ToString(argumentUsage);
                     }
 
-                    usageBuilder.Append( ' ' );
-                    usageBuilder.Append( argumentUsage );
+                    usageBuilder.Append(' ');
+                    usageBuilder.Append(argumentUsage);
                 }
             );
 
             var usage = usageBuilder.ToString().Trim();
 
-            if( formatPrint )
+            if (formatPrint)
             {
-                usage = parserSettings.Localization.Formatting.Usage.ToString( usage );
+                usage = parserSettings.Localization.Formatting.Usage.ToString(usage);
             }
 
             return usage;
         }
 
-        public void Handle( IApplicationContext context, ParserResult result )
+        public void Handle(IApplicationContext context, ParserResult result)
         {
-            if( result.Errors.Any( error => error?.IsFatal ?? false ) )
+            if (result.Errors.Any(error => error?.IsFatal ?? false))
             {
                 throw new InvalidOperationException(
                     @"Errors should have been handled before invoking ICommand.Handle()."
                 );
             }
 
-            if( context.GetType() != ContextType )
+            if (context.GetType() != ContextType)
             {
                 throw new ArgumentException(
-                    $@"Expected {ContextType.FullName} not {context.GetType().FullName}.", nameof( context )
+                    $@"Expected {ContextType.FullName} not {context.GetType().FullName}.", nameof(context)
                 );
             }
 
-            Handle( (TContext)context, result );
+            Handle((TContext)context, result);
         }
 
-        protected TArgument FindArgument<TArgument>( int index = 0 )
+        protected TArgument FindArgument<TArgument>(int index = 0)
         {
-            return Arguments.Where( argument => argument?.GetType() == typeof( TArgument ) )
+            return Arguments.Where(argument => argument?.GetType() == typeof(TArgument))
                 .Cast<TArgument>()
-                .ElementAtOrDefault( index );
+                .ElementAtOrDefault(index);
         }
 
-        protected TArgument FindArgumentOrThrow<TArgument>( int index = 0 )
+        protected TArgument FindArgumentOrThrow<TArgument>(int index = 0)
         {
-            var argument = FindArgument<TArgument>( index );
+            var argument = FindArgument<TArgument>(index);
 
-            if( argument == null )
+            if (argument == null)
             {
-                throw new InvalidOperationException( $@"Unable to find argument type {typeof( TArgument ).FullName}." );
+                throw new InvalidOperationException($@"Unable to find argument type {typeof(TArgument).FullName}.");
             }
 
             return argument;
         }
 
-        protected abstract void Handle( TContext context, ParserResult result );
+        protected abstract void Handle(TContext context, ParserResult result);
 
     }
 

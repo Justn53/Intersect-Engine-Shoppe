@@ -13,7 +13,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Initializes a new instance of the <see cref="TreeToggleButton" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public TreeToggleButton( Base parent ) : base( parent )
+        public TreeToggleButton(Base parent) : base(parent)
         {
             IsToggle = true;
             IsTabable = false;
@@ -23,7 +23,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Renders the focus overlay.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void RenderFocus( Skin.Base skin )
+        protected override void RenderFocus(Skin.Base skin)
         {
         }
 
@@ -31,9 +31,9 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawTreeButton( this, ToggleState );
+            skin.DrawTreeButton(this, ToggleState);
         }
 
     }

@@ -11,7 +11,7 @@ namespace Intersect.Server.Core.Commands
         protected ServerCommand(
             LocaleCommand localization,
             params ICommandArgument[] arguments
-        ) : base( localization, arguments )
+        ) : base(localization, arguments)
         {
         }
 

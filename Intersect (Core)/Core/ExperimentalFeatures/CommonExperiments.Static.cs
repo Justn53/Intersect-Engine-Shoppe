@@ -23,29 +23,29 @@ namespace Intersect.Core.ExperimentalFeatures
         {
             get => mInstance ??
                    throw new InvalidOperationException(
-                       $@"Did you forget to set this in the static constructor for '{typeof( TExperiments ).AssemblyQualifiedName}'."
+                       $@"Did you forget to set this in the static constructor for '{typeof(TExperiments).AssemblyQualifiedName}'."
                    );
             set => mInstance = value;
         }
 
-        protected static Guid GetNamespaceIdFor( Type declaringType )
+        protected static Guid GetNamespaceIdFor(Type declaringType)
         {
-            if( mNamespaceIdsByDeclaringType.TryGetValue( declaringType, out var namespaceId ) )
+            if (mNamespaceIdsByDeclaringType.TryGetValue(declaringType, out var namespaceId))
             {
                 return namespaceId;
             }
 
             var namespaceIdProperty = declaringType.GetField(
-                nameof( NamespaceId ), BindingFlags.Static | BindingFlags.NonPublic
+                nameof(NamespaceId), BindingFlags.Static | BindingFlags.NonPublic
             );
 
-            if( namespaceIdProperty == null )
+            if (namespaceIdProperty == null)
             {
                 throw new InvalidOperationException();
             }
 
             // ReSharper disable once InvertIf
-            if( namespaceIdProperty.GetValue( null ) is Guid generatedNamespaceId )
+            if (namespaceIdProperty.GetValue(null) is Guid generatedNamespaceId)
             {
                 mNamespaceIdsByDeclaringType[declaringType] = generatedNamespaceId;
 

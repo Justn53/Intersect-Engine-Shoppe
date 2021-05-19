@@ -12,15 +12,15 @@ namespace Intersect.Admin.Actions
 
         }
 
-        public KillAction( string name )
+        public KillAction(string name)
         {
             Name = name;
         }
 
-        [Key( 1 )]
+        [Key(1)]
         public override AdminActions Action { get; } = AdminActions.Kill;
 
-        [Key( 2 )]
+        [Key(2)]
         public string Name { get; set; }
 
     }

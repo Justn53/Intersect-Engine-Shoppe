@@ -13,19 +13,19 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="VerticalSlider" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public VerticalSlider( Base parent ) : base( parent )
+        public VerticalSlider(Base parent) : base(parent)
         {
             mSliderBar.IsHorizontal = false;
         }
 
         protected override float CalculateValue()
         {
-            return 1 - mSliderBar.Y / (float)( Height - mSliderBar.Height );
+            return 1 - mSliderBar.Y / (float)(Height - mSliderBar.Height);
         }
 
         protected override void UpdateBarFromValue()
         {
-            mSliderBar.MoveTo( mSliderBar.X, (int)( ( Height - mSliderBar.Height ) * ( 1 - mValue ) ) );
+            mSliderBar.MoveTo(mSliderBar.X, (int)((Height - mSliderBar.Height) * (1 - mValue)));
         }
 
         /// <summary>
@@ -34,21 +34,21 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        protected override void OnMouseClickedLeft( int x, int y, bool down, bool automated = false )
+        protected override void OnMouseClickedLeft(int x, int y, bool down, bool automated = false)
         {
-            base.OnMouseClickedLeft( x, y, down );
-            mSliderBar.MoveTo( mSliderBar.X, (int)( CanvasPosToLocal( new Point( x, y ) ).Y - mSliderBar.Height * 0.5 ) );
-            mSliderBar.InputMouseClickedLeft( x, y, down );
-            OnMoved( mSliderBar, EventArgs.Empty );
+            base.OnMouseClickedLeft(x, y, down);
+            mSliderBar.MoveTo(mSliderBar.X, (int)(CanvasPosToLocal(new Point(x, y)).Y - mSliderBar.Height * 0.5));
+            mSliderBar.InputMouseClickedLeft(x, y, down);
+            OnMoved(mSliderBar, EventArgs.Empty);
         }
 
         /// <summary>
         ///     Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout( Skin.Base skin )
+        protected override void Layout(Skin.Base skin)
         {
-            mSliderBar.SetSize( Width, 15 );
+            mSliderBar.SetSize(Width, 15);
             UpdateBarFromValue();
         }
 
@@ -56,9 +56,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawSlider( this, false, mSnapToNotches ? mNotchCount : 0, mSliderBar.Height );
+            skin.DrawSlider(this, false, mSnapToNotches ? mNotchCount : 0, mSliderBar.Height);
         }
 
     }

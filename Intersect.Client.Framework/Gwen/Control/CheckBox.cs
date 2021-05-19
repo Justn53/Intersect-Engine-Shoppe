@@ -54,9 +54,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="CheckBox" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public CheckBox( Base parent, string name = "" ) : base( parent, name )
+        public CheckBox(Base parent, string name = "") : base(parent, name)
         {
-            SetSize( 15, 15 );
+            SetSize(15, 15);
             IsToggle = true;
         }
 
@@ -68,7 +68,7 @@ namespace Intersect.Client.Framework.Gwen.Control
             get => mChecked;
             set
             {
-                if( mChecked == value )
+                if (mChecked == value)
                 {
                     return;
                 }
@@ -86,20 +86,20 @@ namespace Intersect.Client.Framework.Gwen.Control
         public override JObject GetJson()
         {
             var obj = base.GetJson();
-            obj.Add( "NormalImage", GetImageFilename( ControlState.Normal ) );
-            obj.Add( "CheckedImage", GetImageFilename( ControlState.CheckedNormal ) );
-            obj.Add( "DisabledImage", GetImageFilename( ControlState.Disabled ) );
-            obj.Add( "CheckedDisabledImage", GetImageFilename( ControlState.CheckedDisabled ) );
-            obj.Add( "CheckedSound", mCheckSound );
-            obj.Add( "UncheckedSound", mUncheckedSound );
+            obj.Add("NormalImage", GetImageFilename(ControlState.Normal));
+            obj.Add("CheckedImage", GetImageFilename(ControlState.CheckedNormal));
+            obj.Add("DisabledImage", GetImageFilename(ControlState.Disabled));
+            obj.Add("CheckedDisabledImage", GetImageFilename(ControlState.CheckedDisabled));
+            obj.Add("CheckedSound", mCheckSound);
+            obj.Add("UncheckedSound", mUncheckedSound);
 
-            return base.FixJson( obj );
+            return base.FixJson(obj);
         }
 
-        public override void LoadJson( JToken obj )
+        public override void LoadJson(JToken obj)
         {
-            base.LoadJson( obj );
-            if( obj["NormalImage"] != null )
+            base.LoadJson(obj);
+            if (obj["NormalImage"] != null)
             {
                 SetImage(
                     GameContentManager.Current.GetTexture(
@@ -108,7 +108,7 @@ namespace Intersect.Client.Framework.Gwen.Control
                 );
             }
 
-            if( obj["CheckedImage"] != null )
+            if (obj["CheckedImage"] != null)
             {
                 SetImage(
                     GameContentManager.Current.GetTexture(
@@ -117,7 +117,7 @@ namespace Intersect.Client.Framework.Gwen.Control
                 );
             }
 
-            if( obj["DisabledImage"] != null )
+            if (obj["DisabledImage"] != null)
             {
                 SetImage(
                     GameContentManager.Current.GetTexture(
@@ -126,7 +126,7 @@ namespace Intersect.Client.Framework.Gwen.Control
                 );
             }
 
-            if( obj["CheckedDisabledImage"] != null )
+            if (obj["CheckedDisabledImage"] != null)
             {
                 SetImage(
                     GameContentManager.Current.GetTexture(
@@ -135,12 +135,12 @@ namespace Intersect.Client.Framework.Gwen.Control
                 );
             }
 
-            if( obj["CheckedSound"] != null )
+            if (obj["CheckedSound"] != null)
             {
                 mCheckSound = (string)obj["CheckedSound"];
             }
 
-            if( obj["UncheckedSound"] != null )
+            if (obj["UncheckedSound"] != null)
             {
                 mUncheckedSound = (string)obj["UncheckedSound"];
             }
@@ -153,13 +153,13 @@ namespace Intersect.Client.Framework.Gwen.Control
         {
             base.Toggle();
             IsChecked = !IsChecked;
-            if( IsChecked )
+            if (IsChecked)
             {
-                base.PlaySound( mCheckSound );
+                base.PlaySound(mCheckSound);
             }
             else
             {
-                base.PlaySound( mUncheckedSound );
+                base.PlaySound(mUncheckedSound);
             }
         }
 
@@ -183,24 +183,24 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         protected virtual void OnCheckChanged()
         {
-            if( IsChecked )
+            if (IsChecked)
             {
-                if( Checked != null )
+                if (Checked != null)
                 {
-                    Checked.Invoke( this, EventArgs.Empty );
+                    Checked.Invoke(this, EventArgs.Empty);
                 }
             }
             else
             {
-                if( UnChecked != null )
+                if (UnChecked != null)
                 {
-                    UnChecked.Invoke( this, EventArgs.Empty );
+                    UnChecked.Invoke(this, EventArgs.Empty);
                 }
             }
 
-            if( CheckChanged != null )
+            if (CheckChanged != null)
             {
-                CheckChanged.Invoke( this, EventArgs.Empty );
+                CheckChanged.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -208,37 +208,37 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            base.Render( skin );
-            skin.DrawCheckBox( this, mChecked, IsDepressed );
+            base.Render(skin);
+            skin.DrawCheckBox(this, mChecked, IsDepressed);
         }
 
-        public void SetCheckSize( int w, int h )
+        public void SetCheckSize(int w, int h)
         {
         }
 
         /// <summary>
         ///     Internal OnPressed implementation.
         /// </summary>
-        protected override void OnClicked( int x, int y )
+        protected override void OnClicked(int x, int y)
         {
-            if( IsDisabled )
+            if (IsDisabled)
             {
                 return;
             }
 
-            if( IsChecked && !AllowUncheck )
+            if (IsChecked && !AllowUncheck)
             {
                 return;
             }
 
-            base.OnClicked( x, y );
+            base.OnClicked(x, y);
         }
 
-        public void SetImage( GameTexture texture, string fileName, ControlState state )
+        public void SetImage(GameTexture texture, string fileName, ControlState state)
         {
-            switch( state )
+            switch (state)
             {
                 case ControlState.Normal:
                     mNormalImageFilename = fileName;
@@ -261,13 +261,13 @@ namespace Intersect.Client.Framework.Gwen.Control
 
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException( nameof( state ), state, null );
+                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }
         }
 
-        public GameTexture GetImage( ControlState state )
+        public GameTexture GetImage(ControlState state)
         {
-            switch( state )
+            switch (state)
             {
                 case ControlState.Normal:
                     return mNormalImage;
@@ -282,9 +282,9 @@ namespace Intersect.Client.Framework.Gwen.Control
             }
         }
 
-        public string GetImageFilename( ControlState state )
+        public string GetImageFilename(ControlState state)
         {
-            switch( state )
+            switch (state)
             {
                 case ControlState.Normal:
                     return mNormalImageFilename;

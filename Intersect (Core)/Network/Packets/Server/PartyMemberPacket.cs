@@ -11,7 +11,7 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public PartyMemberPacket( Guid id, string name, int[] vital, int[] maxVital, int level )
+        public PartyMemberPacket(Guid id, string name, int[] vital, int[] maxVital, int level)
         {
             Id = id;
             Name = name;
@@ -20,19 +20,19 @@ namespace Intersect.Network.Packets.Server
             Level = level;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid Id { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public string Name { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public int[] Vital { get; set; }
 
-        [Key( 3 )]
+        [Key(3)]
         public int[] MaxVital { get; set; }
 
-        [Key( 4 )]
+        [Key(4)]
         public int Level { get; set; }
 
     }

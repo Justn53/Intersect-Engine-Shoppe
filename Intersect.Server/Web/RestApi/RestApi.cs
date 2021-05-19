@@ -31,7 +31,7 @@ namespace Intersect.Server.Web.RestApi
 
         private IDisposable mWebAppHandle;
 
-        public RestApi( ushort apiPort )
+        public RestApi(ushort apiPort)
         {
             mDisposeLock = new object();
 
@@ -39,15 +39,15 @@ namespace Intersect.Server.Web.RestApi
 
             Configuration = ApiConfiguration.Create();
 
-            Configuration.Hosts.ToList().ForEach( host => StartOptions.Urls?.Add( host ) );
+            Configuration.Hosts.ToList().ForEach(host => StartOptions.Urls?.Add(host));
 
-            if( apiPort > 0 )
+            if (apiPort > 0)
             {
                 StartOptions.Urls?.Clear();
-                StartOptions.Urls?.Add( "http://*:" + apiPort + "/" );
+                StartOptions.Urls?.Add("http://*:" + apiPort + "/");
             }
 
-            AuthenticationProvider = new OAuthProvider( Configuration );
+            AuthenticationProvider = new OAuthProvider(Configuration);
         }
 
         public bool Disposing { get; private set; }
@@ -60,59 +60,59 @@ namespace Intersect.Server.Web.RestApi
 
         private AuthenticationProvider AuthenticationProvider { get; }
 
-        public void Configure( IAppBuilder appBuilder )
+        public void Configure(IAppBuilder appBuilder)
         {
             // Configure Web API for self-host. 
             var config = new HttpConfiguration();
 
             var services = config.Services;
-            if( services == null )
+            if (services == null)
             {
                 throw new InvalidOperationException();
             }
 
-            Configuration.Cors.Select( configuration => configuration.AsCorsOptions() )
+            Configuration.Cors.Select(configuration => configuration.AsCorsOptions())
                 ?.ToList()
-                .ForEach( corsOptions => appBuilder.UseCors( corsOptions ) );
+                .ForEach(corsOptions => appBuilder.UseCors(corsOptions));
 
             var constraintResolver = new DefaultInlineConstraintResolver();
-            constraintResolver.ConstraintMap?.Add( nameof( AdminActions ), typeof( AdminActionsConstraint ) );
-            constraintResolver.ConstraintMap?.Add( nameof( LookupKey ), typeof( LookupKey.Constraint ) );
-            constraintResolver.ConstraintMap?.Add( nameof( ChatMessage ), typeof( ChatMessage.Constraint ) );
+            constraintResolver.ConstraintMap?.Add(nameof(AdminActions), typeof(AdminActionsConstraint));
+            constraintResolver.ConstraintMap?.Add(nameof(LookupKey), typeof(LookupKey.Constraint));
+            constraintResolver.ConstraintMap?.Add(nameof(ChatMessage), typeof(ChatMessage.Constraint));
 
             // Map routes
-            config.MapHttpAttributeRoutes( constraintResolver, new VersionedRouteProvider() );
-            config.DependencyResolver = new IntersectServiceDependencyResolver( Configuration, config );
+            config.MapHttpAttributeRoutes(constraintResolver, new VersionedRouteProvider());
+            config.DependencyResolver = new IntersectServiceDependencyResolver(Configuration, config);
 
             // Make JSON the default response type for browsers
-            config.Formatters?.JsonFormatter?.Map( "accept", "text/html", "application/json" );
+            config.Formatters?.JsonFormatter?.Map("accept", "text/html", "application/json");
 
-            if( Configuration.DebugMode )
+            if (Configuration.DebugMode)
             {
-                appBuilder.SetLoggerFactory( new IntersectLoggerFactory() );
+                appBuilder.SetLoggerFactory(new IntersectLoggerFactory());
             }
 
-            if( Configuration.RequestLogging )
+            if (Configuration.RequestLogging)
             {
-                appBuilder.Use<IntersectRequestLoggingMiddleware>( Configuration.RequestLogLevel );
+                appBuilder.Use<IntersectRequestLoggingMiddleware>(Configuration.RequestLogLevel);
             }
 
             appBuilder.Use<IntersectThrottlingMiddleware>(
                 Configuration.ThrottlePolicy, null, Configuration.FallbackClientKey, null
             );
 
-            AuthenticationProvider.Configure( appBuilder );
+            AuthenticationProvider.Configure(appBuilder);
 
-            appBuilder.UseWebApi( config );
+            appBuilder.UseWebApi(config);
         }
 
         public ApiConfiguration Configuration { get; }
 
         public void Dispose()
         {
-            lock( mDisposeLock )
+            lock (mDisposeLock)
             {
-                if( Disposed || Disposing )
+                if (Disposed || Disposing)
                 {
                     return;
                 }
@@ -126,21 +126,21 @@ namespace Intersect.Server.Web.RestApi
 
         public void Start()
         {
-            if( !Configuration.Enabled )
+            if (!Configuration.Enabled)
             {
                 return;
             }
 
             try
             {
-                mWebAppHandle = WebApp.Start( StartOptions, Configure );
-                System.Diagnostics.Trace.Listeners.Remove( "HostingTraceListener" );
-                StartOptions.Urls?.ToList().ForEach( host => Console.WriteLine( Strings.Intro.api.ToString( host ) ) );
+                mWebAppHandle = WebApp.Start(StartOptions, Configure);
+                System.Diagnostics.Trace.Listeners.Remove("HostingTraceListener");
+                StartOptions.Urls?.ToList().ForEach(host => Console.WriteLine(Strings.Intro.api.ToString(host)));
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                Console.WriteLine( Strings.Intro.apifailed );
-                Log.Error( Strings.Intro.apifailed + Environment.NewLine + exception );
+                Console.WriteLine(Strings.Intro.apifailed);
+                Log.Error(Strings.Intro.apifailed + Environment.NewLine + exception);
             }
         }
 

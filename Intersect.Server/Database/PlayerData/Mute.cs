@@ -23,36 +23,36 @@ namespace Intersect.Server.Database.PlayerData
         {
         }
 
-        private Mute( string ip, string reason, int durationDays, string muter )
+        private Mute(string ip, string reason, int durationDays, string muter)
         {
             Ip = ip;
             StartTime = DateTime.UtcNow;
             Reason = reason;
-            EndTime = StartTime.AddDays( durationDays );
+            EndTime = StartTime.AddDays(durationDays);
             Muter = muter;
         }
 
-        public Mute( Guid userId, string ip, string reason, int durationDays, string muter ) : this(
+        public Mute(Guid userId, string ip, string reason, int durationDays, string muter) : this(
             ip, reason, durationDays, muter
         )
         {
             UserId = userId;
         }
 
-        public Mute( User user, string ip, string reason, int durationDays, string muter ) : this(
+        public Mute(User user, string ip, string reason, int durationDays, string muter) : this(
             ip, reason, durationDays, muter
         )
         {
             User = user;
         }
 
-        [DatabaseGenerated( DatabaseGeneratedOption.Identity )]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; private set; }
 
-        [ForeignKey( "Player" ), Column( "PlayerId" )] // SOURCE TODO: Migrate column
+        [ForeignKey("Player"), Column("PlayerId")] // SOURCE TODO: Migrate column
         public Guid UserId { get; private set; }
 
-        [JsonIgnore, Column( "Player" )] // SOURCE TODO: Migrate column
+        [JsonIgnore, Column("Player")] // SOURCE TODO: Migrate column
         public virtual User User { get; private set; }
 
         [JsonIgnore, NotMapped]
@@ -69,29 +69,29 @@ namespace Intersect.Server.Database.PlayerData
         public string Muter { get; private set; }
 
         [NotMapped]
-        public bool IsExpired => Expired( this );
+        public bool IsExpired => Expired(this);
 
-        public static bool Expired( Mute mute ) => mute.EndTime <= DateTime.UtcNow;
+        public static bool Expired(Mute mute) => mute.EndTime <= DateTime.UtcNow;
 
-        public static bool Add( Mute mute )
+        public static bool Add(Mute mute)
         {
-            if( mute == null || mute.User == null && mute.UserId == Guid.Empty )
+            if (mute == null || mute.User == null && mute.UserId == Guid.Empty)
             {
                 return false;
             }
 
             try
             {
-                using( var context = DbInterface.CreatePlayerContext( readOnly: false ) )
+                using (var context = DbInterface.CreatePlayerContext(readOnly: false))
                 {
-                    context.Entry( mute ).State = EntityState.Added;
+                    context.Entry(mute).State = EntityState.Added;
                     context.SaveChanges();
                 }
                 return true;
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex, "Failed to add mute for user " + mute.User?.Name );
+                Log.Error(ex, "Failed to add mute for user " + mute.User?.Name);
             }
             return false;
         }
@@ -103,7 +103,7 @@ namespace Intersect.Server.Database.PlayerData
             string muter,
             string ip
         ) =>
-            Add( new Mute( userId, ip, reason, duration, muter ) );
+            Add(new Mute(userId, ip, reason, duration, muter));
 
         public static bool Add(
             User user,
@@ -113,9 +113,9 @@ namespace Intersect.Server.Database.PlayerData
             string ip
         )
         {
-            user.UserMute = new Mute( user, ip, reason, duration, muter );
+            user.UserMute = new Mute(user, ip, reason, duration, muter);
 
-            return Add( user.UserMute );
+            return Add(user.UserMute);
         }
 
         public static bool Add(
@@ -125,85 +125,85 @@ namespace Intersect.Server.Database.PlayerData
             string muter,
             string ip
         ) =>
-            client.User != null && Add( client.User, duration, reason, muter, ip );
+            client.User != null && Add(client.User, duration, reason, muter, ip);
 
-        public static bool Remove( Mute mute )
+        public static bool Remove(Mute mute)
         {
             try
             {
-                using( var context = DbInterface.CreatePlayerContext( readOnly: false ) )
+                using (var context = DbInterface.CreatePlayerContext(readOnly: false))
                 {
-                    context.Entry( mute ).State = EntityState.Deleted;
+                    context.Entry(mute).State = EntityState.Deleted;
                     context.SaveChanges();
                 }
                 return true;
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex, "Failed to delete mute for user " + mute.User?.Name );
+                Log.Error(ex, "Failed to delete mute for user " + mute.User?.Name);
             }
             return false;
         }
 
-        public static bool Remove( string ip, bool expired = true )
+        public static bool Remove(string ip, bool expired = true)
         {
             try
             {
-                using( var context = DbInterface.CreatePlayerContext( readOnly: false ) )
+                using (var context = DbInterface.CreatePlayerContext(readOnly: false))
                 {
-                    var mutes = context.Mutes.Where( e => e.Ip == ip && ( !expired || Expired( e ) ) ).ToList();
-                    if( ( mutes?.Count ?? 0 ) == 0 )
+                    var mutes = context.Mutes.Where(e => e.Ip == ip && (!expired || Expired(e))).ToList();
+                    if ((mutes?.Count ?? 0) == 0)
                     {
                         return true;
                     }
-                    foreach( var mute in mutes )
+                    foreach (var mute in mutes)
                     {
-                        context.Entry( mute ).State = EntityState.Deleted;
+                        context.Entry(mute).State = EntityState.Deleted;
                     }
                     context.SaveChanges();
                 }
                 return true;
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex, "Failed to remove mutes for ip " + ip );
+                Log.Error(ex, "Failed to remove mutes for ip " + ip);
             }
             return false;
         }
 
-        public static bool Remove( Guid userId, bool expired = true )
+        public static bool Remove(Guid userId, bool expired = true)
         {
             try
             {
-                using( var context = DbInterface.CreatePlayerContext( readOnly: false ) )
+                using (var context = DbInterface.CreatePlayerContext(readOnly: false))
                 {
-                    var mutes = context.Mutes.Where( e => e.UserId == userId && ( !expired || Expired( e ) ) ).ToList();
+                    var mutes = context.Mutes.Where(e => e.UserId == userId && (!expired || Expired(e))).ToList();
 
-                    if( ( mutes?.Count ?? 0 ) == 0 )
+                    if ((mutes?.Count ?? 0) == 0)
                     {
                         return true;
                     }
 
-                    foreach( var mute in mutes )
+                    foreach (var mute in mutes)
                     {
-                        context.Entry( mute ).State = EntityState.Deleted;
+                        context.Entry(mute).State = EntityState.Deleted;
                     }
                     context.SaveChanges();
                 }
                 return true;
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex, "Failed to remove mutes user with id " + userId );
+                Log.Error(ex, "Failed to remove mutes user with id " + userId);
             }
             return false;
         }
 
-        public static bool Remove( User user )
+        public static bool Remove(User user)
         {
             try
             {
-                if( !Remove( user.UserMute ) )
+                if (!Remove(user.UserMute))
                 {
                     return false;
                 }
@@ -212,14 +212,14 @@ namespace Intersect.Server.Database.PlayerData
                 user.Save();
                 return true;
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex, "Failed to remove mutes user " + user?.Id );
+                Log.Error(ex, "Failed to remove mutes user " + user?.Id);
             }
             return false;
         }
 
-        public static bool Remove( Client client ) => client.User != null && Remove( client.User );
+        public static bool Remove(Client client) => client.User != null && Remove(client.User);
 
         public static string FindMuteReason(
             Guid userId,
@@ -228,22 +228,22 @@ namespace Intersect.Server.Database.PlayerData
         {
             try
             {
-                var mute = Find( userId ) ?? Find( ip );
+                var mute = Find(userId) ?? Find(ip);
 
                 var expired = mute?.IsExpired ?? true;
 
-                if( expired && mute != null )
+                if (expired && mute != null)
                 {
-                    Remove( mute );
+                    Remove(mute);
                 }
 
                 return expired
                     ? null
-                    : Strings.Account.mutestatus.ToString( mute.StartTime, mute.Muter, mute.EndTime, mute.Reason );
+                    : Strings.Account.mutestatus.ToString(mute.StartTime, mute.Muter, mute.EndTime, mute.Reason);
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex );
+                Log.Error(ex);
                 return null;
             }
         }
@@ -255,68 +255,68 @@ namespace Intersect.Server.Database.PlayerData
         {
             try
             {
-                if( user.Mute == null )
+                if (user.Mute == null)
                 {
-                    user.IpMute = Find( ip );
+                    user.IpMute = Find(ip);
                 }
 
                 var mute = user.Mute;
 
                 var expired = mute?.IsExpired ?? true;
 
-                if( expired && mute != null )
+                if (expired && mute != null)
                 {
-                    Remove( mute );
+                    Remove(mute);
                     user.IpMute = null;
                     user.UserMute = null;
                 }
 
                 return expired
                     ? null
-                    : Strings.Account.mutestatus.ToString( mute.StartTime, mute.Muter, mute.EndTime, mute.Reason );
+                    : Strings.Account.mutestatus.ToString(mute.StartTime, mute.Muter, mute.EndTime, mute.Reason);
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex );
+                Log.Error(ex);
                 return null;
             }
         }
 
-        public static Mute Find( User user ) => Find( user.Id );
+        public static Mute Find(User user) => Find(user.Id);
 
-        public static Mute Find( Guid userId )
+        public static Mute Find(Guid userId)
         {
             try
             {
-                using( var context = DbInterface.CreatePlayerContext() )
+                using (var context = DbInterface.CreatePlayerContext())
                 {
-                    return ByUser( context, userId )?.FirstOrDefault();
+                    return ByUser(context, userId)?.FirstOrDefault();
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex );
+                Log.Error(ex);
                 return null;
             }
         }
 
-        public static Mute Find( string ip )
+        public static Mute Find(string ip)
         {
-            if( string.IsNullOrWhiteSpace( ip ) )
+            if (string.IsNullOrWhiteSpace(ip))
             {
                 return null;
             }
 
             try
             {
-                using( var context = DbInterface.CreatePlayerContext() )
+                using (var context = DbInterface.CreatePlayerContext())
                 {
-                    return ByIp( context, ip )?.FirstOrDefault();
+                    return ByIp(context, ip)?.FirstOrDefault();
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex );
+                Log.Error(ex);
                 return null;
             }
         }
@@ -325,15 +325,15 @@ namespace Intersect.Server.Database.PlayerData
 
         private static readonly Func<PlayerContext, Guid, IEnumerable<Mute>> ByUser =
             EF.CompileQuery<PlayerContext, Guid, Mute>(
-                ( context, userId ) =>
-                    context.Mutes.Where( mute => mute.UserId == userId && mute.EndTime > DateTime.UtcNow )
+                (context, userId) =>
+                    context.Mutes.Where(mute => mute.UserId == userId && mute.EndTime > DateTime.UtcNow)
             ) ??
             throw new InvalidOperationException();
 
         private static readonly Func<PlayerContext, string, IEnumerable<Mute>> ByIp =
             EF.CompileQuery<PlayerContext, string, Mute>(
-                ( context, ip ) => context.Mutes.Where(
-                    mute => string.Equals( mute.Ip, ip, StringComparison.OrdinalIgnoreCase ) &&
+                (context, ip) => context.Mutes.Where(
+                    mute => string.Equals(mute.Ip, ip, StringComparison.OrdinalIgnoreCase) &&
                             mute.EndTime > DateTime.UtcNow
                 )
             ) ??

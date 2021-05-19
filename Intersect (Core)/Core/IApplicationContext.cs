@@ -63,7 +63,7 @@ namespace Intersect.Core
         /// Start the application, optionally locking the current thread until shutdown (default true).
         /// </summary>
         /// <param name="lockUntilShutdown">if the current thread should be locked until shutdown</param>
-        void Start( bool lockUntilShutdown = true );
+        void Start(bool lockUntilShutdown = true);
 
         /// <summary>
         /// Start the application with a <see cref="LockingActionQueue"/>.

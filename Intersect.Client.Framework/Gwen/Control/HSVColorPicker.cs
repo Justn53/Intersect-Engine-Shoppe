@@ -23,43 +23,43 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="HsvColorPicker" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public HsvColorPicker( Base parent ) : base( parent )
+        public HsvColorPicker(Base parent) : base(parent)
         {
             MouseInputEnabled = true;
-            SetSize( 256, 128 );
+            SetSize(256, 128);
 
             //ShouldCacheToTexture = true;
 
-            mLerpBox = new ColorLerpBox( this );
+            mLerpBox = new ColorLerpBox(this);
             mLerpBox.ColorChanged += ColorBoxChanged;
             mLerpBox.Dock = Pos.Left;
 
-            mColorSlider = new ColorSlider( this );
-            mColorSlider.SetPosition( mLerpBox.Width + 15, 5 );
+            mColorSlider = new ColorSlider(this);
+            mColorSlider.SetPosition(mLerpBox.Width + 15, 5);
             mColorSlider.ColorChanged += ColorSliderChanged;
             mColorSlider.Dock = Pos.Left;
 
-            mAfter = new ColorDisplay( this );
-            mAfter.SetSize( 48, 24 );
-            mAfter.SetPosition( mColorSlider.X + mColorSlider.Width + 15, 5 );
+            mAfter = new ColorDisplay(this);
+            mAfter.SetSize(48, 24);
+            mAfter.SetPosition(mColorSlider.X + mColorSlider.Width + 15, 5);
 
-            mBefore = new ColorDisplay( this );
-            mBefore.SetSize( 48, 24 );
-            mBefore.SetPosition( mAfter.X, 28 );
+            mBefore = new ColorDisplay(this);
+            mBefore.SetSize(48, 24);
+            mBefore.SetPosition(mAfter.X, 28);
 
             var x = mBefore.X;
             var y = mBefore.Y + 30;
 
             {
-                var label = new Label( this );
-                label.SetText( "R:" );
+                var label = new Label(this);
+                label.SetText("R:");
                 label.SizeToContents();
-                label.SetPosition( x, y );
+                label.SetPosition(x, y);
 
-                var numeric = new TextBoxNumeric( this );
+                var numeric = new TextBoxNumeric(this);
                 numeric.Name = "RedBox";
-                numeric.SetPosition( x + 15, y - 1 );
-                numeric.SetSize( 26, 16 );
+                numeric.SetPosition(x + 15, y - 1);
+                numeric.SetSize(26, 16);
                 numeric.SelectAllOnFocus = true;
                 numeric.TextChanged += NumericTyped;
             }
@@ -67,15 +67,15 @@ namespace Intersect.Client.Framework.Gwen.Control
             y += 20;
 
             {
-                var label = new Label( this );
-                label.SetText( "G:" );
+                var label = new Label(this);
+                label.SetText("G:");
                 label.SizeToContents();
-                label.SetPosition( x, y );
+                label.SetPosition(x, y);
 
-                var numeric = new TextBoxNumeric( this );
+                var numeric = new TextBoxNumeric(this);
                 numeric.Name = "GreenBox";
-                numeric.SetPosition( x + 15, y - 1 );
-                numeric.SetSize( 26, 16 );
+                numeric.SetPosition(x + 15, y - 1);
+                numeric.SetSize(26, 16);
                 numeric.SelectAllOnFocus = true;
                 numeric.TextChanged += NumericTyped;
             }
@@ -83,20 +83,20 @@ namespace Intersect.Client.Framework.Gwen.Control
             y += 20;
 
             {
-                var label = new Label( this );
-                label.SetText( "B:" );
+                var label = new Label(this);
+                label.SetText("B:");
                 label.SizeToContents();
-                label.SetPosition( x, y );
+                label.SetPosition(x, y);
 
-                var numeric = new TextBoxNumeric( this );
+                var numeric = new TextBoxNumeric(this);
                 numeric.Name = "BlueBox";
-                numeric.SetPosition( x + 15, y - 1 );
-                numeric.SetSize( 26, 16 );
+                numeric.SetPosition(x + 15, y - 1);
+                numeric.SetSize(26, 16);
                 numeric.SelectAllOnFocus = true;
                 numeric.TextChanged += NumericTyped;
             }
 
-            SetColor( DefaultColor );
+            SetColor(DefaultColor);
         }
 
         /// <summary>
@@ -118,81 +118,81 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         public event GwenEventHandler<EventArgs> ColorChanged;
 
-        private void NumericTyped( Base control, EventArgs args )
+        private void NumericTyped(Base control, EventArgs args)
         {
             var box = control as TextBoxNumeric;
-            if( null == box )
+            if (null == box)
             {
                 return;
             }
 
-            if( box.Text == String.Empty )
+            if (box.Text == String.Empty)
             {
                 return;
             }
 
             var textValue = (int)box.Value;
-            if( textValue < 0 )
+            if (textValue < 0)
             {
                 textValue = 0;
             }
 
-            if( textValue > 255 )
+            if (textValue > 255)
             {
                 textValue = 255;
             }
 
             var newColor = SelectedColor;
 
-            if( box.Name.Contains( "Red" ) )
+            if (box.Name.Contains("Red"))
             {
-                newColor = Color.FromArgb( SelectedColor.A, textValue, SelectedColor.G, SelectedColor.B );
+                newColor = Color.FromArgb(SelectedColor.A, textValue, SelectedColor.G, SelectedColor.B);
             }
-            else if( box.Name.Contains( "Green" ) )
+            else if (box.Name.Contains("Green"))
             {
-                newColor = Color.FromArgb( SelectedColor.A, SelectedColor.R, textValue, SelectedColor.B );
+                newColor = Color.FromArgb(SelectedColor.A, SelectedColor.R, textValue, SelectedColor.B);
             }
-            else if( box.Name.Contains( "Blue" ) )
+            else if (box.Name.Contains("Blue"))
             {
-                newColor = Color.FromArgb( SelectedColor.A, SelectedColor.R, SelectedColor.G, textValue );
+                newColor = Color.FromArgb(SelectedColor.A, SelectedColor.R, SelectedColor.G, textValue);
             }
-            else if( box.Name.Contains( "Alpha" ) )
+            else if (box.Name.Contains("Alpha"))
             {
-                newColor = Color.FromArgb( textValue, SelectedColor.R, SelectedColor.G, SelectedColor.B );
+                newColor = Color.FromArgb(textValue, SelectedColor.R, SelectedColor.G, SelectedColor.B);
             }
 
-            SetColor( newColor );
+            SetColor(newColor);
         }
 
-        private void UpdateControls( Color color )
+        private void UpdateControls(Color color)
         {
             // [???] TODO: Make this code safer.
             // [halfofastaple] This code SHOULD (in theory) never crash/not work as intended, but referencing children by their name is unsafe.
             //		Instead, a direct reference to their objects should be maintained. Worst case scenario, we grab the wrong "RedBox".
 
-            var redBox = FindChildByName( "RedBox", false ) as TextBoxNumeric;
-            if( redBox != null )
+            var redBox = FindChildByName("RedBox", false) as TextBoxNumeric;
+            if (redBox != null)
             {
-                redBox.SetText( color.R.ToString(), false );
+                redBox.SetText(color.R.ToString(), false);
             }
 
-            var greenBox = FindChildByName( "GreenBox", false ) as TextBoxNumeric;
-            if( greenBox != null )
+            var greenBox = FindChildByName("GreenBox", false) as TextBoxNumeric;
+            if (greenBox != null)
             {
-                greenBox.SetText( color.G.ToString(), false );
+                greenBox.SetText(color.G.ToString(), false);
             }
 
-            var blueBox = FindChildByName( "BlueBox", false ) as TextBoxNumeric;
-            if( blueBox != null )
+            var blueBox = FindChildByName("BlueBox", false) as TextBoxNumeric;
+            if (blueBox != null)
             {
-                blueBox.SetText( color.B.ToString(), false );
+                blueBox.SetText(color.B.ToString(), false);
             }
 
             mAfter.Color = color;
 
-            if( ColorChanged != null )
+            if (ColorChanged != null)
             {
-                ColorChanged.Invoke( this, EventArgs.Empty );
+                ColorChanged.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -202,31 +202,31 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <param name="color">Color to set.</param>
         /// <param name="onlyHue">Determines whether only the hue should be set.</param>
         /// <param name="reset">Determines whether the "before" color should be set as well.</param>
-        public void SetColor( Color color, bool onlyHue = false, bool reset = false )
+        public void SetColor(Color color, bool onlyHue = false, bool reset = false)
         {
-            UpdateControls( color );
+            UpdateControls(color);
 
-            if( reset )
+            if (reset)
             {
                 mBefore.Color = color;
             }
 
             mColorSlider.SelectedColor = color;
-            mLerpBox.SetColor( color, onlyHue );
+            mLerpBox.SetColor(color, onlyHue);
             mAfter.Color = color;
         }
 
-        private void ColorBoxChanged( Base control, EventArgs args )
+        private void ColorBoxChanged(Base control, EventArgs args)
         {
-            UpdateControls( SelectedColor );
+            UpdateControls(SelectedColor);
             Invalidate();
         }
 
-        private void ColorSliderChanged( Base control, EventArgs args )
+        private void ColorSliderChanged(Base control, EventArgs args)
         {
-            if( mLerpBox != null )
+            if (mLerpBox != null)
             {
-                mLerpBox.SetColor( mColorSlider.SelectedColor, true );
+                mLerpBox.SetColor(mColorSlider.SelectedColor, true);
             }
 
             Invalidate();

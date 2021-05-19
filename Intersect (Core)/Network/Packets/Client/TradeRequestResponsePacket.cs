@@ -11,16 +11,16 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public TradeRequestResponsePacket( Guid tradeId, bool accepting )
+        public TradeRequestResponsePacket(Guid tradeId, bool accepting)
         {
             TradeId = tradeId;
             AcceptingInvite = accepting;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid TradeId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public bool AcceptingInvite { get; set; }
 
     }

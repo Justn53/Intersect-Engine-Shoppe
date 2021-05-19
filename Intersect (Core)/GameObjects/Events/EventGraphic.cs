@@ -6,17 +6,17 @@ namespace Intersect.GameObjects.Events
     [MessagePackObject]
     public class EventGraphic
     {
-        [Key( 0 )]
+        [Key(0)]
         public string Filename;
-        [Key( 1 )]
+        [Key(1)]
         public int Height;
-        [Key( 2 )]
+        [Key(2)]
         public EventGraphicType Type;
-        [Key( 3 )]
+        [Key(3)]
         public int Width;
-        [Key( 4 )]
+        [Key(4)]
         public int X;
-        [Key( 5 )]
+        [Key(5)]
         public int Y;
 
         public EventGraphic()
@@ -29,7 +29,7 @@ namespace Intersect.GameObjects.Events
             Height = -1;
         }
 
-        public void CopyFrom( EventGraphic toCopy )
+        public void CopyFrom(EventGraphic toCopy)
         {
             Type = toCopy.Type;
             Filename = toCopy.Filename;

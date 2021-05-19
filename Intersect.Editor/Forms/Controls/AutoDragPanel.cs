@@ -24,49 +24,49 @@ namespace Intersect.Editor.Forms.Controls
             MouseUp += AutoDragPanel_MouseUp;
         }
 
-        public void AutoDragPanel_MouseUp( object sender, MouseEventArgs e )
+        public void AutoDragPanel_MouseUp(object sender, MouseEventArgs e)
         {
             mDragTimer.Enabled = false;
         }
 
-        public void AutoDragPanel_MouseDown( object sender, MouseEventArgs e )
+        public void AutoDragPanel_MouseDown(object sender, MouseEventArgs e)
         {
-            if( e.Button == MouseButtons.Left )
+            if (e.Button == MouseButtons.Left)
             {
                 mDragTimer.Enabled = true;
             }
         }
 
-        private void DragTimer_Tick( object sender, EventArgs e )
+        private void DragTimer_Tick(object sender, EventArgs e)
         {
-            var pos = PointToClient( MousePosition );
+            var pos = PointToClient(MousePosition);
 
             var right = ClientRectangle.Right;
             var bottom = ClientRectangle.Bottom;
 
-            if( VerticalScroll.Visible )
+            if (VerticalScroll.Visible)
             {
                 right = Width - SystemInformation.VerticalScrollBarWidth;
             }
 
-            if( HorizontalScroll.Visible )
+            if (HorizontalScroll.Visible)
             {
                 bottom = Height - SystemInformation.HorizontalScrollBarHeight;
             }
 
-            if( VerticalScroll.Visible )
+            if (VerticalScroll.Visible)
             {
                 // Scroll up
-                if( pos.Y < ClientRectangle.Top )
+                if (pos.Y < ClientRectangle.Top)
                 {
-                    var difference = ( pos.Y - ClientRectangle.Top ) * -1;
+                    var difference = (pos.Y - ClientRectangle.Top) * -1;
 
-                    if( mMaxDragChange > 0 && difference > mMaxDragChange )
+                    if (mMaxDragChange > 0 && difference > mMaxDragChange)
                     {
                         difference = mMaxDragChange;
                     }
 
-                    if( VerticalScroll.Value < difference )
+                    if (VerticalScroll.Value < difference)
                     {
                         VerticalScroll.Value = 0;
                     }
@@ -77,11 +77,11 @@ namespace Intersect.Editor.Forms.Controls
                 }
 
                 // Scroll down
-                if( pos.Y > bottom )
+                if (pos.Y > bottom)
                 {
                     var difference = pos.Y - bottom;
 
-                    if( mMaxDragChange > 0 && difference > mMaxDragChange )
+                    if (mMaxDragChange > 0 && difference > mMaxDragChange)
                     {
                         difference = mMaxDragChange;
                     }
@@ -90,19 +90,19 @@ namespace Intersect.Editor.Forms.Controls
                 }
             }
 
-            if( HorizontalScroll.Visible )
+            if (HorizontalScroll.Visible)
             {
                 // Scroll left
-                if( pos.X < ClientRectangle.Left )
+                if (pos.X < ClientRectangle.Left)
                 {
-                    var difference = ( pos.X - ClientRectangle.Left ) * -1;
+                    var difference = (pos.X - ClientRectangle.Left) * -1;
 
-                    if( mMaxDragChange > 0 && difference > mMaxDragChange )
+                    if (mMaxDragChange > 0 && difference > mMaxDragChange)
                     {
                         difference = mMaxDragChange;
                     }
 
-                    if( HorizontalScroll.Value < difference )
+                    if (HorizontalScroll.Value < difference)
                     {
                         HorizontalScroll.Value = 0;
                     }
@@ -113,11 +113,11 @@ namespace Intersect.Editor.Forms.Controls
                 }
 
                 // Scroll right
-                if( pos.X > right )
+                if (pos.X > right)
                 {
                     var difference = pos.X - right;
 
-                    if( mMaxDragChange > 0 && difference > mMaxDragChange )
+                    if (mMaxDragChange > 0 && difference > mMaxDragChange)
                     {
                         difference = mMaxDragChange;
                     }

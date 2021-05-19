@@ -21,7 +21,7 @@ namespace Intersect.Server.Database.GameData
     public class GameContext : IntersectDbContext<GameContext>, IGameContext
     {
 
-        public GameContext() : base( DefaultConnectionStringBuilder )
+        public GameContext() : base(DefaultConnectionStringBuilder)
         {
 
         }
@@ -32,13 +32,13 @@ namespace Intersect.Server.Database.GameData
             bool readOnly = false,
             Intersect.Logging.Logger logger = null,
             Intersect.Logging.LogLevel logLevel = Intersect.Logging.LogLevel.None
-        ) : base( connectionStringBuilder, databaseType, logger, logLevel, readOnly, false )
+        ) : base(connectionStringBuilder, databaseType, logger, logLevel, readOnly, false)
         {
 
         }
 
         public static DbConnectionStringBuilder DefaultConnectionStringBuilder =>
-            new SqliteConnectionStringBuilder( @"Data Source=resources/gamedata.db" );
+            new SqliteConnectionStringBuilder(@"Data Source=resources/gamedata.db");
 
         //Animations
         public DbSet<AnimationBase> Animations { get; set; }
@@ -91,20 +91,20 @@ namespace Intersect.Server.Database.GameData
         //Time
         public DbSet<TimeBase> Time { get; set; }
 
-        protected override void OnModelCreating( ModelBuilder modelBuilder )
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }
 
-        public override void MigrationsProcessed( string[] migrations )
+        public override void MigrationsProcessed(string[] migrations)
         {
-            if( migrations.IndexOf( "20190611170819_CombiningSwitchesVariables" ) > -1 )
+            if (migrations.IndexOf("20190611170819_CombiningSwitchesVariables") > -1)
             {
-                Beta6Migration.Run( this );
+                Beta6Migration.Run(this);
             }
 
-            if( migrations.IndexOf( "20201004032158_EnablingCerasVersionTolerance" ) > -1 )
+            if (migrations.IndexOf("20201004032158_EnablingCerasVersionTolerance") > -1)
             {
-                CerasVersionToleranceMigration.Run( this );
+                CerasVersionToleranceMigration.Run(this);
             }
         }
 
@@ -112,11 +112,11 @@ namespace Intersect.Server.Database.GameData
         {
 
             internal static readonly Func<Guid, ServerVariableBase> ServerVariableById =
-                ( Guid id ) => ServerVariableBase.Lookup.Where( variable => variable.Key == id ).Any() ? (ServerVariableBase)ServerVariableBase.Lookup.Where( variable => variable.Key == id ).First().Value : null;
+                (Guid id) => ServerVariableBase.Lookup.Where(variable => variable.Key == id).Any() ? (ServerVariableBase)ServerVariableBase.Lookup.Where(variable => variable.Key == id).First().Value : null;
 
 
             internal static readonly Func<int, int, IEnumerable<ServerVariableBase>> ServerVariables =
-                ( int page, int count ) => ServerVariableBase.Lookup.Select( v => (ServerVariableBase)v.Value ).OrderBy( v => v.Id.ToString() ).Skip( page * count ).Take( count );
+                (int page, int count) => ServerVariableBase.Lookup.Select(v => (ServerVariableBase)v.Value).OrderBy(v => v.Id.ToString()).Skip(page * count).Take(count);
 
         }
 

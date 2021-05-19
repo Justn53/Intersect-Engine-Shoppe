@@ -39,20 +39,20 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="ComboBox" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ComboBox( Base parent, string name = "" ) : base( parent, name )
+        public ComboBox(Base parent, string name = "") : base(parent, name)
         {
-            SetSize( 100, 20 );
-            mMenu = new Menu( this );
+            SetSize(100, 20);
+            mMenu = new Menu(this);
             mMenu.IsHidden = true;
             mMenu.IconMarginDisabled = true;
             mMenu.IsTabable = false;
 
-            var arrow = new DownArrow( this );
+            var arrow = new DownArrow(this);
             mButton = arrow;
 
             Alignment = Pos.Left | Pos.CenterV;
             Text = String.Empty;
-            Margin = new Margin( 3, 0, 0, 0 );
+            Margin = new Margin(3, 0, 0, 0);
 
             IsTabable = true;
             KeyboardInputEnabled = true;
@@ -72,13 +72,13 @@ namespace Intersect.Client.Framework.Gwen.Control
             get => mSelectedItem;
             set
             {
-                if( value == null || value.Parent != mMenu )
+                if (value == null || value.Parent != mMenu)
                 {
                     return;
                 }
 
                 mSelectedItem = value;
-                OnItemSelected( mSelectedItem, new ItemSelectedEventArgs( value, true ) );
+                OnItemSelected(mSelectedItem, new ItemSelectedEventArgs(value, true));
             }
         }
 
@@ -92,7 +92,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         public void SetMenuAbove()
         {
             mMenuAbove = true;
-            if( IsOpen )
+            if (IsOpen)
             {
                 Open();
             }
@@ -101,7 +101,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         public void SetMenuBelow()
         {
             mMenuAbove = false;
-            if( IsOpen )
+            if (IsOpen)
             {
                 Open();
             }
@@ -110,57 +110,57 @@ namespace Intersect.Client.Framework.Gwen.Control
         public override JObject GetJson()
         {
             var obj = base.GetJson();
-            obj.Add( "MenuAbove", mMenuAbove );
-            obj.Add( "Menu", mMenu.GetJson() );
-            obj.Add( "DropDownButton", mButton.GetJson() );
-            obj.Add( "OpenMenuSound", mOpenMenuSound );
-            obj.Add( "CloseMenuSound", mCloseMenuSound );
-            obj.Add( "HoverMenuSound", mHoverMenuSound );
-            obj.Add( "ItemHoverSound", mHoverItemSound );
-            obj.Add( "SelectItemSound", mSelectItemSound );
+            obj.Add("MenuAbove", mMenuAbove);
+            obj.Add("Menu", mMenu.GetJson());
+            obj.Add("DropDownButton", mButton.GetJson());
+            obj.Add("OpenMenuSound", mOpenMenuSound);
+            obj.Add("CloseMenuSound", mCloseMenuSound);
+            obj.Add("HoverMenuSound", mHoverMenuSound);
+            obj.Add("ItemHoverSound", mHoverItemSound);
+            obj.Add("SelectItemSound", mSelectItemSound);
 
-            return base.FixJson( obj );
+            return base.FixJson(obj);
         }
 
-        public override void LoadJson( JToken obj )
+        public override void LoadJson(JToken obj)
         {
-            base.LoadJson( obj );
-            if( obj["MenuAbove"] != null )
+            base.LoadJson(obj);
+            if (obj["MenuAbove"] != null)
             {
                 mMenuAbove = (bool)obj["MenuAbove"];
             }
 
-            if( obj["Menu"] != null )
+            if (obj["Menu"] != null)
             {
-                mMenu.LoadJson( obj["Menu"] );
+                mMenu.LoadJson(obj["Menu"]);
             }
 
-            if( obj["DropDownButton"] != null )
+            if (obj["DropDownButton"] != null)
             {
-                mButton.LoadJson( obj["DropDownButton"] );
+                mButton.LoadJson(obj["DropDownButton"]);
             }
 
-            if( obj["OpenMenuSound"] != null )
+            if (obj["OpenMenuSound"] != null)
             {
                 mOpenMenuSound = (string)obj["OpenMenuSound"];
             }
 
-            if( obj["CloseMenuSound"] != null )
+            if (obj["CloseMenuSound"] != null)
             {
                 mCloseMenuSound = (string)obj["CloseMenuSound"];
             }
 
-            if( obj["HoverMenuSound"] != null )
+            if (obj["HoverMenuSound"] != null)
             {
                 mHoverMenuSound = (string)obj["HoverMenuSound"];
             }
 
-            if( obj["ItemHoverSound"] != null )
+            if (obj["ItemHoverSound"] != null)
             {
                 mHoverItemSound = (string)obj["ItemHoverSound"];
             }
 
-            if( obj["SelectItemSound"] != null )
+            if (obj["SelectItemSound"] != null)
             {
                 mSelectItemSound = (string)obj["SelectItemSound"];
             }
@@ -171,15 +171,15 @@ namespace Intersect.Client.Framework.Gwen.Control
             mHoverItemSound = "octave-tap-resonant.wav";
             mSelectItemSound = "octave-tap-warm.wav";
 
-            foreach( var mnu in Children )
+            foreach (var mnu in Children)
             {
-                if( mnu.GetType() == typeof( Menu ) )
+                if (mnu.GetType() == typeof(Menu))
                 {
-                    foreach( var itm in mnu.Children )
+                    foreach (var itm in mnu.Children)
                     {
-                        if( itm.GetType() == typeof( MenuItem ) )
+                        if (itm.GetType() == typeof(MenuItem))
                         {
-                            ( (MenuItem)itm ).SetHoverSound( mHoverItemSound );
+                            ((MenuItem)itm).SetHoverSound(mHoverItemSound);
                         }
                     }
                 }
@@ -192,21 +192,21 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <param name="label">Item label (displayed).</param>
         /// <param name="name">Item name.</param>
         /// <returns>Newly created control.</returns>
-        public virtual MenuItem AddItem( string label, string name = "", object userData = null )
+        public virtual MenuItem AddItem(string label, string name = "", object userData = null)
         {
-            var item = mMenu.AddItem( label, null, "", "", this.Font );
+            var item = mMenu.AddItem(label, null, "", "", this.Font);
             item.Name = name;
             item.Selected += OnItemSelected;
             item.UserData = userData;
-            item.SetTextColor( GetTextColor( Label.ControlState.Normal ), Label.ControlState.Normal );
-            item.SetTextColor( GetTextColor( Label.ControlState.Hovered ), Label.ControlState.Hovered );
-            item.SetTextColor( GetTextColor( Label.ControlState.Clicked ), Label.ControlState.Clicked );
-            item.SetTextColor( GetTextColor( Label.ControlState.Disabled ), Label.ControlState.Disabled );
-            item.SetHoverSound( mHoverItemSound );
+            item.SetTextColor(GetTextColor(Label.ControlState.Normal), Label.ControlState.Normal);
+            item.SetTextColor(GetTextColor(Label.ControlState.Hovered), Label.ControlState.Hovered);
+            item.SetTextColor(GetTextColor(Label.ControlState.Clicked), Label.ControlState.Clicked);
+            item.SetTextColor(GetTextColor(Label.ControlState.Disabled), Label.ControlState.Disabled);
+            item.SetHoverSound(mHoverItemSound);
 
-            if( mSelectedItem == null )
+            if (mSelectedItem == null)
             {
-                OnItemSelected( item, new ItemSelectedEventArgs( null, true ) );
+                OnItemSelected(item, new ItemSelectedEventArgs(null, true));
             }
 
             return item;
@@ -216,9 +216,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawComboBox( this, IsDepressed, IsOpen );
+            skin.DrawComboBox(this, IsDepressed, IsOpen);
         }
 
         public override void Disable()
@@ -230,9 +230,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <summary>
         ///     Internal Pressed implementation.
         /// </summary>
-        protected override void OnClicked( int x, int y )
+        protected override void OnClicked(int x, int y)
         {
-            if( IsOpen )
+            if (IsOpen)
             {
                 GetCanvas().CloseMenus();
 
@@ -243,12 +243,12 @@ namespace Intersect.Client.Framework.Gwen.Control
 
             GetCanvas().CloseMenus();
 
-            if( wasMenuHidden )
+            if (wasMenuHidden)
             {
                 Open();
             }
 
-            base.OnClicked( x, y );
+            base.OnClicked(x, y);
         }
 
         /// <summary>
@@ -256,7 +256,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         public virtual void DeleteAll()
         {
-            if( mMenu != null )
+            if (mMenu != null)
             {
                 mMenu.DeleteAll();
             }
@@ -266,13 +266,13 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Internal handler for item selected event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnItemSelected( Base control, ItemSelectedEventArgs args )
+        protected virtual void OnItemSelected(Base control, ItemSelectedEventArgs args)
         {
-            if( !IsDisabled )
+            if (!IsDisabled)
             {
                 //Convert selected to a menu item
                 var item = control as MenuItem;
-                if( null == item )
+                if (null == item)
                 {
                     return;
                 }
@@ -281,14 +281,14 @@ namespace Intersect.Client.Framework.Gwen.Control
                 Text = mSelectedItem.Text;
                 mMenu.IsHidden = true;
 
-                if( ItemSelected != null )
+                if (ItemSelected != null)
                 {
-                    ItemSelected.Invoke( this, args );
+                    ItemSelected.Invoke(this, args);
                 }
 
-                if( !args.Automated )
+                if (!args.Automated)
                 {
-                    base.PlaySound( mSelectItemSound );
+                    base.PlaySound(mSelectItemSound);
                 }
 
                 Focus();
@@ -300,10 +300,10 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout( Skin.Base skin )
+        protected override void Layout(Skin.Base skin)
         {
-            mButton.Position( Pos.Right | Pos.CenterV, 4, 0 );
-            base.Layout( skin );
+            mButton.Position(Pos.Right | Pos.CenterV, 4, 0);
+            base.Layout(skin);
         }
 
         /// <summary>
@@ -311,9 +311,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         protected override void OnLostKeyboardFocus()
         {
-            if( GetTextColor( Label.ControlState.Normal ) != null )
+            if (GetTextColor(Label.ControlState.Normal) != null)
             {
-                TextColor = GetTextColor( Label.ControlState.Normal );
+                TextColor = GetTextColor(Label.ControlState.Normal);
 
                 return;
             }
@@ -327,9 +327,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         protected override void OnKeyboardFocus()
         {
             //Until we add the blue highlighting again
-            if( GetTextColor( Label.ControlState.Normal ) != null )
+            if (GetTextColor(Label.ControlState.Normal) != null)
             {
-                TextColor = GetTextColor( Label.ControlState.Normal );
+                TextColor = GetTextColor(Label.ControlState.Normal);
 
                 return;
             }
@@ -342,9 +342,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         public virtual void Open()
         {
-            if( !IsDisabled )
+            if (!IsDisabled)
             {
-                if( null == mMenu )
+                if (null == mMenu)
                 {
                     return;
                 }
@@ -353,20 +353,20 @@ namespace Intersect.Client.Framework.Gwen.Control
                 mMenu.IsHidden = false;
                 mMenu.BringToFront();
 
-                var p = LocalPosToCanvas( Point.Empty );
-                if( mMenuAbove )
+                var p = LocalPosToCanvas(Point.Empty);
+                if (mMenuAbove)
                 {
                     mMenu.RestrictToParent = false;
-                    mMenu.Height = mMenu.Children.Sum( child => child != null ? child.Height : 0 );
-                    mMenu.SetBounds( new Rectangle( p.X, p.Y - mMenu.Height, Width, mMenu.Height ) );
+                    mMenu.Height = mMenu.Children.Sum(child => child != null ? child.Height : 0);
+                    mMenu.SetBounds(new Rectangle(p.X, p.Y - mMenu.Height, Width, mMenu.Height));
                     mMenu.RestrictToParent = true;
                 }
                 else
                 {
-                    mMenu.SetBounds( new Rectangle( p.X, p.Y + Height, Width, mMenu.Height ) );
+                    mMenu.SetBounds(new Rectangle(p.X, p.Y + Height, Width, mMenu.Height));
                 }
 
-                base.PlaySound( mOpenMenuSound );
+                base.PlaySound(mOpenMenuSound);
             }
         }
 
@@ -375,14 +375,14 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         public virtual void Close()
         {
-            if( mMenu == null )
+            if (mMenu == null)
             {
                 return;
             }
 
             mMenu.Hide();
 
-            base.PlaySound( mCloseMenuSound );
+            base.PlaySound(mCloseMenuSound);
         }
 
         /// <summary>
@@ -392,14 +392,14 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyDown( bool down )
+        protected override bool OnKeyDown(bool down)
         {
-            if( down )
+            if (down)
             {
-                var it = mMenu.Children.FindIndex( x => x == mSelectedItem );
-                if( it + 1 < mMenu.Children.Count )
+                var it = mMenu.Children.FindIndex(x => x == mSelectedItem);
+                if (it + 1 < mMenu.Children.Count)
                 {
-                    OnItemSelected( this, new ItemSelectedEventArgs( mMenu.Children[it + 1] ) );
+                    OnItemSelected(this, new ItemSelectedEventArgs(mMenu.Children[it + 1]));
                 }
             }
 
@@ -413,14 +413,14 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyUp( bool down )
+        protected override bool OnKeyUp(bool down)
         {
-            if( down )
+            if (down)
             {
-                var it = mMenu.Children.FindLastIndex( x => x == mSelectedItem );
-                if( it - 1 >= 0 )
+                var it = mMenu.Children.FindLastIndex(x => x == mSelectedItem);
+                if (it - 1 >= 0)
                 {
-                    OnItemSelected( this, new ItemSelectedEventArgs( mMenu.Children[it - 1] ) );
+                    OnItemSelected(this, new ItemSelectedEventArgs(mMenu.Children[it - 1]));
                 }
             }
 
@@ -431,7 +431,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Renders the focus overlay.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void RenderFocus( Skin.Base skin )
+        protected override void RenderFocus(Skin.Base skin)
         {
         }
 
@@ -440,11 +440,11 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     If a menu item can not be found that matches input, nothing happens.
         /// </summary>
         /// <param name="label">The label to look for, this is what is shown to the user.</param>
-        public void SelectByText( string text )
+        public void SelectByText(string text)
         {
-            foreach( MenuItem item in mMenu.Children )
+            foreach (MenuItem item in mMenu.Children)
             {
-                if( item.Text == text )
+                if (item.Text == text)
                 {
                     SelectedItem = item;
 
@@ -458,11 +458,11 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     If a menu item can not be found that matches input, nothing happens.
         /// </summary>
         /// <param name="name">The internal name to look for. To select by what is displayed to the user, use "SelectByText".</param>
-        public void SelectByName( string name )
+        public void SelectByName(string name)
         {
-            foreach( MenuItem item in mMenu.Children )
+            foreach (MenuItem item in mMenu.Children)
             {
-                if( item.Name == name )
+                if (item.Name == name)
                 {
                     SelectedItem = item;
 
@@ -479,20 +479,20 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     The UserData to look for. The equivalency check uses "param.Equals(item.UserData)".
         ///     If null is passed in, it will look for null/unset UserData.
         /// </param>
-        public void SelectByUserData( object userdata )
+        public void SelectByUserData(object userdata)
         {
-            foreach( MenuItem item in mMenu.Children )
+            foreach (MenuItem item in mMenu.Children)
             {
-                if( userdata == null )
+                if (userdata == null)
                 {
-                    if( item.UserData == null )
+                    if (item.UserData == null)
                     {
                         SelectedItem = item;
 
                         return;
                     }
                 }
-                else if( userdata.Equals( item.UserData ) )
+                else if (userdata.Equals(item.UserData))
                 {
                     SelectedItem = item;
 
@@ -501,26 +501,26 @@ namespace Intersect.Client.Framework.Gwen.Control
             }
         }
 
-        public void SetMenuBackgroundColor( Color clr )
+        public void SetMenuBackgroundColor(Color clr)
         {
             mMenu.RenderColor = clr;
         }
 
-        public void SetMenuMaxSize( int w, int h )
+        public void SetMenuMaxSize(int w, int h)
         {
-            mMenu.MaximumSize = new Point( w, h );
+            mMenu.MaximumSize = new Point(w, h);
         }
 
-        public override void SetTextColor( Color clr, Label.ControlState state )
+        public override void SetTextColor(Color clr, Label.ControlState state)
         {
-            base.SetTextColor( clr, state );
-            foreach( MenuItem itm in mMenu.Children )
+            base.SetTextColor(clr, state);
+            foreach (MenuItem itm in mMenu.Children)
             {
-                itm.SetTextColor( clr, state );
+                itm.SetTextColor(clr, state);
             }
         }
 
-        public void SetMenu( Menu menu )
+        public void SetMenu(Menu menu)
         {
             mMenu = menu;
         }
@@ -530,9 +530,9 @@ namespace Intersect.Client.Framework.Gwen.Control
             base.OnMouseEntered();
 
             //Play Mouse Entered Sound
-            if( !IsOpen && ShouldDrawHover )
+            if (!IsOpen && ShouldDrawHover)
             {
-                base.PlaySound( mHoverMenuSound );
+                base.PlaySound(mHoverMenuSound);
             }
         }
 

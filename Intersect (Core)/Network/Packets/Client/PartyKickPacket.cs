@@ -11,12 +11,12 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public PartyKickPacket( Guid targetId )
+        public PartyKickPacket(Guid targetId)
         {
             TargetId = targetId;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid TargetId { get; set; }
 
     }

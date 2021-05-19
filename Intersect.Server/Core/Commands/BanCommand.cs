@@ -15,27 +15,27 @@ namespace Intersect.Server.Core.Commands
         {
         }
 
-        protected override void HandleClient( ServerContext context, Client target, int duration, bool ip, string reason )
+        protected override void HandleClient(ServerContext context, Client target, int duration, bool ip, string reason)
         {
-            if( target.Entity == null )
+            if (target.Entity == null)
             {
-                Console.WriteLine( $@"    {Strings.Player.offline}" );
+                Console.WriteLine($@"    {Strings.Player.offline}");
 
                 return;
             }
 
             // TODO: Refactor the global/console messages into ModeratorActionCommand
             var name = target.Entity.Name;
-            if( string.IsNullOrEmpty( Ban.CheckBan( target.User, "" ) ) )
+            if (string.IsNullOrEmpty(Ban.CheckBan(target.User, "")))
             {
-                Ban.Add( target, duration, reason, Strings.Commands.banuser, ip ? target.GetIp() : "" );
+                Ban.Add(target, duration, reason, Strings.Commands.banuser, ip ? target.GetIp() : "");
                 target.Disconnect();
-                PacketSender.SendGlobalMsg( Strings.Account.banned.ToString( name ) );
-                Console.WriteLine( $@"    {Strings.Account.banned.ToString( name )}" );
+                PacketSender.SendGlobalMsg(Strings.Account.banned.ToString(name));
+                Console.WriteLine($@"    {Strings.Account.banned.ToString(name)}");
             }
             else
             {
-                Console.WriteLine( $@"    {Strings.Account.alreadybanned.ToString( name )}" );
+                Console.WriteLine($@"    {Strings.Account.alreadybanned.ToString(name)}");
             }
         }
 

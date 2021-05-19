@@ -16,18 +16,18 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private PlayBgmCommand mMyCommand;
 
-        public EventCommandPlayBgm( PlayBgmCommand refCommand, FrmEvent editor )
+        public EventCommandPlayBgm(PlayBgmCommand refCommand, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
             mEventEditor = editor;
             InitLocalization();
             cmbBgm.Items.Clear();
-            cmbBgm.Items.Add( Strings.General.none );
-            cmbBgm.Items.AddRange( GameContentManager.SmartSortedMusicNames );
-            if( cmbBgm.Items.IndexOf( TextUtils.NullToNone( mMyCommand.File ) ) > -1 )
+            cmbBgm.Items.Add(Strings.General.none);
+            cmbBgm.Items.AddRange(GameContentManager.SmartSortedMusicNames);
+            if (cmbBgm.Items.IndexOf(TextUtils.NullToNone(mMyCommand.File)) > -1)
             {
-                cmbBgm.SelectedIndex = cmbBgm.Items.IndexOf( TextUtils.NullToNone( mMyCommand.File ) );
+                cmbBgm.SelectedIndex = cmbBgm.Items.IndexOf(TextUtils.NullToNone(mMyCommand.File));
             }
             else
             {
@@ -43,18 +43,18 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             btnCancel.Text = Strings.EventPlayBgm.cancel;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            mMyCommand.File = TextUtils.SanitizeNone( cmbBgm?.Text );
+            mMyCommand.File = TextUtils.SanitizeNone(cmbBgm?.Text);
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }
 
-        private void cmbSprite_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbSprite_SelectedIndexChanged(object sender, EventArgs e)
         {
         }
 

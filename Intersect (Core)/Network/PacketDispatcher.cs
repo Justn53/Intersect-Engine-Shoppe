@@ -15,60 +15,60 @@ namespace Intersect.Network
             mHandlers = new Dictionary<Type, IList<HandlePacket>>();
         }
 
-        private IList<HandlePacket> GetHandlers( Type type )
+        private IList<HandlePacket> GetHandlers(Type type)
         {
-            if( mHandlers == null )
+            if (mHandlers == null)
             {
                 throw new ArgumentNullException();
             }
 
-            if( type == null )
+            if (type == null)
             {
                 throw new ArgumentNullException();
             }
 
-            if( !mHandlers.TryGetValue( type, out var handlers ) )
+            if (!mHandlers.TryGetValue(type, out var handlers))
             {
                 handlers = new List<HandlePacket>();
-                mHandlers.Add( type, handlers );
+                mHandlers.Add(type, handlers);
             }
 
             return handlers;
         }
 
-        public bool RegisterHandler( Type type, HandlePacket handler )
+        public bool RegisterHandler(Type type, HandlePacket handler)
         {
-            var handlers = GetHandlers( type );
-            if( handlers?.Contains( handler ) ?? false )
+            var handlers = GetHandlers(type);
+            if (handlers?.Contains(handler) ?? false)
             {
                 return false;
             }
 
-            handlers?.Add( handler );
+            handlers?.Add(handler);
 
             return true;
         }
 
-        public void DeregisterHandlers( Type type )
+        public void DeregisterHandlers(Type type)
         {
-            GetHandlers( type )?.Clear();
+            GetHandlers(type)?.Clear();
         }
 
-        public bool DeregisterHandler( Type type, HandlePacket handler )
+        public bool DeregisterHandler(Type type, HandlePacket handler)
         {
-            var handlers = GetHandlers( type );
+            var handlers = GetHandlers(type);
 
-            return ( handlers?.Contains( handler ) ?? false ) && handlers.Remove( handler );
+            return (handlers?.Contains(handler) ?? false) && handlers.Remove(handler);
         }
 
-        public bool Dispatch( IPacket packet )
+        public bool Dispatch(IPacket packet)
         {
-            if( packet == null )
+            if (packet == null)
             {
                 throw new ArgumentNullException();
             }
 
-            return GetHandlers( packet.GetType() )?.Any( handler => handler != null && handler( null, packet ) ) ?? false;
+            return GetHandlers(packet.GetType())?.Any(handler => handler != null && handler(null, packet)) ?? false;
         }
 
     }

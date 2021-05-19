@@ -17,7 +17,7 @@ namespace Intersect.Server.Core.CommandParsing
             bool allowImplicit = true
         )
         {
-            return result.Parsed.Find<TValue>( argument, index, allowImplicit );
+            return result.Parsed.Find<TValue>(argument, index, allowImplicit);
         }
 
         public static IEnumerable<TValue> FindAll<TValue>(
@@ -25,7 +25,7 @@ namespace Intersect.Server.Core.CommandParsing
             ArrayCommandArgument<TValue> argument
         )
         {
-            return result.Parsed.FindAll( argument );
+            return result.Parsed.FindAll(argument);
         }
 
         public static bool TryFind<TValue>(
@@ -36,7 +36,7 @@ namespace Intersect.Server.Core.CommandParsing
             bool allowImplicit = true
         )
         {
-            return result.Parsed.TryFind( argument, out value, index, allowImplicit );
+            return result.Parsed.TryFind(argument, out value, index, allowImplicit);
         }
 
         public static bool TryFindAll<TValue>(
@@ -45,7 +45,7 @@ namespace Intersect.Server.Core.CommandParsing
             out IEnumerable<TValue> values
         )
         {
-            return result.Parsed.TryFindAll( argument, out values );
+            return result.Parsed.TryFindAll(argument, out values);
         }
 
         public static ParserContext AsContext(
@@ -61,8 +61,8 @@ namespace Intersect.Server.Core.CommandParsing
                 Parsed = result.Parsed.Values
                     .Where(
                         pair => !filterOmitted ||
-                                !result.Omitted.Contains( pair.Key ) ||
-                                !( filterOut?.Contains( pair.Key ) ?? false )
+                                !result.Omitted.Contains(pair.Key) ||
+                                !(filterOut?.Contains(pair.Key) ?? false)
                     )
                     .ToImmutableDictionary()
             };

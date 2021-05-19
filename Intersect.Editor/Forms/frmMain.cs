@@ -41,7 +41,7 @@ namespace Intersect.Editor.Forms
         public delegate void HandleDisconnect();
 
         //Cross Thread Delegates
-        public delegate void TryOpenEditor( GameObjectType type );
+        public delegate void TryOpenEditor(GameObjectType type);
 
         public delegate void UpdateTimeList();
 
@@ -89,21 +89,21 @@ namespace Intersect.Editor.Forms
             InitializeComponent();
             dockLeft.Theme = new VS2015DarkTheme();
             Globals.MapListWindow = new FrmMapList();
-            Globals.MapListWindow.Show( dockLeft, DockState.DockRight );
+            Globals.MapListWindow.Show(dockLeft, DockState.DockRight);
             Globals.MapLayersWindow = new FrmMapLayers();
-            Globals.MapLayersWindow.Show( dockLeft, DockState.DockLeft );
+            Globals.MapLayersWindow.Show(dockLeft, DockState.DockLeft);
 
             Globals.MapEditorWindow = new FrmMapEditor();
-            Globals.MapEditorWindow.Show( dockLeft, DockState.Document );
+            Globals.MapEditorWindow.Show(dockLeft, DockState.Document);
 
             Globals.MapGridWindowNew = new FrmMapGrid();
-            Globals.MapGridWindowNew.Show( dockLeft, DockState.Document );
+            Globals.MapGridWindowNew.Show(dockLeft, DockState.Document);
         }
 
-        [System.Runtime.InteropServices.DllImport( "user32.dll" )]
-        private static extern IntPtr WindowFromPoint( System.Drawing.Point pnt );
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern IntPtr WindowFromPoint(System.Drawing.Point pnt);
 
-        private void frmMain_Load( object sender, EventArgs e )
+        private void frmMain_Load(object sender, EventArgs e)
         {
             //Init Delegates
             EditorDelegate = TryOpenEditorMethod;
@@ -209,19 +209,19 @@ namespace Intersect.Editor.Forms
         private void InitExternalTools()
         {
             var foundTools = false;
-            if( Directory.Exists( Strings.MainForm.toolsdir ) )
+            if (Directory.Exists(Strings.MainForm.toolsdir))
             {
-                var childDirs = Directory.GetDirectories( "tools" );
-                for( var i = 0; i < childDirs.Length; i++ )
+                var childDirs = Directory.GetDirectories("tools");
+                for (var i = 0; i < childDirs.Length; i++)
                 {
-                    var executables = Directory.GetFiles( childDirs[i], "*.exe" );
-                    for( var x = 0; x < executables.Length; x++ )
+                    var executables = Directory.GetFiles(childDirs[i], "*.exe");
+                    for (var x = 0; x < executables.Length; x++)
                     {
                         var item = toolsToolStripMenuItem.DropDownItems.Add(
                             executables[x]
-                                .Replace( childDirs[i], "" )
-                                .Replace( ".exe", "" )
-                                .Replace( Path.DirectorySeparatorChar.ToString(), "" )
+                                .Replace(childDirs[i], "")
+                                .Replace(".exe", "")
+                                .Replace(Path.DirectorySeparatorChar.ToString(), "")
                         );
 
                         item.Tag = executables[x];
@@ -231,93 +231,93 @@ namespace Intersect.Editor.Forms
             }
         }
 
-        private void externalToolItem_Click( object sender, EventArgs e )
+        private void externalToolItem_Click(object sender, EventArgs e)
         {
-            if( !string.IsNullOrEmpty( (string)( (ToolStripItem)sender ).Tag ) )
+            if (!string.IsNullOrEmpty((string)((ToolStripItem)sender).Tag))
             {
-                var psi = new ProcessStartInfo( Path.GetFileName( (string)( (ToolStripItem)sender ).Tag ) )
+                var psi = new ProcessStartInfo(Path.GetFileName((string)((ToolStripItem)sender).Tag))
                 {
-                    WorkingDirectory = Path.GetDirectoryName( (string)( (ToolStripItem)sender ).Tag )
+                    WorkingDirectory = Path.GetDirectoryName((string)((ToolStripItem)sender).Tag)
                 };
 
-                Process.Start( psi );
+                Process.Start(psi);
             }
         }
 
-        private void FrmMain_KeyDown( object sender, KeyEventArgs e )
+        private void FrmMain_KeyDown(object sender, KeyEventArgs e)
         {
-            if( e.KeyData == ( Keys.Control | Keys.Z ) )
+            if (e.KeyData == (Keys.Control | Keys.Z))
             {
-                toolStripBtnUndo_Click( null, null );
+                toolStripBtnUndo_Click(null, null);
 
                 return;
             }
-            else if( e.KeyData == ( Keys.Control | Keys.Y ) )
+            else if (e.KeyData == (Keys.Control | Keys.Y))
             {
-                toolStripBtnRedo_Click( null, null );
+                toolStripBtnRedo_Click(null, null);
 
                 return;
             }
-            else if( e.KeyData == ( Keys.Control | Keys.X ) )
+            else if (e.KeyData == (Keys.Control | Keys.X))
             {
-                toolStripBtnCut_Click( null, null );
+                toolStripBtnCut_Click(null, null);
 
                 return;
             }
-            else if( e.KeyData == ( Keys.Control | Keys.C ) )
+            else if (e.KeyData == (Keys.Control | Keys.C))
             {
-                toolStripBtnCopy_Click( null, null );
+                toolStripBtnCopy_Click(null, null);
 
                 return;
             }
-            else if( e.KeyData == ( Keys.Control | Keys.V ) )
+            else if (e.KeyData == (Keys.Control | Keys.V))
             {
-                toolStripBtnPaste_Click( null, null );
+                toolStripBtnPaste_Click(null, null);
 
                 return;
             }
-            else if( e.KeyData == ( Keys.Control | Keys.S ) )
+            else if (e.KeyData == (Keys.Control | Keys.S))
             {
-                toolStripBtnSaveMap_Click( null, null );
+                toolStripBtnSaveMap_Click(null, null);
 
                 return;
             }
 
             var xDiff = 0;
             var yDiff = 0;
-            if( dockLeft.ActiveContent == Globals.MapEditorWindow ||
+            if (dockLeft.ActiveContent == Globals.MapEditorWindow ||
                 dockLeft.ActiveContent == null &&
-                Globals.MapEditorWindow.DockPanel.ActiveDocument == Globals.MapEditorWindow )
+                Globals.MapEditorWindow.DockPanel.ActiveDocument == Globals.MapEditorWindow)
             {
-                if( e.KeyCode == Keys.W || e.KeyCode == Keys.Up )
+                if (e.KeyCode == Keys.W || e.KeyCode == Keys.Up)
                 {
                     yDiff -= 20;
                 }
 
-                if( e.KeyCode == Keys.S || e.KeyCode == Keys.Down )
+                if (e.KeyCode == Keys.S || e.KeyCode == Keys.Down)
                 {
                     yDiff += 20;
                 }
 
-                if( e.KeyCode == Keys.A || e.KeyCode == Keys.Left )
+                if (e.KeyCode == Keys.A || e.KeyCode == Keys.Left)
                 {
                     xDiff -= 20;
                 }
 
-                if( e.KeyCode == Keys.D || e.KeyCode == Keys.Right )
+                if (e.KeyCode == Keys.D || e.KeyCode == Keys.Right)
                 {
                     xDiff += 20;
                 }
 
-                if( xDiff != 0 || yDiff != 0 )
+                if (xDiff != 0 || yDiff != 0)
                 {
-                    var hWnd = WindowFromPoint( (System.Drawing.Point)MousePosition );
-                    if( hWnd != IntPtr.Zero )
+                    var hWnd = WindowFromPoint((System.Drawing.Point)MousePosition);
+                    if (hWnd != IntPtr.Zero)
                     {
-                        var ctl = Control.FromHandle( hWnd );
-                        if( ctl != null )
+                        var ctl = Control.FromHandle(hWnd);
+                        if (ctl != null)
                         {
-                            if( ctl.GetType() == typeof( ComboBox ) || ctl.GetType() == typeof( DarkComboBox ) )
+                            if (ctl.GetType() == typeof(ComboBox) || ctl.GetType() == typeof(DarkComboBox))
                             {
                                 return;
                             }
@@ -326,25 +326,25 @@ namespace Intersect.Editor.Forms
 
                     Core.Graphics.CurrentView.X -= xDiff;
                     Core.Graphics.CurrentView.Y -= yDiff;
-                    if( Core.Graphics.CurrentView.X > Options.MapWidth * Options.TileWidth )
+                    if (Core.Graphics.CurrentView.X > Options.MapWidth * Options.TileWidth)
                     {
                         Core.Graphics.CurrentView.X = Options.MapWidth * Options.TileWidth;
                     }
 
-                    if( Core.Graphics.CurrentView.Y > Options.MapHeight * Options.TileHeight )
+                    if (Core.Graphics.CurrentView.Y > Options.MapHeight * Options.TileHeight)
                     {
                         Core.Graphics.CurrentView.Y = Options.MapHeight * Options.TileHeight;
                     }
 
-                    if( Core.Graphics.CurrentView.X - Globals.MapEditorWindow.picMap.Width <
-                        -Options.TileWidth * Options.MapWidth * 2 )
+                    if (Core.Graphics.CurrentView.X - Globals.MapEditorWindow.picMap.Width <
+                        -Options.TileWidth * Options.MapWidth * 2)
                     {
                         Core.Graphics.CurrentView.X = -Options.TileWidth * Options.MapWidth * 2 +
                                                       Globals.MapEditorWindow.picMap.Width;
                     }
 
-                    if( Core.Graphics.CurrentView.Y - Globals.MapEditorWindow.picMap.Height <
-                        -Options.TileHeight * Options.MapHeight * 2 )
+                    if (Core.Graphics.CurrentView.Y - Globals.MapEditorWindow.picMap.Height <
+                        -Options.TileHeight * Options.MapHeight * 2)
                     {
                         Core.Graphics.CurrentView.Y = -Options.TileHeight * Options.MapHeight * 2 +
                                                       Globals.MapEditorWindow.picMap.Height;
@@ -357,8 +357,8 @@ namespace Intersect.Editor.Forms
         {
             var unhiddenPane = dockLeft.Panes[0];
             Globals.MapPropertiesWindow = new FrmMapProperties();
-            Globals.MapPropertiesWindow.Show( unhiddenPane, DockAlignment.Bottom, .4 );
-            Globals.MapPropertiesWindow.Init( Globals.CurrentMap );
+            Globals.MapPropertiesWindow.Show(unhiddenPane, DockAlignment.Bottom, .4);
+            Globals.MapPropertiesWindow.Init(Globals.CurrentMap);
             Globals.MapEditorWindow.DockPanel.Focus();
         }
 
@@ -372,107 +372,107 @@ namespace Intersect.Editor.Forms
             UpdateRunState();
 
             //Init layer visibility buttons
-            foreach( var layer in Options.Instance.MapOpts.Layers.All )
+            foreach (var layer in Options.Instance.MapOpts.Layers.All)
             {
-                Strings.Tiles.maplayers.TryGetValue( layer.ToLower(), out LocalizedString layerName );
-                if( layerName == null ) layerName = layer;
-                var btn = new ToolStripMenuItem( layerName );
+                Strings.Tiles.maplayers.TryGetValue(layer.ToLower(), out LocalizedString layerName);
+                if (layerName == null) layerName = layer;
+                var btn = new ToolStripMenuItem(layerName);
                 btn.Checked = true;
                 btn.Click += HideLayerBtn_Click;
                 btn.Tag = layer;
-                layersToolStripMenuItem.DropDownItems.Add( btn );
+                layersToolStripMenuItem.DropDownItems.Add(btn);
             }
         }
 
-        protected override void OnClosed( EventArgs e )
+        protected override void OnClosed(EventArgs e)
         {
-            Networking.Network.EditorLidgrenNetwork?.Disconnect( NetworkStatus.Quitting.ToString() );
-            base.OnClosed( e );
+            Networking.Network.EditorLidgrenNetwork?.Disconnect(NetworkStatus.Quitting.ToString());
+            base.OnClosed(e);
             Application.Exit();
         }
 
-        public void ShowDialogForm( Form form )
+        public void ShowDialogForm(Form form)
         {
-            if( InvokeRequired )
+            if (InvokeRequired)
             {
-                Invoke( (MethodInvoker)delegate { ShowDialogForm( form ); } );
+                Invoke((MethodInvoker)delegate { ShowDialogForm(form); });
 
                 return;
             }
 
-            form.ShowDialog( this );
+            form.ShowDialog(this);
         }
 
-        public void EnterMap( Guid mapId )
+        public void EnterMap(Guid mapId)
         {
-            if( InvokeRequired )
+            if (InvokeRequired)
             {
-                Invoke( (MethodInvoker)delegate { EnterMap( mapId ); } );
+                Invoke((MethodInvoker)delegate { EnterMap(mapId); });
 
                 return;
             }
 
-            Globals.CurrentMap = MapInstance.Get( mapId );
+            Globals.CurrentMap = MapInstance.Get(mapId);
             Globals.LoadingMap = mapId;
-            if( Globals.CurrentMap == null )
+            if (Globals.CurrentMap == null)
             {
                 Text = @"Intersect Editor";
             }
             else
             {
-                if( Globals.MapPropertiesWindow != null )
+                if (Globals.MapPropertiesWindow != null)
                 {
-                    Globals.MapPropertiesWindow.Init( Globals.CurrentMap );
+                    Globals.MapPropertiesWindow.Init(Globals.CurrentMap);
                 }
             }
 
             Globals.MapEditorWindow.UnloadMap();
-            PacketSender.SendEnterMap( mapId );
-            PacketSender.SendNeedMap( mapId );
-            PacketSender.SendNeedGrid( mapId );
+            PacketSender.SendEnterMap(mapId);
+            PacketSender.SendNeedMap(mapId);
+            PacketSender.SendNeedGrid(mapId);
             Core.Graphics.TilePreviewUpdated = true;
         }
 
         private void GrabMouseDownEvents()
         {
-            GrabMouseDownEvents( this );
+            GrabMouseDownEvents(this);
         }
 
-        private void GrabMouseDownEvents( Control e )
+        private void GrabMouseDownEvents(Control e)
         {
-            foreach( Control t in e.Controls )
+            foreach (Control t in e.Controls)
             {
-                if( t.GetType() == typeof( MenuStrip ) )
+                if (t.GetType() == typeof(MenuStrip))
                 {
-                    foreach( ToolStripMenuItem t1 in ( (MenuStrip)t ).Items )
+                    foreach (ToolStripMenuItem t1 in ((MenuStrip)t).Items)
                     {
                         t1.MouseDown += MouseDownHandler;
                     }
 
                     t.MouseDown += MouseDownHandler;
                 }
-                else if( t.GetType() == typeof( PropertyGrid ) )
+                else if (t.GetType() == typeof(PropertyGrid))
                 {
                 }
                 else
                 {
-                    GrabMouseDownEvents( t );
+                    GrabMouseDownEvents(t);
                 }
             }
 
             e.MouseDown += MouseDownHandler;
         }
 
-        public void MouseDownHandler( object sender, MouseEventArgs e )
+        public void MouseDownHandler(object sender, MouseEventArgs e)
         {
-            if( e.Button == MouseButtons.Middle || e.Button == MouseButtons.None )
+            if (e.Button == MouseButtons.Middle || e.Button == MouseButtons.None)
             {
                 return;
             }
 
-            if( sender != Globals.MapEditorWindow &&
+            if (sender != Globals.MapEditorWindow &&
                 sender != Globals.MapEditorWindow.pnlMapContainer &&
-                sender != Globals.MapEditorWindow.picMap )
+                sender != Globals.MapEditorWindow.picMap)
             {
                 Globals.MapEditorWindow.PlaceSelection();
             }
@@ -481,18 +481,18 @@ namespace Intersect.Editor.Forms
         //Update
         public void Update()
         {
-            if( Globals.CurrentMap != null )
+            if (Globals.CurrentMap != null)
             {
-                toolStripLabelCoords.Text = Strings.MainForm.loc.ToString( Globals.CurTileX, Globals.CurTileY );
-                toolStripLabelRevision.Text = Strings.MainForm.revision.ToString( Globals.CurrentMap.Revision );
-                if( Text != Strings.MainForm.title.ToString( Globals.CurrentMap.Name ) )
+                toolStripLabelCoords.Text = Strings.MainForm.loc.ToString(Globals.CurTileX, Globals.CurTileY);
+                toolStripLabelRevision.Text = Strings.MainForm.revision.ToString(Globals.CurrentMap.Revision);
+                if (Text != Strings.MainForm.title.ToString(Globals.CurrentMap.Name))
                 {
-                    Text = Strings.MainForm.title.ToString( Globals.CurrentMap.Name );
+                    Text = Strings.MainForm.title.ToString(Globals.CurrentMap.Name);
                 }
             }
 
             //Process the Undo/Redo Buttons
-            if( Globals.MapEditorWindow.MapUndoStates.Count > 0 )
+            if (Globals.MapEditorWindow.MapUndoStates.Count > 0)
             {
                 toolStripBtnUndo.Enabled = true;
                 undoToolStripMenuItem.Enabled = true;
@@ -503,7 +503,7 @@ namespace Intersect.Editor.Forms
                 undoToolStripMenuItem.Enabled = false;
             }
 
-            if( Globals.MapEditorWindow.MapRedoStates.Count > 0 )
+            if (Globals.MapEditorWindow.MapRedoStates.Count > 0)
             {
                 toolStripBtnRedo.Enabled = true;
                 redoToolStripMenuItem.Enabled = true;
@@ -515,7 +515,7 @@ namespace Intersect.Editor.Forms
             }
 
             //Process the Fill/Erase Buttons
-            if( Options.Instance.MapOpts.Layers.All.Contains( Globals.CurrentLayer ) )
+            if (Options.Instance.MapOpts.Layers.All.Contains(Globals.CurrentLayer))
             {
                 toolStripBtnFill.Enabled = true;
                 fillToolStripMenuItem.Enabled = true;
@@ -535,20 +535,20 @@ namespace Intersect.Editor.Forms
             toolStripBtnSelect.Enabled = true;
             toolStripBtnRect.Enabled = false;
             toolStripBtnEyeDrop.Enabled = false;
-            if( Globals.CurrentLayer == LayerOptions.Attributes )
+            if (Globals.CurrentLayer == LayerOptions.Attributes)
             {
                 toolStripBtnPen.Enabled = true;
                 toolStripBtnRect.Enabled = true;
             }
-            else if( Globals.CurrentLayer == LayerOptions.Lights )
+            else if (Globals.CurrentLayer == LayerOptions.Lights)
             {
                 Globals.CurrentTool = (int)EditingTool.Selection;
             }
-            else if( Globals.CurrentLayer == LayerOptions.Events )
+            else if (Globals.CurrentLayer == LayerOptions.Events)
             {
                 Globals.CurrentTool = (int)EditingTool.Selection;
             }
-            else if( Globals.CurrentLayer == LayerOptions.Npcs )
+            else if (Globals.CurrentLayer == LayerOptions.Npcs)
             {
                 Globals.CurrentTool = (int)EditingTool.Selection;
             }
@@ -559,315 +559,315 @@ namespace Intersect.Editor.Forms
                 toolStripBtnEyeDrop.Enabled = true;
             }
 
-            switch( Globals.CurrentTool )
+            switch (Globals.CurrentTool)
             {
                 case (int)EditingTool.Pen:
-                    if( !toolStripBtnPen.Checked )
+                    if (!toolStripBtnPen.Checked)
                     {
                         toolStripBtnPen.Checked = true;
                     }
 
-                    if( toolStripBtnSelect.Checked )
+                    if (toolStripBtnSelect.Checked)
                     {
                         toolStripBtnSelect.Checked = false;
                     }
 
-                    if( toolStripBtnRect.Checked )
+                    if (toolStripBtnRect.Checked)
                     {
                         toolStripBtnRect.Checked = false;
                     }
 
-                    if( toolStripBtnFill.Checked )
+                    if (toolStripBtnFill.Checked)
                     {
                         toolStripBtnFill.Checked = false;
                     }
 
-                    if( toolStripBtnErase.Checked )
+                    if (toolStripBtnErase.Checked)
                     {
                         toolStripBtnErase.Checked = false;
                     }
 
-                    if( toolStripBtnEyeDrop.Checked )
+                    if (toolStripBtnEyeDrop.Checked)
                     {
                         toolStripBtnEyeDrop.Checked = false;
                     }
 
-                    if( toolStripBtnCut.Enabled )
+                    if (toolStripBtnCut.Enabled)
                     {
                         toolStripBtnCut.Enabled = false;
                     }
 
-                    if( toolStripBtnCopy.Enabled )
+                    if (toolStripBtnCopy.Enabled)
                     {
                         toolStripBtnCopy.Enabled = false;
                     }
 
-                    if( cutToolStripMenuItem.Enabled )
+                    if (cutToolStripMenuItem.Enabled)
                     {
                         cutToolStripMenuItem.Enabled = false;
                     }
 
-                    if( copyToolStripMenuItem.Enabled )
+                    if (copyToolStripMenuItem.Enabled)
                     {
                         copyToolStripMenuItem.Enabled = false;
                     }
 
                     break;
                 case (int)EditingTool.Selection:
-                    if( toolStripBtnPen.Checked )
+                    if (toolStripBtnPen.Checked)
                     {
                         toolStripBtnPen.Checked = false;
                     }
 
-                    if( !toolStripBtnSelect.Checked )
+                    if (!toolStripBtnSelect.Checked)
                     {
                         toolStripBtnSelect.Checked = true;
                     }
 
-                    if( toolStripBtnRect.Checked )
+                    if (toolStripBtnRect.Checked)
                     {
                         toolStripBtnRect.Checked = false;
                     }
 
-                    if( toolStripBtnFill.Checked )
+                    if (toolStripBtnFill.Checked)
                     {
                         toolStripBtnFill.Checked = false;
                     }
 
-                    if( toolStripBtnErase.Checked )
+                    if (toolStripBtnErase.Checked)
                     {
                         toolStripBtnErase.Checked = false;
                     }
 
-                    if( toolStripBtnEyeDrop.Checked )
+                    if (toolStripBtnEyeDrop.Checked)
                     {
                         toolStripBtnEyeDrop.Checked = false;
                     }
 
-                    if( !toolStripBtnCut.Enabled )
+                    if (!toolStripBtnCut.Enabled)
                     {
                         toolStripBtnCut.Enabled = true;
                     }
 
-                    if( !toolStripBtnCopy.Enabled )
+                    if (!toolStripBtnCopy.Enabled)
                     {
                         toolStripBtnCopy.Enabled = true;
                     }
 
-                    if( !cutToolStripMenuItem.Enabled )
+                    if (!cutToolStripMenuItem.Enabled)
                     {
                         cutToolStripMenuItem.Enabled = true;
                     }
 
-                    if( !copyToolStripMenuItem.Enabled )
+                    if (!copyToolStripMenuItem.Enabled)
                     {
                         copyToolStripMenuItem.Enabled = true;
                     }
 
                     break;
                 case (int)EditingTool.Rectangle:
-                    if( toolStripBtnPen.Checked )
+                    if (toolStripBtnPen.Checked)
                     {
                         toolStripBtnPen.Checked = false;
                     }
 
-                    if( toolStripBtnSelect.Checked )
+                    if (toolStripBtnSelect.Checked)
                     {
                         toolStripBtnSelect.Checked = false;
                     }
 
-                    if( !toolStripBtnRect.Checked )
+                    if (!toolStripBtnRect.Checked)
                     {
                         toolStripBtnRect.Checked = true;
                     }
 
-                    if( toolStripBtnFill.Checked )
+                    if (toolStripBtnFill.Checked)
                     {
                         toolStripBtnFill.Checked = false;
                     }
 
-                    if( toolStripBtnErase.Checked )
+                    if (toolStripBtnErase.Checked)
                     {
                         toolStripBtnErase.Checked = false;
                     }
 
-                    if( toolStripBtnEyeDrop.Checked )
+                    if (toolStripBtnEyeDrop.Checked)
                     {
                         toolStripBtnEyeDrop.Checked = false;
                     }
 
-                    if( toolStripBtnCut.Enabled )
+                    if (toolStripBtnCut.Enabled)
                     {
                         toolStripBtnCut.Enabled = false;
                     }
 
-                    if( toolStripBtnCopy.Enabled )
+                    if (toolStripBtnCopy.Enabled)
                     {
                         toolStripBtnCopy.Enabled = false;
                     }
 
-                    if( cutToolStripMenuItem.Enabled )
+                    if (cutToolStripMenuItem.Enabled)
                     {
                         cutToolStripMenuItem.Enabled = false;
                     }
 
-                    if( copyToolStripMenuItem.Enabled )
+                    if (copyToolStripMenuItem.Enabled)
                     {
                         copyToolStripMenuItem.Enabled = false;
                     }
 
                     break;
                 case (int)EditingTool.Fill:
-                    if( toolStripBtnPen.Checked )
+                    if (toolStripBtnPen.Checked)
                     {
                         toolStripBtnPen.Checked = false;
                     }
 
-                    if( toolStripBtnSelect.Checked )
+                    if (toolStripBtnSelect.Checked)
                     {
                         toolStripBtnSelect.Checked = false;
                     }
 
-                    if( toolStripBtnRect.Checked )
+                    if (toolStripBtnRect.Checked)
                     {
                         toolStripBtnRect.Checked = false;
                     }
 
-                    if( !toolStripBtnFill.Checked )
+                    if (!toolStripBtnFill.Checked)
                     {
                         toolStripBtnFill.Checked = true;
                     }
 
-                    if( toolStripBtnErase.Checked )
+                    if (toolStripBtnErase.Checked)
                     {
                         toolStripBtnErase.Checked = false;
                     }
 
-                    if( toolStripBtnEyeDrop.Checked )
+                    if (toolStripBtnEyeDrop.Checked)
                     {
                         toolStripBtnEyeDrop.Checked = false;
                     }
 
-                    if( toolStripBtnCut.Enabled )
+                    if (toolStripBtnCut.Enabled)
                     {
                         toolStripBtnCut.Enabled = false;
                     }
 
-                    if( toolStripBtnCopy.Enabled )
+                    if (toolStripBtnCopy.Enabled)
                     {
                         toolStripBtnCopy.Enabled = false;
                     }
 
-                    if( cutToolStripMenuItem.Enabled )
+                    if (cutToolStripMenuItem.Enabled)
                     {
                         cutToolStripMenuItem.Enabled = false;
                     }
 
-                    if( copyToolStripMenuItem.Enabled )
+                    if (copyToolStripMenuItem.Enabled)
                     {
                         copyToolStripMenuItem.Enabled = false;
                     }
 
                     break;
                 case (int)EditingTool.Erase:
-                    if( toolStripBtnPen.Checked )
+                    if (toolStripBtnPen.Checked)
                     {
                         toolStripBtnPen.Checked = false;
                     }
 
-                    if( toolStripBtnSelect.Checked )
+                    if (toolStripBtnSelect.Checked)
                     {
                         toolStripBtnSelect.Checked = false;
                     }
 
-                    if( toolStripBtnRect.Checked )
+                    if (toolStripBtnRect.Checked)
                     {
                         toolStripBtnRect.Checked = false;
                     }
 
-                    if( toolStripBtnFill.Checked )
+                    if (toolStripBtnFill.Checked)
                     {
                         toolStripBtnFill.Checked = false;
                     }
 
-                    if( !toolStripBtnErase.Checked )
+                    if (!toolStripBtnErase.Checked)
                     {
                         toolStripBtnErase.Checked = true;
                     }
 
-                    if( toolStripBtnEyeDrop.Checked )
+                    if (toolStripBtnEyeDrop.Checked)
                     {
                         toolStripBtnEyeDrop.Checked = false;
                     }
 
-                    if( toolStripBtnCut.Enabled )
+                    if (toolStripBtnCut.Enabled)
                     {
                         toolStripBtnCut.Enabled = false;
                     }
 
-                    if( toolStripBtnCopy.Enabled )
+                    if (toolStripBtnCopy.Enabled)
                     {
                         toolStripBtnCopy.Enabled = false;
                     }
 
-                    if( cutToolStripMenuItem.Enabled )
+                    if (cutToolStripMenuItem.Enabled)
                     {
                         cutToolStripMenuItem.Enabled = false;
                     }
 
-                    if( copyToolStripMenuItem.Enabled )
+                    if (copyToolStripMenuItem.Enabled)
                     {
                         copyToolStripMenuItem.Enabled = false;
                     }
 
                     break;
                 case (int)EditingTool.Droppler:
-                    if( toolStripBtnPen.Checked )
+                    if (toolStripBtnPen.Checked)
                     {
                         toolStripBtnPen.Checked = false;
                     }
 
-                    if( toolStripBtnSelect.Checked )
+                    if (toolStripBtnSelect.Checked)
                     {
                         toolStripBtnSelect.Checked = false;
                     }
 
-                    if( toolStripBtnRect.Checked )
+                    if (toolStripBtnRect.Checked)
                     {
                         toolStripBtnRect.Checked = false;
                     }
 
-                    if( toolStripBtnFill.Checked )
+                    if (toolStripBtnFill.Checked)
                     {
                         toolStripBtnFill.Checked = false;
                     }
 
-                    if( toolStripBtnErase.Checked )
+                    if (toolStripBtnErase.Checked)
                     {
                         toolStripBtnErase.Checked = false;
                     }
 
-                    if( !toolStripBtnEyeDrop.Checked )
+                    if (!toolStripBtnEyeDrop.Checked)
                     {
                         toolStripBtnEyeDrop.Checked = true;
                     }
 
-                    if( toolStripBtnCut.Enabled )
+                    if (toolStripBtnCut.Enabled)
                     {
                         toolStripBtnCut.Enabled = false;
                     }
 
-                    if( toolStripBtnCopy.Enabled )
+                    if (toolStripBtnCopy.Enabled)
                     {
                         toolStripBtnCopy.Enabled = false;
                     }
 
-                    if( cutToolStripMenuItem.Enabled )
+                    if (cutToolStripMenuItem.Enabled)
                     {
                         cutToolStripMenuItem.Enabled = false;
                     }
 
-                    if( copyToolStripMenuItem.Enabled )
+                    if (copyToolStripMenuItem.Enabled)
                     {
                         copyToolStripMenuItem.Enabled = false;
                     }
@@ -875,7 +875,7 @@ namespace Intersect.Editor.Forms
                     break;
             }
 
-            if( Globals.HasCopy )
+            if (Globals.HasCopy)
             {
                 toolStripBtnPaste.Enabled = true;
                 pasteToolStripMenuItem.Enabled = true;
@@ -886,12 +886,12 @@ namespace Intersect.Editor.Forms
                 pasteToolStripMenuItem.Enabled = false;
             }
 
-            if( Globals.Dragging )
+            if (Globals.Dragging)
             {
-                if( Globals.MainForm.ActiveControl.GetType() == typeof( DockPane ) )
+                if (Globals.MainForm.ActiveControl.GetType() == typeof(DockPane))
                 {
-                    var ctrl = ( (DockPane)Globals.MainForm.ActiveControl ).ActiveControl;
-                    if( ctrl != Globals.MapEditorWindow )
+                    var ctrl = ((DockPane)Globals.MainForm.ActiveControl).ActiveControl;
+                    if (ctrl != Globals.MapEditorWindow)
                     {
                         Globals.MapEditorWindow.PlaceSelection();
                     }
@@ -902,20 +902,20 @@ namespace Intersect.Editor.Forms
         //Disconnection
         private void HandleServerDisconnect()
         {
-            if( !Globals.ClosingEditor )
+            if (!Globals.ClosingEditor)
             {
                 Globals.ClosingEditor = true;
 
                 //Offer to export map
-                if( Globals.CurrentMap != null )
+                if (Globals.CurrentMap != null)
                 {
-                    if( DarkMessageBox.ShowError(
+                    if (DarkMessageBox.ShowError(
                             Strings.Errors.disconnectedsave, Strings.Errors.disconnectedsavecaption,
                             DarkDialogButton.YesNo, Properties.Resources.Icon
                         ) ==
-                        DialogResult.Yes )
+                        DialogResult.Yes)
                     {
-                        exportMapToolStripMenuItem_Click( null, null );
+                        exportMapToolStripMenuItem_Click(null, null);
                         Application.Exit();
                     }
                     else
@@ -936,14 +936,14 @@ namespace Intersect.Editor.Forms
         }
 
         //MenuBar Functions -- File
-        private void saveMapToolStripMenuItem_Click( object sender, EventArgs e )
+        private void saveMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if( Globals.CurrentMap.Changed() &&
+            if (Globals.CurrentMap.Changed() &&
                 DarkMessageBox.ShowInformation(
                     Strings.Mapping.savemapdialoguesure, Strings.Mapping.savemap, DarkDialogButton.YesNo,
                     Properties.Resources.Icon
                 ) ==
-                DialogResult.Yes )
+                DialogResult.Yes)
             {
                 SaveMap();
             }
@@ -951,44 +951,44 @@ namespace Intersect.Editor.Forms
 
         private static void SaveMap()
         {
-            if( Globals.CurrentTool == (int)EditingTool.Selection )
+            if (Globals.CurrentTool == (int)EditingTool.Selection)
             {
-                if( Globals.Dragging )
+                if (Globals.Dragging)
                 {
                     //Place the change, we done!
-                    Globals.MapEditorWindow?.ProcessSelectionMovement( Globals.CurrentMap, true );
+                    Globals.MapEditorWindow?.ProcessSelectionMovement(Globals.CurrentMap, true);
                     Globals.MapEditorWindow?.PlaceSelection();
                 }
             }
 
-            PacketSender.SendMap( Globals.CurrentMap );
+            PacketSender.SendMap(Globals.CurrentMap);
         }
 
-        private void NewMapToolStripMenuItem_Click( object sender, EventArgs e )
+        private void NewMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if( DarkMessageBox.ShowWarning(
+            if (DarkMessageBox.ShowWarning(
                     Strings.Mapping.newmap, Strings.Mapping.newmapcaption, DarkDialogButton.YesNo,
                     Properties.Resources.Icon
                 ) !=
-                DialogResult.Yes )
+                DialogResult.Yes)
             {
                 return;
             }
 
-            if( Globals.CurrentMap.Changed() &&
+            if (Globals.CurrentMap.Changed() &&
                 DarkMessageBox.ShowInformation(
                     Strings.Mapping.savemapdialogue, Strings.Mapping.savemap, DarkDialogButton.YesNo,
                     Properties.Resources.Icon
                 ) ==
-                DialogResult.Yes )
+                DialogResult.Yes)
             {
                 SaveMap();
             }
 
-            PacketSender.SendCreateMap( -1, Globals.CurrentMap.Id, null );
+            PacketSender.SendCreateMap(-1, Globals.CurrentMap.Id, null);
         }
 
-        private void exportMapToolStripMenuItem_Click( object sender, EventArgs e )
+        private void exportMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var fileDialog = new SaveFileDialog()
             {
@@ -1008,7 +1008,7 @@ namespace Intersect.Editor.Forms
             //buff.Dispose();
         }
 
-        private void importMapToolStripMenuItem_Click( object sender, EventArgs e )
+        private void importMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var fileDialog = new OpenFileDialog()
             {
@@ -1038,283 +1038,283 @@ namespace Intersect.Editor.Forms
             //}
         }
 
-        private void optionsToolStripMenuItem_Click( object sender, EventArgs e )
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var optionsForm = new FrmOptions();
             optionsForm.ShowDialog();
             UpdateRunState();
         }
 
-        private void exitToolStripMenuItem_Click( object sender, EventArgs e )
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
         //Edit
-        private void fillToolStripMenuItem_Click( object sender, EventArgs e )
+        private void fillToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if( Options.Instance.MapOpts.Layers.All.Contains( Globals.CurrentLayer ) )
+            if (Options.Instance.MapOpts.Layers.All.Contains(Globals.CurrentLayer))
             {
                 Globals.MapEditorWindow.FillLayer();
             }
         }
 
-        private void eraseLayerToolStripMenuItem_Click( object sender, EventArgs e )
+        private void eraseLayerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if( Options.Instance.MapOpts.Layers.All.Contains( Globals.CurrentLayer ) )
+            if (Options.Instance.MapOpts.Layers.All.Contains(Globals.CurrentLayer))
             {
                 Globals.MapEditorWindow.EraseLayer();
             }
         }
 
-        private void allLayersToolStripMenuItem_Click( object sender, EventArgs e )
+        private void allLayersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Globals.SelectionType = (int)SelectionTypes.AllLayers;
             allLayersToolStripMenuItem.Checked = true;
             currentLayerOnlyToolStripMenuItem.Checked = false;
         }
 
-        private void currentLayerOnlyToolStripMenuItem_Click( object sender, EventArgs e )
+        private void currentLayerOnlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Globals.SelectionType = (int)SelectionTypes.CurrentLayer;
             allLayersToolStripMenuItem.Checked = false;
             currentLayerOnlyToolStripMenuItem.Checked = true;
         }
 
-        private void undoToolStripMenuItem_Click( object sender, EventArgs e )
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            toolStripBtnUndo_Click( null, null );
+            toolStripBtnUndo_Click(null, null);
         }
 
-        private void redoToolStripMenuItem_Click( object sender, EventArgs e )
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            toolStripBtnRedo_Click( null, null );
+            toolStripBtnRedo_Click(null, null);
         }
 
-        private void cutToolStripMenuItem_Click( object sender, EventArgs e )
+        private void cutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            toolStripBtnCut_Click( null, null );
+            toolStripBtnCut_Click(null, null);
         }
 
-        private void copyToolStripMenuItem_Click( object sender, EventArgs e )
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            toolStripBtnCopy_Click( null, null );
+            toolStripBtnCopy_Click(null, null);
         }
 
-        private void pasteToolStripMenuItem_Click( object sender, EventArgs e )
+        private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            toolStripBtnPaste_Click( null, null );
+            toolStripBtnPaste_Click(null, null);
         }
 
         //View
-        private void hideDarknessToolStripMenuItem_Click( object sender, EventArgs e )
+        private void hideDarknessToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Core.Graphics.HideDarkness = !Core.Graphics.HideDarkness;
             hideDarknessToolStripMenuItem.Checked = !Core.Graphics.HideDarkness;
         }
 
-        private void hideFogToolStripMenuItem_Click( object sender, EventArgs e )
+        private void hideFogToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Core.Graphics.HideFog = !Core.Graphics.HideFog;
             hideFogToolStripMenuItem.Checked = !Core.Graphics.HideFog;
         }
 
-        private void hideOverlayToolStripMenuItem_Click( object sender, EventArgs e )
+        private void hideOverlayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Core.Graphics.HideOverlay = !Core.Graphics.HideOverlay;
             hideOverlayToolStripMenuItem.Checked = !Core.Graphics.HideOverlay;
         }
 
-        private void hideTilePreviewToolStripMenuItem_Click( object sender, EventArgs e )
+        private void hideTilePreviewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Core.Graphics.HideTilePreview = !Core.Graphics.HideTilePreview;
             hideTilePreviewToolStripMenuItem.Checked = !Core.Graphics.HideTilePreview;
         }
 
-        private void hideResourcesToolStripMenuItem_Click( object sender, EventArgs e )
+        private void hideResourcesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Core.Graphics.HideResources = !Core.Graphics.HideResources;
             hideResourcesToolStripMenuItem.Checked = !Core.Graphics.HideResources;
         }
 
-        private void hideEventsToolStripMenuItem_Click( object sender, EventArgs e )
+        private void hideEventsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Core.Graphics.HideEvents = !Core.Graphics.HideEvents;
             hideEventsToolStripMenuItem.Checked = !Core.Graphics.HideEvents;
         }
 
-        private void mapGridToolStripMenuItem_Click( object sender, EventArgs e )
+        private void mapGridToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Core.Graphics.HideGrid = !Core.Graphics.HideGrid;
             mapGridToolStripMenuItem.Checked = !Core.Graphics.HideGrid;
         }
 
         //Content Editors
-        private void itemEditorToolStripMenuItem_Click( object sender, EventArgs e )
+        private void itemEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PacketSender.SendOpenEditor( GameObjectType.Item );
+            PacketSender.SendOpenEditor(GameObjectType.Item);
         }
 
-        private void npcEditorToolStripMenuItem_Click( object sender, EventArgs e )
+        private void npcEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PacketSender.SendOpenEditor( GameObjectType.Npc );
+            PacketSender.SendOpenEditor(GameObjectType.Npc);
         }
 
-        private void spellEditorToolStripMenuItem_Click( object sender, EventArgs e )
+        private void spellEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PacketSender.SendOpenEditor( GameObjectType.Spell );
+            PacketSender.SendOpenEditor(GameObjectType.Spell);
         }
 
-        private void craftingTablesEditorToolStripMenuItem_Click( object sender, EventArgs e )
+        private void craftingTablesEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PacketSender.SendOpenEditor( GameObjectType.CraftTables );
+            PacketSender.SendOpenEditor(GameObjectType.CraftTables);
         }
 
-        private void craftsEditorToolStripMenuItem_Click( object sender, EventArgs e )
+        private void craftsEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PacketSender.SendOpenEditor( GameObjectType.Crafts );
+            PacketSender.SendOpenEditor(GameObjectType.Crafts);
         }
 
-        private void animationEditorToolStripMenuItem_Click( object sender, EventArgs e )
+        private void animationEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PacketSender.SendOpenEditor( GameObjectType.Animation );
+            PacketSender.SendOpenEditor(GameObjectType.Animation);
         }
 
-        private void resourceEditorToolStripMenuItem_Click( object sender, EventArgs e )
+        private void resourceEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PacketSender.SendOpenEditor( GameObjectType.Resource );
+            PacketSender.SendOpenEditor(GameObjectType.Resource);
         }
 
-        private void classEditorToolStripMenuItem_Click( object sender, EventArgs e )
+        private void classEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PacketSender.SendOpenEditor( GameObjectType.Class );
+            PacketSender.SendOpenEditor(GameObjectType.Class);
         }
 
-        private void questEditorToolStripMenuItem_Click( object sender, EventArgs e )
+        private void questEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PacketSender.SendOpenEditor( GameObjectType.Quest );
+            PacketSender.SendOpenEditor(GameObjectType.Quest);
         }
 
-        private void projectileEditorToolStripMenuItem_Click( object sender, EventArgs e )
+        private void projectileEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PacketSender.SendOpenEditor( GameObjectType.Projectile );
+            PacketSender.SendOpenEditor(GameObjectType.Projectile);
         }
 
-        private void commonEventEditorToolStripMenuItem_Click( object sender, EventArgs e )
+        private void commonEventEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PacketSender.SendOpenEditor( GameObjectType.Event );
+            PacketSender.SendOpenEditor(GameObjectType.Event);
         }
 
-        private void variableEditorToolStripMenuItem_Click( object sender, EventArgs e )
+        private void variableEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PacketSender.SendOpenEditor( GameObjectType.PlayerVariable );
+            PacketSender.SendOpenEditor(GameObjectType.PlayerVariable);
         }
 
-        private void shopEditorToolStripMenuItem_Click( object sender, EventArgs e )
+        private void shopEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PacketSender.SendOpenEditor( GameObjectType.Shop );
+            PacketSender.SendOpenEditor(GameObjectType.Shop);
         }
 
-        private void timeEditorToolStripMenuItem_Click( object sender, EventArgs e )
+        private void timeEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PacketSender.SendOpenEditor( GameObjectType.Time );
+            PacketSender.SendOpenEditor(GameObjectType.Time);
         }
 
-        private void layersToolStripMenuItem_DropDownOpened( object sender, EventArgs e )
+        private void layersToolStripMenuItem_DropDownOpened(object sender, EventArgs e)
         {
-            foreach( var itm in ( (ToolStripMenuItem)sender ).DropDownItems )
+            foreach (var itm in ((ToolStripMenuItem)sender).DropDownItems)
             {
                 var btn = (ToolStripMenuItem)itm;
                 btn.Checked = Globals.MapLayersWindow.LayerVisibility[(string)btn.Tag];
             }
         }
 
-        private void HideLayerBtn_Click( object sender, EventArgs e )
+        private void HideLayerBtn_Click(object sender, EventArgs e)
         {
-            var btn = ( (ToolStripMenuItem)sender );
+            var btn = ((ToolStripMenuItem)sender);
             var tag = (string)btn.Tag;
             btn.Checked = !btn.Checked;
             Globals.MapLayersWindow.LayerVisibility[tag] = btn.Checked;
-            Globals.MapLayersWindow.SetLayer( Globals.CurrentLayer );
+            Globals.MapLayersWindow.SetLayer(Globals.CurrentLayer);
         }
 
         //Help
-        private void postQuestionToolStripMenuItem_Click( object sender, EventArgs e )
+        private void postQuestionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            toolStripButtonQuestion_Click( null, null );
+            toolStripButtonQuestion_Click(null, null);
         }
 
-        private void reportBugToolStripMenuItem_Click( object sender, EventArgs e )
+        private void reportBugToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            toolStripButtonBug_Click( null, null );
+            toolStripButtonBug_Click(null, null);
         }
 
-        private void aboutToolStripMenuItem_Click( object sender, EventArgs e )
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var aboutfrm = new FrmAbout();
             aboutfrm.ShowDialog();
         }
 
         //ToolStrip Functions
-        private void toolStripBtnNewMap_Click( object sender, EventArgs e )
+        private void toolStripBtnNewMap_Click(object sender, EventArgs e)
         {
-            NewMapToolStripMenuItem_Click( null, null );
+            NewMapToolStripMenuItem_Click(null, null);
         }
 
-        private void toolStripBtnSaveMap_Click( object sender, EventArgs e )
+        private void toolStripBtnSaveMap_Click(object sender, EventArgs e)
         {
-            saveMapToolStripMenuItem_Click( null, null );
+            saveMapToolStripMenuItem_Click(null, null);
         }
 
-        private void toolStripBtnUndo_Click( object sender, EventArgs e )
+        private void toolStripBtnUndo_Click(object sender, EventArgs e)
         {
             var tmpMap = Globals.CurrentMap;
-            if( Globals.MapEditorWindow.MapUndoStates.Count > 0 )
+            if (Globals.MapEditorWindow.MapUndoStates.Count > 0)
             {
                 tmpMap.LoadInternal(
                     Globals.MapEditorWindow.MapUndoStates[Globals.MapEditorWindow.MapUndoStates.Count - 1]
                 );
 
-                Globals.MapEditorWindow.MapRedoStates.Add( Globals.MapEditorWindow.CurrentMapState );
+                Globals.MapEditorWindow.MapRedoStates.Add(Globals.MapEditorWindow.CurrentMapState);
                 Globals.MapEditorWindow.CurrentMapState =
                     Globals.MapEditorWindow.MapUndoStates[Globals.MapEditorWindow.MapUndoStates.Count - 1];
 
-                Globals.MapEditorWindow.MapUndoStates.RemoveAt( Globals.MapEditorWindow.MapUndoStates.Count - 1 );
+                Globals.MapEditorWindow.MapUndoStates.RemoveAt(Globals.MapEditorWindow.MapUndoStates.Count - 1);
                 Globals.MapPropertiesWindow.Update();
                 Core.Graphics.TilePreviewUpdated = true;
             }
         }
 
-        private void toolStripBtnRedo_Click( object sender, EventArgs e )
+        private void toolStripBtnRedo_Click(object sender, EventArgs e)
         {
             var tmpMap = Globals.CurrentMap;
-            if( Globals.MapEditorWindow.MapRedoStates.Count > 0 )
+            if (Globals.MapEditorWindow.MapRedoStates.Count > 0)
             {
                 tmpMap.LoadInternal(
                     Globals.MapEditorWindow.MapRedoStates[Globals.MapEditorWindow.MapRedoStates.Count - 1]
                 );
 
-                Globals.MapEditorWindow.MapUndoStates.Add( Globals.MapEditorWindow.CurrentMapState );
+                Globals.MapEditorWindow.MapUndoStates.Add(Globals.MapEditorWindow.CurrentMapState);
                 Globals.MapEditorWindow.CurrentMapState =
                     Globals.MapEditorWindow.MapRedoStates[Globals.MapEditorWindow.MapRedoStates.Count - 1];
 
-                Globals.MapEditorWindow.MapRedoStates.RemoveAt( Globals.MapEditorWindow.MapRedoStates.Count - 1 );
+                Globals.MapEditorWindow.MapRedoStates.RemoveAt(Globals.MapEditorWindow.MapRedoStates.Count - 1);
                 Globals.MapPropertiesWindow.Update();
                 Core.Graphics.TilePreviewUpdated = true;
             }
         }
 
-        private void toolStripBtnFill_Click( object sender, EventArgs e )
+        private void toolStripBtnFill_Click(object sender, EventArgs e)
         {
             Globals.CurrentTool = (int)EditingTool.Fill;
         }
 
-        private void toolStripBtnErase_Click( object sender, EventArgs e )
+        private void toolStripBtnErase_Click(object sender, EventArgs e)
         {
             Globals.CurrentTool = (int)EditingTool.Erase;
         }
 
-        private void toolStripBtnScreenshot_Click( object sender, EventArgs e )
+        private void toolStripBtnScreenshot_Click(object sender, EventArgs e)
         {
             var fileDialog = new SaveFileDialog()
             {
@@ -1324,43 +1324,43 @@ namespace Intersect.Editor.Forms
 
             fileDialog.ShowDialog();
 
-            if( fileDialog.FileName != "" )
+            if (fileDialog.FileName != "")
             {
-                using( var fs = new FileStream( fileDialog.FileName, FileMode.OpenOrCreate ) )
+                using (var fs = new FileStream(fileDialog.FileName, FileMode.OpenOrCreate))
                 {
                     var screenshotTexture = Core.Graphics.ScreenShotMap();
-                    screenshotTexture.Save( fs, System.Drawing.Imaging.ImageFormat.Png );
+                    screenshotTexture.Save(fs, System.Drawing.Imaging.ImageFormat.Png);
                 }
             }
         }
 
-        private void toolStripBtnPen_Click( object sender, EventArgs e )
+        private void toolStripBtnPen_Click(object sender, EventArgs e)
         {
             Globals.CurrentTool = (int)EditingTool.Pen;
         }
 
-        private void toolStripBtnSelect_Click( object sender, EventArgs e )
+        private void toolStripBtnSelect_Click(object sender, EventArgs e)
         {
             Globals.CurrentTool = (int)EditingTool.Selection;
         }
 
-        private void toolStripBtnRect_Click( object sender, EventArgs e )
+        private void toolStripBtnRect_Click(object sender, EventArgs e)
         {
             Globals.CurrentTool = (int)EditingTool.Rectangle;
             Globals.CurMapSelX = 0;
             Globals.CurMapSelY = 0;
         }
 
-        private void toolStripBtnEyeDrop_Click( object sender, EventArgs e )
+        private void toolStripBtnEyeDrop_Click(object sender, EventArgs e)
         {
             Globals.CurrentTool = (int)EditingTool.Droppler;
             Globals.CurMapSelX = 0;
             Globals.CurMapSelY = 0;
         }
 
-        private void toolStripBtnCopy_Click( object sender, EventArgs e )
+        private void toolStripBtnCopy_Click(object sender, EventArgs e)
         {
-            if( Globals.CurrentTool != (int)EditingTool.Selection )
+            if (Globals.CurrentTool != (int)EditingTool.Selection)
             {
                 return;
             }
@@ -1368,9 +1368,9 @@ namespace Intersect.Editor.Forms
             Globals.MapEditorWindow.Copy();
         }
 
-        private void toolStripBtnPaste_Click( object sender, EventArgs e )
+        private void toolStripBtnPaste_Click(object sender, EventArgs e)
         {
-            if( !Globals.HasCopy )
+            if (!Globals.HasCopy)
             {
                 return;
             }
@@ -1378,9 +1378,9 @@ namespace Intersect.Editor.Forms
             Globals.MapEditorWindow.Paste();
         }
 
-        private void toolStripBtnCut_Click( object sender, EventArgs e )
+        private void toolStripBtnCut_Click(object sender, EventArgs e)
         {
-            if( Globals.CurrentTool != (int)EditingTool.Selection )
+            if (Globals.CurrentTool != (int)EditingTool.Selection)
             {
                 return;
             }
@@ -1388,128 +1388,128 @@ namespace Intersect.Editor.Forms
             Globals.MapEditorWindow.Cut();
         }
 
-        private void toolStripTimeButton_Click( object sender, EventArgs e )
+        private void toolStripTimeButton_Click(object sender, EventArgs e)
         {
         }
 
-        private void toolStripBtnRun_Click( object sender, EventArgs e )
+        private void toolStripBtnRun_Click(object sender, EventArgs e)
         {
-            var path = Preferences.LoadPreference( "ClientPath" );
-            if( path != "" && File.Exists( path ) )
+            var path = Preferences.LoadPreference("ClientPath");
+            if (path != "" && File.Exists(path))
             {
-                var processStartInfo = new ProcessStartInfo( path )
+                var processStartInfo = new ProcessStartInfo(path)
                 {
-                    WorkingDirectory = Directory.GetParent( path ).FullName
+                    WorkingDirectory = Directory.GetParent(path).FullName
                 };
 
-                var saveBeforeRunOption = Preferences.LoadPreference( "SaveBeforeRun" );
-                var saveBeforeRun = saveBeforeRunOption.Length == 0 ? false : Convert.ToBoolean( saveBeforeRunOption );
-                if( saveBeforeRun )
+                var saveBeforeRunOption = Preferences.LoadPreference("SaveBeforeRun");
+                var saveBeforeRun = saveBeforeRunOption.Length == 0 ? false : Convert.ToBoolean(saveBeforeRunOption);
+                if (saveBeforeRun)
                     SaveMap();
 
-                var process = Process.Start( processStartInfo );
+                var process = Process.Start(processStartInfo);
             }
         }
 
-        private void toolStripButtonQuestion_Click( object sender, EventArgs e )
+        private void toolStripButtonQuestion_Click(object sender, EventArgs e)
         {
-            Process.Start( "https://www.ascensiongamedev.com/community/forum/53-questions-and-answers/" );
+            Process.Start("https://www.ascensiongamedev.com/community/forum/53-questions-and-answers/");
         }
 
-        private void toolStripButtonBug_Click( object sender, EventArgs e )
+        private void toolStripButtonBug_Click(object sender, EventArgs e)
         {
-            Process.Start( "https://github.com/AscensionGameDev/Intersect-Engine/issues/new/choose" );
+            Process.Start("https://github.com/AscensionGameDev/Intersect-Engine/issues/new/choose");
         }
 
         private void UpdateTimeSimulationList()
         {
             Bitmap transtile = null;
-            if( File.Exists( "resources/misc/transtile.png" ) )
+            if (File.Exists("resources/misc/transtile.png"))
             {
-                transtile = new Bitmap( "resources/misc/transtile.png" );
+                transtile = new Bitmap("resources/misc/transtile.png");
             }
 
             toolStripTimeButton.DropDownItems.Clear();
-            var time = new DateTime( 2000, 1, 1, 0, 0, 0 );
+            var time = new DateTime(2000, 1, 1, 0, 0, 0);
             var x = 0;
-            var btn = new ToolStripDropDownButton( Strings.General.none )
+            var btn = new ToolStripDropDownButton(Strings.General.none)
             {
                 Tag = null
             };
 
             btn.Click += TimeDropdownButton_Click;
-            toolStripTimeButton.DropDownItems.Add( btn );
-            for( var i = 0; i < 1440; i += TimeBase.GetTimeBase().RangeInterval )
+            toolStripTimeButton.DropDownItems.Add(btn);
+            for (var i = 0; i < 1440; i += TimeBase.GetTimeBase().RangeInterval)
             {
-                var addRange = time.ToString( "h:mm:ss tt" ) + " to ";
-                time = time.AddMinutes( TimeBase.GetTimeBase().RangeInterval );
-                addRange += time.ToString( "h:mm:ss tt" );
+                var addRange = time.ToString("h:mm:ss tt") + " to ";
+                time = time.AddMinutes(TimeBase.GetTimeBase().RangeInterval);
+                addRange += time.ToString("h:mm:ss tt");
 
                 //Create image of overlay color
-                var img = new Bitmap( 16, 16 );
-                var g = System.Drawing.Graphics.FromImage( img );
-                g.Clear( System.Drawing.Color.Transparent );
+                var img = new Bitmap(16, 16);
+                var g = System.Drawing.Graphics.FromImage(img);
+                g.Clear(System.Drawing.Color.Transparent);
 
                 //Draw the trans tile if we have it
-                if( transtile != null )
+                if (transtile != null)
                 {
-                    g.DrawImage( transtile, new System.Drawing.Point( 0, 0 ) );
+                    g.DrawImage(transtile, new System.Drawing.Point(0, 0));
                 }
 
                 var clr = TimeBase.GetTimeBase().DaylightHues[x];
-                Brush brush = new SolidBrush( System.Drawing.Color.FromArgb( clr.A, clr.R, clr.G, clr.B ) );
-                g.FillRectangle( brush, new System.Drawing.Rectangle( 0, 0, 32, 32 ) );
+                Brush brush = new SolidBrush(System.Drawing.Color.FromArgb(clr.A, clr.R, clr.G, clr.B));
+                g.FillRectangle(brush, new System.Drawing.Rectangle(0, 0, 32, 32));
 
                 //Draw the overlay color
                 g.Dispose();
 
-                btn = new ToolStripDropDownButton( addRange, img )
+                btn = new ToolStripDropDownButton(addRange, img)
                 {
                     Tag = clr
                 };
 
                 btn.Click += TimeDropdownButton_Click;
-                toolStripTimeButton.DropDownItems.Add( btn );
+                toolStripTimeButton.DropDownItems.Add(btn);
                 x++;
             }
 
-            if( transtile != null )
+            if (transtile != null)
             {
                 transtile.Dispose();
             }
         }
 
-        private void TimeDropdownButton_Click( object sender, EventArgs e )
+        private void TimeDropdownButton_Click(object sender, EventArgs e)
         {
-            if( ( (ToolStripDropDownButton)sender ).Tag == null )
+            if (((ToolStripDropDownButton)sender).Tag == null)
             {
                 Core.Graphics.LightColor = null;
             }
             else
             {
-                Core.Graphics.LightColor = (Color)( (ToolStripDropDownButton)sender ).Tag;
+                Core.Graphics.LightColor = (Color)((ToolStripDropDownButton)sender).Tag;
             }
         }
 
         private void UpdateRunState()
         {
             toolStripBtnRun.Enabled = false;
-            var path = Preferences.LoadPreference( "ClientPath" );
-            if( path != "" && File.Exists( path ) )
+            var path = Preferences.LoadPreference("ClientPath");
+            if (path != "" && File.Exists(path))
             {
                 toolStripBtnRun.Enabled = true;
             }
         }
 
         //Cross Threading Delegate Methods
-        private void TryOpenEditorMethod( GameObjectType type )
+        private void TryOpenEditorMethod(GameObjectType type)
         {
-            if( Globals.CurrentEditor == -1 )
+            if (Globals.CurrentEditor == -1)
             {
-                switch( type )
+                switch (type)
                 {
                     case GameObjectType.Animation:
-                        if( mAnimationEditor == null || mAnimationEditor.Visible == false )
+                        if (mAnimationEditor == null || mAnimationEditor.Visible == false)
                         {
                             mAnimationEditor = new FrmAnimation();
                             mAnimationEditor.InitEditor();
@@ -1518,7 +1518,7 @@ namespace Intersect.Editor.Forms
 
                         break;
                     case GameObjectType.Item:
-                        if( mItemEditor == null || mItemEditor.Visible == false )
+                        if (mItemEditor == null || mItemEditor.Visible == false)
                         {
                             mItemEditor = new FrmItem();
                             mItemEditor.InitEditor();
@@ -1527,7 +1527,7 @@ namespace Intersect.Editor.Forms
 
                         break;
                     case GameObjectType.Npc:
-                        if( mNpcEditor == null || mNpcEditor.Visible == false )
+                        if (mNpcEditor == null || mNpcEditor.Visible == false)
                         {
                             mNpcEditor = new FrmNpc();
                             mNpcEditor.InitEditor();
@@ -1536,7 +1536,7 @@ namespace Intersect.Editor.Forms
 
                         break;
                     case GameObjectType.Resource:
-                        if( mResourceEditor == null || mResourceEditor.Visible == false )
+                        if (mResourceEditor == null || mResourceEditor.Visible == false)
                         {
                             mResourceEditor = new FrmResource();
                             mResourceEditor.InitEditor();
@@ -1545,7 +1545,7 @@ namespace Intersect.Editor.Forms
 
                         break;
                     case GameObjectType.Spell:
-                        if( mSpellEditor == null || mSpellEditor.Visible == false )
+                        if (mSpellEditor == null || mSpellEditor.Visible == false)
                         {
                             mSpellEditor = new FrmSpell();
                             mSpellEditor.InitEditor();
@@ -1554,7 +1554,7 @@ namespace Intersect.Editor.Forms
 
                         break;
                     case GameObjectType.CraftTables:
-                        if( mCraftingTablesEditor == null || mCraftingTablesEditor.Visible == false )
+                        if (mCraftingTablesEditor == null || mCraftingTablesEditor.Visible == false)
                         {
                             mCraftingTablesEditor = new FrmCraftingTables();
                             mCraftingTablesEditor.InitEditor();
@@ -1563,7 +1563,7 @@ namespace Intersect.Editor.Forms
 
                         break;
                     case GameObjectType.Crafts:
-                        if( mCraftsEditor == null || mCraftsEditor.Visible == false )
+                        if (mCraftsEditor == null || mCraftsEditor.Visible == false)
                         {
                             mCraftsEditor = new FrmCrafts();
                             mCraftsEditor.InitEditor();
@@ -1572,7 +1572,7 @@ namespace Intersect.Editor.Forms
 
                         break;
                     case GameObjectType.Class:
-                        if( mClassEditor == null || mClassEditor.Visible == false )
+                        if (mClassEditor == null || mClassEditor.Visible == false)
                         {
                             mClassEditor = new FrmClass();
                             mClassEditor.InitEditor();
@@ -1581,7 +1581,7 @@ namespace Intersect.Editor.Forms
 
                         break;
                     case GameObjectType.Quest:
-                        if( mQuestEditor == null || mQuestEditor.Visible == false )
+                        if (mQuestEditor == null || mQuestEditor.Visible == false)
                         {
                             mQuestEditor = new FrmQuest();
                             mQuestEditor.InitEditor();
@@ -1590,7 +1590,7 @@ namespace Intersect.Editor.Forms
 
                         break;
                     case GameObjectType.Projectile:
-                        if( mProjectileEditor == null || mProjectileEditor.Visible == false )
+                        if (mProjectileEditor == null || mProjectileEditor.Visible == false)
                         {
                             mProjectileEditor = new FrmProjectile();
                             mProjectileEditor.InitEditor();
@@ -1599,7 +1599,7 @@ namespace Intersect.Editor.Forms
 
                         break;
                     case GameObjectType.Event:
-                        if( mCommonEventEditor == null || mCommonEventEditor.Visible == false )
+                        if (mCommonEventEditor == null || mCommonEventEditor.Visible == false)
                         {
                             mCommonEventEditor = new FrmCommonEvent();
                             mCommonEventEditor.Show();
@@ -1607,7 +1607,7 @@ namespace Intersect.Editor.Forms
 
                         break;
                     case GameObjectType.PlayerVariable:
-                        if( mSwitchVariableEditor == null || mSwitchVariableEditor.Visible == false )
+                        if (mSwitchVariableEditor == null || mSwitchVariableEditor.Visible == false)
                         {
                             mSwitchVariableEditor = new FrmSwitchVariable();
                             mSwitchVariableEditor.InitEditor();
@@ -1616,7 +1616,7 @@ namespace Intersect.Editor.Forms
 
                         break;
                     case GameObjectType.Shop:
-                        if( mShopEditor == null || mShopEditor.Visible == false )
+                        if (mShopEditor == null || mShopEditor.Visible == false)
                         {
                             mShopEditor = new FrmShop();
                             mShopEditor.InitEditor();
@@ -1625,10 +1625,10 @@ namespace Intersect.Editor.Forms
 
                         break;
                     case GameObjectType.Time:
-                        if( mTimeEditor == null || mTimeEditor.Visible == false )
+                        if (mTimeEditor == null || mTimeEditor.Visible == false)
                         {
                             mTimeEditor = new FrmTime();
-                            mTimeEditor.InitEditor( TimeBase.GetTimeBase() );
+                            mTimeEditor.InitEditor(TimeBase.GetTimeBase());
                             mTimeEditor.Show();
                         }
 
@@ -1641,16 +1641,16 @@ namespace Intersect.Editor.Forms
             }
         }
 
-        private void frmMain_FormClosing( object sender, FormClosingEventArgs e )
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if( !Globals.ClosingEditor &&
+            if (!Globals.ClosingEditor &&
                 Globals.CurrentMap != null &&
                 Globals.CurrentMap.Changed() &&
                 DarkMessageBox.ShowWarning(
                     Strings.Mapping.maphaschangesdialog, Strings.Mapping.mapnotsaved, DarkDialogButton.YesNo,
                     Properties.Resources.Icon
                 ) ==
-                DialogResult.No )
+                DialogResult.No)
             {
                 e.Cancel = true;
 
@@ -1660,17 +1660,17 @@ namespace Intersect.Editor.Forms
             Globals.ClosingEditor = true;
         }
 
-        private void toolStripBtnFlipVertical_Click( object sender, EventArgs e )
+        private void toolStripBtnFlipVertical_Click(object sender, EventArgs e)
         {
             Globals.MapEditorWindow.FlipVertical();
         }
 
-        private void toolStripBtnFlipHorizontal_Click( object sender, EventArgs e )
+        private void toolStripBtnFlipHorizontal_Click(object sender, EventArgs e)
         {
             Globals.MapEditorWindow.FlipHorizontal();
         }
 
-        private void packClientTexturesToolStripMenuItem_Click( object sender, EventArgs e )
+        private void packClientTexturesToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
@@ -1678,65 +1678,65 @@ namespace Intersect.Editor.Forms
         private void packAssets()
         {
             //TODO: Make packing heuristic that the texture packer class should use configurable.
-            var maxPackSize = Convert.ToInt32( Preferences.LoadPreference( "TexturePackSize" ) );
-            var packsPath = Path.Combine( "resources", "packs" );
+            var maxPackSize = Convert.ToInt32(Preferences.LoadPreference("TexturePackSize"));
+            var packsPath = Path.Combine("resources", "packs");
 
             //Delete Old Packs
-            Globals.PackingProgressForm.SetProgress( Strings.AssetPacking.deleting, 10, false );
+            Globals.PackingProgressForm.SetProgress(Strings.AssetPacking.deleting, 10, false);
             Application.DoEvents();
-            if( Directory.Exists( packsPath ) )
+            if (Directory.Exists(packsPath))
             {
-                var di = new DirectoryInfo( packsPath );
+                var di = new DirectoryInfo(packsPath);
 
-                foreach( var file in di.GetFiles() )
+                foreach (var file in di.GetFiles())
                 {
                     file.Delete();
                 }
 
-                foreach( var dir in di.GetDirectories() )
+                foreach (var dir in di.GetDirectories())
                 {
-                    dir.Delete( true );
+                    dir.Delete(true);
                 }
             }
             else
             {
-                Directory.CreateDirectory( packsPath );
+                Directory.CreateDirectory(packsPath);
             }
 
             //Create two 'sets' of graphics we want to pack. Tilesets + Fogs in one set, everything else in the other.
-            Globals.PackingProgressForm.SetProgress( Strings.AssetPacking.collecting, 20, false );
+            Globals.PackingProgressForm.SetProgress(Strings.AssetPacking.collecting, 20, false);
             Application.DoEvents();
             var toPack = new HashSet<Texture>();
-            foreach( var tex in GameContentManager.TilesetTextures )
+            foreach (var tex in GameContentManager.TilesetTextures)
             {
-                toPack.Add( tex );
+                toPack.Add(tex);
             }
 
-            foreach( var tex in GameContentManager.FogTextures )
+            foreach (var tex in GameContentManager.FogTextures)
             {
-                toPack.Add( tex );
+                toPack.Add(tex);
             }
 
-            foreach( var tex in GameContentManager.AllTextures )
+            foreach (var tex in GameContentManager.AllTextures)
             {
-                if( !toPack.Contains( tex ) )
+                if (!toPack.Contains(tex))
                 {
-                    toPack.Add( tex );
+                    toPack.Add(tex);
                 }
             }
 
-            Globals.PackingProgressForm.SetProgress( Strings.AssetPacking.calculating, 30, false );
+            Globals.PackingProgressForm.SetProgress(Strings.AssetPacking.calculating, 30, false);
             Application.DoEvents();
             var packs = new List<TexturePacker>();
-            while( toPack.Count > 0 )
+            while (toPack.Count > 0)
             {
                 var tex = toPack.First();
                 var inserted = false;
-                toPack.Remove( tex );
+                toPack.Remove(tex);
 
-                foreach( var pack in packs )
+                foreach (var pack in packs)
                 {
-                    if( pack.InsertTex( tex ) )
+                    if (pack.InsertTex(tex))
                     {
                         inserted = true;
 
@@ -1744,64 +1744,64 @@ namespace Intersect.Editor.Forms
                     }
                 }
 
-                if( !inserted )
+                if (!inserted)
                 {
-                    if( tex.GetWidth() > maxPackSize || tex.GetHeight() > maxPackSize )
+                    if (tex.GetWidth() > maxPackSize || tex.GetHeight() > maxPackSize)
                     {
                         //Own texture
-                        var pack = new TexturePacker( tex.GetWidth(), tex.GetHeight(), false );
-                        packs.Add( pack );
-                        pack.InsertTex( tex );
+                        var pack = new TexturePacker(tex.GetWidth(), tex.GetHeight(), false);
+                        packs.Add(pack);
+                        pack.InsertTex(tex);
                     }
                     else
                     {
-                        var pack = new TexturePacker( maxPackSize, maxPackSize, true );
-                        packs.Add( pack );
-                        if( !pack.InsertTex( tex ) )
+                        var pack = new TexturePacker(maxPackSize, maxPackSize, true);
+                        packs.Add(pack);
+                        if (!pack.InsertTex(tex))
                         {
-                            throw new Exception( "This shouldn't happen!" );
+                            throw new Exception("This shouldn't happen!");
                         }
                     }
                 }
             }
 
-            Globals.PackingProgressForm.SetProgress( Strings.AssetPacking.exporting, 40, false );
+            Globals.PackingProgressForm.SetProgress(Strings.AssetPacking.exporting, 40, false);
             Application.DoEvents();
             var packIndex = 0;
-            foreach( var pack in packs )
+            foreach (var pack in packs)
             {
-                pack.Export( packIndex );
+                pack.Export(packIndex);
                 packIndex++;
             }
 
             // Package up sounds!
-            Globals.PackingProgressForm.SetProgress( Strings.AssetPacking.sounds, 80, false );
+            Globals.PackingProgressForm.SetProgress(Strings.AssetPacking.sounds, 80, false);
             Application.DoEvents();
-            AssetPacker.PackageAssets( Path.Combine( "resources", "sounds" ), "*.wav", packsPath, "sound.index", "sound", ".asset", Convert.ToInt32( Preferences.LoadPreference( "SoundBatchSize" ) ) );
+            AssetPacker.PackageAssets(Path.Combine("resources", "sounds"), "*.wav", packsPath, "sound.index", "sound", ".asset", Convert.ToInt32(Preferences.LoadPreference("SoundBatchSize")));
 
             // Package up music!
-            Globals.PackingProgressForm.SetProgress( Strings.AssetPacking.music, 90, false );
+            Globals.PackingProgressForm.SetProgress(Strings.AssetPacking.music, 90, false);
             Application.DoEvents();
-            AssetPacker.PackageAssets( Path.Combine( "resources", "music" ), "*.ogg", packsPath, "music.index", "music", ".asset", Convert.ToInt32( Preferences.LoadPreference( "MusicBatchSize" ) ) );
+            AssetPacker.PackageAssets(Path.Combine("resources", "music"), "*.ogg", packsPath, "music.index", "music", ".asset", Convert.ToInt32(Preferences.LoadPreference("MusicBatchSize")));
 
-            Globals.PackingProgressForm.SetProgress( Strings.AssetPacking.done, 100, false );
+            Globals.PackingProgressForm.SetProgress(Strings.AssetPacking.done, 100, false);
             Application.DoEvents();
-            System.Threading.Thread.Sleep( 1000 );
+            System.Threading.Thread.Sleep(1000);
 
             Globals.PackingProgressForm.NotifyClose();
         }
 
-        private void packageUpdateToolStripMenuItem_Click( object sender, EventArgs e )
+        private void packageUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using( var fbd = new FolderBrowserDialog() )
+            using (var fbd = new FolderBrowserDialog())
             {
                 DialogResult result = fbd.ShowDialog();
 
-                if( result == DialogResult.OK && !string.IsNullOrWhiteSpace( fbd.SelectedPath ) )
+                if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
-                    Uri baseDir = new Uri( Directory.GetCurrentDirectory() + "\\" );
-                    Uri selectedDir = new Uri( fbd.SelectedPath + "\\" );
-                    if( baseDir.IsBaseOf( selectedDir ) )
+                    Uri baseDir = new Uri(Directory.GetCurrentDirectory() + "\\");
+                    Uri selectedDir = new Uri(fbd.SelectedPath + "\\");
+                    if (baseDir.IsBaseOf(selectedDir))
                     {
                         //Error, cannot be put within editor folder else it would try to include itself?
                         MessageBox.Show(
@@ -1811,21 +1811,21 @@ namespace Intersect.Editor.Forms
                     }
 
                     Update existingUpdate = null;
-                    if( Directory.Exists( fbd.SelectedPath ) && File.Exists( Path.Combine( fbd.SelectedPath, "update.json" ) ) )
+                    if (Directory.Exists(fbd.SelectedPath) && File.Exists(Path.Combine(fbd.SelectedPath, "update.json")))
                     {
                         //Existing update! Offer to create a differential folder where the only files within will be those that have changed
-                        if( MessageBox.Show(
+                        if (MessageBox.Show(
                                 Strings.UpdatePacking.Differential, Strings.UpdatePacking.DifferentialTitle,
                                 MessageBoxButtons.YesNo
                             ) ==
-                            DialogResult.Yes )
+                            DialogResult.Yes)
                         {
-                            existingUpdate = JsonConvert.DeserializeObject<Update>( File.ReadAllText( Path.Combine( fbd.SelectedPath, "update.json" ) ) );
+                            existingUpdate = JsonConvert.DeserializeObject<Update>(File.ReadAllText(Path.Combine(fbd.SelectedPath, "update.json")));
                         }
                     }
                     else
                     {
-                        if( Directory.EnumerateFileSystemEntries( fbd.SelectedPath ).Any() )
+                        if (Directory.EnumerateFileSystemEntries(fbd.SelectedPath).Any())
                         {
                             //Folder must be empty!
                             MessageBox.Show(
@@ -1836,45 +1836,45 @@ namespace Intersect.Editor.Forms
                     }
 
                     // Are we configured to package up our assets for an update?
-                    var packageUpdateAssets = Preferences.LoadPreference( "PackageUpdateAssets" );
-                    if( packageUpdateAssets != "" && Convert.ToBoolean( packageUpdateAssets ) )
+                    var packageUpdateAssets = Preferences.LoadPreference("PackageUpdateAssets");
+                    if (packageUpdateAssets != "" && Convert.ToBoolean(packageUpdateAssets))
                     {
                         Globals.PackingProgressForm = new FrmProgress();
-                        Globals.PackingProgressForm.SetTitle( Strings.AssetPacking.title );
-                        var assetThread = new Thread( () => packAssets() );
+                        Globals.PackingProgressForm.SetTitle(Strings.AssetPacking.title);
+                        var assetThread = new Thread(() => packAssets());
                         assetThread.Start();
                         Globals.PackingProgressForm.ShowDialog();
                     }
 
                     Globals.UpdateCreationProgressForm = new FrmProgress();
-                    Globals.UpdateCreationProgressForm.SetTitle( Strings.UpdatePacking.Title );
-                    Globals.UpdateCreationProgressForm.SetProgress( Strings.UpdatePacking.Deleting, 10, false );
-                    var packingthread = new Thread( () => createUpdate( fbd.SelectedPath, existingUpdate ) );
+                    Globals.UpdateCreationProgressForm.SetTitle(Strings.UpdatePacking.Title);
+                    Globals.UpdateCreationProgressForm.SetProgress(Strings.UpdatePacking.Deleting, 10, false);
+                    var packingthread = new Thread(() => createUpdate(fbd.SelectedPath, existingUpdate));
                     packingthread.Start();
                     Globals.UpdateCreationProgressForm.ShowDialog();
                 }
             }
         }
 
-        private void createUpdate( string path, Update existingUpdate )
+        private void createUpdate(string path, Update existingUpdate)
         {
-            if( !Directory.Exists( path ) )
+            if (!Directory.Exists(path))
             {
-                Directory.CreateDirectory( ( path ) );
+                Directory.CreateDirectory((path));
             }
 
-            if( Directory.Exists( path ) )
+            if (Directory.Exists(path))
             {
-                DirectoryInfo di = new DirectoryInfo( path );
+                DirectoryInfo di = new DirectoryInfo(path);
 
-                foreach( FileInfo file in di.GetFiles() )
+                foreach (FileInfo file in di.GetFiles())
                 {
                     file.Delete();
                 }
 
-                foreach( DirectoryInfo dir in di.GetDirectories() )
+                foreach (DirectoryInfo dir in di.GetDirectories())
                 {
-                    dir.Delete( true );
+                    dir.Delete(true);
                 }
 
                 //Intersect excluded files
@@ -1884,101 +1884,101 @@ namespace Intersect.Editor.Forms
                 var excludeDirectories = new string[] { "logs", "screenshots" };
 
 
-                if( Directory.Exists( Path.Combine( "resources", "packs" ) ) )
+                if (Directory.Exists(Path.Combine("resources", "packs")))
                 {
-                    var packs = Directory.GetFiles( Path.Combine( "resources", "packs" ), "*.meta" );
-                    foreach( var pack in packs )
+                    var packs = Directory.GetFiles(Path.Combine("resources", "packs"), "*.meta");
+                    foreach (var pack in packs)
                     {
-                        var obj = JObject.Parse( GzipCompression.ReadDecompressedString( pack ) )["frames"];
-                        foreach( var frame in obj.Children() )
+                        var obj = JObject.Parse(GzipCompression.ReadDecompressedString(pack))["frames"];
+                        foreach (var frame in obj.Children())
                         {
                             var filename = frame["filename"].ToString();
-                            clientExcludeFiles.Add( filename );
+                            clientExcludeFiles.Add(filename);
                         }
                     }
 
-                    var soundIndex = Path.Combine( "resources", "packs", "sound.index" );
-                    if( File.Exists( soundIndex ) )
+                    var soundIndex = Path.Combine("resources", "packs", "sound.index");
+                    if (File.Exists(soundIndex))
                     {
-                        using( var soundPacker = new AssetPacker( soundIndex, Path.Combine( "resources", "packs" ) ) )
+                        using (var soundPacker = new AssetPacker(soundIndex, Path.Combine("resources", "packs")))
                         {
-                            foreach( var sound in soundPacker.FileList )
+                            foreach (var sound in soundPacker.FileList)
                             {
                                 // Add as lowercase as our update generator checks for lowercases!
-                                clientExcludeFiles.Add( Path.Combine( "resources", "sounds", sound.ToLower() ).Replace( '\\', '/' ) );
+                                clientExcludeFiles.Add(Path.Combine("resources", "sounds", sound.ToLower()).Replace('\\', '/'));
                             }
                         }
                     }
 
-                    var musicIndex = Path.Combine( "resources", "packs", "music.index" );
-                    if( File.Exists( musicIndex ) )
+                    var musicIndex = Path.Combine("resources", "packs", "music.index");
+                    if (File.Exists(musicIndex))
                     {
-                        using( var musicPacker = new AssetPacker( musicIndex, Path.Combine( "resources", "packs" ) ) )
+                        using (var musicPacker = new AssetPacker(musicIndex, Path.Combine("resources", "packs")))
                         {
-                            foreach( var music in musicPacker.FileList )
+                            foreach (var music in musicPacker.FileList)
                             {
                                 // Add as lowercase as our update generator checks for lowercases!
-                                clientExcludeFiles.Add( Path.Combine( "resources", "music", music.ToLower() ).Replace( '\\', '/' ) );
+                                clientExcludeFiles.Add(Path.Combine("resources", "music", music.ToLower()).Replace('\\', '/'));
                             }
                         }
                     }
 
                 }
 
-                var fileCount = Directory.GetFiles( Directory.GetCurrentDirectory(), "*.*", SearchOption.AllDirectories ).Length;
+                var fileCount = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.*", SearchOption.AllDirectories).Length;
 
                 var update = new Update();
-                queryFilesForUpdate( update, excludeFiles, clientExcludeFiles.ToArray(), excludeExtensions, excludeDirectories, Directory.GetCurrentDirectory(), Directory.GetCurrentDirectory(), path, 0, fileCount, existingUpdate );
+                queryFilesForUpdate(update, excludeFiles, clientExcludeFiles.ToArray(), excludeExtensions, excludeDirectories, Directory.GetCurrentDirectory(), Directory.GetCurrentDirectory(), path, 0, fileCount, existingUpdate);
 
             }
         }
 
-        private int queryFilesForUpdate( Update update, string[] excludeFiles, string[] clientExcludeFiles, string[] excludeExtensions, string[] excludeDirectories, string workingDirectory, string path, string updatePath, int filesProcessed, int fileCount, Update existingUpdate )
+        private int queryFilesForUpdate(Update update, string[] excludeFiles, string[] clientExcludeFiles, string[] excludeExtensions, string[] excludeDirectories, string workingDirectory, string path, string updatePath, int filesProcessed, int fileCount, Update existingUpdate)
         {
-            DirectoryInfo di = new DirectoryInfo( path );
-            Uri workingDir = new Uri( workingDirectory + "/" );
+            DirectoryInfo di = new DirectoryInfo(path);
+            Uri workingDir = new Uri(workingDirectory + "/");
 
-            foreach( FileInfo file in di.GetFiles() )
+            foreach (FileInfo file in di.GetFiles())
             {
-                string relativePath = Uri.UnescapeDataString( workingDir.MakeRelativeUri( new Uri( Path.Combine( path, file.Name ) ) ).ToString().Replace( '\\', '/' ) );
-                if( !excludeFiles.Contains( relativePath ) && !excludeExtensions.Contains( file.Extension ) )
+                string relativePath = Uri.UnescapeDataString(workingDir.MakeRelativeUri(new Uri(Path.Combine(path, file.Name))).ToString().Replace('\\', '/'));
+                if (!excludeFiles.Contains(relativePath) && !excludeExtensions.Contains(file.Extension))
                 {
                     var md5Hash = "";
-                    using( var md5 = MD5.Create() )
+                    using (var md5 = MD5.Create())
                     {
-                        using( var stream = new BufferedStream( File.OpenRead( file.FullName ), 1200000 ) )
+                        using (var stream = new BufferedStream(File.OpenRead(file.FullName), 1200000))
                         {
-                            md5Hash = BitConverter.ToString( md5.ComputeHash( stream ) ).Replace( "-", "" ).ToLowerInvariant();
+                            md5Hash = BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
                         }
                     }
 
-                    var updateFile = new UpdateFile( relativePath, md5Hash, file.Length );
+                    var updateFile = new UpdateFile(relativePath, md5Hash, file.Length);
 
-                    if( clientExcludeFiles.Contains( relativePath.ToLower() ) )
+                    if (clientExcludeFiles.Contains(relativePath.ToLower()))
                     {
                         updateFile.ClientIgnore = true;
                     }
 
-                    update.Files.Add( updateFile );
+                    update.Files.Add(updateFile);
 
                     //Copy File (If not in existing update)
                     UpdateFile existingFile = null;
-                    if( existingUpdate != null )
+                    if (existingUpdate != null)
                     {
-                        existingFile = existingUpdate.Files.FirstOrDefault( f => f.Path == updateFile.Path );
+                        existingFile = existingUpdate.Files.FirstOrDefault(f => f.Path == updateFile.Path);
                     }
 
-                    if( existingFile == null || existingFile.Size != updateFile.Size || existingFile.Hash != updateFile.Hash )
+                    if (existingFile == null || existingFile.Size != updateFile.Size || existingFile.Hash != updateFile.Hash)
                     {
-                        var relativeFolder = Uri.UnescapeDataString( workingDir.MakeRelativeUri( new Uri( path + "/" ) ).ToString().Replace( '\\', '/' ) );
-                        if( !string.IsNullOrEmpty( relativeFolder ) )
+                        var relativeFolder = Uri.UnescapeDataString(workingDir.MakeRelativeUri(new Uri(path + "/")).ToString().Replace('\\', '/'));
+                        if (!string.IsNullOrEmpty(relativeFolder))
                         {
-                            Directory.CreateDirectory( Path.Combine( updatePath, relativeFolder ) );
-                            File.Copy( file.FullName, Path.Combine( updatePath, relativeFolder, file.Name ) );
+                            Directory.CreateDirectory(Path.Combine(updatePath, relativeFolder));
+                            File.Copy(file.FullName, Path.Combine(updatePath, relativeFolder, file.Name));
                         }
                         else
                         {
-                            File.Copy( file.FullName, Path.Combine( updatePath, file.Name ) );
+                            File.Copy(file.FullName, Path.Combine(updatePath, file.Name));
                         }
                     }
                 }
@@ -1989,8 +1989,8 @@ namespace Intersect.Editor.Forms
 
                 filesProcessed++;
 
-                var percentage = (float)( filesProcessed / (float)( fileCount + 1 ) );
-                var outofeighty = (int)( percentage * 80f );
+                var percentage = (float)(filesProcessed / (float)(fileCount + 1));
+                var outofeighty = (int)(percentage * 80f);
 
                 Globals.UpdateCreationProgressForm.SetProgress(
                     Strings.UpdatePacking.Calculating, outofeighty + 10, false
@@ -1999,12 +1999,12 @@ namespace Intersect.Editor.Forms
                 Application.DoEvents();
             }
 
-            foreach( var dir in di.GetDirectories() )
+            foreach (var dir in di.GetDirectories())
             {
-                string relativePath = Uri.UnescapeDataString( workingDir.MakeRelativeUri( new Uri( Path.Combine( path, dir.Name ) ) ).ToString().Replace( '\\', '/' ) );
-                if( !excludeDirectories.Contains( relativePath ) )
+                string relativePath = Uri.UnescapeDataString(workingDir.MakeRelativeUri(new Uri(Path.Combine(path, dir.Name))).ToString().Replace('\\', '/'));
+                if (!excludeDirectories.Contains(relativePath))
                 {
-                    filesProcessed = queryFilesForUpdate( update, excludeFiles, clientExcludeFiles, excludeExtensions, excludeFiles, workingDirectory, Path.Combine( path, dir.Name ), updatePath, filesProcessed, fileCount, existingUpdate );
+                    filesProcessed = queryFilesForUpdate(update, excludeFiles, clientExcludeFiles, excludeExtensions, excludeFiles, workingDirectory, Path.Combine(path, dir.Name), updatePath, filesProcessed, fileCount, existingUpdate);
                 }
                 else
                 {
@@ -2012,14 +2012,14 @@ namespace Intersect.Editor.Forms
                 }
             }
 
-            if( path == Directory.GetCurrentDirectory() )
+            if (path == Directory.GetCurrentDirectory())
             {
-                Globals.UpdateCreationProgressForm.SetProgress( Strings.UpdatePacking.Done, 100, false );
+                Globals.UpdateCreationProgressForm.SetProgress(Strings.UpdatePacking.Done, 100, false);
                 Application.DoEvents();
-                System.Threading.Thread.Sleep( 1000 );
+                System.Threading.Thread.Sleep(1000);
 
                 //TODO: Open folder with update files
-                File.WriteAllText( Path.Combine( updatePath, "update.json" ), JsonConvert.SerializeObject( update, Formatting.Indented, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore } ) );
+                File.WriteAllText(Path.Combine(updatePath, "update.json"), JsonConvert.SerializeObject(update, Formatting.Indented, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore }));
 
                 Globals.UpdateCreationProgressForm.NotifyClose();
             }

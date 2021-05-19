@@ -13,14 +13,14 @@ namespace Intersect.Extensions
             out TValue value
         )
         {
-            if( propertyInfo.GetValue( target ) is TValue typedValue )
+            if (propertyInfo.GetValue(target) is TValue typedValue)
             {
                 value = typedValue;
 
                 return true;
             }
 
-            value = default( TValue );
+            value = default(TValue);
 
             return false;
         }
@@ -32,14 +32,14 @@ namespace Intersect.Extensions
             out TValue value
         )
         {
-            if( propertyInfo.GetValue( target, index ) is TValue typedValue )
+            if (propertyInfo.GetValue(target, index) is TValue typedValue)
             {
                 value = typedValue;
 
                 return true;
             }
 
-            value = default( TValue );
+            value = default(TValue);
 
             return false;
         }
@@ -54,14 +54,14 @@ namespace Intersect.Extensions
             out TValue value
         )
         {
-            if( propertyInfo.GetValue( target, invokeAttr, binder, index, culture ) is TValue typedValue )
+            if (propertyInfo.GetValue(target, invokeAttr, binder, index, culture) is TValue typedValue)
             {
                 value = typedValue;
 
                 return true;
             }
 
-            value = default( TValue );
+            value = default(TValue);
 
             return false;
         }

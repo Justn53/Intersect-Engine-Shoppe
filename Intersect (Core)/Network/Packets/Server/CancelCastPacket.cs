@@ -11,12 +11,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public CancelCastPacket( Guid entityId )
+        public CancelCastPacket(Guid entityId)
         {
             EntityId = entityId;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid EntityId { get; set; }
 
     }

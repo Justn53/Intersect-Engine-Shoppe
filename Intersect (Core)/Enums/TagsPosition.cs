@@ -4,7 +4,7 @@ using Newtonsoft.Json.Converters;
 namespace Intersect.Enums
 {
     /// <summary> Enum used for switching Tags Position. </summary>
-    [JsonConverter( typeof( StringEnumConverter ) )]
+    [JsonConverter(typeof(StringEnumConverter))]
     public enum TagPosition
     {
         /// <summary> Positions the tag above the name label. </summary>

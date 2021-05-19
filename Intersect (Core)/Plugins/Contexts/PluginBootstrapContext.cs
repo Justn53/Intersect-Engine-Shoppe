@@ -24,7 +24,7 @@ namespace Intersect.Plugins.Contexts
         /// <param name="networkHelper"></param>
         /// <returns>a <see cref="IFactory{TValue}"/> instance</returns>
         public static IFactory<IPluginBootstrapContext>
-            CreateFactory( string[] args, Parser parser, INetworkHelper networkHelper ) => new Factory( args, parser, networkHelper );
+            CreateFactory(string[] args, Parser parser, INetworkHelper networkHelper) => new Factory(args, parser, networkHelper);
 
         /// <summary>
         /// Factory implementation for <see cref="IPluginBootstrapContext"/>.
@@ -43,7 +43,7 @@ namespace Intersect.Plugins.Contexts
             /// <param name="args">the startup arguments that were parsed</param>
             /// <param name="parser">the <see cref="Parser"/> used to parse <paramref name="args"/></param>
             /// <param name="networkHelper"></param>
-            public Factory( string[] args, Parser parser, INetworkHelper networkHelper )
+            public Factory(string[] args, Parser parser, INetworkHelper networkHelper)
             {
                 mArgs = args;
                 mParser = parser;
@@ -51,24 +51,24 @@ namespace Intersect.Plugins.Contexts
             }
 
             /// <inheritdoc />
-            public IPluginBootstrapContext Create( params object[] args )
+            public IPluginBootstrapContext Create(params object[] args)
             {
-                if( args.Length < 1 )
+                if (args.Length < 1)
                 {
-                    throw new ArgumentOutOfRangeException( nameof( args ), $"{nameof( args )} should have 1 arguments." );
+                    throw new ArgumentOutOfRangeException(nameof(args), $"{nameof(args)} should have 1 arguments.");
                 }
 
-                if( !( args[0] is Plugin plugin ) )
+                if (!(args[0] is Plugin plugin))
                 {
                     throw new ArgumentException(
                         string.Format(
                             CultureInfo.CurrentCulture, ExceptionMessages.PluginBootstrapContextMissingPluginArgument,
-                            nameof( Plugin )
-                        ), nameof( args )
+                            nameof(Plugin)
+                        ), nameof(args)
                     );
                 }
 
-                return new PluginBootstrapContext( mArgs, mParser, plugin, mNetworkHelper );
+                return new PluginBootstrapContext(mArgs, mParser, plugin, mNetworkHelper);
             }
         }
 
@@ -95,13 +95,13 @@ namespace Intersect.Plugins.Contexts
         /// <inheritdoc />
         public IManifestHelper Manifest => Plugin.Manifest;
 
-        private PluginBootstrapContext( string[] args, Parser parser, Plugin plugin, INetworkHelper parentNetworkHelper )
+        private PluginBootstrapContext(string[] args, Parser parser, Plugin plugin, INetworkHelper parentNetworkHelper)
         {
             Plugin = plugin;
 
-            CommandLine = new CommandLineHelper( plugin.Logging.Plugin, args, parser );
-            EmbeddedResources = new EmbeddedResourceHelper( Assembly );
-            Network = new NetworkHelper( parentNetworkHelper );
+            CommandLine = new CommandLineHelper(plugin.Logging.Plugin, args, parser);
+            EmbeddedResources = new EmbeddedResourceHelper(Assembly);
+            Network = new NetworkHelper(parentNetworkHelper);
         }
 
         /// <inheritdoc />

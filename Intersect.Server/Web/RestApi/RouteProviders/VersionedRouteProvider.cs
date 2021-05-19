@@ -13,18 +13,18 @@ namespace Intersect.Server.Web.RestApi.RouteProviders
     internal sealed class VersionedRouteProvider : DefaultDirectRouteProvider
     {
 
-        public VersionedRouteProvider() : this( DefaultRootNamespace )
+        public VersionedRouteProvider() : this(DefaultRootNamespace)
         {
         }
 
-        public VersionedRouteProvider( string rootNamespace, string prefix = "api" )
+        public VersionedRouteProvider(string rootNamespace, string prefix = "api")
         {
             RootNamespace = rootNamespace;
             Prefix = prefix;
         }
 
         public static string DefaultRootNamespace =>
-            typeof( RootInfoController ).Namespace ?? throw new InvalidOperationException();
+            typeof(RootInfoController).Namespace ?? throw new InvalidOperationException();
 
         public string RootNamespace { get; }
 
@@ -34,7 +34,7 @@ namespace Intersect.Server.Web.RestApi.RouteProviders
             HttpActionDescriptor actionDescriptor
         )
         {
-            return base.GetActionRouteFactories( actionDescriptor );
+            return base.GetActionRouteFactories(actionDescriptor);
         }
 
         protected override IReadOnlyList<RouteEntry> GetActionDirectRoutes(
@@ -43,14 +43,14 @@ namespace Intersect.Server.Web.RestApi.RouteProviders
             IInlineConstraintResolver constraintResolver
         )
         {
-            return base.GetActionDirectRoutes( actionDescriptor, factories, constraintResolver );
+            return base.GetActionDirectRoutes(actionDescriptor, factories, constraintResolver);
         }
 
         protected override IReadOnlyList<IDirectRouteFactory> GetControllerRouteFactories(
             HttpControllerDescriptor controllerDescriptor
         )
         {
-            return base.GetControllerRouteFactories( controllerDescriptor );
+            return base.GetControllerRouteFactories(controllerDescriptor);
         }
 
         public override IReadOnlyList<RouteEntry> GetDirectRoutes(
@@ -59,7 +59,7 @@ namespace Intersect.Server.Web.RestApi.RouteProviders
             IInlineConstraintResolver constraintResolver
         )
         {
-            return base.GetDirectRoutes( controllerDescriptor, actionDescriptors, constraintResolver );
+            return base.GetDirectRoutes(controllerDescriptor, actionDescriptors, constraintResolver);
         }
 
         protected override IReadOnlyList<RouteEntry> GetControllerDirectRoutes(
@@ -74,32 +74,32 @@ namespace Intersect.Server.Web.RestApi.RouteProviders
             );
         }
 
-        protected override string GetRoutePrefix( HttpControllerDescriptor controllerDescriptor )
+        protected override string GetRoutePrefix(HttpControllerDescriptor controllerDescriptor)
         {
-            var prefixBuilder = new StringBuilder( Prefix );
+            var prefixBuilder = new StringBuilder(Prefix);
 
             var controllerType = controllerDescriptor.ControllerType;
             var namespaceSegments =
-                controllerType?.Namespace?.Replace( RootNamespace, "" ).Split( '.' ) ?? new string[] { };
+                controllerType?.Namespace?.Replace(RootNamespace, "").Split('.') ?? new string[] { };
 
-            namespaceSegments.Where( segment => !string.IsNullOrWhiteSpace( segment ) )
+            namespaceSegments.Where(segment => !string.IsNullOrWhiteSpace(segment))
                 .ToList()
                 .ForEach(
                     segment =>
                     {
-                        prefixBuilder.Append( '/' );
-                        prefixBuilder.Append( segment?.ToLower() );
+                        prefixBuilder.Append('/');
+                        prefixBuilder.Append(segment?.ToLower());
                     }
                 );
 
-            var prefix = base.GetRoutePrefix( controllerDescriptor )?.Trim();
+            var prefix = base.GetRoutePrefix(controllerDescriptor)?.Trim();
 
             // More readable with less return points
             // ReSharper disable once InvertIf
-            if( !string.IsNullOrWhiteSpace( prefix ) )
+            if (!string.IsNullOrWhiteSpace(prefix))
             {
-                prefixBuilder.Append( '/' );
-                prefixBuilder.Append( prefix );
+                prefixBuilder.Append('/');
+                prefixBuilder.Append(prefix);
             }
 
             return prefixBuilder.ToString();

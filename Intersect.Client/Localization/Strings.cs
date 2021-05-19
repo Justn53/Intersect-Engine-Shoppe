@@ -16,9 +16,9 @@ namespace Intersect.Client.Localization
 
         private static char[] mQuantityTrimChars = new char[] { '.', '0' };
 
-        public static string FormatQuantityAbbreviated( long value )
+        public static string FormatQuantityAbbreviated(long value)
         {
-            if( value == 0 )
+            if (value == 0)
             {
                 return "";
             }
@@ -28,27 +28,27 @@ namespace Intersect.Client.Localization
                 var postfix = "";
 
                 // hundreds
-                if( value <= 999 )
+                if (value <= 999)
                 {
                     returnVal = value;
                 }
 
                 // thousands
-                else if( value >= 1000 && value <= 999999 )
+                else if (value >= 1000 && value <= 999999)
                 {
                     returnVal = value / 1000.0;
                     postfix = Strings.Numbers.thousands;
                 }
 
                 // millions
-                else if( value >= 1000000 && value <= 999999999 )
+                else if (value >= 1000000 && value <= 999999999)
                 {
                     returnVal = value / 1000000.0;
                     postfix = Strings.Numbers.millions;
                 }
 
                 // billions
-                else if( value >= 1000000000 && value <= 999999999999 )
+                else if (value >= 1000000000 && value <= 999999999999)
                 {
                     returnVal = value / 1000000000.0;
                     postfix = Strings.Numbers.billions;
@@ -58,20 +58,20 @@ namespace Intersect.Client.Localization
                     return "OOB";
                 }
 
-                if( returnVal >= 10 )
+                if (returnVal >= 10)
                 {
-                    returnVal = Math.Floor( returnVal );
+                    returnVal = Math.Floor(returnVal);
 
                     return returnVal.ToString() + postfix;
                 }
                 else
                 {
-                    returnVal = Math.Floor( returnVal * 10 ) / 10.0;
+                    returnVal = Math.Floor(returnVal * 10) / 10.0;
 
-                    return returnVal.ToString( "F1" )
-                               .TrimEnd( mQuantityTrimChars )
+                    return returnVal.ToString("F1")
+                               .TrimEnd(mQuantityTrimChars)
                                .ToString()
-                               .Replace( ".", Strings.Numbers.dec ) +
+                               .Replace(".", Strings.Numbers.dec) +
                            postfix;
                 }
             }
@@ -79,64 +79,64 @@ namespace Intersect.Client.Localization
 
         public static void Load()
         {
-            if( File.Exists( Path.Combine( "resources", "client_strings.json" ) ) )
+            if (File.Exists(Path.Combine("resources", "client_strings.json")))
             {
                 var strings = new Dictionary<string, Dictionary<string, object>>();
                 strings = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(
-                    File.ReadAllText( Path.Combine( "resources", "client_strings.json" ) )
+                    File.ReadAllText(Path.Combine("resources", "client_strings.json"))
                 );
 
-                var type = typeof( Strings );
+                var type = typeof(Strings);
 
                 var fields = new List<Type>();
                 fields.AddRange(
-                    type.GetNestedTypes( System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public )
+                    type.GetNestedTypes(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)
                 );
 
-                foreach( var p in fields )
+                foreach (var p in fields)
                 {
-                    if( !strings.ContainsKey( p.Name ) )
+                    if (!strings.ContainsKey(p.Name))
                     {
                         continue;
                     }
 
                     var dict = strings[p.Name];
-                    foreach( var fieldInfo in p.GetFields(
+                    foreach (var fieldInfo in p.GetFields(
                         System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public
-                    ) )
+                    ))
                     {
-                        var fieldValue = fieldInfo.GetValue( null );
-                        if( !dict.ContainsKey( fieldInfo.Name.ToLower() ) )
+                        var fieldValue = fieldInfo.GetValue(null);
+                        if (!dict.ContainsKey(fieldInfo.Name.ToLower()))
                         {
                             continue;
                         }
 
-                        if( fieldValue is LocalizedString )
+                        if (fieldValue is LocalizedString)
                         {
-                            fieldInfo.SetValue( null, new LocalizedString( (string)dict[fieldInfo.Name.ToLower()] ) );
+                            fieldInfo.SetValue(null, new LocalizedString((string)dict[fieldInfo.Name.ToLower()]));
                         }
-                        else if( fieldValue is Dictionary<int, LocalizedString> )
+                        else if (fieldValue is Dictionary<int, LocalizedString>)
                         {
-                            var existingDict = (Dictionary<int, LocalizedString>)fieldInfo.GetValue( null );
-                            var values = ( (JObject)dict[fieldInfo.Name] ).ToObject<Dictionary<int, string>>();
+                            var existingDict = (Dictionary<int, LocalizedString>)fieldInfo.GetValue(null);
+                            var values = ((JObject)dict[fieldInfo.Name]).ToObject<Dictionary<int, string>>();
                             var dic = values.ToDictionary<KeyValuePair<int, string>, int, LocalizedString>(
                                 val => val.Key, val => val.Value
                             );
 
-                            foreach( var val in dic )
+                            foreach (var val in dic)
                             {
                                 existingDict[val.Key] = val.Value;
                             }
                         }
-                        else if( fieldValue is Dictionary<string, LocalizedString> )
+                        else if (fieldValue is Dictionary<string, LocalizedString>)
                         {
-                            var existingDict = (Dictionary<string, LocalizedString>)fieldInfo.GetValue( null );
-                            var pairs = ( (JObject)dict[fieldInfo.Name] )?.ToObject<Dictionary<string, string>>() ??
+                            var existingDict = (Dictionary<string, LocalizedString>)fieldInfo.GetValue(null);
+                            var pairs = ((JObject)dict[fieldInfo.Name])?.ToObject<Dictionary<string, string>>() ??
                                         new Dictionary<string, string>();
 
-                            foreach( var pair in pairs )
+                            foreach (var pair in pairs)
                             {
-                                if( pair.Key == null )
+                                if (pair.Key == null)
                                 {
                                     continue;
                                 }
@@ -157,53 +157,53 @@ namespace Intersect.Client.Localization
         public static void Save()
         {
             var strings = new Dictionary<string, Dictionary<string, object>>();
-            var type = typeof( Strings );
+            var type = typeof(Strings);
             var fields = type.GetNestedTypes(
                 System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public
             );
 
-            foreach( var p in fields )
+            foreach (var p in fields)
             {
                 var dict = new Dictionary<string, object>();
-                foreach( var p1 in p.GetFields(
+                foreach (var p1 in p.GetFields(
                     System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public
-                ) )
+                ))
                 {
-                    if( p1.GetValue( null ).GetType() == typeof( LocalizedString ) )
+                    if (p1.GetValue(null).GetType() == typeof(LocalizedString))
                     {
-                        dict.Add( p1.Name.ToLower(), ( (LocalizedString)p1.GetValue( null ) ).ToString() );
+                        dict.Add(p1.Name.ToLower(), ((LocalizedString)p1.GetValue(null)).ToString());
                     }
-                    else if( p1.GetValue( null ).GetType() == typeof( Dictionary<int, LocalizedString> ) )
+                    else if (p1.GetValue(null).GetType() == typeof(Dictionary<int, LocalizedString>))
                     {
                         var dic = new Dictionary<int, string>();
-                        foreach( var val in (Dictionary<int, LocalizedString>)p1.GetValue( null ) )
+                        foreach (var val in (Dictionary<int, LocalizedString>)p1.GetValue(null))
                         {
-                            dic.Add( val.Key, val.Value.ToString() );
+                            dic.Add(val.Key, val.Value.ToString());
                         }
 
-                        dict.Add( p1.Name, dic );
+                        dict.Add(p1.Name, dic);
                     }
-                    else if( p1.GetValue( null ).GetType() == typeof( Dictionary<string, LocalizedString> ) )
+                    else if (p1.GetValue(null).GetType() == typeof(Dictionary<string, LocalizedString>))
                     {
                         var dic = new Dictionary<string, string>();
-                        foreach( var val in (Dictionary<string, LocalizedString>)p1.GetValue( null ) )
+                        foreach (var val in (Dictionary<string, LocalizedString>)p1.GetValue(null))
                         {
-                            dic.Add( val.Key.ToLower(), val.Value.ToString() );
+                            dic.Add(val.Key.ToLower(), val.Value.ToString());
                         }
 
-                        dict.Add( p1.Name, dic );
+                        dict.Add(p1.Name, dic);
                     }
                 }
 
-                strings.Add( p.Name, dict );
+                strings.Add(p.Name, dict);
             }
 
-            var languageDirectory = Path.Combine( "resources" );
-            if( Directory.Exists( languageDirectory ) )
+            var languageDirectory = Path.Combine("resources");
+            if (Directory.Exists(languageDirectory))
             {
                 File.WriteAllText(
-                    Path.Combine( languageDirectory, "client_strings.json" ),
-                    JsonConvert.SerializeObject( strings, Formatting.Indented )
+                    Path.Combine(languageDirectory, "client_strings.json"),
+                    JsonConvert.SerializeObject(strings, Formatting.Indented)
                 );
             }
         }
@@ -795,7 +795,7 @@ namespace Intersect.Client.Localization
 
             public static LocalizedString none = @"None";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString MapItemStackable = @"{01} {00}";
 
         }
@@ -815,10 +815,10 @@ namespace Intersect.Client.Localization
 
         public struct MapItemWindow
         {
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Title = @"Loot";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString LootButton = @"Loot All";
 
         }
@@ -1569,7 +1569,7 @@ namespace Intersect.Client.Localization
 
         public struct GameWindow
         {
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString EntityNameAndLevel = @"{00} [Lv. {01}]";
         }
 

@@ -25,7 +25,7 @@ namespace Intersect.Plugins.Interfaces
         /// </summary>
         /// <param name="createLoggerOptions">options to configure the <see cref="Logger"/></param>
         /// <returns>a specialized <see cref="Logger"/> instance</returns>
-        Logger CreateLogger( CreateLoggerOptions createLoggerOptions );
+        Logger CreateLogger(CreateLoggerOptions createLoggerOptions);
     }
 
     /// <summary>

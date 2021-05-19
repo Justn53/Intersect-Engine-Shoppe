@@ -24,22 +24,22 @@ namespace Intersect.Client.MonoGame.System
 
         public override long GetTimeMsExact()
         {
-            return ( DateTime.UtcNow.Ticks - StartTime ) / TimeSpan.TicksPerMillisecond;
+            return (DateTime.UtcNow.Ticks - StartTime) / TimeSpan.TicksPerMillisecond;
         }
 
         public override void Update()
         {
-            TotalMilliseconds = ( DateTime.UtcNow.Ticks - StartTime ) / TimeSpan.TicksPerMillisecond;
+            TotalMilliseconds = (DateTime.UtcNow.Ticks - StartTime) / TimeSpan.TicksPerMillisecond;
         }
 
-        public override void Log( string msg )
+        public override void Log(string msg)
         {
-            Debug.WriteLine( msg );
+            Debug.WriteLine(msg);
         }
 
-        public override void LogError( string error )
+        public override void LogError(string error)
         {
-            Console.WriteLine( error );
+            Console.WriteLine(error);
         }
 
     }

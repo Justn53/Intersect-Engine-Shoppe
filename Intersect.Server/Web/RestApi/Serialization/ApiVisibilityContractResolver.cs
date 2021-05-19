@@ -20,7 +20,7 @@ namespace Intersect.Server.Web.RestApi.Serialization
     public class ApiVisibilityContractResolver : DefaultContractResolver
     {
 
-        public ApiVisibilityContractResolver( HttpRequestContext requestContext )
+        public ApiVisibilityContractResolver(HttpRequestContext requestContext)
         {
             RequestContext = requestContext;
         }
@@ -31,43 +31,43 @@ namespace Intersect.Server.Web.RestApi.Serialization
         public HttpRequestContext RequestContext { get; }
 
         /// <inheritdoc />
-        protected override List<MemberInfo> GetSerializableMembers( Type objectType )
+        protected override List<MemberInfo> GetSerializableMembers(Type objectType)
         {
             var typeApiVisibility = objectType?.GetCustomAttribute<ApiVisibilityAttribute>();
             var claimsPrincipal = RequestContext.Principal as ClaimsPrincipal;
-            var readClaims = claimsPrincipal?.FindAll( IntersectClaimTypes.AccessRead )?.ToList() ?? new List<Claim>();
+            var readClaims = claimsPrincipal?.FindAll(IntersectClaimTypes.AccessRead)?.ToList() ?? new List<Claim>();
 
             var hasAccessToType = typeApiVisibility?.Visibility != ApiVisibility.Hidden;
-            if( hasAccessToType && ( typeApiVisibility?.Visibility.HasFlag( ApiVisibility.Restricted ) ?? false ) )
+            if (hasAccessToType && (typeApiVisibility?.Visibility.HasFlag(ApiVisibility.Restricted) ?? false))
             {
                 hasAccessToType = readClaims.Any(
-                    claim => string.Equals( objectType.FullName, claim?.Value, StringComparison.Ordinal )
+                    claim => string.Equals(objectType.FullName, claim?.Value, StringComparison.Ordinal)
                 );
             }
 
-            if( !hasAccessToType )
+            if (!hasAccessToType)
             {
                 return new List<MemberInfo>();
             }
 
-            var serializableMembers = base.GetSerializableMembers( objectType );
+            var serializableMembers = base.GetSerializableMembers(objectType);
 
             return serializableMembers?.Where(
                     memberInfo =>
                     {
                         var apiVisibility = memberInfo?.GetCustomAttribute<ApiVisibilityAttribute>();
-                        if( apiVisibility == null || apiVisibility.Visibility == ApiVisibility.Public )
+                        if (apiVisibility == null || apiVisibility.Visibility == ApiVisibility.Public)
                         {
                             return true;
                         }
 
-                        if( apiVisibility.Visibility.HasFlag( ApiVisibility.Private ) )
+                        if (apiVisibility.Visibility.HasFlag(ApiVisibility.Private))
                         {
                             // TODO: Not sure how to implement ownership visibility yet
                         }
 
                         // ReSharper disable once InvertIf
-                        if( apiVisibility.Visibility.HasFlag( ApiVisibility.Restricted ) )
+                        if (apiVisibility.Visibility.HasFlag(ApiVisibility.Restricted))
                         {
                             return readClaims.Any(
                                 claim => string.Equals(

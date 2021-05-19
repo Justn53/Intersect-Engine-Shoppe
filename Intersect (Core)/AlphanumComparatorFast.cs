@@ -8,14 +8,14 @@ namespace Intersect
     public class AlphanumComparatorFast : IComparer, IComparer<string>
     {
 
-        public int Compare( object x, object y )
+        public int Compare(object x, object y)
         {
-            return Compare( x as string, y as string );
+            return Compare(x as string, y as string);
         }
 
-        public int Compare( string x, string y )
+        public int Compare(string x, string y)
         {
-            if( string.IsNullOrEmpty( x ) || string.IsNullOrEmpty( y ) )
+            if (string.IsNullOrEmpty(x) || string.IsNullOrEmpty(y))
             {
                 return 0;
             }
@@ -26,7 +26,7 @@ namespace Intersect
             var marker2 = 0;
 
             // Walk through two the strings with two markers.
-            while( marker1 < len1 && marker2 < len2 )
+            while (marker1 < len1 && marker2 < len2)
             {
                 var ch1 = x[marker1];
                 var ch2 = y[marker2];
@@ -45,7 +45,7 @@ namespace Intersect
                     space1[loc1++] = ch1;
                     marker1++;
 
-                    if( marker1 < len1 )
+                    if (marker1 < len1)
                     {
                         ch1 = x[marker1];
                     }
@@ -53,14 +53,14 @@ namespace Intersect
                     {
                         break;
                     }
-                } while( char.IsDigit( ch1 ) == char.IsDigit( space1[0] ) );
+                } while (char.IsDigit(ch1) == char.IsDigit(space1[0]));
 
                 do
                 {
                     space2[loc2++] = ch2;
                     marker2++;
 
-                    if( marker2 < len2 )
+                    if (marker2 < len2)
                     {
                         ch2 = y[marker2];
                     }
@@ -68,29 +68,29 @@ namespace Intersect
                     {
                         break;
                     }
-                } while( char.IsDigit( ch2 ) == char.IsDigit( space2[0] ) );
+                } while (char.IsDigit(ch2) == char.IsDigit(space2[0]));
 
                 // If we have collected numbers, compare them numerically.
                 // Otherwise, if we have strings, compare them alphabetically.
-                var str1 = new string( space1 );
-                var str2 = new string( space2 );
+                var str1 = new string(space1);
+                var str2 = new string(space2);
 
                 int result;
 
-                if( char.IsDigit( space1[0] ) && char.IsDigit( space2[0] ) )
+                if (char.IsDigit(space1[0]) && char.IsDigit(space2[0]))
                 {
                     var thisNumericChunk = 0;
                     var thatNumericChunk = 0;
-                    int.TryParse( str1, out thisNumericChunk );
-                    int.TryParse( str2, out thatNumericChunk );
-                    result = thisNumericChunk.CompareTo( thatNumericChunk );
+                    int.TryParse(str1, out thisNumericChunk);
+                    int.TryParse(str2, out thatNumericChunk);
+                    result = thisNumericChunk.CompareTo(thatNumericChunk);
                 }
                 else
                 {
-                    result = string.Compare( str1, str2, StringComparison.Ordinal );
+                    result = string.Compare(str1, str2, StringComparison.Ordinal);
                 }
 
-                if( result != 0 )
+                if (result != 0)
                 {
                     return result;
                 }

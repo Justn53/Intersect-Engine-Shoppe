@@ -95,23 +95,23 @@ namespace Intersect.Editor.Content
 
         public static string[] MusicNames => sMusicDict?.Keys.ToArray();
 
-        public static string[] SmartSortedMusicNames => SmartSort( MusicNames );
+        public static string[] SmartSortedMusicNames => SmartSort(MusicNames);
 
         public static string[] SoundNames => sSoundDict?.Keys.ToArray();
 
-        public static string[] SmartSortedSoundNames => SmartSort( SoundNames );
+        public static string[] SmartSortedSoundNames => SmartSort(SoundNames);
 
         //Resource Downloader
         public static void CheckForResources()
         {
-            if( !Directory.Exists( "resources" ) )
+            if (!Directory.Exists("resources"))
             {
                 MessageBox.Show(
                     Strings.Errors.resourcesnotfound, Strings.Errors.resourcesnotfoundtitle, MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
 
-                Environment.Exit( 1 );
+                Environment.Exit(1);
             }
         }
 
@@ -121,10 +121,10 @@ namespace Intersect.Editor.Content
             //We create a dummy game service so we can load up a content manager.
             var container = new GameServiceContainer();
             container.AddService(
-                typeof( IGraphicsDeviceService ), new DummyGraphicsDeviceManager( Core.Graphics.GetGraphicsDevice() )
+                typeof(IGraphicsDeviceService), new DummyGraphicsDeviceManager(Core.Graphics.GetGraphicsDevice())
             );
 
-            sContentManger = new ContentManager( container, "" );
+            sContentManger = new ContentManager(container, "");
             LoadEntities();
             LoadSpells();
             LoadAnimations();
@@ -143,72 +143,72 @@ namespace Intersect.Editor.Content
 
         public static void Update()
         {
-            for( var i = 0; i < AllTextures.Count; i++ )
+            for (var i = 0; i < AllTextures.Count; i++)
             {
                 AllTextures[i].Update();
             }
         }
 
         //Loading Game Resources
-        public static void LoadTextureGroup( string directory, IDictionary<string, Texture> dict )
+        public static void LoadTextureGroup(string directory, IDictionary<string, Texture> dict)
         {
             dict.Clear();
-            if( !Directory.Exists( "resources/" + directory ) )
+            if (!Directory.Exists("resources/" + directory))
             {
-                Directory.CreateDirectory( "resources/" + directory );
+                Directory.CreateDirectory("resources/" + directory);
             }
 
-            var items = Directory.GetFiles( "resources/" + directory, "*.png" );
-            for( var i = 0; i < items.Length; i++ )
+            var items = Directory.GetFiles("resources/" + directory, "*.png");
+            for (var i = 0; i < items.Length; i++)
             {
-                var filename = items[i].Replace( "resources/" + directory + "\\", "" ).ToLower();
-                dict.Add( filename, new Texture( "resources/" + directory + "/" + filename ) );
+                var filename = items[i].Replace("resources/" + directory + "\\", "").ToLower();
+                dict.Add(filename, new Texture("resources/" + directory + "/" + filename));
             }
         }
 
         public static void LoadTilesets()
         {
-            if( !Directory.Exists( "resources/tilesets" ) )
+            if (!Directory.Exists("resources/tilesets"))
             {
-                Directory.CreateDirectory( "resources/tilesets" );
+                Directory.CreateDirectory("resources/tilesets");
             }
 
-            var tilesets = Directory.GetFiles( "resources/tilesets", "*.png" );
+            var tilesets = Directory.GetFiles("resources/tilesets", "*.png");
             var tilesetWarning = false;
-            var suppressTilesetWarning = Preferences.LoadPreference( "SuppressTextureWarning" );
-            if( suppressTilesetWarning != "" && Convert.ToBoolean( suppressTilesetWarning ) )
+            var suppressTilesetWarning = Preferences.LoadPreference("SuppressTextureWarning");
+            if (suppressTilesetWarning != "" && Convert.ToBoolean(suppressTilesetWarning))
             {
                 tilesetWarning = true;
             }
 
             var newTilesets = new List<string>();
-            Array.Sort( tilesets, new AlphanumComparatorFast() );
-            if( tilesets.Length > 0 )
+            Array.Sort(tilesets, new AlphanumComparatorFast());
+            if (tilesets.Length > 0)
             {
                 var tilesetBaseList = TilesetBase.Names;
-                for( var i = 0; i < tilesets.Length; i++ )
+                for (var i = 0; i < tilesets.Length; i++)
                 {
-                    tilesets[i] = tilesets[i].Replace( "resources/tilesets\\", "" );
-                    if( tilesetBaseList.Length > 0 )
+                    tilesets[i] = tilesets[i].Replace("resources/tilesets\\", "");
+                    if (tilesetBaseList.Length > 0)
                     {
-                        for( var x = 0; x < tilesetBaseList.Length; x++ )
+                        for (var x = 0; x < tilesetBaseList.Length; x++)
                         {
-                            if( tilesetBaseList[x].ToLower() == tilesets[i].ToLower() )
+                            if (tilesetBaseList[x].ToLower() == tilesets[i].ToLower())
                             {
                                 break;
                             }
 
-                            if( x != tilesetBaseList.Length - 1 )
+                            if (x != tilesetBaseList.Length - 1)
                             {
                                 continue;
                             }
 
-                            newTilesets.Add( tilesets[i] );
+                            newTilesets.Add(tilesets[i]);
                         }
                     }
                     else
                     {
-                        newTilesets.Add( tilesets[i] );
+                        newTilesets.Add(tilesets[i]);
                     }
                 }
             }
@@ -216,112 +216,112 @@ namespace Intersect.Editor.Content
             sTilesetDict.Clear();
             TilesetTextures.Clear();
             var badTilesets = new List<string>();
-            for( var i = 0; i < TilesetBase.Lookup.Count; i++ )
+            for (var i = 0; i < TilesetBase.Lookup.Count; i++)
             {
-                var tileset = TilesetBase.Get( TilesetBase.IdFromList( i ) );
-                if( File.Exists( "resources/tilesets/" + tileset.Name ) )
+                var tileset = TilesetBase.Get(TilesetBase.IdFromList(i));
+                if (File.Exists("resources/tilesets/" + tileset.Name))
                 {
                     try
                     {
-                        sTilesetDict[tileset.Name.ToLower()] = new Texture( "resources/tilesets/" + tileset.Name );
-                        TilesetTextures.Add( sTilesetDict[tileset.Name.ToLower()] );
+                        sTilesetDict[tileset.Name.ToLower()] = new Texture("resources/tilesets/" + tileset.Name);
+                        TilesetTextures.Add(sTilesetDict[tileset.Name.ToLower()]);
                     }
-                    catch( Exception exception )
+                    catch (Exception exception)
                     {
-                        Log.Error( $"Fake methods! ({tileset.Name})" );
-                        if( exception.InnerException != null )
+                        Log.Error($"Fake methods! ({tileset.Name})");
+                        if (exception.InnerException != null)
                         {
-                            Log.Error( exception.InnerException );
+                            Log.Error(exception.InnerException);
                         }
 
-                        Log.Error( exception );
+                        Log.Error(exception);
 
                         throw;
                     }
 
-                    if( !tilesetWarning )
+                    if (!tilesetWarning)
                     {
-                        using( var img = Image.FromFile( "resources/tilesets/" + tileset.Name ) )
+                        using (var img = Image.FromFile("resources/tilesets/" + tileset.Name))
                         {
-                            if( img.Width > 2048 || img.Height > 2048 )
+                            if (img.Width > 2048 || img.Height > 2048)
                             {
-                                badTilesets.Add( tileset.Name );
+                                badTilesets.Add(tileset.Name);
                             }
                         }
                     }
                 }
             }
 
-            if( badTilesets.Count > 0 )
+            if (badTilesets.Count > 0)
             {
                 MessageBox.Show(
                     "One or more tilesets is too large and likely won't load for your players on older machines! We recommmend that no graphic is larger than 2048 pixels in width or height.\n\nFaulting tileset(s): " +
-                    string.Join( ",", badTilesets.ToArray() ), "Large Tileset Warning!", MessageBoxButtons.OK,
+                    string.Join(",", badTilesets.ToArray()), "Large Tileset Warning!", MessageBoxButtons.OK,
                     MessageBoxIcon.Exclamation
                 );
             }
 
-            if( newTilesets.Count > 0 )
+            if (newTilesets.Count > 0)
             {
-                PacketSender.SendNewTilesets( newTilesets.ToArray() );
+                PacketSender.SendNewTilesets(newTilesets.ToArray());
             }
         }
 
         private static void LoadItems()
         {
-            LoadTextureGroup( "items", sItemDict );
+            LoadTextureGroup("items", sItemDict);
         }
 
         private static void LoadEntities()
         {
-            LoadTextureGroup( "entities", sEntityDict );
+            LoadTextureGroup("entities", sEntityDict);
         }
 
         private static void LoadSpells()
         {
-            LoadTextureGroup( "spells", sSpellDict );
+            LoadTextureGroup("spells", sSpellDict);
         }
 
         private static void LoadAnimations()
         {
-            LoadTextureGroup( "animations", sAnimationDict );
+            LoadTextureGroup("animations", sAnimationDict);
         }
 
         private static void LoadFaces()
         {
-            LoadTextureGroup( "faces", sFaceDict );
+            LoadTextureGroup("faces", sFaceDict);
         }
 
         private static void LoadImages()
         {
-            LoadTextureGroup( "images", sImageDict );
+            LoadTextureGroup("images", sImageDict);
         }
 
         private static void LoadGui()
         {
-            LoadTextureGroup( "gui", sGuiDict );
+            LoadTextureGroup("gui", sGuiDict);
         }
 
         private static void LoadFogs()
         {
-            LoadTextureGroup( "fogs", sFogDict );
+            LoadTextureGroup("fogs", sFogDict);
             FogTextures.Clear();
-            FogTextures.AddRange( sFogDict.Values.ToArray() );
+            FogTextures.AddRange(sFogDict.Values.ToArray());
         }
 
         private static void LoadResources()
         {
-            LoadTextureGroup( "resources", sResourceDict );
+            LoadTextureGroup("resources", sResourceDict);
         }
 
         private static void LoadPaperdolls()
         {
-            LoadTextureGroup( "paperdolls", sPaperdollDict );
+            LoadTextureGroup("paperdolls", sPaperdollDict);
         }
 
         private static void LoadMisc()
         {
-            LoadTextureGroup( "misc", sMiscDict );
+            LoadTextureGroup("misc", sMiscDict);
         }
 
         public static void LoadShaders()
@@ -329,23 +329,23 @@ namespace Intersect.Editor.Content
             sShaderDict.Clear();
 
             const string shaderPrefix = "Intersect.Editor.Resources.Shaders.";
-            var availableShaders = typeof( GameContentManager ).Assembly
+            var availableShaders = typeof(GameContentManager).Assembly
                 .GetManifestResourceNames()
-                .Where( resourceName =>
-                     resourceName.StartsWith( shaderPrefix )
-                     && resourceName.EndsWith( ".xnb" )
+                .Where(resourceName =>
+                    resourceName.StartsWith(shaderPrefix)
+                    && resourceName.EndsWith(".xnb")
                 ).ToArray();
 
-            for( var i = 0; i < availableShaders.Length; i++ )
+            for (var i = 0; i < availableShaders.Length; i++)
             {
                 var resourceFullName = availableShaders[i];
-                var shaderName = resourceFullName.Substring( shaderPrefix.Length );
+                var shaderName = resourceFullName.Substring(shaderPrefix.Length);
 
-                using( var resourceStream = typeof( GameContentManager ).Assembly.GetManifestResourceStream( resourceFullName ) )
+                using (var resourceStream = typeof(GameContentManager).Assembly.GetManifestResourceStream(resourceFullName))
                 {
-                    var extractedPath = FileSystemHelper.WriteToTemporaryFolder( resourceFullName, resourceStream );
-                    var shader = sContentManger.Load<Effect>( Path.ChangeExtension( extractedPath, null ) );
-                    sShaderDict.Add( shaderName, shader );
+                    var extractedPath = FileSystemHelper.WriteToTemporaryFolder(resourceFullName, resourceStream);
+                    var shader = sContentManger.Load<Effect>(Path.ChangeExtension(extractedPath, null));
+                    sShaderDict.Add(shaderName, shader);
                 }
             }
         }
@@ -353,41 +353,41 @@ namespace Intersect.Editor.Content
         public static void LoadSounds()
         {
             sSoundDict.Clear();
-            if( !Directory.Exists( "resources/" + "sounds" ) )
+            if (!Directory.Exists("resources/" + "sounds"))
             {
-                Directory.CreateDirectory( "resources/" + "sounds" );
+                Directory.CreateDirectory("resources/" + "sounds");
             }
 
-            var items = Directory.GetFiles( "resources/" + "sounds", "*.wav" );
-            for( var i = 0; i < items.Length; i++ )
+            var items = Directory.GetFiles("resources/" + "sounds", "*.wav");
+            for (var i = 0; i < items.Length; i++)
             {
-                var filename = items[i].Replace( "resources/" + "sounds" + "\\", "" ).ToLower();
-                sSoundDict.Add( filename, null ); //TODO Sound Playback
+                var filename = items[i].Replace("resources/" + "sounds" + "\\", "").ToLower();
+                sSoundDict.Add(filename, null); //TODO Sound Playback
             }
         }
 
         public static void LoadMusic()
         {
             sMusicDict.Clear();
-            if( !Directory.Exists( "resources/" + "music" ) )
+            if (!Directory.Exists("resources/" + "music"))
             {
-                Directory.CreateDirectory( "resources/" + "music" );
+                Directory.CreateDirectory("resources/" + "music");
             }
 
-            var items = Directory.GetFiles( "resources/" + "music", "*.ogg" );
-            for( var i = 0; i < items.Length; i++ )
+            var items = Directory.GetFiles("resources/" + "music", "*.ogg");
+            for (var i = 0; i < items.Length; i++)
             {
-                var filename = items[i].Replace( "resources/" + "music" + "\\", "" ).ToLower();
-                sMusicDict.Add( filename, null ); //TODO Music Playback
+                var filename = items[i].Replace("resources/" + "music" + "\\", "").ToLower();
+                sMusicDict.Add(filename, null); //TODO Music Playback
             }
         }
 
-        public static string RemoveExtension( string fileName )
+        public static string RemoveExtension(string fileName)
         {
-            var fileExtPos = fileName.LastIndexOf( "." );
-            if( fileExtPos >= 0 )
+            var fileExtPos = fileName.LastIndexOf(".");
+            if (fileExtPos >= 0)
             {
-                fileName = fileName.Substring( 0, fileExtPos );
+                fileName = fileName.Substring(0, fileExtPos);
             }
 
             return fileName;
@@ -395,15 +395,15 @@ namespace Intersect.Editor.Content
 
         //Retreiving Game Resources
         //Content Getters
-        public static Texture2D GetTexture( TextureType type, string name )
+        public static Texture2D GetTexture(TextureType type, string name)
         {
-            if( string.IsNullOrWhiteSpace( name ) )
+            if (string.IsNullOrWhiteSpace(name))
             {
                 return null;
             }
 
             IDictionary<string, Texture> textureDict = null;
-            switch( type )
+            switch (type)
             {
                 case TextureType.Tileset:
                     textureDict = sTilesetDict;
@@ -457,81 +457,81 @@ namespace Intersect.Editor.Content
                     return null;
             }
 
-            if( textureDict == null )
+            if (textureDict == null)
             {
                 return null;
             }
 
-            if( textureDict == sTilesetDict
+            if (textureDict == sTilesetDict
             ) //When assigning name in tilebase base we force it to be lowercase.. so lets save some processing time here..
             {
-                return textureDict.TryGetValue( name, out var texture1 ) ? texture1.GetTexture() : null;
+                return textureDict.TryGetValue(name, out var texture1) ? texture1.GetTexture() : null;
             }
 
-            return textureDict.TryGetValue( name.ToLower(), out var texture ) ? texture.GetTexture() : null;
+            return textureDict.TryGetValue(name.ToLower(), out var texture) ? texture.GetTexture() : null;
         }
 
-        public static Effect GetShader( string name )
+        public static Effect GetShader(string name)
         {
-            if( string.IsNullOrWhiteSpace( name ) )
+            if (string.IsNullOrWhiteSpace(name))
             {
-                Log.Error( "Tried to load shader with null name." );
+                Log.Error("Tried to load shader with null name.");
 
                 return null;
             }
 
-            if( sShaderDict == null )
+            if (sShaderDict == null)
             {
                 return null;
             }
 
-            return sShaderDict.TryGetValue( name.ToLower(), out var effect ) ? effect : null;
+            return sShaderDict.TryGetValue(name.ToLower(), out var effect) ? effect : null;
         }
 
-        public static object GetMusic( string name )
+        public static object GetMusic(string name)
         {
-            if( string.IsNullOrWhiteSpace( name ) )
+            if (string.IsNullOrWhiteSpace(name))
             {
-                Log.Error( "Tried to load music with null name." );
+                Log.Error("Tried to load music with null name.");
 
                 return null;
             }
 
-            if( sMusicDict == null )
+            if (sMusicDict == null)
             {
                 return null;
             }
 
-            return sMusicDict.TryGetValue( name.ToLower(), out var music ) ? music : null;
+            return sMusicDict.TryGetValue(name.ToLower(), out var music) ? music : null;
         }
 
-        public static object GetSound( string name )
+        public static object GetSound(string name)
         {
-            if( string.IsNullOrWhiteSpace( name ) )
+            if (string.IsNullOrWhiteSpace(name))
             {
-                Log.Error( "Tried to load sound with null name." );
+                Log.Error("Tried to load sound with null name.");
 
                 return null;
             }
 
-            if( sSoundDict == null )
+            if (sSoundDict == null)
             {
                 return null;
             }
 
-            return sSoundDict.TryGetValue( name.ToLower(), out var sound ) ? sound : null;
+            return sSoundDict.TryGetValue(name.ToLower(), out var sound) ? sound : null;
         }
 
-        public static string[] GetSmartSortedTextureNames( TextureType type )
+        public static string[] GetSmartSortedTextureNames(TextureType type)
         {
-            return SmartSort( GetTextureNames( type ) );
+            return SmartSort(GetTextureNames(type));
         }
 
         //Getting Filenames
-        public static string[] GetTextureNames( TextureType type )
+        public static string[] GetTextureNames(TextureType type)
         {
             IDictionary<string, Texture> textureDict = null;
-            switch( type )
+            switch (type)
             {
                 case TextureType.Tileset:
                     textureDict = sTilesetDict;
@@ -586,18 +586,18 @@ namespace Intersect.Editor.Content
             }
 
             var keys = textureDict?.Keys.ToArray();
-            if( keys != null )
+            if (keys != null)
             {
-                Array.Sort( keys, new AlphanumComparatorFast() );
+                Array.Sort(keys, new AlphanumComparatorFast());
             }
 
             return textureDict?.Keys.ToArray();
         }
 
-        private static string[] SmartSort( string[] strings )
+        private static string[] SmartSort(string[] strings)
         {
             var sortedStrings = strings ?? new string[] { };
-            Array.Sort( sortedStrings, new AlphanumComparator() );
+            Array.Sort(sortedStrings, new AlphanumComparator());
 
             return sortedStrings;
         }
@@ -607,7 +607,7 @@ namespace Intersect.Editor.Content
     internal class DummyGraphicsDeviceManager : IGraphicsDeviceService
     {
 
-        public DummyGraphicsDeviceManager( GraphicsDevice graphicsDevice )
+        public DummyGraphicsDeviceManager(GraphicsDevice graphicsDevice)
         {
             GraphicsDevice = graphicsDevice;
         }

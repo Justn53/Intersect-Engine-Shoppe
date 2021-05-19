@@ -12,19 +12,19 @@ namespace Intersect.Admin.Actions
 
         }
 
-        public SetFaceAction( string name, string face )
+        public SetFaceAction(string name, string face)
         {
             Name = name;
             Face = face;
         }
 
-        [Key( 1 )]
+        [Key(1)]
         public override AdminActions Action { get; } = AdminActions.SetFace;
 
-        [Key( 2 )]
+        [Key(2)]
         public string Name { get; set; }
 
-        [Key( 3 )]
+        [Key(3)]
         public string Face { get; set; }
 
     }

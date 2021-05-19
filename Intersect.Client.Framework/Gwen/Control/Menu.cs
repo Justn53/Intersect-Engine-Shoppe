@@ -37,14 +37,14 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="Menu" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Menu( Base parent ) : base( parent )
+        public Menu(Base parent) : base(parent)
         {
-            SetBounds( 0, 0, 10, 10 );
+            SetBounds(0, 0, 10, 10);
             Padding = Padding.Two;
             IconMarginDisabled = false;
 
             AutoHideBars = true;
-            EnableScroll( false, true );
+            EnableScroll(false, true);
             DeleteOnClose = false;
         }
 
@@ -74,54 +74,54 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawMenu( this, IconMarginDisabled );
+            skin.DrawMenu(this, IconMarginDisabled);
         }
 
         /// <summary>
         ///     Renders under the actual control (shadows etc).
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void RenderUnder( Skin.Base skin )
+        protected override void RenderUnder(Skin.Base skin)
         {
-            base.RenderUnder( skin );
-            skin.DrawShadow( this );
+            base.RenderUnder(skin);
+            skin.DrawShadow(this);
         }
 
         /// <summary>
         ///     Opens the menu.
         /// </summary>
         /// <param name="pos">Unused.</param>
-        public void Open( Pos pos )
+        public void Open(Pos pos)
         {
             IsHidden = false;
             BringToFront();
             var mouse = Input.InputHandler.MousePosition;
-            SetPosition( mouse.X, mouse.Y );
+            SetPosition(mouse.X, mouse.Y);
         }
 
         /// <summary>
         ///     Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout( Skin.Base skin )
+        protected override void Layout(Skin.Base skin)
         {
-            var childrenHeight = Children.Sum( child => child != null ? child.Height : 0 );
+            var childrenHeight = Children.Sum(child => child != null ? child.Height : 0);
 
-            if( childrenHeight > InnerPanel.MaximumSize.Y )
+            if (childrenHeight > InnerPanel.MaximumSize.Y)
             {
-                InnerPanel.MaximumSize = new Point( InnerPanel.MaximumSize.X, childrenHeight );
+                InnerPanel.MaximumSize = new Point(InnerPanel.MaximumSize.X, childrenHeight);
             }
 
-            if( Y + childrenHeight > GetCanvas().Height )
+            if (Y + childrenHeight > GetCanvas().Height)
             {
                 childrenHeight = GetCanvas().Height - Y;
             }
 
-            SetSize( Width, childrenHeight );
+            SetSize(Width, childrenHeight);
 
-            base.Layout( skin );
+            base.Layout(skin);
         }
 
         /// <summary>
@@ -129,9 +129,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         /// <param name="text">Item text.</param>
         /// <returns>Newly created control.</returns>
-        public virtual MenuItem AddItem( string text )
+        public virtual MenuItem AddItem(string text)
         {
-            return AddItem( text, null );
+            return AddItem(text, null);
         }
 
         /// <summary>
@@ -149,17 +149,17 @@ namespace Intersect.Client.Framework.Gwen.Control
             GameFont font = null
         )
         {
-            var item = new MenuItem( this );
+            var item = new MenuItem(this);
             item.Padding = Padding.Four;
-            item.SetText( text );
-            item.SetImage( iconTexture, textureFilename, Button.ControlState.Normal );
-            item.SetAccelerator( accelerator );
-            if( font != null )
+            item.SetText(text);
+            item.SetImage(iconTexture, textureFilename, Button.ControlState.Normal);
+            item.SetAccelerator(accelerator);
+            if (font != null)
             {
                 item.Font = font;
             }
 
-            OnAddItem( item );
+            OnAddItem(item);
 
             return item;
         }
@@ -168,9 +168,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Add item handler.
         /// </summary>
         /// <param name="item">Item added.</param>
-        protected virtual void OnAddItem( MenuItem item )
+        protected virtual void OnAddItem(MenuItem item)
         {
-            item.TextPadding = new Padding( IconMarginDisabled ? 0 : 24, 0, 16, 0 );
+            item.TextPadding = new Padding(IconMarginDisabled ? 0 : 24, 0, 16, 0);
             item.Dock = Pos.Top;
             item.SizeToContents();
             item.Alignment = Pos.CenterV | Pos.Left;
@@ -178,12 +178,12 @@ namespace Intersect.Client.Framework.Gwen.Control
 
             // Do this here - after Top Docking these values mean nothing in layout
             var w = item.Width + 10 + 32;
-            if( w < Width )
+            if (w < Width)
             {
                 w = Width;
             }
 
-            SetSize( w, Height );
+            SetSize(w, Height);
 
             UpdateItemStyles();
         }
@@ -197,9 +197,9 @@ namespace Intersect.Client.Framework.Gwen.Control
             Children.ForEach(
                 child =>
                 {
-                    if( child is MenuItem )
+                    if (child is MenuItem)
                     {
-                        ( child as MenuItem ).CloseMenu();
+                        (child as MenuItem).CloseMenu();
                     }
                 }
             );
@@ -214,9 +214,9 @@ namespace Intersect.Client.Framework.Gwen.Control
             return Children.Any(
                 child =>
                 {
-                    if( child is MenuItem )
+                    if (child is MenuItem)
                     {
-                        return ( child as MenuItem ).IsMenuOpen;
+                        return (child as MenuItem).IsMenuOpen;
                     }
 
                     return false;
@@ -228,20 +228,20 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Mouse hover handler.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnHoverItem( Base control, EventArgs args )
+        protected virtual void OnHoverItem(Base control, EventArgs args)
         {
-            if( !ShouldHoverOpenMenu )
+            if (!ShouldHoverOpenMenu)
             {
                 return;
             }
 
             var item = control as MenuItem;
-            if( null == item )
+            if (null == item)
             {
                 return;
             }
 
-            if( item.IsMenuOpen )
+            if (item.IsMenuOpen)
             {
                 return;
             }
@@ -257,7 +257,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         {
             //System.Diagnostics.//debug.print("Menu.Close: {0}", this);
             IsHidden = true;
-            if( DeleteOnClose )
+            if (DeleteOnClose)
             {
                 DelayedDelete();
             }
@@ -279,26 +279,26 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         public virtual void AddDivider()
         {
-            var divider = new MenuDivider( this );
+            var divider = new MenuDivider(this);
             divider.Dock = Pos.Top;
-            divider.Margin = new Margin( IconMarginDisabled ? 0 : 24, 0, 4, 0 );
+            divider.Margin = new Margin(IconMarginDisabled ? 0 : 24, 0, 4, 0);
         }
 
-        public override bool SizeToChildren( bool width = true, bool height = true )
+        public override bool SizeToChildren(bool width = true, bool height = true)
         {
-            base.SizeToChildren( width, height );
-            if( width )
+            base.SizeToChildren(width, height);
+            if (width)
             {
                 var maxWidth = this.Width;
-                foreach( var child in Children )
+                foreach (var child in Children)
                 {
-                    if( child.Width > maxWidth )
+                    if (child.Width > maxWidth)
                     {
                         maxWidth = child.Width;
                     }
                 }
 
-                this.SetSize( maxWidth, Height );
+                this.SetSize(maxWidth, Height);
             }
 
             return true;
@@ -307,21 +307,21 @@ namespace Intersect.Client.Framework.Gwen.Control
         public override JObject GetJson()
         {
             var obj = base.GetJson();
-            if( this.GetType() != typeof( CheckBox ) )
+            if (this.GetType() != typeof(CheckBox))
             {
-                obj.Add( "BackgroundTemplate", mBackgroundTemplateFilename );
-                obj.Add( "ItemTextColor", Color.ToString( mItemNormalTextColor ) );
-                obj.Add( "ItemHoveredTextColor", Color.ToString( mItemHoverTextColor ) );
-                obj.Add( "ItemFont", mItemFontInfo );
+                obj.Add("BackgroundTemplate", mBackgroundTemplateFilename);
+                obj.Add("ItemTextColor", Color.ToString(mItemNormalTextColor));
+                obj.Add("ItemHoveredTextColor", Color.ToString(mItemHoverTextColor));
+                obj.Add("ItemFont", mItemFontInfo);
             }
 
-            return base.FixJson( obj );
+            return base.FixJson(obj);
         }
 
-        public override void LoadJson( JToken obj )
+        public override void LoadJson(JToken obj)
         {
-            base.LoadJson( obj );
-            if( obj["BackgroundTemplate"] != null )
+            base.LoadJson(obj);
+            if (obj["BackgroundTemplate"] != null)
             {
                 SetBackgroundTemplate(
                     GameContentManager.Current.GetTexture(
@@ -330,21 +330,21 @@ namespace Intersect.Client.Framework.Gwen.Control
                 );
             }
 
-            if( obj["ItemTextColor"] != null )
+            if (obj["ItemTextColor"] != null)
             {
-                mItemNormalTextColor = Color.FromString( (string)obj["ItemTextColor"] );
+                mItemNormalTextColor = Color.FromString((string)obj["ItemTextColor"]);
             }
 
-            if( obj["ItemHoveredTextColor"] != null )
+            if (obj["ItemHoveredTextColor"] != null)
             {
-                mItemHoverTextColor = Color.FromString( (string)obj["ItemHoveredTextColor"] );
+                mItemHoverTextColor = Color.FromString((string)obj["ItemHoveredTextColor"]);
             }
 
-            if( obj["ItemFont"] != null && obj["ItemFont"].Type != JTokenType.Null )
+            if (obj["ItemFont"] != null && obj["ItemFont"].Type != JTokenType.Null)
             {
-                var fontArr = ( (string)obj["ItemFont"] ).Split( ',' );
+                var fontArr = ((string)obj["ItemFont"]).Split(',');
                 mItemFontInfo = (string)obj["ItemFont"];
-                mItemFont = GameContentManager.Current.GetFont( fontArr[0], int.Parse( fontArr[1] ) );
+                mItemFont = GameContentManager.Current.GetFont(fontArr[0], int.Parse(fontArr[1]));
             }
 
             UpdateItemStyles();
@@ -352,17 +352,17 @@ namespace Intersect.Client.Framework.Gwen.Control
 
         private void UpdateItemStyles()
         {
-            var menuItems = Children.Where( x => x.GetType() == typeof( MenuItem ) ).ToArray();
-            foreach( var item in menuItems )
+            var menuItems = Children.Where(x => x.GetType() == typeof(MenuItem)).ToArray();
+            foreach (var item in menuItems)
             {
                 var itm = (MenuItem)item;
-                if( mItemFont != null )
+                if (mItemFont != null)
                 {
                     itm.Font = mItemFont;
                 }
 
-                itm.SetTextColor( mItemNormalTextColor, Label.ControlState.Normal );
-                itm.SetTextColor( mItemHoverTextColor, Label.ControlState.Hovered );
+                itm.SetTextColor(mItemNormalTextColor, Label.ControlState.Normal);
+                itm.SetTextColor(mItemHoverTextColor, Label.ControlState.Hovered);
             }
         }
 
@@ -371,11 +371,11 @@ namespace Intersect.Client.Framework.Gwen.Control
             return mBackgroundTemplateTex;
         }
 
-        public void SetBackgroundTemplate( GameTexture texture, string fileName )
+        public void SetBackgroundTemplate(GameTexture texture, string fileName)
         {
-            if( texture == null && !string.IsNullOrWhiteSpace( fileName ) )
+            if (texture == null && !string.IsNullOrWhiteSpace(fileName))
             {
-                texture = GameContentManager.Current?.GetTexture( GameContentManager.TextureType.Gui, fileName );
+                texture = GameContentManager.Current?.GetTexture(GameContentManager.TextureType.Gui, fileName);
             }
 
             mBackgroundTemplateFilename = fileName;

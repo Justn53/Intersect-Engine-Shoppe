@@ -8,11 +8,11 @@ namespace Intersect.Server.Core.Commands
     internal sealed class NetDebugCommand : ServerCommand
     {
 
-        public NetDebugCommand() : base( Strings.Commands.NetDebug )
+        public NetDebugCommand() : base(Strings.Commands.NetDebug)
         {
         }
 
-        protected override void HandleValue( ServerContext context, ParserResult result )
+        protected override void HandleValue(ServerContext context, ParserResult result)
         {
             NetDebug.GenerateDebugFile();
         }

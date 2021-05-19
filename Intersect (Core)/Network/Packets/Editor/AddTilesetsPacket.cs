@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Editor
         {
         }
 
-        public AddTilesetsPacket( string[] tilesets )
+        public AddTilesetsPacket(string[] tilesets)
         {
             Tilesets = tilesets;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public string[] Tilesets { get; set; }
 
     }

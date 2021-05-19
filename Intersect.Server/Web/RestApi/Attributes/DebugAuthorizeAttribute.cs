@@ -9,11 +9,11 @@ using System.Web.Http.Controllers;
 namespace Intersect.Server.Web.RestApi.Attributes
 {
 
-    [AttributeUsage( AttributeTargets.Class | AttributeTargets.Method, Inherited = false )]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = false)]
     internal class DebugAuthorizeAttribute : AuthorizeAttribute
     {
 
-        protected override bool IsAuthorized( HttpActionContext actionContext )
+        protected override bool IsAuthorized(HttpActionContext actionContext)
         {
 #if DEBUG
             return true;
@@ -22,19 +22,19 @@ namespace Intersect.Server.Web.RestApi.Attributes
 #endif
         }
 
-        public override void OnAuthorization( HttpActionContext actionContext )
+        public override void OnAuthorization(HttpActionContext actionContext)
         {
-            base.OnAuthorization( actionContext );
+            base.OnAuthorization(actionContext);
         }
 
-        public override Task OnAuthorizationAsync( HttpActionContext actionContext, CancellationToken cancellationToken )
+        public override Task OnAuthorizationAsync(HttpActionContext actionContext, CancellationToken cancellationToken)
         {
-            return base.OnAuthorizationAsync( actionContext, cancellationToken );
+            return base.OnAuthorizationAsync(actionContext, cancellationToken);
         }
 
-        protected override void HandleUnauthorizedRequest( HttpActionContext actionContext )
+        protected override void HandleUnauthorizedRequest(HttpActionContext actionContext)
         {
-            actionContext.Response = new HttpResponseMessage( HttpStatusCode.NotFound );
+            actionContext.Response = new HttpResponseMessage(HttpStatusCode.NotFound);
         }
 
     }

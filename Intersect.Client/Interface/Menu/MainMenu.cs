@@ -66,88 +66,88 @@ namespace Intersect.Client.Interface.Menu
         private bool mShouldOpenCharacterSelection;
 
         //Init
-        public MainMenu( Canvas menuCanvas ) : base( menuCanvas )
+        public MainMenu(Canvas menuCanvas) : base(menuCanvas)
         {
             mMenuCanvas = menuCanvas;
 
-            var logo = new ImagePanel( menuCanvas, "Logo" );
-            logo.LoadJsonUi( GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString() );
+            var logo = new ImagePanel(menuCanvas, "Logo");
+            logo.LoadJsonUi(GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString());
 
             //Main Menu Window
-            mMenuWindow = new ImagePanel( menuCanvas, "MenuWindow" );
+            mMenuWindow = new ImagePanel(menuCanvas, "MenuWindow");
 
-            mServerStatusLabel = new Label( mMenuWindow, "ServerStatusLabel" )
+            mServerStatusLabel = new Label(mMenuWindow, "ServerStatusLabel")
             {
                 AutoSizeToContents = true,
                 ShouldDrawBackground = true,
-                Text = Strings.Server.StatusLabel.ToString( ActiveNetworkStatus.ToLocalizedString() ),
+                Text = Strings.Server.StatusLabel.ToString(ActiveNetworkStatus.ToLocalizedString()),
             };
 
-            mServerStatusLabel.SetTextColor( Color.White, Label.ControlState.Normal );
-            mServerStatusLabel.AddAlignment( Alignments.Bottom );
-            mServerStatusLabel.AddAlignment( Alignments.Left );
+            mServerStatusLabel.SetTextColor(Color.White, Label.ControlState.Normal);
+            mServerStatusLabel.AddAlignment(Alignments.Bottom);
+            mServerStatusLabel.AddAlignment(Alignments.Left);
             mServerStatusLabel.ProcessAlignments();
 
             NetworkStatusChanged += HandleNetworkStatusChanged;
 
             //Menu Header
-            mMenuHeader = new Label( mMenuWindow, "Title" );
-            mMenuHeader.SetText( Strings.MainMenu.title );
+            mMenuHeader = new Label(mMenuWindow, "Title");
+            mMenuHeader.SetText(Strings.MainMenu.title);
 
             //Login Button
-            mLoginButton = new Button( mMenuWindow, "LoginButton" );
-            mLoginButton.SetText( Strings.MainMenu.login );
+            mLoginButton = new Button(mMenuWindow, "LoginButton");
+            mLoginButton.SetText(Strings.MainMenu.login);
             mLoginButton.Clicked += LoginButton_Clicked;
 
             //Register Button
-            mRegisterButton = new Button( mMenuWindow, "RegisterButton" );
-            mRegisterButton.SetText( Strings.MainMenu.register );
+            mRegisterButton = new Button(mMenuWindow, "RegisterButton");
+            mRegisterButton.SetText(Strings.MainMenu.register);
             mRegisterButton.Clicked += RegisterButton_Clicked;
 
             //Credits Button
-            mCreditsButton = new Button( mMenuWindow, "CreditsButton" );
-            mCreditsButton.SetText( Strings.MainMenu.credits );
+            mCreditsButton = new Button(mMenuWindow, "CreditsButton");
+            mCreditsButton.SetText(Strings.MainMenu.credits);
             mCreditsButton.Clicked += CreditsButton_Clicked;
 
             //Exit Button
-            mExitButton = new Button( mMenuWindow, "ExitButton" );
-            mExitButton.SetText( Strings.MainMenu.exit );
+            mExitButton = new Button(mMenuWindow, "ExitButton");
+            mExitButton.SetText(Strings.MainMenu.exit);
             mExitButton.Clicked += ExitButton_Clicked;
 
             //Options Button
-            mOptionsButton = new Button( mMenuWindow, "OptionsButton" );
+            mOptionsButton = new Button(mMenuWindow, "OptionsButton");
             mOptionsButton.Clicked += OptionsButton_Clicked;
-            mOptionsButton.SetText( Strings.MainMenu.options );
-            if( !string.IsNullOrEmpty( Strings.MainMenu.optionstooltip ) )
+            mOptionsButton.SetText(Strings.MainMenu.options);
+            if (!string.IsNullOrEmpty(Strings.MainMenu.optionstooltip))
             {
-                mOptionsButton.SetToolTipText( Strings.MainMenu.optionstooltip );
+                mOptionsButton.SetToolTipText(Strings.MainMenu.optionstooltip);
             }
 
-            mMenuWindow.LoadJsonUi( GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString() );
+            mMenuWindow.LoadJsonUi(GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString());
 
             //Options Controls
-            mOptionsWindow = new OptionsWindow( menuCanvas, this, mMenuWindow );
+            mOptionsWindow = new OptionsWindow(menuCanvas, this, mMenuWindow);
 
             //Login Controls
-            mLoginWindow = new LoginWindow( menuCanvas, this, mMenuWindow );
+            mLoginWindow = new LoginWindow(menuCanvas, this, mMenuWindow);
 
             //Register Controls
-            mRegisterWindow = new RegisterWindow( menuCanvas, this, mMenuWindow );
+            mRegisterWindow = new RegisterWindow(menuCanvas, this, mMenuWindow);
 
             //Forgot Password Controls
-            mForgotPasswordWindow = new ForgotPasswordWindow( menuCanvas, this, mMenuWindow );
+            mForgotPasswordWindow = new ForgotPasswordWindow(menuCanvas, this, mMenuWindow);
 
             //Reset Password Controls
-            mResetPasswordWindow = new ResetPasswordWindow( menuCanvas, this, mMenuWindow );
+            mResetPasswordWindow = new ResetPasswordWindow(menuCanvas, this, mMenuWindow);
 
             //Character Selection Controls
-            mSelectCharacterWindow = new SelectCharacterWindow( mMenuCanvas, this, mMenuWindow );
+            mSelectCharacterWindow = new SelectCharacterWindow(mMenuCanvas, this, mMenuWindow);
 
             //Character Creation Controls
-            mCreateCharacterWindow = new CreateCharacterWindow( mMenuCanvas, this, mMenuWindow, mSelectCharacterWindow );
+            mCreateCharacterWindow = new CreateCharacterWindow(mMenuCanvas, this, mMenuWindow, mSelectCharacterWindow);
 
             //Credits Controls
-            mCreditsWindow = new CreditsWindow( mMenuCanvas, this );
+            mCreditsWindow = new CreditsWindow(mMenuCanvas, this);
 
             UpdateDisabled();
         }
@@ -161,32 +161,32 @@ namespace Intersect.Client.Interface.Menu
         //Methods
         public void Update()
         {
-            if( mShouldOpenCharacterSelection )
+            if (mShouldOpenCharacterSelection)
             {
                 CreateCharacterSelection();
             }
 
-            if( mShouldOpenCharacterCreation )
+            if (mShouldOpenCharacterCreation)
             {
                 CreateCharacterCreation();
             }
 
-            if( !mLoginWindow.IsHidden )
+            if (!mLoginWindow.IsHidden)
             {
                 mLoginWindow.Update();
             }
 
-            if( !mCreateCharacterWindow.IsHidden )
+            if (!mCreateCharacterWindow.IsHidden)
             {
                 mCreateCharacterWindow.Update();
             }
 
-            if( !mRegisterWindow.IsHidden )
+            if (!mRegisterWindow.IsHidden)
             {
                 mRegisterWindow.Update();
             }
 
-            if( !mSelectCharacterWindow.IsHidden )
+            if (!mSelectCharacterWindow.IsHidden)
             {
                 mSelectCharacterWindow.Update();
             }
@@ -202,12 +202,12 @@ namespace Intersect.Client.Interface.Menu
             mCreditsWindow.Hide();
             mForgotPasswordWindow.Hide();
             mResetPasswordWindow.Hide();
-            if( mCreateCharacterWindow != null )
+            if (mCreateCharacterWindow != null)
             {
                 mCreateCharacterWindow.Hide();
             }
 
-            if( mSelectCharacterWindow != null )
+            if (mSelectCharacterWindow != null)
             {
                 mSelectCharacterWindow.Hide();
             }
@@ -228,7 +228,7 @@ namespace Intersect.Client.Interface.Menu
             mOptionsButton.IsHidden = true;
         }
 
-        public void NotifyOpenCharacterSelection( List<Character> characters )
+        public void NotifyOpenCharacterSelection(List<Character> characters)
         {
             mShouldOpenCharacterSelection = true;
             mSelectCharacterWindow.Characters = characters;
@@ -248,7 +248,7 @@ namespace Intersect.Client.Interface.Menu
             mLoginWindow.Show();
         }
 
-        public void OpenResetPassword( string nameEmail )
+        public void OpenResetPassword(string nameEmail)
         {
             Reset();
             Hide();
@@ -286,38 +286,38 @@ namespace Intersect.Client.Interface.Menu
         }
 
         //Input Handlers
-        void LoginButton_Clicked( Base sender, ClickedEventArgs arguments )
+        void LoginButton_Clicked(Base sender, ClickedEventArgs arguments)
         {
             Hide();
             mLoginWindow.Show();
         }
 
-        void RegisterButton_Clicked( Base sender, ClickedEventArgs arguments )
+        void RegisterButton_Clicked(Base sender, ClickedEventArgs arguments)
         {
             Hide();
             mRegisterWindow.Show();
         }
 
-        void CreditsButton_Clicked( Base sender, ClickedEventArgs arguments )
+        void CreditsButton_Clicked(Base sender, ClickedEventArgs arguments)
         {
             Hide();
             mCreditsWindow.Show();
         }
 
-        void OptionsButton_Clicked( Base sender, ClickedEventArgs arguments )
+        void OptionsButton_Clicked(Base sender, ClickedEventArgs arguments)
         {
             Hide();
             mOptionsWindow.Show();
         }
 
-        void ExitButton_Clicked( Base sender, ClickedEventArgs arguments )
+        void ExitButton_Clicked(Base sender, ClickedEventArgs arguments)
         {
             Globals.IsRunning = false;
         }
 
         private void HandleNetworkStatusChanged()
         {
-            mServerStatusLabel.Text = Strings.Server.StatusLabel.ToString( ActiveNetworkStatus.ToLocalizedString() );
+            mServerStatusLabel.Text = Strings.Server.StatusLabel.ToString(ActiveNetworkStatus.ToLocalizedString());
             UpdateDisabled();
         }
 
@@ -333,7 +333,7 @@ namespace Intersect.Client.Interface.Menu
             ActiveNetworkStatus = NetworkStatus.Connecting;
         }
 
-        public static void SetNetworkStatus( NetworkStatus networkStatus )
+        public static void SetNetworkStatus(NetworkStatus networkStatus)
         {
             ActiveNetworkStatus = networkStatus;
             NetworkStatusChanged?.Invoke();

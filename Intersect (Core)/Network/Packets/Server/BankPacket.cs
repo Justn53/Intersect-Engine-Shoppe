@@ -9,12 +9,12 @@ namespace Intersect.Network.Packets.Server
         public BankPacket()
         {
         }
-        public BankPacket( bool close )
+        public BankPacket(bool close)
         {
             Close = close;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public bool Close { get; set; }
 
     }

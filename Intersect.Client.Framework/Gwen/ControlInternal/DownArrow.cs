@@ -15,10 +15,10 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Initializes a new instance of the <see cref="DownArrow" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public DownArrow( ComboBox parent ) : base( parent ) // or Base?
+        public DownArrow(ComboBox parent) : base(parent) // or Base?
         {
             MouseInputEnabled = false;
-            SetSize( 15, 15 );
+            SetSize(15, 15);
 
             mComboBox = parent;
         }
@@ -27,7 +27,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
             skin.DrawComboBoxArrow(
                 this, mComboBox.IsHovered, mComboBox.IsDepressed, mComboBox.IsOpen, mComboBox.IsDisabled

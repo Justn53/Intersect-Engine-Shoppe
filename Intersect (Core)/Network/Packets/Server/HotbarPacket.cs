@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public HotbarPacket( string[] slotData )
+        public HotbarPacket(string[] slotData)
         {
             SlotData = slotData;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public string[] SlotData { get; set; }
 
     }

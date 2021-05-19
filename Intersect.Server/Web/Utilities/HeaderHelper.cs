@@ -10,10 +10,10 @@ namespace Intersect.Server.Web.Utilities
             "^bearer .+$", RegexOptions.IgnoreCase
         );
 
-        public static bool IsValidAuthorizationBearerHeader( string authorizationHeader )
+        public static bool IsValidAuthorizationBearerHeader(string authorizationHeader)
         {
-            return !string.IsNullOrWhiteSpace( authorizationHeader ) &&
-                   PatternAuthorizationBearer.IsMatch( authorizationHeader );
+            return !string.IsNullOrWhiteSpace(authorizationHeader) &&
+                   PatternAuthorizationBearer.IsMatch(authorizationHeader);
         }
 
     }

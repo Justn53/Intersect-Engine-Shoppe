@@ -21,7 +21,7 @@ namespace Intersect.Server.Maps
         /// <param name="mapId"></param>
         /// <param name="tileX"></param>
         /// <param name="tileY"></param>
-        public TileHelper( Guid mapId, int tileX, int tileY )
+        public TileHelper(Guid mapId, int tileX, int tileY)
         {
             mMapId = mapId;
             mTileX = tileX;
@@ -35,7 +35,7 @@ namespace Intersect.Server.Maps
         /// <param name="xOffset"></param>
         /// <param name="yOffset"></param>
         /// <returns></returns>
-        public bool Translate( int xOffset, int yOffset )
+        public bool Translate(int xOffset, int yOffset)
         {
             mTileX += xOffset;
             mTileY += yOffset;
@@ -47,7 +47,7 @@ namespace Intersect.Server.Maps
         {
             var oldTileX = mTileX;
             var oldTileY = mTileY;
-            if( Fix() )
+            if (Fix())
             {
                 return true;
             }
@@ -58,9 +58,9 @@ namespace Intersect.Server.Maps
             return false;
         }
 
-        public bool Matches( TileHelper other )
+        public bool Matches(TileHelper other)
         {
-            if( GetMapId() == other.GetMapId() && GetX() == other.GetX() && GetY() == other.GetY() )
+            if (GetMapId() == other.GetMapId() && GetX() == other.GetX() && GetY() == other.GetY())
             {
                 return true;
             }
@@ -68,26 +68,26 @@ namespace Intersect.Server.Maps
             return false;
         }
 
-        private bool TransitionMaps( int direction )
+        private bool TransitionMaps(int direction)
         {
-            var map = MapInstance.Get( mMapId );
-            if( map == null )
+            var map = MapInstance.Get(mMapId);
+            if (map == null)
             {
                 return false;
             }
 
-            var grid = DbInterface.GetGrid( map.MapGrid );
-            if( grid == null )
+            var grid = DbInterface.GetGrid(map.MapGrid);
+            if (grid == null)
             {
                 return false;
             }
 
             var gridX = map.MapGridX;
             var gridY = map.MapGridY;
-            switch( direction )
+            switch (direction)
             {
                 case (int)Directions.Up:
-                    if( gridY > 0 && grid.MyGrid[gridX, gridY - 1] != Guid.Empty )
+                    if (gridY > 0 && grid.MyGrid[gridX, gridY - 1] != Guid.Empty)
                     {
                         mMapId = grid.MyGrid[gridX, gridY - 1];
                         mTileY += Options.MapHeight;
@@ -97,7 +97,7 @@ namespace Intersect.Server.Maps
 
                     return false;
                 case (int)Directions.Down:
-                    if( gridY + 1 < grid.Height && grid.MyGrid[gridX, gridY + 1] != Guid.Empty )
+                    if (gridY + 1 < grid.Height && grid.MyGrid[gridX, gridY + 1] != Guid.Empty)
                     {
                         mMapId = grid.MyGrid[gridX, gridY + 1];
                         mTileY -= Options.MapHeight;
@@ -107,7 +107,7 @@ namespace Intersect.Server.Maps
 
                     return false;
                 case (int)Directions.Left:
-                    if( gridX > 0 && grid.MyGrid[gridX - 1, gridY] != Guid.Empty )
+                    if (gridX > 0 && grid.MyGrid[gridX - 1, gridY] != Guid.Empty)
                     {
                         mMapId = grid.MyGrid[gridX - 1, gridY];
                         mTileX += Options.MapWidth;
@@ -117,7 +117,7 @@ namespace Intersect.Server.Maps
 
                     return false;
                 case (int)Directions.Right:
-                    if( gridX + 1 < grid.Width && grid.MyGrid[gridX + 1, gridY] != Guid.Empty )
+                    if (gridX + 1 < grid.Width && grid.MyGrid[gridX + 1, gridY] != Guid.Empty)
                     {
                         mMapId = grid.MyGrid[gridX + 1, gridY];
                         mTileX -= Options.MapWidth;
@@ -133,39 +133,39 @@ namespace Intersect.Server.Maps
 
         private bool Fix()
         {
-            if( !MapInstance.Lookup.Keys.Contains( mMapId ) )
+            if (!MapInstance.Lookup.Keys.Contains(mMapId))
             {
                 return false;
             }
 
-            var curMap = MapInstance.Get( mMapId );
-            while( mTileX < 0 )
+            var curMap = MapInstance.Get(mMapId);
+            while (mTileX < 0)
             {
-                if( !TransitionMaps( (int)Directions.Left ) )
+                if (!TransitionMaps((int)Directions.Left))
                 {
                     return false;
                 }
             }
 
-            while( mTileY < 0 )
+            while (mTileY < 0)
             {
-                if( !TransitionMaps( (int)Directions.Up ) )
+                if (!TransitionMaps((int)Directions.Up))
                 {
                     return false;
                 }
             }
 
-            while( mTileX >= Options.MapWidth )
+            while (mTileX >= Options.MapWidth)
             {
-                if( !TransitionMaps( (int)Directions.Right ) )
+                if (!TransitionMaps((int)Directions.Right))
                 {
                     return false;
                 }
             }
 
-            while( mTileY >= Options.MapHeight )
+            while (mTileY >= Options.MapHeight)
             {
-                if( !TransitionMaps( (int)Directions.Down ) )
+                if (!TransitionMaps((int)Directions.Down))
                 {
                     return false;
                 }
@@ -181,7 +181,7 @@ namespace Intersect.Server.Maps
 
         public MapInstance GetMap()
         {
-            return MapInstance.Get( mMapId );
+            return MapInstance.Get(mMapId);
         }
 
         public byte GetX()
@@ -194,19 +194,19 @@ namespace Intersect.Server.Maps
             return (byte)mTileY;
         }
 
-        public static bool IsTileValid( Guid mapId, int tileX, int tileY )
+        public static bool IsTileValid(Guid mapId, int tileX, int tileY)
         {
-            if( !MapInstance.Lookup.Keys.Contains( mapId ) )
+            if (!MapInstance.Lookup.Keys.Contains(mapId))
             {
                 return false;
             }
 
-            if( tileX < 0 || tileX >= Options.MapWidth )
+            if (tileX < 0 || tileX >= Options.MapWidth)
             {
                 return false;
             }
 
-            if( tileY < 0 || tileY >= Options.MapHeight )
+            if (tileY < 0 || tileY >= Options.MapHeight)
             {
                 return false;
             }

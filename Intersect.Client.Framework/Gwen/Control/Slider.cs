@@ -37,11 +37,11 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="Slider" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        protected Slider( Base parent, string name = "" ) : base( parent, name )
+        protected Slider(Base parent, string name = "") : base(parent, name)
         {
-            SetBounds( new Rectangle( 0, 0, 32, 128 ) );
+            SetBounds(new Rectangle(0, 0, 32, 128));
 
-            mSliderBar = new SliderBar( this );
+            mSliderBar = new SliderBar(this);
             mSliderBar.Dragged += OnMoved;
 
             mMin = 0.0f;
@@ -79,7 +79,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         public float Min
         {
             get => mMin;
-            set => SetRange( value, mMax );
+            set => SetRange(value, mMax);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         public float Max
         {
             get => mMax;
-            set => SetRange( mMin, value );
+            set => SetRange(mMin, value);
         }
 
         /// <summary>
@@ -96,22 +96,22 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         public float Value
         {
-            get => mMin + mValue * ( mMax - mMin );
+            get => mMin + mValue * (mMax - mMin);
             set
             {
-                if( value < mMin )
+                if (value < mMin)
                 {
                     value = mMin;
                 }
 
-                if( value > mMax )
+                if (value > mMax)
                 {
                     value = mMax;
                 }
 
                 // Normalize Value
-                value = ( value - mMin ) / ( mMax - mMin );
-                SetValueInternal( value );
+                value = (value - mMin) / (mMax - mMin);
+                SetValueInternal(value);
                 Redraw();
             }
         }
@@ -124,18 +124,18 @@ namespace Intersect.Client.Framework.Gwen.Control
         public override JObject GetJson()
         {
             var obj = base.GetJson();
-            obj.Add( "BackgroundImage", GetImageFilename() );
-            obj.Add( "SnapToNotches", mSnapToNotches );
-            obj.Add( "NotchCount", mNotchCount );
-            obj.Add( "SliderBar", mSliderBar.GetJson() );
+            obj.Add("BackgroundImage", GetImageFilename());
+            obj.Add("SnapToNotches", mSnapToNotches);
+            obj.Add("NotchCount", mNotchCount);
+            obj.Add("SliderBar", mSliderBar.GetJson());
 
-            return base.FixJson( obj );
+            return base.FixJson(obj);
         }
 
-        public override void LoadJson( JToken obj )
+        public override void LoadJson(JToken obj)
         {
-            base.LoadJson( obj );
-            if( obj["BackgroundImage"] != null )
+            base.LoadJson(obj);
+            if (obj["BackgroundImage"] != null)
             {
                 SetImage(
                     GameContentManager.Current.GetTexture(
@@ -144,19 +144,19 @@ namespace Intersect.Client.Framework.Gwen.Control
                 );
             }
 
-            if( obj["SnapToNotches"] != null )
+            if (obj["SnapToNotches"] != null)
             {
                 mSnapToNotches = (bool)obj["SnapToNotches"];
             }
 
-            if( obj["NotchCount"] != null )
+            if (obj["NotchCount"] != null)
             {
                 mNotchCount = (int)obj["NotchCount"];
             }
 
-            if( obj["SliderBar"] != null )
+            if (obj["SliderBar"] != null)
             {
-                mSliderBar.LoadJson( obj["SliderBar"] );
+                mSliderBar.LoadJson(obj["SliderBar"]);
             }
         }
 
@@ -167,9 +167,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyRight( bool down )
+        protected override bool OnKeyRight(bool down)
         {
-            if( down )
+            if (down)
             {
                 Value = Value + 1;
             }
@@ -184,9 +184,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyUp( bool down )
+        protected override bool OnKeyUp(bool down)
         {
-            if( down )
+            if (down)
             {
                 Value = Value + 1;
             }
@@ -201,9 +201,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyLeft( bool down )
+        protected override bool OnKeyLeft(bool down)
         {
-            if( down )
+            if (down)
             {
                 Value = Value - 1;
             }
@@ -218,9 +218,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyDown( bool down )
+        protected override bool OnKeyDown(bool down)
         {
-            if( down )
+            if (down)
             {
                 Value = Value - 1;
             }
@@ -235,9 +235,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyHome( bool down )
+        protected override bool OnKeyHome(bool down)
         {
-            if( down )
+            if (down)
             {
                 Value = mMin;
             }
@@ -252,9 +252,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyEnd( bool down )
+        protected override bool OnKeyEnd(bool down)
         {
-            if( down )
+            if (down)
             {
                 Value = mMax;
             }
@@ -268,13 +268,13 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        protected override void OnMouseClickedLeft( int x, int y, bool down, bool automated = false )
+        protected override void OnMouseClickedLeft(int x, int y, bool down, bool automated = false)
         {
         }
 
-        protected virtual void OnMoved( Base control, EventArgs args )
+        protected virtual void OnMoved(Base control, EventArgs args)
         {
-            SetValueInternal( CalculateValue() );
+            SetValueInternal(CalculateValue());
         }
 
         protected virtual float CalculateValue()
@@ -286,20 +286,20 @@ namespace Intersect.Client.Framework.Gwen.Control
         {
         }
 
-        protected virtual void SetValueInternal( float val )
+        protected virtual void SetValueInternal(float val)
         {
-            if( mSnapToNotches )
+            if (mSnapToNotches)
             {
-                val = (float)Math.Floor( val * mNotchCount + 0.5f );
+                val = (float)Math.Floor(val * mNotchCount + 0.5f);
                 val /= mNotchCount;
             }
 
-            if( mValue != val )
+            if (mValue != val)
             {
                 mValue = val;
-                if( ValueChanged != null )
+                if (ValueChanged != null)
                 {
-                    ValueChanged.Invoke( this, EventArgs.Empty );
+                    ValueChanged.Invoke(this, EventArgs.Empty);
                 }
             }
 
@@ -311,7 +311,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         /// <param name="min">Minimum value.</param>
         /// <param name="max">Maximum value.</param>
-        public void SetRange( float min, float max )
+        public void SetRange(float min, float max)
         {
             mMin = min;
             mMax = max;
@@ -321,14 +321,14 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Renders the focus overlay.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void RenderFocus( Skin.Base skin )
+        protected override void RenderFocus(Skin.Base skin)
         {
-            if( InputHandler.KeyboardFocus != this )
+            if (InputHandler.KeyboardFocus != this)
             {
                 return;
             }
 
-            if( !IsTabable )
+            if (!IsTabable)
             {
                 return;
             }
@@ -336,7 +336,7 @@ namespace Intersect.Client.Framework.Gwen.Control
             //skin.DrawKeyboardHighlight(this, RenderBounds, 0);
         }
 
-        public void SetImage( GameTexture img, string fileName )
+        public void SetImage(GameTexture img, string fileName)
         {
             mBackgroundImage = img;
             mBackgroundImageFilename = fileName;
@@ -352,19 +352,19 @@ namespace Intersect.Client.Framework.Gwen.Control
             return mBackgroundImageFilename;
         }
 
-        public void SetDraggerImage( GameTexture img, string fileName, Dragger.ControlState state )
+        public void SetDraggerImage(GameTexture img, string fileName, Dragger.ControlState state)
         {
-            mSliderBar.SetImage( img, fileName, state );
+            mSliderBar.SetImage(img, fileName, state);
         }
 
-        public GameTexture GetDraggerImage( Dragger.ControlState state )
+        public GameTexture GetDraggerImage(Dragger.ControlState state)
         {
-            return mSliderBar.GetImage( state );
+            return mSliderBar.GetImage(state);
         }
 
-        public void SetDraggerSize( int w, int h )
+        public void SetDraggerSize(int w, int h)
         {
-            mSliderBar.SetSize( w, h );
+            mSliderBar.SetSize(w, h);
         }
 
     }

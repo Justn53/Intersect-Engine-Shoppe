@@ -18,7 +18,7 @@ namespace Intersect.GameObjects.Switches_and_Variables
         public VariableDataTypes Type { get; set; }
 
         [NotMapped]
-        public dynamic Value { get => mValue; set => SetValue( value ); }
+        public dynamic Value { get => mValue; set => SetValue(value); }
 
         [JsonIgnore]
         public JObject Json
@@ -31,19 +31,19 @@ namespace Intersect.GameObjects.Switches_and_Variables
 
             set
             {
-                if( !value.TryGetValue( nameof( Type ), out var typeToken ) )
+                if (!value.TryGetValue(nameof(Type), out var typeToken))
                 {
                     return;
                 }
 
-                if( typeToken.Type != JTokenType.Integer )
+                if (typeToken.Type != JTokenType.Integer)
                 {
                     throw new InvalidCastException(
                         $@"Expected 'Integer' for 'Type', received '{typeToken.Type.ToString()}'."
                     );
                 }
 
-                if( !value.TryGetValue( nameof( Value ), out var valueToken ) )
+                if (!value.TryGetValue(nameof(Value), out var valueToken))
                 {
                     return;
                 }
@@ -53,27 +53,27 @@ namespace Intersect.GameObjects.Switches_and_Variables
             }
         }
 
-        public void SetValue( object value )
+        public void SetValue(object value)
         {
             //Doing these also updates the variable data types appropriately.
-            if( value != null )
+            if (value != null)
             {
-                if( value.GetType() == typeof( bool ) )
+                if (value.GetType() == typeof(bool))
                 {
                     Boolean = (bool)value;
                 }
 
-                if( value.GetType() == typeof( long ) )
+                if (value.GetType() == typeof(long))
                 {
                     Integer = (long)value;
                 }
 
-                if( value.GetType() == typeof( double ) )
+                if (value.GetType() == typeof(double))
                 {
                     Number = (double)value;
                 }
 
-                if( value.GetType() == typeof( string ) )
+                if (value.GetType() == typeof(string))
                 {
                     String = (string)value;
                 }
@@ -87,11 +87,11 @@ namespace Intersect.GameObjects.Switches_and_Variables
             return Value?.ToString() ?? "No Representation";
         }
 
-        public string ToString( VariableDataTypes forceType )
+        public string ToString(VariableDataTypes forceType)
         {
-            if( Value == null )
+            if (Value == null)
             {
-                switch( forceType )
+                switch (forceType)
                 {
                     case VariableDataTypes.Boolean:
                         Boolean = false;
@@ -115,26 +115,26 @@ namespace Intersect.GameObjects.Switches_and_Variables
             return Value.ToString();
         }
 
-        public static bool TryParse( string value, out JObject jObject )
+        public static bool TryParse(string value, out JObject jObject)
         {
             try
             {
-                jObject = JObject.Parse( value );
+                jObject = JObject.Parse(value);
 
-                if( jObject != null )
+                if (jObject != null)
                 {
                     return true;
                 }
 
-                Log.Warn( new ArgumentNullException( nameof( jObject ), @"Invalid variable value stored in the database." ) );
+                Log.Warn(new ArgumentNullException(nameof(jObject), @"Invalid variable value stored in the database."));
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
                 jObject = null;
 #if DEBUG
                 /* Only log in DEBUG in case the variable contains
                  * sensitive information. */
-                Log.Warn( exception );
+                Log.Warn(exception);
 #endif
             }
 
@@ -146,7 +146,7 @@ namespace Intersect.GameObjects.Switches_and_Variables
         [JsonIgnore]
         public bool Boolean
         {
-            get => CanConvertTo<bool>( Value ) ? Convert.ToBoolean( Value ) : false;
+            get => CanConvertTo<bool>(Value) ? Convert.ToBoolean(Value) : false;
             set
             {
                 Type = VariableDataTypes.Boolean;
@@ -157,7 +157,7 @@ namespace Intersect.GameObjects.Switches_and_Variables
         [JsonIgnore]
         public long Integer
         {
-            get => CanConvertTo<long>( Value ) ? Convert.ToInt64( Value ) : 0;
+            get => CanConvertTo<long>(Value) ? Convert.ToInt64(Value) : 0;
             set
             {
                 Type = VariableDataTypes.Integer;
@@ -168,7 +168,7 @@ namespace Intersect.GameObjects.Switches_and_Variables
         [JsonIgnore]
         public double Number
         {
-            get => CanConvertTo<double>( Value ) ? Convert.ToDouble( Value ) : 0.0;
+            get => CanConvertTo<double>(Value) ? Convert.ToDouble(Value) : 0.0;
             set
             {
                 Type = VariableDataTypes.Number;
@@ -179,7 +179,7 @@ namespace Intersect.GameObjects.Switches_and_Variables
         [JsonIgnore]
         public string String
         {
-            get => CanConvertTo<string>( Value ) ? Convert.ToString( Value ) : "";
+            get => CanConvertTo<string>(Value) ? Convert.ToString(Value) : "";
             set
             {
                 Type = VariableDataTypes.String;
@@ -187,12 +187,12 @@ namespace Intersect.GameObjects.Switches_and_Variables
             }
         }
 
-        public static bool CanConvertTo<T>( object input )
+        public static bool CanConvertTo<T>(object input)
         {
             Object result = null;
             try
             {
-                result = Convert.ChangeType( input, typeof( T ) );
+                result = Convert.ChangeType(input, typeof(T));
             }
             catch
             {
@@ -206,7 +206,7 @@ namespace Intersect.GameObjects.Switches_and_Variables
 
         #region Operators
 
-        public static implicit operator VariableValue( bool value )
+        public static implicit operator VariableValue(bool value)
         {
             return new VariableValue
             {
@@ -215,12 +215,12 @@ namespace Intersect.GameObjects.Switches_and_Variables
             };
         }
 
-        public static implicit operator bool( VariableValue variableValue )
+        public static implicit operator bool(VariableValue variableValue)
         {
             return variableValue.Boolean;
         }
 
-        public static implicit operator VariableValue( long value )
+        public static implicit operator VariableValue(long value)
         {
             return new VariableValue
             {
@@ -229,12 +229,12 @@ namespace Intersect.GameObjects.Switches_and_Variables
             };
         }
 
-        public static implicit operator long( VariableValue variableValue )
+        public static implicit operator long(VariableValue variableValue)
         {
             return variableValue.Integer;
         }
 
-        public static implicit operator VariableValue( double value )
+        public static implicit operator VariableValue(double value)
         {
             return new VariableValue
             {
@@ -243,12 +243,12 @@ namespace Intersect.GameObjects.Switches_and_Variables
             };
         }
 
-        public static implicit operator double( VariableValue variableValue )
+        public static implicit operator double(VariableValue variableValue)
         {
             return variableValue.Number;
         }
 
-        public static implicit operator VariableValue( string value )
+        public static implicit operator VariableValue(string value)
         {
             return new VariableValue
             {
@@ -257,7 +257,7 @@ namespace Intersect.GameObjects.Switches_and_Variables
             };
         }
 
-        public static implicit operator string( VariableValue variableValue )
+        public static implicit operator string(VariableValue variableValue)
         {
             return variableValue.String;
         }

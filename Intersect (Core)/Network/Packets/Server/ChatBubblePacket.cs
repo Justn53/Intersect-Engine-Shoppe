@@ -13,7 +13,7 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public ChatBubblePacket( Guid entityId, EntityTypes type, Guid mapId, string text )
+        public ChatBubblePacket(Guid entityId, EntityTypes type, Guid mapId, string text)
         {
             EntityId = entityId;
             Type = type;
@@ -21,16 +21,16 @@ namespace Intersect.Network.Packets.Server
             Text = text;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid EntityId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public EntityTypes Type { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public Guid MapId { get; set; }
 
-        [Key( 3 )]
+        [Key(3)]
         public string Text { get; set; }
 
     }

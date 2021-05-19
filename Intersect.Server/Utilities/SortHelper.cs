@@ -26,9 +26,9 @@ namespace Intersect.Server.Utilities
     public static class SortOrderExtensions
     {
 
-        public static string ToShortString( this SortOrder sortOrder )
+        public static string ToShortString(this SortOrder sortOrder)
         {
-            switch( sortOrder )
+            switch (sortOrder)
             {
                 case SortOrder.Ascending:
                     return "asc";
@@ -37,13 +37,13 @@ namespace Intersect.Server.Utilities
                     return "desc";
 
                 default:
-                    throw new ArgumentOutOfRangeException( nameof( sortOrder ), sortOrder, null );
+                    throw new ArgumentOutOfRangeException(nameof(sortOrder), sortOrder, null);
             }
         }
 
-        public static string ToLongString( this SortOrder sortOrder )
+        public static string ToLongString(this SortOrder sortOrder)
         {
-            switch( sortOrder )
+            switch (sortOrder)
             {
                 case SortOrder.Ascending:
                     return "ascending";
@@ -52,11 +52,11 @@ namespace Intersect.Server.Utilities
                     return "descending";
 
                 default:
-                    throw new ArgumentOutOfRangeException( nameof( sortOrder ), sortOrder, null );
+                    throw new ArgumentOutOfRangeException(nameof(sortOrder), sortOrder, null);
             }
         }
 
-        public static bool Matches( this SortOrder sortOrder, string sortOrderString )
+        public static bool Matches(this SortOrder sortOrder, string sortOrderString)
         {
             return string.Equals(
                        sortOrder.ToShortString(), sortOrderString, StringComparison.InvariantCultureIgnoreCase
@@ -71,9 +71,9 @@ namespace Intersect.Server.Utilities
     public static class SortHelper
     {
 
-        public static SortOrder ToSortOrder( string str )
+        public static SortOrder ToSortOrder(string str)
         {
-            return SortOrder.Descending.Matches( str ) ? SortOrder.Descending : SortOrder.Ascending;
+            return SortOrder.Descending.Matches(str) ? SortOrder.Descending : SortOrder.Ascending;
         }
 
         public static IOrderedEnumerable<T> OrderBy<T, TKey>(
@@ -82,16 +82,16 @@ namespace Intersect.Server.Utilities
             bool ascending
         )
         {
-            return ascending ? enumerable?.OrderBy( keySelector ) : enumerable?.OrderByDescending( keySelector );
+            return ascending ? enumerable?.OrderBy(keySelector) : enumerable?.OrderByDescending(keySelector);
         }
 
-        public static IEnumerable<T> OrderBy<T>( IEnumerable<T> enumerable, params SortPair[] sortPairs )
+        public static IEnumerable<T> OrderBy<T>(IEnumerable<T> enumerable, params SortPair[] sortPairs)
         {
             var orderedEnumerable = enumerable;
             sortPairs?.ToList()
                 .ForEach(
                     sortPair => orderedEnumerable = OrderBy(
-                        orderedEnumerable, entry => ( (dynamic)entry )?[sortPair.Key], sortPair.Ascending
+                        orderedEnumerable, entry => ((dynamic)entry)?[sortPair.Key], sortPair.Ascending
                     )
                 );
 

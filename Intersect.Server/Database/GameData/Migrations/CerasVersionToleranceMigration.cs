@@ -26,56 +26,56 @@ namespace Intersect.Server.Database.GameData.Migrations
 
         private static Ceras mOldCeras;
 
-        public static void Run( GameContext context )
+        public static void Run(GameContext context)
         {
             var nameTypeDict = new Dictionary<string, Type>();
 
-            nameTypeDict.Add( "Intersect.GameObjects.Maps.TileArray[]", typeof( LegacyTileArray[] ) );
+            nameTypeDict.Add("Intersect.GameObjects.Maps.TileArray[]", typeof(LegacyTileArray[]));
 
-            nameTypeDict.Add( "Intersect.GameObjects.Maps.MapAttribute[,]", typeof( LegacyMapAttribute[,] ) );
-            nameTypeDict.Add( "Intersect.GameObjects.Maps.MapAttribute", typeof( LegacyMapAttribute ) );
-            nameTypeDict.Add( "Intersect.GameObjects.Maps.MapBlockedAttribute", typeof( LegacyMapBlockedAttribute ) );
-            nameTypeDict.Add( "Intersect.GameObjects.Maps.MapItemAttribute", typeof( LegacyMapItemAttribute ) );
-            nameTypeDict.Add( "Intersect.GameObjects.Maps.MapZDimensionAttribute", typeof( LegacyMapZDimensionAttribute ) );
-            nameTypeDict.Add( "Intersect.GameObjects.Maps.MapNpcAvoidAttribute", typeof( LegacyMapNpcAvoidAttribute ) );
-            nameTypeDict.Add( "Intersect.GameObjects.Maps.MapWarpAttribute", typeof( LegacyMapWarpAttribute ) );
-            nameTypeDict.Add( "Intersect.GameObjects.Maps.MapSoundAttribute", typeof( LegacyMapSoundAttribute ) );
-            nameTypeDict.Add( "Intersect.GameObjects.Maps.MapResourceAttribute", typeof( LegacyMapResourceAttribute ) );
-            nameTypeDict.Add( "Intersect.GameObjects.Maps.MapAnimationAttribute", typeof( LegacyMapAnimationAttribute ) );
-            nameTypeDict.Add( "Intersect.GameObjects.Maps.MapGrappleStoneAttribute", typeof( LegacyMapGrappleStoneAttribute ) );
-            nameTypeDict.Add( "Intersect.GameObjects.Maps.MapSlideAttribute", typeof( LegacyMapSlideAttribute ) );
+            nameTypeDict.Add("Intersect.GameObjects.Maps.MapAttribute[,]", typeof(LegacyMapAttribute[,]));
+            nameTypeDict.Add("Intersect.GameObjects.Maps.MapAttribute", typeof(LegacyMapAttribute));
+            nameTypeDict.Add("Intersect.GameObjects.Maps.MapBlockedAttribute", typeof(LegacyMapBlockedAttribute));
+            nameTypeDict.Add("Intersect.GameObjects.Maps.MapItemAttribute", typeof(LegacyMapItemAttribute));
+            nameTypeDict.Add("Intersect.GameObjects.Maps.MapZDimensionAttribute", typeof(LegacyMapZDimensionAttribute));
+            nameTypeDict.Add("Intersect.GameObjects.Maps.MapNpcAvoidAttribute", typeof(LegacyMapNpcAvoidAttribute));
+            nameTypeDict.Add("Intersect.GameObjects.Maps.MapWarpAttribute", typeof(LegacyMapWarpAttribute));
+            nameTypeDict.Add("Intersect.GameObjects.Maps.MapSoundAttribute", typeof(LegacyMapSoundAttribute));
+            nameTypeDict.Add("Intersect.GameObjects.Maps.MapResourceAttribute", typeof(LegacyMapResourceAttribute));
+            nameTypeDict.Add("Intersect.GameObjects.Maps.MapAnimationAttribute", typeof(LegacyMapAnimationAttribute));
+            nameTypeDict.Add("Intersect.GameObjects.Maps.MapGrappleStoneAttribute", typeof(LegacyMapGrappleStoneAttribute));
+            nameTypeDict.Add("Intersect.GameObjects.Maps.MapSlideAttribute", typeof(LegacyMapSlideAttribute));
 
-            mOldCeras = new LegacyCeras( nameTypeDict );
+            mOldCeras = new LegacyCeras(nameTypeDict);
 
-            UpdateMapTilesAttributesWithCerasVersionTolerance( context );
+            UpdateMapTilesAttributesWithCerasVersionTolerance(context);
         }
 
-        private static void UpdateMapTilesAttributesWithCerasVersionTolerance( GameContext context )
+        private static void UpdateMapTilesAttributesWithCerasVersionTolerance(GameContext context)
         {
             var connection = context.Database.GetDbConnection();
             connection.Open();
             var updates = new List<Tuple<object, byte[], byte[]>>();
-            using( var cmd = connection.CreateCommand() )
+            using (var cmd = connection.CreateCommand())
             {
                 cmd.CommandText = "Select Id, Attributes, TileData from Maps;";
                 var reader = cmd.ExecuteReader();
-                while( reader.Read() )
+                while (reader.Read())
                 {
                     var id = reader["Id"];
 
                     #region "Convert tileData to Dictionary<string, Tile[,]> where the key is the layer name"
                     var tileData = (byte[])reader["TileData"];
-                    var tileLayers = (LegacyTileArray[])mOldCeras.Decompress( tileData );
+                    var tileLayers = (LegacyTileArray[])mOldCeras.Decompress(tileData);
 
                     var newTileLayers = new Dictionary<string, Tile[,]>();
-                    for( int i = 0; i < tileLayers.Length; i++ )
+                    for (int i = 0; i < tileLayers.Length; i++)
                     {
                         var knownLayers = new string[] { "Ground", "Mask 1", "Mask 2", "Fringe 1", "Fringe 2" };
                         var name = i < knownLayers.Length ? knownLayers[i] : "Layer " + i;
-                        var tiles = new Tile[tileLayers[i].Tiles.GetLength( 0 ), tileLayers[i].Tiles.GetLength( 1 )];
-                        for( int x = 0; x < tileLayers[i].Tiles.GetLength( 0 ); x++ )
+                        var tiles = new Tile[tileLayers[i].Tiles.GetLength(0), tileLayers[i].Tiles.GetLength(1)];
+                        for (int x = 0; x < tileLayers[i].Tiles.GetLength(0); x++)
                         {
-                            for( int y = 0; y < tileLayers[i].Tiles.GetLength( 1 ); y++ )
+                            for (int y = 0; y < tileLayers[i].Tiles.GetLength(1); y++)
                             {
                                 tiles[x, y] = new Tile()
                                 {
@@ -87,12 +87,12 @@ namespace Intersect.Server.Database.GameData.Migrations
                                 };
                             }
                         }
-                        newTileLayers.Add( name, tiles );
+                        newTileLayers.Add(name, tiles);
                     }
 
                     //Ceras is too buggy for this at rest storage. Switching to compressed json for now.
                     //Using ceras to compress and then decompress newTileLayers would result (for some reason) in it losing all tileset ids
-                    var newTileData = LZ4.PickleString( JsonConvert.SerializeObject( newTileLayers, Formatting.None, mJsonSerializerSettings ) );
+                    var newTileData = LZ4.PickleString(JsonConvert.SerializeObject(newTileLayers, Formatting.None, mJsonSerializerSettings));
                     #endregion
 
                     #region "Convert Attributes back into the same data type, but with version tolerance"
@@ -101,34 +101,34 @@ namespace Intersect.Server.Database.GameData.Migrations
                     //Only works on Ceras 4.0.40 -- I don't know why..
                     //Later versions of ceras are unable to decompress map attributes (on SOME maps)
                     //Feel free to ask JC for the demo game db if you want to debug
-                    var attributes = mOldCeras.Decompress<LegacyMapAttribute[,]>( attributeData );
+                    var attributes = mOldCeras.Decompress<LegacyMapAttribute[,]>(attributeData);
 
                     //Trying to use Ceras to re-serialize as the proper classes loses guid values for some reason, so lets do some fun json to get this converted.
-                    var legacyAttributes = JsonConvert.SerializeObject( attributes, Formatting.None, mJsonSerializerSettings );
+                    var legacyAttributes = JsonConvert.SerializeObject(attributes, Formatting.None, mJsonSerializerSettings);
 
                     //Fix type names?
-                    var attributesJson = legacyAttributes.Replace( "Intersect.Server.Database.GameData.Migrations.CerasVersionToleranceMigration+Legacy", "Intersect.GameObjects.Maps." ).Replace( ", Intersect Server", ", Intersect Core" );
+                    var attributesJson = legacyAttributes.Replace("Intersect.Server.Database.GameData.Migrations.CerasVersionToleranceMigration+Legacy", "Intersect.GameObjects.Maps.").Replace(", Intersect Server", ", Intersect Core");
 
-                    var newAttributeDataJson = LZ4.PickleString( attributesJson );
+                    var newAttributeDataJson = LZ4.PickleString(attributesJson);
                     #endregion
 
-                    updates.Add( new Tuple<object, byte[], byte[]>( id, newAttributeDataJson, newTileData ) );
+                    updates.Add(new Tuple<object, byte[], byte[]>(id, newAttributeDataJson, newTileData));
                 }
             }
 
             connection.Close();
             connection.Open();
-            if( updates.Count > 0 )
+            if (updates.Count > 0)
             {
                 var trans = connection.BeginTransaction();
 
-                using( var updateCmd = connection.CreateCommand() )
+                using (var updateCmd = connection.CreateCommand())
                 {
                     updateCmd.CommandText = string.Empty;
                     updateCmd.Transaction = trans;
                     var i = 0;
                     var currentCount = 0;
-                    foreach( var update in updates )
+                    foreach (var update in updates)
                     {
                         updateCmd.CommandText += "UPDATE Maps SET Attributes = @Attributes" +
                                                  i +
@@ -138,23 +138,23 @@ namespace Intersect.Server.Database.GameData.Migrations
                                                  i +
                                                  ";";
 
-                        if( context.Database.ProviderName.Contains( "Sqlite" ) )
+                        if (context.Database.ProviderName.Contains("Sqlite"))
                         {
-                            updateCmd.Parameters.Add( new SqliteParameter( "@Id" + i, (object)update.Item1 ) );
-                            updateCmd.Parameters.Add( new SqliteParameter( "@Attributes" + i, (byte[])update.Item2 ) );
-                            updateCmd.Parameters.Add( new SqliteParameter( "@TileData" + i, (byte[])update.Item3 ) );
+                            updateCmd.Parameters.Add(new SqliteParameter("@Id" + i, (object)update.Item1));
+                            updateCmd.Parameters.Add(new SqliteParameter("@Attributes" + i, (byte[])update.Item2));
+                            updateCmd.Parameters.Add(new SqliteParameter("@TileData" + i, (byte[])update.Item3));
                         }
                         else
                         {
-                            updateCmd.Parameters.Add( new MySqlParameter( "@Id" + i, (object)update.Item1 ) );
-                            updateCmd.Parameters.Add( new MySqlParameter( "@Attributes" + i, (byte[])update.Item2 ) );
-                            updateCmd.Parameters.Add( new MySqlParameter( "@TileData" + i, (byte[])update.Item3 ) );
+                            updateCmd.Parameters.Add(new MySqlParameter("@Id" + i, (object)update.Item1));
+                            updateCmd.Parameters.Add(new MySqlParameter("@Attributes" + i, (byte[])update.Item2));
+                            updateCmd.Parameters.Add(new MySqlParameter("@TileData" + i, (byte[])update.Item3));
                         }
 
                         i++;
                         currentCount++;
 
-                        if( currentCount > 256 )
+                        if (currentCount > 256)
                         {
                             updateCmd.ExecuteNonQuery();
                             updateCmd.CommandText = "";
@@ -199,9 +199,9 @@ namespace Intersect.Server.Database.GameData.Migrations
         {
             public abstract MapAttributes Type { get; }
 
-            public static LegacyMapAttribute CreateAttribute( MapAttributes type )
+            public static LegacyMapAttribute CreateAttribute(MapAttributes type)
             {
-                switch( type )
+                switch (type)
                 {
                     case MapAttributes.Walkable:
                         return null;

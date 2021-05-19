@@ -14,12 +14,12 @@ namespace Intersect.Server.Database.PlayerData.Api
     public class RefreshToken
     {
 
-        [DatabaseGenerated( DatabaseGeneratedOption.Identity )]
-        [Column( Order = 0 )]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(Order = 0)]
         [Key]
         public Guid Id { get; set; }
 
-        [Required, ForeignKey( nameof( User ) )]
+        [Required, ForeignKey(nameof(User))]
         public Guid UserId { get; set; }
 
         [JsonIgnore]
@@ -46,35 +46,35 @@ namespace Intersect.Server.Database.PlayerData.Api
             bool checkForDuplicates = true
         )
         {
-            using( var context = DbInterface.CreatePlayerContext( readOnly: false ) )
+            using (var context = DbInterface.CreatePlayerContext(readOnly: false))
             {
-                if( context.RefreshTokens == null )
+                if (context.RefreshTokens == null)
                 {
                     return false;
                 }
 
-                if( checkForDuplicates )
+                if (checkForDuplicates)
                 {
-                    var duplicate = Find( token.Id );
-                    if( duplicate != null && !Remove( token.Id, commit ) )
+                    var duplicate = Find(token.Id);
+                    if (duplicate != null && !Remove(token.Id, commit))
                     {
                         return false;
                     }
 
-                    var forClient = FindForClient( token.ClientId )?.ToList();
-                    if( forClient != null && !RemoveAll( forClient, commit ) )
+                    var forClient = FindForClient(token.ClientId)?.ToList();
+                    if (forClient != null && !RemoveAll(forClient, commit))
                     {
                         return false;
                     }
 
-                    var forUser = FindForUser( token.UserId )?.ToList();
-                    if( forUser != null && !RemoveAll( forUser, commit ) )
+                    var forUser = FindForUser(token.UserId)?.ToList();
+                    if (forUser != null && !RemoveAll(forUser, commit))
                     {
                         return false;
                     }
                 }
 
-                context.RefreshTokens.Add( token );
+                context.RefreshTokens.Add(token);
                 context.ChangeTracker.DetectChanges();
                 context.SaveChanges();
 
@@ -82,166 +82,166 @@ namespace Intersect.Server.Database.PlayerData.Api
             }
         }
 
-        public static RefreshToken Find( Guid id )
+        public static RefreshToken Find(Guid id)
         {
             try
             {
-                using( var context = DbInterface.CreatePlayerContext() )
+                using (var context = DbInterface.CreatePlayerContext())
                 {
-                    return context?.RefreshTokens?.Find( id );
+                    return context?.RefreshTokens?.Find(id);
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex );
+                Log.Error(ex);
                 return null;
             }
         }
 
-        public static RefreshToken FindForTicket( Guid ticketId )
+        public static RefreshToken FindForTicket(Guid ticketId)
         {
-            if( ticketId == Guid.Empty )
+            if (ticketId == Guid.Empty)
             {
                 return null;
             }
 
             try
             {
-                using( var context = DbInterface.CreatePlayerContext() )
+                using (var context = DbInterface.CreatePlayerContext())
                 {
-                    var refreshToken = context?.RefreshTokens.FirstOrDefault( queryToken => queryToken.TicketId == ticketId );
+                    var refreshToken = context?.RefreshTokens.FirstOrDefault(queryToken => queryToken.TicketId == ticketId);
 
-                    if( refreshToken == null || DateTime.UtcNow < refreshToken.Expires )
+                    if (refreshToken == null || DateTime.UtcNow < refreshToken.Expires)
                     {
                         return refreshToken;
                     }
 
-                    Remove( refreshToken, true );
+                    Remove(refreshToken, true);
 
                     return null;
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex );
+                Log.Error(ex);
                 return null;
             }
         }
 
-        public static IEnumerable<RefreshToken> FindForClient( Guid clientId )
+        public static IEnumerable<RefreshToken> FindForClient(Guid clientId)
         {
-            if( clientId == Guid.Empty )
+            if (clientId == Guid.Empty)
             {
                 return null;
             }
 
             try
             {
-                using( var context = DbInterface.CreatePlayerContext() )
+                using (var context = DbInterface.CreatePlayerContext())
                 {
-                    var tokenQuery = context?.RefreshTokens.Where( queryToken => queryToken.ClientId == clientId );
+                    var tokenQuery = context?.RefreshTokens.Where(queryToken => queryToken.ClientId == clientId);
 
                     return tokenQuery.AsEnumerable()?.ToList();
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex );
+                Log.Error(ex);
                 return null;
             }
         }
 
-        public static IEnumerable<RefreshToken> FindForUser( Guid userId )
+        public static IEnumerable<RefreshToken> FindForUser(Guid userId)
         {
-            if( userId == Guid.Empty )
+            if (userId == Guid.Empty)
             {
                 return null;
             }
 
             try
             {
-                using( var context = DbInterface.CreatePlayerContext() )
+                using (var context = DbInterface.CreatePlayerContext())
                 {
-                    var tokenQuery = context?.RefreshTokens.Where( queryToken => queryToken.UserId == userId );
+                    var tokenQuery = context?.RefreshTokens.Where(queryToken => queryToken.UserId == userId);
 
                     return tokenQuery.AsEnumerable()?.ToList();
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex );
+                Log.Error(ex);
                 return null;
             }
         }
 
-        public static IEnumerable<RefreshToken> FindForUser( User user )
+        public static IEnumerable<RefreshToken> FindForUser(User user)
         {
-            return FindForUser( user.Id );
+            return FindForUser(user.Id);
         }
 
-        public static RefreshToken FindOneForUser( Guid userId )
+        public static RefreshToken FindOneForUser(Guid userId)
         {
             try
             {
-                using( var context = DbInterface.CreatePlayerContext() )
+                using (var context = DbInterface.CreatePlayerContext())
                 {
-                    var token = context?.RefreshTokens.First( queryToken => queryToken.UserId == userId );
+                    var token = context?.RefreshTokens.First(queryToken => queryToken.UserId == userId);
 
                     return token;
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex );
+                Log.Error(ex);
                 return null;
             }
         }
 
-        public static RefreshToken FindOneForUser( User user )
+        public static RefreshToken FindOneForUser(User user)
         {
-            return FindOneForUser( user.Id );
+            return FindOneForUser(user.Id);
         }
 
-        public static bool Remove( Guid id, bool commit = false )
+        public static bool Remove(Guid id, bool commit = false)
         {
-            var token = Find( id );
+            var token = Find(id);
 
-            return token != null && Remove( token, commit );
+            return token != null && Remove(token, commit);
         }
 
-        public static bool Remove( RefreshToken token, bool commit = false )
+        public static bool Remove(RefreshToken token, bool commit = false)
         {
             try
             {
-                using( var context = DbInterface.CreatePlayerContext( readOnly: false ) )
+                using (var context = DbInterface.CreatePlayerContext(readOnly: false))
                 {
-                    context?.RefreshTokens.Remove( token );
+                    context?.RefreshTokens.Remove(token);
                     context?.SaveChanges();
                 }
                 return true;
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex );
+                Log.Error(ex);
                 return false;
             }
         }
 
-        public static bool RemoveAll( IEnumerable<RefreshToken> tokens, bool commit = false )
+        public static bool RemoveAll(IEnumerable<RefreshToken> tokens, bool commit = false)
         {
             try
             {
-                using( var context = DbInterface.CreatePlayerContext( readOnly: false ) )
+                using (var context = DbInterface.CreatePlayerContext(readOnly: false))
                 {
-                    context?.RefreshTokens.RemoveRange( tokens );
+                    context?.RefreshTokens.RemoveRange(tokens);
                     context?.SaveChanges();
                 }
 
                 return true;
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                Log.Error( ex );
+                Log.Error(ex);
                 return false;
             }
         }

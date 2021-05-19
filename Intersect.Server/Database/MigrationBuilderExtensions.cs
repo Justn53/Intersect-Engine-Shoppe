@@ -13,12 +13,12 @@ namespace Intersect.Server.Database
     public static class MigrationBuilderExtensions
     {
 
-        public static DatabaseOptions.DatabaseType GetDatabaseType( this MigrationBuilder migrationBuilder )
+        public static DatabaseOptions.DatabaseType GetDatabaseType(this MigrationBuilder migrationBuilder)
         {
-            switch( migrationBuilder.ActiveProvider )
+            switch (migrationBuilder.ActiveProvider)
             {
                 default:
-                    if( migrationBuilder.ActiveProvider?.ToLowerInvariant().Contains( "sqlite" ) ?? false )
+                    if (migrationBuilder.ActiveProvider?.ToLowerInvariant().Contains("sqlite") ?? false)
                     {
                         return DatabaseOptions.DatabaseType.SQLite;
                     }
@@ -42,7 +42,7 @@ namespace Intersect.Server.Database
         {
             return migrationBuilder.Sql(
                 conditionalQueries
-                    .Select( conditionalQuery => (conditionalQuery.DatabaseType, conditionalQuery.Sql, false) )
+                    .Select(conditionalQuery => (conditionalQuery.DatabaseType, conditionalQuery.Sql, false))
                     .ToArray()
             );
         }
@@ -62,17 +62,17 @@ namespace Intersect.Server.Database
         {
             OperationBuilder<SqlOperation> operationBuilder = null;
             var databaseType = migrationBuilder.GetDatabaseType();
-            foreach( var conditionalQuery in conditionalQueries )
+            foreach (var conditionalQuery in conditionalQueries)
             {
-                if( databaseType == conditionalQuery.DatabaseType )
+                if (databaseType == conditionalQuery.DatabaseType)
                 {
-                    operationBuilder = migrationBuilder.Sql( conditionalQuery.Sql, conditionalQuery.SuppressTransaction );
+                    operationBuilder = migrationBuilder.Sql(conditionalQuery.Sql, conditionalQuery.SuppressTransaction);
                 }
             }
 
-            if( operationBuilder == null )
+            if (operationBuilder == null)
             {
-                throw new ArgumentException( @"No queries were executed.", nameof( conditionalQueries ) );
+                throw new ArgumentException(@"No queries were executed.", nameof(conditionalQueries));
             }
 
             return operationBuilder;

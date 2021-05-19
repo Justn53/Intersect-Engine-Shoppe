@@ -37,15 +37,15 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="ScrollBar" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        protected ScrollBar( Base parent ) : base( parent )
+        protected ScrollBar(Base parent) : base(parent)
         {
             mScrollButton = new ScrollBarButton[2];
-            mScrollButton[0] = new ScrollBarButton( this );
-            mScrollButton[1] = new ScrollBarButton( this );
+            mScrollButton[0] = new ScrollBarButton(this);
+            mScrollButton[1] = new ScrollBarButton(this);
 
-            mBar = new ScrollBarBar( this );
+            mBar = new ScrollBarBar(this);
 
-            SetBounds( 0, 0, 15, 15 );
+            SetBounds(0, 0, 15, 15);
             mDepressed = false;
 
             mScrollAmount = 0;
@@ -83,7 +83,7 @@ namespace Intersect.Client.Framework.Gwen.Control
             get => mContentSize;
             set
             {
-                if( mContentSize != value )
+                if (mContentSize != value)
                 {
                     Invalidate();
                 }
@@ -97,7 +97,7 @@ namespace Intersect.Client.Framework.Gwen.Control
             get => mViewableContentSize;
             set
             {
-                if( mViewableContentSize != value )
+                if (mViewableContentSize != value)
                 {
                     Invalidate();
                 }
@@ -119,18 +119,18 @@ namespace Intersect.Client.Framework.Gwen.Control
         public override JObject GetJson()
         {
             var obj = base.GetJson();
-            obj.Add( "BackgroundTemplate", mBackgroundTemplateFilename );
-            obj.Add( "UpOrLeftButton", mScrollButton[0].GetJson() );
-            obj.Add( "Bar", mBar.GetJson() );
-            obj.Add( "DownOrRightButton", mScrollButton[1].GetJson() );
+            obj.Add("BackgroundTemplate", mBackgroundTemplateFilename);
+            obj.Add("UpOrLeftButton", mScrollButton[0].GetJson());
+            obj.Add("Bar", mBar.GetJson());
+            obj.Add("DownOrRightButton", mScrollButton[1].GetJson());
 
-            return base.FixJson( obj );
+            return base.FixJson(obj);
         }
 
-        public override void LoadJson( JToken obj )
+        public override void LoadJson(JToken obj)
         {
-            base.LoadJson( obj );
-            if( obj["BackgroundTemplate"] != null )
+            base.LoadJson(obj);
+            if (obj["BackgroundTemplate"] != null)
             {
                 SetBackgroundTemplate(
                     GameContentManager.Current.GetTexture(
@@ -139,19 +139,19 @@ namespace Intersect.Client.Framework.Gwen.Control
                 );
             }
 
-            if( obj["UpOrLeftButton"] != null )
+            if (obj["UpOrLeftButton"] != null)
             {
-                mScrollButton[0].LoadJson( obj["UpOrLeftButton"] );
+                mScrollButton[0].LoadJson(obj["UpOrLeftButton"]);
             }
 
-            if( obj["Bar"] != null )
+            if (obj["Bar"] != null)
             {
-                mBar.LoadJson( obj["Bar"] );
+                mBar.LoadJson(obj["Bar"]);
             }
 
-            if( obj["DownOrRightButton"] != null )
+            if (obj["DownOrRightButton"] != null)
             {
-                mScrollButton[1].LoadJson( obj["DownOrRightButton"] );
+                mScrollButton[1].LoadJson(obj["DownOrRightButton"]);
             }
         }
 
@@ -160,11 +160,11 @@ namespace Intersect.Client.Framework.Gwen.Control
             return mBackgroundTemplateTex;
         }
 
-        public void SetBackgroundTemplate( GameTexture texture, string fileName )
+        public void SetBackgroundTemplate(GameTexture texture, string fileName)
         {
-            if( texture == null && !string.IsNullOrWhiteSpace( fileName ) )
+            if (texture == null && !string.IsNullOrWhiteSpace(fileName))
             {
-                texture = GameContentManager.Current?.GetTexture( GameContentManager.TextureType.Gui, fileName );
+                texture = GameContentManager.Current?.GetTexture(GameContentManager.TextureType.Gui, fileName);
             }
 
             mBackgroundTemplateFilename = fileName;
@@ -177,16 +177,16 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <param name="value">Scroll amount.</param>
         /// <param name="forceUpdate">Determines whether the control should be updated.</param>
         /// <returns>True if control state changed.</returns>
-        public virtual bool SetScrollAmount( float value, bool forceUpdate = false )
+        public virtual bool SetScrollAmount(float value, bool forceUpdate = false)
         {
-            if( mScrollAmount == value && !forceUpdate )
+            if (mScrollAmount == value && !forceUpdate)
             {
                 return false;
             }
 
             mScrollAmount = value;
             Invalidate();
-            OnBarMoved( this, EventArgs.Empty );
+            OnBarMoved(this, EventArgs.Empty);
 
             return true;
         }
@@ -197,7 +197,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        protected override void OnMouseClickedLeft( int x, int y, bool down, bool automated = false )
+        protected override void OnMouseClickedLeft(int x, int y, bool down, bool automated = false)
         {
         }
 
@@ -205,20 +205,20 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawScrollBar( this, IsHorizontal, mDepressed );
+            skin.DrawScrollBar(this, IsHorizontal, mDepressed);
         }
 
         /// <summary>
         ///     Handler for the BarMoved event.
         /// </summary>
         /// <param name="control">The control.</param>
-        protected virtual void OnBarMoved( Base control, EventArgs args )
+        protected virtual void OnBarMoved(Base control, EventArgs args)
         {
-            if( BarMoved != null )
+            if (BarMoved != null)
             {
-                BarMoved.Invoke( this, EventArgs.Empty );
+                BarMoved.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -248,11 +248,11 @@ namespace Intersect.Client.Framework.Gwen.Control
         {
         }
 
-        public ScrollBarButton GetScrollBarButton( Pos direction )
+        public ScrollBarButton GetScrollBarButton(Pos direction)
         {
-            for( var i = 0; i < mScrollButton.Length; i++ )
+            for (var i = 0; i < mScrollButton.Length; i++)
             {
-                if( mScrollButton[i].GetDirection() == direction )
+                if (mScrollButton[i].GetDirection() == direction)
                 {
                     return mScrollButton[i];
                 }
@@ -261,14 +261,14 @@ namespace Intersect.Client.Framework.Gwen.Control
             return null;
         }
 
-        public void SetScrollBarImage( GameTexture texture, string fileName, Dragger.ControlState state )
+        public void SetScrollBarImage(GameTexture texture, string fileName, Dragger.ControlState state)
         {
-            mBar.SetImage( texture, fileName, state );
+            mBar.SetImage(texture, fileName, state);
         }
 
-        public GameTexture GetScrollBarImage( Dragger.ControlState state )
+        public GameTexture GetScrollBarImage(Dragger.ControlState state)
         {
-            return mBar.GetImage( state );
+            return mBar.GetImage(state);
         }
 
     }

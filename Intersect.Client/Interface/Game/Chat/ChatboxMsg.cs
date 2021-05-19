@@ -42,7 +42,7 @@ namespace Intersect.Client.Interface.Game.Chat
         /// <param name="clr">The color of the message.</param>
         /// <param name="type">The type of the message.</param>
         /// <param name="target">The target of the message.</param>
-        public ChatboxMsg( string msg, Color clr, ChatMessageType type, string target = "" )
+        public ChatboxMsg(string msg, Color clr, ChatMessageType type, string target = "")
         {
             mMsg = msg;
             mMsgColor = clr;
@@ -72,9 +72,9 @@ namespace Intersect.Client.Interface.Game.Chat
         /// Adds a new chat message to the stored list.
         /// </summary>
         /// <param name="msg">The message to add.</param>
-        public static void AddMessage( ChatboxMsg msg )
+        public static void AddMessage(ChatboxMsg msg)
         {
-            sGameMessages.Add( msg );
+            sGameMessages.Add(msg);
         }
 
         /// <summary>
@@ -91,23 +91,23 @@ namespace Intersect.Client.Interface.Game.Chat
         /// </summary>
         /// <param name="tab">The tab for which to retrieve all messages.</param>
         /// <returns>Returns a list of chat messages.</returns>
-        public static List<ChatboxMsg> GetMessages( ChatboxTab tab )
+        public static List<ChatboxMsg> GetMessages(ChatboxTab tab)
         {
             var output = new List<ChatboxMsg>();
 
             // Are we looking for all messages?
-            if( tab == ChatboxTab.All )
+            if (tab == ChatboxTab.All)
             {
                 output = GetMessages();
             }
             else
             {
                 // No, sort them out! Select what we want to display in this tab.
-                foreach( var message in sGameMessages )
+                foreach (var message in sGameMessages)
                 {
-                    if( sTabMessageTypes[tab].Contains( message.Type ) )
+                    if (sTabMessageTypes[tab].Contains(message.Type))
                     {
-                        output.Add( message );
+                        output.Add(message);
                     }
                 }
             }

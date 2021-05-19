@@ -50,21 +50,21 @@ namespace Intersect.Server.Entities.Events
 
         public EventCommand WaitingOnCommand = null;
 
-        public CommandInstance( GameObjects.Events.EventPage page, int listIndex = 0 )
+        public CommandInstance(GameObjects.Events.EventPage page, int listIndex = 0)
         {
             Page = page;
             CommandList = page.CommandLists.Values.First();
             CommandIndex = listIndex;
         }
 
-        public CommandInstance( GameObjects.Events.EventPage page, List<EventCommand> commandList, int listIndex = 0 )
+        public CommandInstance(GameObjects.Events.EventPage page, List<EventCommand> commandList, int listIndex = 0)
         {
             Page = page;
             CommandList = commandList;
             CommandIndex = listIndex;
         }
 
-        public CommandInstance( GameObjects.Events.EventPage page, Guid commandListId, int listIndex = 0 )
+        public CommandInstance(GameObjects.Events.EventPage page, Guid commandListId, int listIndex = 0)
         {
             Page = page;
             CommandList = page.CommandLists[commandListId];

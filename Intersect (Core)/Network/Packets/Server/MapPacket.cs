@@ -34,37 +34,37 @@ namespace Intersect.Network.Packets.Server
             CameraHolds = borders;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid MapId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public bool Deleted { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public string Data { get; set; }
 
-        [Key( 3 )]
+        [Key(3)]
         public byte[] TileData { get; set; }
 
-        [Key( 4 )]
+        [Key(4)]
         public byte[] AttributeData { get; set; }
 
-        [Key( 5 )]
+        [Key(5)]
         public int Revision { get; set; }
 
-        [Key( 6 )]
+        [Key(6)]
         public int GridX { get; set; }
 
-        [Key( 7 )]
+        [Key(7)]
         public int GridY { get; set; }
 
-        [Key( 8 )]
+        [Key(8)]
         public bool[] CameraHolds { get; set; }
 
-        [Key( 9 )]
+        [Key(9)]
         public MapEntitiesPacket MapEntities { get; set; }
 
-        [Key( 10 )]
+        [Key(10)]
         public MapItemsPacket MapItems { get; set; }
 
     }

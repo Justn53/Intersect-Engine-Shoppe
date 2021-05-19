@@ -71,9 +71,9 @@ namespace Intersect.Client.Interface.Game
             int quantity = 0,
             Base parent = null,
             GameContentManager.UI stage = GameContentManager.UI.InGame
-        ) : base( parent )
+        ) : base(parent)
         {
-            if( parent == null )
+            if (parent == null)
             {
                 parent = Interface.GameUi.GameCanvas;
             }
@@ -85,80 +85,80 @@ namespace Intersect.Client.Interface.Game
             _uiStage = stage;
             mPrompt = prompt;
 
-            mMyWindow = new WindowControl( parent, title, modal, "InputBox" );
+            mMyWindow = new WindowControl(parent, title, modal, "InputBox");
             mMyWindow.BeforeDraw += _myWindow_BeforeDraw;
             mMyWindow.DisableResizing();
 
-            mNumericTextboxBg = new ImagePanel( mMyWindow, "Textbox" );
-            mNumericTextbox = new TextBoxNumeric( mNumericTextboxBg, "TextboxText" );
+            mNumericTextboxBg = new ImagePanel(mMyWindow, "Textbox");
+            mNumericTextbox = new TextBoxNumeric(mNumericTextboxBg, "TextboxText");
             mNumericTextbox.SubmitPressed += TextBox_SubmitPressed;
             mNumericTextbox.Text = quantity.ToString();
-            if( inputtype == InputType.NumericInput )
+            if (inputtype == InputType.NumericInput)
             {
                 mNumericTextbox.Focus();
             }
 
-            mTextboxBg = new ImagePanel( mMyWindow, "Textbox" );
-            mTextbox = new TextBox( mTextboxBg, "TextboxText" );
+            mTextboxBg = new ImagePanel(mMyWindow, "Textbox");
+            mTextbox = new TextBox(mTextboxBg, "TextboxText");
             mTextbox.SubmitPressed += TextBox_SubmitPressed;
-            if( inputtype == InputType.TextInput )
+            if (inputtype == InputType.TextInput)
             {
                 mTextbox.Focus();
             }
 
-            if( inputtype != InputType.NumericInput )
+            if (inputtype != InputType.NumericInput)
             {
                 mNumericTextboxBg.IsHidden = true;
             }
 
-            if( inputtype != InputType.TextInput )
+            if (inputtype != InputType.TextInput)
             {
                 mTextboxBg.IsHidden = true;
             }
 
-            mYesButton = new Button( mMyWindow, "YesButton" );
-            mYesButton.SetText( Strings.InputBox.okay );
+            mYesButton = new Button(mMyWindow, "YesButton");
+            mYesButton.SetText(Strings.InputBox.okay);
             mYesButton.Clicked += okayBtn_Clicked;
 
-            mNoButton = new Button( mMyWindow, "NoButton" );
-            mNoButton.SetText( Strings.InputBox.cancel );
+            mNoButton = new Button(mMyWindow, "NoButton");
+            mNoButton.SetText(Strings.InputBox.cancel);
             mNoButton.Clicked += cancelBtn_Clicked;
 
-            mOkayButton = new Button( mMyWindow, "OkayButton" );
-            mOkayButton.SetText( Strings.InputBox.okay );
+            mOkayButton = new Button(mMyWindow, "OkayButton");
+            mOkayButton.SetText(Strings.InputBox.okay);
             mOkayButton.Clicked += okayBtn_Clicked;
 
-            mPromptLabel = new Label( mMyWindow, "PromptLabel" );
-            Interface.InputBlockingElements.Add( this );
+            mPromptLabel = new Label(mMyWindow, "PromptLabel");
+            Interface.InputBlockingElements.Add(this);
         }
 
-        private void TextBox_SubmitPressed( Base sender, EventArgs arguments )
+        private void TextBox_SubmitPressed(Base sender, EventArgs arguments)
         {
             SubmitInput();
         }
 
-        private void _myWindow_BeforeDraw( Base sender, EventArgs arguments )
+        private void _myWindow_BeforeDraw(Base sender, EventArgs arguments)
         {
-            if( !mInitialized )
+            if (!mInitialized)
             {
-                mMyWindow.LoadJsonUi( _uiStage, Graphics.Renderer.GetResolutionString(), true );
-                var text = Interface.WrapText( mPrompt, mPromptLabel.Width, mPromptLabel.Font );
+                mMyWindow.LoadJsonUi(_uiStage, Graphics.Renderer.GetResolutionString(), true);
+                var text = Interface.WrapText(mPrompt, mPromptLabel.Width, mPromptLabel.Font);
                 var y = mPromptLabel.Y;
-                foreach( var s in text )
+                foreach (var s in text)
                 {
-                    var label = new Label( mMyWindow )
+                    var label = new Label(mMyWindow)
                     {
                         Text = s,
                         TextColorOverride = mPromptLabel.TextColor,
                         Font = mPromptLabel.Font
                     };
 
-                    label.SetPosition( mPromptLabel.X, y );
+                    label.SetPosition(mPromptLabel.X, y);
                     y += label.Height;
-                    Align.CenterHorizontally( label );
+                    Align.CenterHorizontally(label);
                 }
 
-                switch( mInputType )
+                switch (mInputType)
                 {
                     case InputType.YesNo:
                         mYesButton.Text = Strings.InputBox.yes;
@@ -206,44 +206,44 @@ namespace Intersect.Client.Interface.Game
 
         private event EventHandler CancelEventHandler;
 
-        void cancelBtn_Clicked( Base sender, ClickedEventArgs arguments )
+        void cancelBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            if( mNumericTextbox != null )
+            if (mNumericTextbox != null)
             {
                 Value = mNumericTextbox.Value;
             }
 
-            if( mTextbox != null )
+            if (mTextbox != null)
             {
                 TextValue = mTextbox.Text;
             }
 
-            if( CancelEventHandler != null )
+            if (CancelEventHandler != null)
             {
-                CancelEventHandler( this, EventArgs.Empty );
+                CancelEventHandler(this, EventArgs.Empty);
             }
 
             Dispose();
         }
 
-        public void okayBtn_Clicked( Base sender, ClickedEventArgs arguments )
+        public void okayBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
             SubmitInput();
         }
 
         private void SubmitInput()
         {
-            if( mNumericTextbox != null )
+            if (mNumericTextbox != null)
             {
                 Value = mNumericTextbox.Value;
             }
 
-            if( mTextbox != null )
+            if (mTextbox != null)
             {
                 TextValue = mTextbox.Text;
             }
 
-            OkayEventHandler?.Invoke( this, EventArgs.Empty );
+            OkayEventHandler?.Invoke(this, EventArgs.Empty);
 
             Dispose();
         }
@@ -251,7 +251,7 @@ namespace Intersect.Client.Interface.Game
         public void Dispose()
         {
             mMyWindow.Close();
-            mMyWindow.Parent.RemoveChild( mMyWindow, false );
+            mMyWindow.Parent.RemoveChild(mMyWindow, false);
             mMyWindow.Dispose();
 
             base.Hide();

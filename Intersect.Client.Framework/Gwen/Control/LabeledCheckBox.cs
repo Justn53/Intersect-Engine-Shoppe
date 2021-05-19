@@ -22,18 +22,18 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="LabeledCheckBox" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public LabeledCheckBox( Base parent, string name = "" ) : base( parent, name )
+        public LabeledCheckBox(Base parent, string name = "") : base(parent, name)
         {
-            SetSize( 200, 19 );
-            mCheckBox = new CheckBox( this );
+            SetSize(200, 19);
+            mCheckBox = new CheckBox(this);
             mCheckBox.Dock = Pos.Left;
-            mCheckBox.Margin = new Margin( 0, 2, 2, 2 );
+            mCheckBox.Margin = new Margin(0, 2, 2, 2);
             mCheckBox.IsTabable = false;
             mCheckBox.CheckChanged += OnCheckChanged;
 
-            mLabel = new Label( this );
+            mLabel = new Label(this);
             mLabel.Dock = Pos.Fill;
-            mLabel.Clicked += delegate ( Base control, ClickedEventArgs args ) { mCheckBox.Press( control ); };
+            mLabel.Clicked += delegate (Base control, ClickedEventArgs args) { mCheckBox.Press(control); };
             mLabel.IsTabable = false;
 
             IsTabable = false;
@@ -75,75 +75,75 @@ namespace Intersect.Client.Framework.Gwen.Control
         public override JObject GetJson()
         {
             var obj = base.GetJson();
-            obj.Add( "Label", mLabel.GetJson() );
-            obj.Add( "Checkbox", mCheckBox.GetJson() );
+            obj.Add("Label", mLabel.GetJson());
+            obj.Add("Checkbox", mCheckBox.GetJson());
 
-            return base.FixJson( obj );
+            return base.FixJson(obj);
         }
 
-        public override void LoadJson( JToken obj )
+        public override void LoadJson(JToken obj)
         {
-            base.LoadJson( obj );
-            if( obj["Label"] != null )
+            base.LoadJson(obj);
+            if (obj["Label"] != null)
             {
                 mLabel.Dock = Pos.None;
-                mLabel.LoadJson( obj["Label"] );
+                mLabel.LoadJson(obj["Label"]);
             }
 
-            if( obj["Checkbox"] != null )
+            if (obj["Checkbox"] != null)
             {
                 mCheckBox.Dock = Pos.None;
-                mCheckBox.LoadJson( obj["Checkbox"] );
+                mCheckBox.LoadJson(obj["Checkbox"]);
             }
         }
 
         /// <summary>
         ///     Handler for CheckChanged event.
         /// </summary>
-        protected virtual void OnCheckChanged( Base control, EventArgs args )
+        protected virtual void OnCheckChanged(Base control, EventArgs args)
         {
-            if( mCheckBox.IsChecked )
+            if (mCheckBox.IsChecked)
             {
-                if( Checked != null )
+                if (Checked != null)
                 {
-                    Checked.Invoke( this, EventArgs.Empty );
+                    Checked.Invoke(this, EventArgs.Empty);
                 }
             }
             else
             {
-                if( UnChecked != null )
+                if (UnChecked != null)
                 {
-                    UnChecked.Invoke( this, EventArgs.Empty );
+                    UnChecked.Invoke(this, EventArgs.Empty);
                 }
             }
 
-            if( CheckChanged != null )
+            if (CheckChanged != null)
             {
-                CheckChanged.Invoke( this, EventArgs.Empty );
+                CheckChanged.Invoke(this, EventArgs.Empty);
             }
         }
 
-        public void SetCheckSize( int w, int h )
+        public void SetCheckSize(int w, int h)
         {
-            mCheckBox.SetSize( w, h );
+            mCheckBox.SetSize(w, h);
         }
 
-        public void SetImage( GameTexture texture, string fileName, CheckBox.ControlState state )
+        public void SetImage(GameTexture texture, string fileName, CheckBox.ControlState state)
         {
-            mCheckBox.SetImage( texture, fileName, state );
+            mCheckBox.SetImage(texture, fileName, state);
         }
 
-        public void SetTextColor( Color clr, Label.ControlState state )
+        public void SetTextColor(Color clr, Label.ControlState state)
         {
-            mLabel.SetTextColor( clr, state );
+            mLabel.SetTextColor(clr, state);
         }
 
-        public void SetLabelDistance( int dist )
+        public void SetLabelDistance(int dist)
         {
-            mCheckBox.Margin = new Margin( 0, 2, dist, 2 );
+            mCheckBox.Margin = new Margin(0, 2, dist, 2);
         }
 
-        public void SetFont( GameFont font )
+        public void SetFont(GameFont font)
         {
             mLabel.Font = font;
         }
@@ -155,10 +155,10 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeySpace( bool down )
+        protected override bool OnKeySpace(bool down)
         {
-            base.OnKeySpace( down );
-            if( !down )
+            base.OnKeySpace(down);
+            if (!down)
             {
                 mCheckBox.IsChecked = !mCheckBox.IsChecked;
             }

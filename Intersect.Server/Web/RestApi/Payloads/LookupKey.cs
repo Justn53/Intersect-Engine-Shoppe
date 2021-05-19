@@ -8,11 +8,11 @@ using System.Web.Http.Routing;
 namespace Intersect.Server.Web.RestApi.Payloads
 {
 
-    [TypeConverter( typeof( Converter ) )]
+    [TypeConverter(typeof(Converter))]
     public struct LookupKey
     {
 
-        public bool HasName => !string.IsNullOrWhiteSpace( Name );
+        public bool HasName => !string.IsNullOrWhiteSpace(Name);
 
         public bool HasId => Guid.Empty != Id;
 
@@ -34,19 +34,19 @@ namespace Intersect.Server.Web.RestApi.Payloads
         public class Converter : TypeConverter
         {
 
-            public override bool CanConvertFrom( ITypeDescriptorContext context, Type sourceType )
+            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
             {
-                return typeof( string ) == sourceType || typeof( Guid ) == sourceType;
+                return typeof(string) == sourceType || typeof(Guid) == sourceType;
             }
 
-            public override object ConvertFrom( ITypeDescriptorContext context, CultureInfo culture, object value )
+            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
             {
-                if( value == null )
+                if (value == null)
                 {
-                    return default( LookupKey );
+                    return default(LookupKey);
                 }
 
-                if( Guid.TryParse( value as string, out var guid ) )
+                if (Guid.TryParse(value as string, out var guid))
                 {
                     return new LookupKey
                     {
@@ -74,7 +74,7 @@ namespace Intersect.Server.Web.RestApi.Payloads
                 HttpRouteDirection routeDirection
             )
             {
-                return values.TryGetValue( parameterName, out var value ) && value != null;
+                return values.TryGetValue(parameterName, out var value) && value != null;
             }
 
         }

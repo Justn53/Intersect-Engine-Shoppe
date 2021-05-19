@@ -18,11 +18,11 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Initializes a new instance of the <see cref="Resizer" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Resizer( Base parent ) : base( parent )
+        public Resizer(Base parent) : base(parent)
         {
             mResizeDir = Pos.Left;
             MouseInputEnabled = true;
-            SetSize( 6, 6 );
+            SetSize(6, 6);
             Target = parent;
         }
 
@@ -35,30 +35,30 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
             {
                 mResizeDir = value;
 
-                if( 0 != ( value & Pos.Left ) && 0 != ( value & Pos.Top ) ||
-                    0 != ( value & Pos.Right ) && 0 != ( value & Pos.Bottom ) )
+                if (0 != (value & Pos.Left) && 0 != (value & Pos.Top) ||
+                    0 != (value & Pos.Right) && 0 != (value & Pos.Bottom))
                 {
                     Cursor = Cursors.SizeNwse;
 
                     return;
                 }
 
-                if( 0 != ( value & Pos.Right ) && 0 != ( value & Pos.Top ) ||
-                    0 != ( value & Pos.Left ) && 0 != ( value & Pos.Bottom ) )
+                if (0 != (value & Pos.Right) && 0 != (value & Pos.Top) ||
+                    0 != (value & Pos.Left) && 0 != (value & Pos.Bottom))
                 {
                     Cursor = Cursors.SizeNesw;
 
                     return;
                 }
 
-                if( 0 != ( value & Pos.Right ) || 0 != ( value & Pos.Left ) )
+                if (0 != (value & Pos.Right) || 0 != (value & Pos.Left))
                 {
                     Cursor = Cursors.SizeWe;
 
                     return;
                 }
 
-                if( 0 != ( value & Pos.Top ) || 0 != ( value & Pos.Bottom ) )
+                if (0 != (value & Pos.Top) || 0 != (value & Pos.Bottom))
                 {
                     Cursor = Cursors.SizeNs;
 
@@ -79,14 +79,14 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         /// <param name="y">Y coordinate.</param>
         /// <param name="dx">X change.</param>
         /// <param name="dy">Y change.</param>
-        protected override void OnMouseMoved( int x, int y, int dx, int dy )
+        protected override void OnMouseMoved(int x, int y, int dx, int dy)
         {
-            if( null == mTarget )
+            if (null == mTarget)
             {
                 return;
             }
 
-            if( !mHeld )
+            if (!mHeld)
             {
                 return;
             }
@@ -96,13 +96,13 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
 
             var min = mTarget.MinimumSize;
 
-            var pCursorPos = mTarget.CanvasPosToLocal( new Point( x, y ) );
+            var pCursorPos = mTarget.CanvasPosToLocal(new Point(x, y));
 
-            var delta = mTarget.LocalPosToCanvas( mHoldPos );
+            var delta = mTarget.LocalPosToCanvas(mHoldPos);
             delta.X -= x;
             delta.Y -= y;
 
-            if( 0 != ( mResizeDir & Pos.Left ) )
+            if (0 != (mResizeDir & Pos.Left))
             {
                 bounds.X -= delta.X;
                 bounds.Width += delta.X;
@@ -110,7 +110,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
                 // Conform to minimum size here so we don't
                 // go all weird when we snap it in the base conrt
 
-                if( bounds.Width < min.X )
+                if (bounds.Width < min.X)
                 {
                     var diff = min.X - bounds.Width;
                     bounds.Width += diff;
@@ -118,7 +118,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
                 }
             }
 
-            if( 0 != ( mResizeDir & Pos.Top ) )
+            if (0 != (mResizeDir & Pos.Top))
             {
                 bounds.Y -= delta.Y;
                 bounds.Height += delta.Y;
@@ -126,7 +126,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
                 // Conform to minimum size here so we don't
                 // go all weird when we snap it in the base conrt
 
-                if( bounds.Height < min.Y )
+                if (bounds.Height < min.Y)
                 {
                     var diff = min.Y - bounds.Height;
                     bounds.Height += diff;
@@ -134,7 +134,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
                 }
             }
 
-            if( 0 != ( mResizeDir & Pos.Right ) )
+            if (0 != (mResizeDir & Pos.Right))
             {
                 // This is complicated.
                 // Basically we want to use the HoldPos, so it doesn't snap to the edge of the control
@@ -145,7 +145,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
                 var woff = bounds.Width - mHoldPos.X;
                 var diff = bounds.Width;
                 bounds.Width = pCursorPos.X + woff;
-                if( bounds.Width < min.X )
+                if (bounds.Width < min.X)
                 {
                     bounds.Width = min.X;
                 }
@@ -155,12 +155,12 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
                 mHoldPos.X -= diff;
             }
 
-            if( 0 != ( mResizeDir & Pos.Bottom ) )
+            if (0 != (mResizeDir & Pos.Bottom))
             {
                 var hoff = bounds.Height - mHoldPos.Y;
                 var diff = bounds.Height;
                 bounds.Height = pCursorPos.Y + hoff;
-                if( bounds.Height < min.Y )
+                if (bounds.Height < min.Y)
                 {
                     bounds.Height = min.Y;
                 }
@@ -170,11 +170,11 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
                 mHoldPos.Y -= diff;
             }
 
-            mTarget.SetBounds( bounds );
+            mTarget.SetBounds(bounds);
 
-            if( Resized != null )
+            if (Resized != null)
             {
-                Resized.Invoke( this, EventArgs.Empty );
+                Resized.Invoke(this, EventArgs.Empty);
             }
         }
 

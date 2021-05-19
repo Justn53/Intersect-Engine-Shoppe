@@ -27,29 +27,29 @@ namespace Intersect.Client.MonoGame.Network
 
         private IClientContext Context { get; }
 
-        internal MonoSocket( IClientContext context )
+        internal MonoSocket(IClientContext context)
         {
             Context = context;
         }
 
-        public override void Connect( string host, int port )
+        public override void Connect(string host, int port)
         {
-            if( ClientLidgrenNetwork != null )
+            if (ClientLidgrenNetwork != null)
             {
                 ClientLidgrenNetwork.Close();
                 ClientLidgrenNetwork = null;
             }
 
-            var config = new NetworkConfiguration( ClientConfiguration.Instance.Host, ClientConfiguration.Instance.Port );
+            var config = new NetworkConfiguration(ClientConfiguration.Instance.Host, ClientConfiguration.Instance.Port);
             var assembly = Assembly.GetExecutingAssembly();
-            using( var stream = assembly.GetManifestResourceStream( "Intersect.Client.network.handshake.bkey.pub" ) )
+            using (var stream = assembly.GetManifestResourceStream("Intersect.Client.network.handshake.bkey.pub"))
             {
-                var rsaKey = EncryptionKey.FromStream<RsaKey>( stream );
-                Debug.Assert( rsaKey != null, "rsaKey != null" );
-                ClientLidgrenNetwork = new ClientNetwork( Context.NetworkHelper, config, rsaKey.Parameters );
+                var rsaKey = EncryptionKey.FromStream<RsaKey>(stream);
+                Debug.Assert(rsaKey != null, "rsaKey != null");
+                ClientLidgrenNetwork = new ClientNetwork(Context.NetworkHelper, config, rsaKey.Parameters);
             }
 
-            if( ClientLidgrenNetwork == null )
+            if (ClientLidgrenNetwork == null)
             {
                 return;
             }
@@ -57,41 +57,41 @@ namespace Intersect.Client.MonoGame.Network
             ClientLidgrenNetwork.Handler = AddPacketToQueue;
             ClientLidgrenNetwork.OnConnected += OnConnected;
             ClientLidgrenNetwork.OnDisconnected += OnDisconnected;
-            ClientLidgrenNetwork.OnConnectionDenied += ( sender, connectionEventArgs ) => OnConnectionFailed( sender, connectionEventArgs, true );
+            ClientLidgrenNetwork.OnConnectionDenied += (sender, connectionEventArgs) => OnConnectionFailed(sender, connectionEventArgs, true);
 
-            if( !ClientLidgrenNetwork.Connect() )
+            if (!ClientLidgrenNetwork.Connect())
             {
-                Log.Error( "An error occurred while attempting to connect." );
+                Log.Error("An error occurred while attempting to connect.");
             }
         }
 
-        public override void SendPacket( object packet )
+        public override void SendPacket(object packet)
         {
-            if( packet is IntersectPacket && ClientLidgrenNetwork != null )
+            if (packet is IntersectPacket && ClientLidgrenNetwork != null)
             {
-                ClientLidgrenNetwork.Send( (IntersectPacket)packet );
+                ClientLidgrenNetwork.Send((IntersectPacket)packet);
             }
         }
 
-        public static bool AddPacketToQueue( IConnection connection, IPacket packet )
+        public static bool AddPacketToQueue(IConnection connection, IPacket packet)
         {
-            if( packet is AbstractTimedPacket timedPacket )
+            if (packet is AbstractTimedPacket timedPacket)
             {
-                Timing.Global.Synchronize( timedPacket.UTC, timedPacket.Offset );
+                Timing.Global.Synchronize(timedPacket.UTC, timedPacket.Offset);
             }
 
-            PacketQueue.Enqueue( new KeyValuePair<IConnection, IPacket>( connection, packet ) );
+            PacketQueue.Enqueue(new KeyValuePair<IConnection, IPacket>(connection, packet));
 
             return true;
         }
 
         public override void Update()
         {
-            while( PacketQueue.Count > 0 )
+            while (PacketQueue.Count > 0)
             {
-                if( PacketQueue.TryDequeue( out KeyValuePair<IConnection, IPacket> dequeued ) )
+                if (PacketQueue.TryDequeue(out KeyValuePair<IConnection, IPacket> dequeued))
                 {
-                    OnDataReceived( dequeued.Value );
+                    OnDataReceived(dequeued.Value);
                 }
                 else
                 {
@@ -100,9 +100,9 @@ namespace Intersect.Client.MonoGame.Network
             }
         }
 
-        public override void Disconnect( string reason )
+        public override void Disconnect(string reason)
         {
-            ClientLidgrenNetwork?.Disconnect( reason );
+            ClientLidgrenNetwork?.Disconnect(reason);
         }
 
         public override void Dispose()

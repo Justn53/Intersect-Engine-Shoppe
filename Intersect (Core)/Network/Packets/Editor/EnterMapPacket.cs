@@ -11,12 +11,12 @@ namespace Intersect.Network.Packets.Editor
         {
         }
 
-        public EnterMapPacket( Guid mapId )
+        public EnterMapPacket(Guid mapId)
         {
             MapId = mapId;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid MapId { get; set; }
 
     }

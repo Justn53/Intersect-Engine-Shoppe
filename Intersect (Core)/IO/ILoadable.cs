@@ -4,7 +4,7 @@
     public interface ILoadable<in TFrom>
     {
 
-        bool Load( TFrom from = default( TFrom ) );
+        bool Load(TFrom from = default(TFrom));
 
     }
 

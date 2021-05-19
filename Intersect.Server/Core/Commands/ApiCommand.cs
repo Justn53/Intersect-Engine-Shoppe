@@ -14,30 +14,30 @@ namespace Intersect.Server.Core.Commands
 
         public ApiCommand() : base(
             Strings.Commands.Api, Strings.Commands.Arguments.TargetApi,
-            new VariableArgument<bool>( Strings.Commands.Arguments.AccessBoolean, RequiredIfNotHelp, true )
+            new VariableArgument<bool>(Strings.Commands.Arguments.AccessBoolean, RequiredIfNotHelp, true)
         )
         {
         }
 
         private VariableArgument<bool> Access => FindArgumentOrThrow<VariableArgument<bool>>();
 
-        protected override void HandleTarget( ServerContext context, ParserResult result, User target )
+        protected override void HandleTarget(ServerContext context, ParserResult result, User target)
         {
-            if( target == null )
+            if (target == null)
             {
-                Console.WriteLine( $@"    {Strings.Account.notfound}" );
+                Console.WriteLine($@"    {Strings.Account.notfound}");
 
                 return;
             }
 
-            if( target.Power == null )
+            if (target.Power == null)
             {
-                throw new ArgumentNullException( nameof( target.Power ) );
+                throw new ArgumentNullException(nameof(target.Power));
             }
 
-            var access = result.Find( Access );
+            var access = result.Find(Access);
             target.Power.Api = access;
-            if( !access )
+            if (!access)
             {
                 target.Power.ApiRoles = new Database.PlayerData.Security.ApiRoles();
             }
@@ -46,8 +46,8 @@ namespace Intersect.Server.Core.Commands
 
             Console.WriteLine(
                 access
-                    ? $@"    {Strings.Commandoutput.apigranted.ToString( target.Name )}"
-                    : $@"    {Strings.Commandoutput.apirevoked.ToString( target.Name )}"
+                    ? $@"    {Strings.Commandoutput.apigranted.ToString(target.Name)}"
+                    : $@"    {Strings.Commandoutput.apirevoked.ToString(target.Name)}"
             );
         }
 

@@ -28,12 +28,12 @@ namespace Intersect.Client.Interface.Game
 
         private TextBoxNumeric mTextbox;
 
-        public BanMuteBox( string title, string prompt, bool modal, EventHandler okayClicked )
+        public BanMuteBox(string title, string prompt, bool modal, EventHandler okayClicked)
         {
             OkayEventHandler = okayClicked;
 
-            mMyWindow = new WindowControl( Interface.GameUi.GameCanvas, title, modal );
-            mMyWindow.SetSize( 500, 150 );
+            mMyWindow = new WindowControl(Interface.GameUi.GameCanvas, title, modal);
+            mMyWindow.SetSize(500, 150);
             mMyWindow.SetPosition(
                 Graphics.Renderer.GetScreenWidth() / 2 - mMyWindow.Width / 2,
                 Graphics.Renderer.GetScreenHeight() / 2 - mMyWindow.Height / 2
@@ -43,84 +43,84 @@ namespace Intersect.Client.Interface.Game
             mMyWindow.DisableResizing();
             mMyWindow.Margin = Margin.Zero;
             mMyWindow.Padding = Padding.Zero;
-            Interface.InputBlockingElements.Add( mMyWindow );
+            Interface.InputBlockingElements.Add(mMyWindow);
 
-            var promptLabel = new Label( mMyWindow );
-            promptLabel.SetText( prompt );
-            promptLabel.SetPosition( mMyWindow.Width / 2 - promptLabel.Width / 2, 8 );
+            var promptLabel = new Label(mMyWindow);
+            promptLabel.SetText(prompt);
+            promptLabel.SetPosition(mMyWindow.Width / 2 - promptLabel.Width / 2, 8);
 
             var y = promptLabel.Y + promptLabel.Height + 8;
 
-            mReasonLabel = new Label( mMyWindow )
+            mReasonLabel = new Label(mMyWindow)
             {
                 Text = Strings.BanMute.reason
             };
 
-            mReasonLabel.SetPosition( 100, y );
+            mReasonLabel.SetPosition(100, y);
 
-            mReasonBox = new TextBox( mMyWindow );
-            mReasonBox.SetBounds( 180, y - 3, 220, 22 );
-            Interface.FocusElements.Add( mReasonBox );
+            mReasonBox = new TextBox(mMyWindow);
+            mReasonBox.SetBounds(180, y - 3, 220, 22);
+            Interface.FocusElements.Add(mReasonBox);
 
             y = mReasonBox.Bottom + 6;
 
-            mDurationLabel = new Label( mMyWindow )
+            mDurationLabel = new Label(mMyWindow)
             {
                 Text = Strings.BanMute.duration
             };
 
-            mDurationLabel.SetPosition( 100, y );
+            mDurationLabel.SetPosition(100, y);
 
-            mDurationBox = new ComboBox( mMyWindow );
-            mDurationBox.SetBounds( 180, y - 3, 80, 22 );
-            mDurationBox.AddItem( Strings.BanMute.oneday ).UserData = "1 day";
-            mDurationBox.AddItem( Strings.BanMute.twodays ).UserData = "2 days";
-            mDurationBox.AddItem( Strings.BanMute.threedays ).UserData = "3 days";
-            mDurationBox.AddItem( Strings.BanMute.fourdays ).UserData = "4 days";
-            mDurationBox.AddItem( Strings.BanMute.fivedays ).UserData = "5 days";
-            mDurationBox.AddItem( Strings.BanMute.oneweek ).UserData = "1 week";
-            mDurationBox.AddItem( Strings.BanMute.twoweeks ).UserData = "2 weeks";
-            mDurationBox.AddItem( Strings.BanMute.onemonth ).UserData = "1 month";
-            mDurationBox.AddItem( Strings.BanMute.twomonths ).UserData = "2 months";
-            mDurationBox.AddItem( Strings.BanMute.sixmonths ).UserData = "6 months";
-            mDurationBox.AddItem( Strings.BanMute.oneyear ).UserData = "1 year";
-            mDurationBox.AddItem( Strings.BanMute.forever ).UserData = "Indefinitely";
+            mDurationBox = new ComboBox(mMyWindow);
+            mDurationBox.SetBounds(180, y - 3, 80, 22);
+            mDurationBox.AddItem(Strings.BanMute.oneday).UserData = "1 day";
+            mDurationBox.AddItem(Strings.BanMute.twodays).UserData = "2 days";
+            mDurationBox.AddItem(Strings.BanMute.threedays).UserData = "3 days";
+            mDurationBox.AddItem(Strings.BanMute.fourdays).UserData = "4 days";
+            mDurationBox.AddItem(Strings.BanMute.fivedays).UserData = "5 days";
+            mDurationBox.AddItem(Strings.BanMute.oneweek).UserData = "1 week";
+            mDurationBox.AddItem(Strings.BanMute.twoweeks).UserData = "2 weeks";
+            mDurationBox.AddItem(Strings.BanMute.onemonth).UserData = "1 month";
+            mDurationBox.AddItem(Strings.BanMute.twomonths).UserData = "2 months";
+            mDurationBox.AddItem(Strings.BanMute.sixmonths).UserData = "6 months";
+            mDurationBox.AddItem(Strings.BanMute.oneyear).UserData = "1 year";
+            mDurationBox.AddItem(Strings.BanMute.forever).UserData = "Indefinitely";
 
-            mIpLabel = new Label( mMyWindow )
+            mIpLabel = new Label(mMyWindow)
             {
                 Text = Strings.BanMute.ip
             };
 
-            mIpLabel.SetPosition( 320, y );
+            mIpLabel.SetPosition(320, y);
 
-            mIpCheckbox = new CheckBox( mMyWindow );
-            mIpCheckbox.SetPosition( 400 - mIpCheckbox.Width, y );
+            mIpCheckbox = new CheckBox(mMyWindow);
+            mIpCheckbox.SetPosition(400 - mIpCheckbox.Width, y);
 
-            var okayBtn = new Button( mMyWindow );
-            okayBtn.SetSize( 86, 22 );
-            okayBtn.SetText( Strings.BanMute.ok );
-            okayBtn.SetPosition( mMyWindow.Width / 2 - 188 / 2, 90 );
+            var okayBtn = new Button(mMyWindow);
+            okayBtn.SetSize(86, 22);
+            okayBtn.SetText(Strings.BanMute.ok);
+            okayBtn.SetPosition(mMyWindow.Width / 2 - 188 / 2, 90);
             okayBtn.Clicked += okayBtn_Clicked;
 
-            var cancelBtn = new Button( mMyWindow );
-            cancelBtn.SetSize( 86, 22 );
-            cancelBtn.SetText( Strings.BanMute.cancel );
+            var cancelBtn = new Button(mMyWindow);
+            cancelBtn.SetSize(86, 22);
+            cancelBtn.SetText(Strings.BanMute.cancel);
             cancelBtn.Clicked += CancelBtn_Clicked;
-            cancelBtn.SetPosition( mMyWindow.Width / 2 - 188 / 2 + 86 + 16, 90 );
+            cancelBtn.SetPosition(mMyWindow.Width / 2 - 188 / 2 + 86 + 16, 90);
         }
 
         private event EventHandler OkayEventHandler;
 
-        private void CancelBtn_Clicked( Base sender, ClickedEventArgs arguments )
+        private void CancelBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
             Dispose();
         }
 
-        void okayBtn_Clicked( Base sender, ClickedEventArgs arguments )
+        void okayBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            if( OkayEventHandler != null )
+            if (OkayEventHandler != null)
             {
-                OkayEventHandler( this, EventArgs.Empty );
+                OkayEventHandler(this, EventArgs.Empty);
             }
 
             mMyWindow.Close();
@@ -129,13 +129,13 @@ namespace Intersect.Client.Interface.Game
         public void Dispose()
         {
             mMyWindow.Close();
-            Interface.GameUi.GameCanvas.RemoveChild( mMyWindow, false );
+            Interface.GameUi.GameCanvas.RemoveChild(mMyWindow, false);
             mMyWindow.Dispose();
         }
 
         public int GetDuration() //days by default
         {
-            switch( mDurationBox.SelectedItem.UserData.ToString() )
+            switch (mDurationBox.SelectedItem.UserData.ToString())
             {
                 case "1 day":
                     return 1;

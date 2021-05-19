@@ -32,39 +32,39 @@ namespace Intersect.Client.Interface.Game.Spells
         public int Y;
 
         //Init
-        public SpellsWindow( Canvas gameCanvas )
+        public SpellsWindow(Canvas gameCanvas)
         {
-            mSpellWindow = new WindowControl( gameCanvas, Strings.Spells.title, false, "SpellsWindow" );
+            mSpellWindow = new WindowControl(gameCanvas, Strings.Spells.title, false, "SpellsWindow");
             mSpellWindow.DisableResizing();
 
-            mItemContainer = new ScrollControl( mSpellWindow, "SpellsContainer" );
-            mItemContainer.EnableScroll( false, true );
-            mSpellWindow.LoadJsonUi( GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString() );
+            mItemContainer = new ScrollControl(mSpellWindow, "SpellsContainer");
+            mItemContainer.EnableScroll(false, true);
+            mSpellWindow.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
         }
 
         //Methods
         public void Update()
         {
-            if( !mInitializedSpells )
+            if (!mInitializedSpells)
             {
                 InitItemContainer();
                 mInitializedSpells = true;
             }
 
-            if( mSpellWindow.IsHidden == true )
+            if (mSpellWindow.IsHidden == true)
             {
                 return;
             }
 
             X = mSpellWindow.X;
             Y = mSpellWindow.Y;
-            for( var i = 0; i < Options.MaxPlayerSkills; i++ )
+            for (var i = 0; i < Options.MaxPlayerSkills; i++)
             {
-                if( Globals.Me.Spells[i].SpellId != Guid.Empty )
+                if (Globals.Me.Spells[i].SpellId != Guid.Empty)
                 {
                     Items[i].Pnl.IsHidden = false;
                     Items[i].Update();
-                    if( Items[i].IsDragging )
+                    if (Items[i].IsDragging)
                     {
                         Items[i].Pnl.IsHidden = true;
                     }
@@ -78,25 +78,25 @@ namespace Intersect.Client.Interface.Game.Spells
 
         private void InitItemContainer()
         {
-            for( var i = 0; i < Options.MaxPlayerSkills; i++ )
+            for (var i = 0; i < Options.MaxPlayerSkills; i++)
             {
-                Items.Add( new SpellItem( this, i ) );
-                Items[i].Container = new ImagePanel( mItemContainer, "Spell" );
+                Items.Add(new SpellItem(this, i));
+                Items[i].Container = new ImagePanel(mItemContainer, "Spell");
                 Items[i].Setup();
 
-                Items[i].Container.LoadJsonUi( GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString() );
+                Items[i].Container.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
 
                 var xPadding = Items[i].Container.Margin.Left + Items[i].Container.Margin.Right;
                 var yPadding = Items[i].Container.Margin.Top + Items[i].Container.Margin.Bottom;
                 Items[i]
                     .Container.SetPosition(
                         i %
-                        ( mItemContainer.Width / ( Items[i].Container.Width + xPadding ) ) *
-                        ( Items[i].Container.Width + xPadding ) +
+                        (mItemContainer.Width / (Items[i].Container.Width + xPadding)) *
+                        (Items[i].Container.Width + xPadding) +
                         xPadding,
                         i /
-                        ( mItemContainer.Width / ( Items[i].Container.Width + xPadding ) ) *
-                        ( Items[i].Container.Height + yPadding ) +
+                        (mItemContainer.Width / (Items[i].Container.Width + xPadding)) *
+                        (Items[i].Container.Height + yPadding) +
                         yPadding
                     );
             }
@@ -121,10 +121,10 @@ namespace Intersect.Client.Interface.Game.Spells
         {
             var rect = new FloatRect()
             {
-                X = mSpellWindow.LocalPosToCanvas( new Point( 0, 0 ) ).X -
-                    ( Items[0].Container.Padding.Left + Items[0].Container.Padding.Right ) / 2,
-                Y = mSpellWindow.LocalPosToCanvas( new Point( 0, 0 ) ).Y -
-                    ( Items[0].Container.Padding.Top + Items[0].Container.Padding.Bottom ) / 2,
+                X = mSpellWindow.LocalPosToCanvas(new Point(0, 0)).X -
+                    (Items[0].Container.Padding.Left + Items[0].Container.Padding.Right) / 2,
+                Y = mSpellWindow.LocalPosToCanvas(new Point(0, 0)).Y -
+                    (Items[0].Container.Padding.Top + Items[0].Container.Padding.Bottom) / 2,
                 Width = mSpellWindow.Width + Items[0].Container.Padding.Left + Items[0].Container.Padding.Right,
                 Height = mSpellWindow.Height + Items[0].Container.Padding.Top + Items[0].Container.Padding.Bottom
             };

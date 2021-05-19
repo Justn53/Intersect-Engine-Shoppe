@@ -11,7 +11,7 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public ActionMsgPacket( Guid mapId, int x, int y, string message, Color color )
+        public ActionMsgPacket(Guid mapId, int x, int y, string message, Color color)
         {
             MapId = mapId;
             X = x;
@@ -20,19 +20,19 @@ namespace Intersect.Network.Packets.Server
             Color = color;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid MapId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public int X { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public int Y { get; set; }
 
-        [Key( 3 )]
+        [Key(3)]
         public string Message { get; set; }
 
-        [Key( 4 )]
+        [Key(4)]
         public Color Color { get; set; }
 
     }

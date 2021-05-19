@@ -8,9 +8,9 @@ using NCalc;
 namespace Intersect.Utilities
 {
 
-    public delegate void FormulaFunction( FunctionArgs args );
+    public delegate void FormulaFunction(FunctionArgs args);
 
-    public delegate void FormulaParameter( ParameterArgs args );
+    public delegate void FormulaParameter(ParameterArgs args);
 
     public class Formula
     {
@@ -47,20 +47,20 @@ namespace Intersect.Utilities
 
         private string mSource;
 
-        public Formula( string source )
+        public Formula(string source)
         {
-            if( string.IsNullOrEmpty( source ) )
+            if (string.IsNullOrEmpty(source))
             {
-                throw new ArgumentNullException( nameof( source ) );
+                throw new ArgumentNullException(nameof(source));
             }
 
             Source = source;
             Functions = new Dictionary<string, FormulaFunction>();
             Parameters = new Dictionary<string, FormulaParameter>();
 
-            if( Expression == null )
+            if (Expression == null)
             {
-                throw new ArgumentNullException( nameof( Expression ) );
+                throw new ArgumentNullException(nameof(Expression));
             }
         }
 
@@ -69,7 +69,7 @@ namespace Intersect.Utilities
             get => mSource;
             set
             {
-                if( string.Equals( mSource, value, StringComparison.Ordinal ) )
+                if (string.Equals(mSource, value, StringComparison.Ordinal))
                 {
                     return;
                 }
@@ -77,13 +77,13 @@ namespace Intersect.Utilities
                 mLastSource = mSource;
                 mSource = value;
 
-                if( !Load() )
+                if (!Load())
                 {
-                    Log.Warn( $"Error loading formula from {mSource}." );
+                    Log.Warn($"Error loading formula from {mSource}.");
                 }
                 else
                 {
-                    Log.Debug( $"Loaded new formula from {mSource}." );
+                    Log.Debug($"Loaded new formula from {mSource}.");
                 }
             }
         }
@@ -96,64 +96,64 @@ namespace Intersect.Utilities
 
         public bool Load()
         {
-            if( Source == mLastSource )
+            if (Source == mLastSource)
             {
                 return true;
             }
 
-            Expression = new Expression( Source );
+            Expression = new Expression(Source);
 
-            Expression.EvaluateParameter += delegate ( string name, ParameterArgs args )
+            Expression.EvaluateParameter += delegate (string name, ParameterArgs args)
             {
-                if( string.IsNullOrEmpty( name ) )
+                if (string.IsNullOrEmpty(name))
                 {
                     return;
                 }
 
-                if( !Parameters.TryGetValue( name, out var formulaParameter ) )
+                if (!Parameters.TryGetValue(name, out var formulaParameter))
                 {
-                    Log.Error( $"Tried to access non-existent parameter '{name}' in a formula." );
+                    Log.Error($"Tried to access non-existent parameter '{name}' in a formula.");
 
                     return;
                 }
 
-                if( args == null )
+                if (args == null)
                 {
-                    Log.Error( $"Formula parameter '{name}' arguments were null." );
+                    Log.Error($"Formula parameter '{name}' arguments were null.");
 
                     return;
                 }
 
-                formulaParameter( args );
+                formulaParameter(args);
             };
 
             RegisterParameters();
 
-            Expression.EvaluateFunction += delegate ( string name, FunctionArgs args )
+            Expression.EvaluateFunction += delegate (string name, FunctionArgs args)
             {
-                if( string.IsNullOrEmpty( name ) )
+                if (string.IsNullOrEmpty(name))
                 {
                     return;
                 }
 
-                if( !Functions.TryGetValue( name, out var formulaFunction ) )
+                if (!Functions.TryGetValue(name, out var formulaFunction))
                 {
-                    if( !SYSTEM_MATH_FUNCTIONS.Contains( name ) )
+                    if (!SYSTEM_MATH_FUNCTIONS.Contains(name))
                     {
-                        Log.Error( $"Tried to access non-existent function '{name}' in a formula." );
+                        Log.Error($"Tried to access non-existent function '{name}' in a formula.");
                     }
 
                     return;
                 }
 
-                if( args == null )
+                if (args == null)
                 {
-                    Log.Error( $"Formula function '{name}' arguments were null." );
+                    Log.Error($"Formula function '{name}' arguments were null.");
 
                     return;
                 }
 
-                formulaFunction( args );
+                formulaFunction(args);
             };
 
             RegisterFunctions();
@@ -165,13 +165,13 @@ namespace Intersect.Utilities
         {
         }
 
-        public bool RegisterFunction( string name, FormulaFunction function, bool shouldOverride = false )
+        public bool RegisterFunction(string name, FormulaFunction function, bool shouldOverride = false)
         {
-            if( Functions.ContainsKey( name ) )
+            if (Functions.ContainsKey(name))
             {
-                if( !shouldOverride )
+                if (!shouldOverride)
                 {
-                    Log.Debug( $"Formula function '{name}' already exists, not overriding." );
+                    Log.Debug($"Formula function '{name}' already exists, not overriding.");
 
                     return false;
                 }
@@ -184,26 +184,26 @@ namespace Intersect.Utilities
 
         public void RegisterCoreMathParameters()
         {
-            RegisterParameter( "PI", Math.PI );
-            RegisterParameter( "E", Math.E );
+            RegisterParameter("PI", Math.PI);
+            RegisterParameter("E", Math.E);
         }
 
         public virtual void RegisterParameters()
         {
         }
 
-        public bool RegisterParameter( string name, object value, bool shouldOverride = false )
+        public bool RegisterParameter(string name, object value, bool shouldOverride = false)
         {
-            if( Expression.Parameters == null )
+            if (Expression.Parameters == null)
             {
-                throw new ArgumentNullException( nameof( Expression.Parameters ) );
+                throw new ArgumentNullException(nameof(Expression.Parameters));
             }
 
-            if( Expression.Parameters.ContainsKey( name ) )
+            if (Expression.Parameters.ContainsKey(name))
             {
-                if( !shouldOverride )
+                if (!shouldOverride)
                 {
-                    Log.Debug( $"Formula parameter '{name}' already exists, not overriding." );
+                    Log.Debug($"Formula parameter '{name}' already exists, not overriding.");
 
                     return false;
                 }
@@ -214,24 +214,24 @@ namespace Intersect.Utilities
             return true;
         }
 
-        public bool RegisterEvaluatedParameter( string name, object value, bool shouldOverride = false )
+        public bool RegisterEvaluatedParameter(string name, object value, bool shouldOverride = false)
         {
-            if( Parameters.ContainsKey( name ) )
+            if (Parameters.ContainsKey(name))
             {
-                if( !shouldOverride )
+                if (!shouldOverride)
                 {
-                    Log.Debug( $"Formula evaluated parameter '{name}' already exists,not overriding." );
+                    Log.Debug($"Formula evaluated parameter '{name}' already exists,not overriding.");
 
                     return false;
                 }
             }
 
             Parameters.Add(
-                name, delegate ( ParameterArgs args )
+                name, delegate (ParameterArgs args)
                 {
-                    if( args == null )
+                    if (args == null)
                     {
-                        Log.Error( $"Formula function '{name}' arguments were null." );
+                        Log.Error($"Formula function '{name}' arguments were null.");
 
                         return;
                     }
@@ -240,12 +240,12 @@ namespace Intersect.Utilities
                 }
             );
 
-            return Parameters.ContainsKey( name );
+            return Parameters.ContainsKey(name);
         }
 
         public T Evaluate<T>() where T : struct, IComparable, IFormattable, IConvertible, IComparable<T>, IEquatable<T>
         {
-            return (T)( Convert.ChangeType( Expression.Evaluate(), typeof( T ) ) ?? default( T ) );
+            return (T)(Convert.ChangeType(Expression.Evaluate(), typeof(T)) ?? default(T));
         }
 
     }

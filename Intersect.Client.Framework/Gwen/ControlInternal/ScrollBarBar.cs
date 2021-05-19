@@ -15,7 +15,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Initializes a new instance of the <see cref="ScrollBarBar" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ScrollBarBar( Base parent ) : base( parent )
+        public ScrollBarBar(Base parent) : base(parent)
         {
             RestrictToParent = true;
             Target = this;
@@ -43,10 +43,10 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawScrollBarBar( this, mHeld, IsHovered, mHorizontal );
-            base.Render( skin );
+            skin.DrawScrollBarBar(this, mHeld, IsHovered, mHorizontal);
+            base.Render(skin);
         }
 
         /// <summary>
@@ -56,10 +56,10 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         /// <param name="y">Y coordinate.</param>
         /// <param name="dx">X change.</param>
         /// <param name="dy">Y change.</param>
-        protected override void OnMouseMoved( int x, int y, int dx, int dy )
+        protected override void OnMouseMoved(int x, int y, int dx, int dy)
         {
-            base.OnMouseMoved( x, y, dx, dy );
-            if( !mHeld )
+            base.OnMouseMoved(x, y, dx, dy);
+            if (!mHeld)
             {
                 return;
             }
@@ -73,9 +73,9 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        protected override void OnMouseClickedLeft( int x, int y, bool down, bool automated = false )
+        protected override void OnMouseClickedLeft(int x, int y, bool down, bool automated = false)
         {
-            base.OnMouseClickedLeft( x, y, down );
+            base.OnMouseClickedLeft(x, y, down);
             InvalidateParent();
         }
 
@@ -83,15 +83,15 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout( Skin.Base skin )
+        protected override void Layout(Skin.Base skin)
         {
-            if( null == Parent )
+            if (null == Parent)
             {
                 return;
             }
 
             //Move to our current position to force clamping - is this a hack?
-            MoveTo( X, Y );
+            MoveTo(X, Y);
         }
 
     }

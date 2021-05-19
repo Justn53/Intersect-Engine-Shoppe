@@ -21,27 +21,27 @@ namespace Intersect.Client.Core
     {
         private IPlatformRunner mPlatformRunner;
 
-        internal ClientContext( ClientCommandLineOptions startupOptions, Logger logger, INetworkHelper networkHelper ) : base(
+        internal ClientContext(ClientCommandLineOptions startupOptions, Logger logger, INetworkHelper networkHelper) : base(
             startupOptions, logger, networkHelper
         )
         {
-            FactoryRegistry<IPluginContext>.RegisterFactory( new ClientPluginContext.Factory() );
+            FactoryRegistry<IPluginContext>.RegisterFactory(new ClientPluginContext.Factory());
         }
 
         protected override bool UsesMainThread => true;
 
         public IPlatformRunner PlatformRunner
         {
-            get => mPlatformRunner ?? throw new ArgumentNullException( nameof( PlatformRunner ) );
+            get => mPlatformRunner ?? throw new ArgumentNullException(nameof(PlatformRunner));
             private set => mPlatformRunner = value;
         }
 
         /// <inheritdoc />
         protected override void InternalStart()
         {
-            Networking.Network.PacketHandler = new PacketHandler( this, NetworkHelper.HandlerRegistry );
-            PlatformRunner = typeof( ClientContext ).Assembly.CreateInstanceOf<IPlatformRunner>();
-            PlatformRunner.Start( this, PostStartup );
+            Networking.Network.PacketHandler = new PacketHandler(this, NetworkHelper.HandlerRegistry);
+            PlatformRunner = typeof(ClientContext).Assembly.CreateInstanceOf<IPlatformRunner>();
+            PlatformRunner.Start(this, PostStartup);
         }
 
         #region Exception Handling
@@ -54,10 +54,10 @@ namespace Intersect.Client.Core
         {
             var sender = Thread.CurrentThread;
             var task = Task.Factory.StartNew(
-                () => HandleUnhandledException( sender, new UnhandledExceptionEventArgs( exception, isTerminating ) )
+                () => HandleUnhandledException(sender, new UnhandledExceptionEventArgs(exception, isTerminating))
             );
 
-            if( wait )
+            if (wait)
             {
                 task.Wait();
             }
@@ -65,11 +65,11 @@ namespace Intersect.Client.Core
 
         #endregion Exception Handling
 
-        protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
-            base.Dispose( disposing );
+            base.Dispose(disposing);
 
-            if( disposing )
+            if (disposing)
             {
                 NetworkHelper.HandlerRegistry.Dispose();
             }

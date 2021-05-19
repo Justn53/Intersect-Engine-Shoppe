@@ -20,7 +20,7 @@ namespace Intersect.Server.General
 
         private static Formulas mFormulas;
 
-        public Formula ExpFormula = new Formula( "BaseExp * Power(Gain, Level)" );
+        public Formula ExpFormula = new Formula("BaseExp * Power(Gain, Level)");
 
         public string MagicDamage =
             "Random(((BaseDamage + (ScalingStat * ScaleFactor))) * CritMultiplier * .975, ((BaseDamage + (ScalingStat * ScaleFactor))) * CritMultiplier * 1.025) * (100 / (100 + V_MagicResist))";
@@ -36,18 +36,18 @@ namespace Intersect.Server.General
             try
             {
                 mFormulas = new Formulas();
-                if( File.Exists( FORMULAS_FILE ) )
+                if (File.Exists(FORMULAS_FILE))
                 {
-                    mFormulas = JsonConvert.DeserializeObject<Formulas>( File.ReadAllText( FORMULAS_FILE ) );
+                    mFormulas = JsonConvert.DeserializeObject<Formulas>(File.ReadAllText(FORMULAS_FILE));
                 }
 
-                File.WriteAllText( FORMULAS_FILE, JsonConvert.SerializeObject( mFormulas, Formatting.Indented ) );
+                File.WriteAllText(FORMULAS_FILE, JsonConvert.SerializeObject(mFormulas, Formatting.Indented));
 
                 Expression.CacheEnabled = false;
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                throw new Exception( Strings.Formulas.missing, ex );
+                throw new Exception(Strings.Formulas.missing, ex);
             }
         }
 
@@ -61,37 +61,37 @@ namespace Intersect.Server.General
             Entity victim
         )
         {
-            if( mFormulas == null )
+            if (mFormulas == null)
             {
-                throw new ArgumentNullException( nameof( mFormulas ) );
+                throw new ArgumentNullException(nameof(mFormulas));
             }
 
-            if( attacker == null )
+            if (attacker == null)
             {
-                throw new ArgumentNullException( nameof( attacker ) );
+                throw new ArgumentNullException(nameof(attacker));
             }
 
-            if( attacker.Stat == null )
+            if (attacker.Stat == null)
             {
                 throw new ArgumentNullException(
-                    nameof( attacker.Stat ), $@"{nameof( attacker )}.{nameof( attacker.Stat )} is null"
+                    nameof(attacker.Stat), $@"{nameof(attacker)}.{nameof(attacker.Stat)} is null"
                 );
             }
 
-            if( victim == null )
+            if (victim == null)
             {
-                throw new ArgumentNullException( nameof( victim ) );
+                throw new ArgumentNullException(nameof(victim));
             }
 
-            if( victim.Stat == null )
+            if (victim.Stat == null)
             {
                 throw new ArgumentNullException(
-                    nameof( victim.Stat ), $@"{nameof( victim )}.{nameof( victim.Stat )} is null"
+                    nameof(victim.Stat), $@"{nameof(victim)}.{nameof(victim.Stat)} is null"
                 );
             }
 
             string expressionString;
-            switch( damageType )
+            switch (damageType)
             {
                 case DamageType.Physical:
                     expressionString = mFormulas.PhysicalDamage;
@@ -111,17 +111,17 @@ namespace Intersect.Server.General
                     break;
             }
 
-            var expression = new Expression( expressionString );
+            var expression = new Expression(expressionString);
             var negate = false;
-            if( baseDamage < 0 )
+            if (baseDamage < 0)
             {
-                baseDamage = Math.Abs( baseDamage );
+                baseDamage = Math.Abs(baseDamage);
                 negate = true;
             }
 
-            if( expression.Parameters == null )
+            if (expression.Parameters == null)
             {
-                throw new ArgumentNullException( nameof( expression.Parameters ) );
+                throw new ArgumentNullException(nameof(expression.Parameters));
             }
 
             try
@@ -140,57 +140,57 @@ namespace Intersect.Server.General
                 expression.Parameters["V_Speed"] = victim.Stat[(int)Stats.Speed].Value();
                 expression.Parameters["V_AbilityPwr"] = victim.Stat[(int)Stats.AbilityPower].Value();
                 expression.Parameters["V_MagicResist"] = victim.Stat[(int)Stats.MagicResist].Value();
-                expression.EvaluateFunction += delegate ( string name, FunctionArgs args )
+                expression.EvaluateFunction += delegate (string name, FunctionArgs args)
                 {
-                    if( args == null )
+                    if (args == null)
                     {
-                        throw new ArgumentNullException( nameof( args ) );
+                        throw new ArgumentNullException(nameof(args));
                     }
 
-                    if( name == "Random" )
+                    if (name == "Random")
                     {
-                        args.Result = Random( args );
+                        args.Result = Random(args);
                     }
                 };
 
-                var result = Convert.ToDouble( expression.Evaluate() );
-                if( negate )
+                var result = Convert.ToDouble(expression.Evaluate());
+                if (negate)
                 {
                     result = -result;
                 }
 
-                return (int)Math.Round( result );
+                return (int)Math.Round(result);
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
-                throw new Exception( "Failed to evaluate damage formula", ex );
+                throw new Exception("Failed to evaluate damage formula", ex);
             }
         }
 
-        private static int Random( FunctionArgs args )
+        private static int Random(FunctionArgs args)
         {
-            if( args.Parameters == null )
+            if (args.Parameters == null)
             {
-                throw new ArgumentNullException( nameof( args.Parameters ) );
+                throw new ArgumentNullException(nameof(args.Parameters));
             }
 
             var parameters = args.EvaluateParameters() ??
-                             throw new NullReferenceException( $"{nameof( args.EvaluateParameters )}() returned null." );
+                             throw new NullReferenceException($"{nameof(args.EvaluateParameters)}() returned null.");
 
-            if( parameters.Length < 2 )
+            if (parameters.Length < 2)
             {
-                throw new ArgumentException( $"{nameof( Random )}() requires 2 numerical parameters." );
+                throw new ArgumentException($"{nameof(Random)}() requires 2 numerical parameters.");
             }
 
             var min = (int)Math.Round(
-                (double)( parameters[0] ?? throw new NullReferenceException( "First parameter is null." ) )
+                (double)(parameters[0] ?? throw new NullReferenceException("First parameter is null."))
             );
 
             var max = (int)Math.Round(
-                (double)( parameters[1] ?? throw new NullReferenceException( "First parameter is null." ) )
+                (double)(parameters[1] ?? throw new NullReferenceException("First parameter is null."))
             );
 
-            return min >= max ? min : Randomization.Next( min, max + 1 );
+            return min >= max ? min : Randomization.Next(min, max + 1);
         }
 
     }

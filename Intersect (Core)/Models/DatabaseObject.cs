@@ -18,45 +18,45 @@ namespace Intersect.Models
 
         private string mBackup;
 
-        protected DatabaseObject() : this( Guid.Empty )
+        protected DatabaseObject() : this(Guid.Empty)
         {
         }
 
         [JsonConstructor]
-        protected DatabaseObject( Guid guid )
+        protected DatabaseObject(Guid guid)
         {
             Id = guid;
             TimeCreated = DateTime.Now.ToBinary();
         }
 
-        public static KeyValuePair<Guid, string>[] ItemPairs => Lookup.OrderBy( p => p.Value?.TimeCreated )
-            .Select( pair => new KeyValuePair<Guid, string>( pair.Key, pair.Value?.Name ?? Deleted ) )
+        public static KeyValuePair<Guid, string>[] ItemPairs => Lookup.OrderBy(p => p.Value?.TimeCreated)
+            .Select(pair => new KeyValuePair<Guid, string>(pair.Key, pair.Value?.Name ?? Deleted))
             .ToArray();
 
-        public static string[] Names => Lookup.OrderBy( p => p.Value?.TimeCreated )
-            .Select( pair => pair.Value?.Name ?? Deleted )
+        public static string[] Names => Lookup.OrderBy(p => p.Value?.TimeCreated)
+            .Select(pair => pair.Value?.Name ?? Deleted)
             .ToArray();
 
-        public static DatabaseObjectLookup Lookup => LookupUtils.GetLookup( typeof( TObject ) );
+        public static DatabaseObjectLookup Lookup => LookupUtils.GetLookup(typeof(TObject));
 
-        [DatabaseGenerated( DatabaseGeneratedOption.Identity )]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; protected set; }
 
         public long TimeCreated { get; set; }
 
         [JsonIgnore]
         [NotMapped]
-        public GameObjectType Type => LookupUtils.GetGameObjectType( typeof( TObject ) );
+        public GameObjectType Type => LookupUtils.GetGameObjectType(typeof(TObject));
 
         [JsonIgnore]
         [NotMapped]
         public string DatabaseTable => Type.GetTable();
 
-        [JsonProperty( Order = -4 )]
-        [Column( Order = 0 )]
+        [JsonProperty(Order = -4)]
+        [Column(Order = 0)]
         public string Name { get; set; }
 
-        public virtual void Load( string json, bool keepCreationTime = false )
+        public virtual void Load(string json, bool keepCreationTime = false)
         {
             var oldTime = TimeCreated;
             JsonConvert.PopulateObject(
@@ -66,7 +66,7 @@ namespace Intersect.Models
                 }
             );
 
-            if( keepCreationTime )
+            if (keepCreationTime)
             {
                 TimeCreated = oldTime;
             }
@@ -87,9 +87,9 @@ namespace Intersect.Models
 
         public void RestoreBackup()
         {
-            if( mBackup != null )
+            if (mBackup != null)
             {
-                Load( mBackup );
+                Load(mBackup);
             }
         }
 
@@ -97,57 +97,57 @@ namespace Intersect.Models
         [NotMapped]
 
         // TODO: Should eventually be formatting.none
-        public virtual string JsonData => JsonConvert.SerializeObject( this, Formatting.Indented );
+        public virtual string JsonData => JsonConvert.SerializeObject(this, Formatting.Indented);
 
         public virtual void Delete()
         {
-            Lookup.Delete( this as TObject );
+            Lookup.Delete(this as TObject);
         }
 
-        public static Guid IdFromList( int listIndex )
+        public static Guid IdFromList(int listIndex)
         {
-            if( listIndex < 0 || listIndex > Lookup.KeyList.Count )
+            if (listIndex < 0 || listIndex > Lookup.KeyList.Count)
             {
                 return Guid.Empty;
             }
 
-            return Lookup.KeyList.OrderBy( pairs => Lookup[pairs]?.TimeCreated ).ToArray()[listIndex];
+            return Lookup.KeyList.OrderBy(pairs => Lookup[pairs]?.TimeCreated).ToArray()[listIndex];
         }
 
-        public static TObject FromList( int listIndex )
+        public static TObject FromList(int listIndex)
         {
-            if( listIndex < 0 || listIndex > Lookup.ValueList.Count )
+            if (listIndex < 0 || listIndex > Lookup.ValueList.Count)
             {
                 return null;
             }
 
-            return (TObject)Lookup.ValueList.OrderBy( databaseObject => databaseObject?.TimeCreated ).ToArray()[
+            return (TObject)Lookup.ValueList.OrderBy(databaseObject => databaseObject?.TimeCreated).ToArray()[
                 listIndex];
         }
 
         public int ListIndex()
         {
-            return ListIndex( Id );
+            return ListIndex(Id);
         }
 
-        public static int ListIndex( Guid id )
+        public static int ListIndex(Guid id)
         {
-            return Lookup.KeyList.OrderBy( pairs => Lookup[pairs]?.TimeCreated ).ToList().IndexOf( id );
+            return Lookup.KeyList.OrderBy(pairs => Lookup[pairs]?.TimeCreated).ToList().IndexOf(id);
         }
 
-        public static TObject Get( Guid id )
+        public static TObject Get(Guid id)
         {
-            return Lookup.Get<TObject>( id );
+            return Lookup.Get<TObject>(id);
         }
 
-        public static string GetName( Guid id )
+        public static string GetName(Guid id)
         {
-            return Lookup.Get( id )?.Name ?? Deleted;
+            return Lookup.Get(id)?.Name ?? Deleted;
         }
 
         public static string[] GetNameList()
         {
-            return Lookup.Select( pair => pair.Value?.Name ?? Deleted ).ToArray();
+            return Lookup.Select(pair => pair.Value?.Name ?? Deleted).ToArray();
         }
 
     }

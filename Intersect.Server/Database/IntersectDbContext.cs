@@ -49,10 +49,10 @@ namespace Intersect.Server.Database
             DatabaseType = databaseType;
 
             //Translate Intersect.Logging.LogLevel into LoggerFactory Log Level
-            if( loggerFactory == null && dbLogger != null && logLevel > Intersect.Logging.LogLevel.None )
+            if (loggerFactory == null && dbLogger != null && logLevel > Intersect.Logging.LogLevel.None)
             {
                 var efLogLevel = LogLevel.None;
-                switch( logLevel )
+                switch (logLevel)
                 {
                     case Intersect.Logging.LogLevel.None:
                         break;
@@ -101,7 +101,7 @@ namespace Intersect.Server.Database
                 loggerFactory = LoggerFactory.Create(
                     builder =>
                     {
-                        builder.AddFilter( ( level ) => level >= efLogLevel ).AddProvider( new DbLoggerProvider( dbLogger ) );
+                        builder.AddFilter((level) => level >= efLogLevel).AddProvider(new DbLoggerProvider(dbLogger));
                     }
                 );
             }
@@ -110,7 +110,7 @@ namespace Intersect.Server.Database
 
             ChangeTracker.AutoDetectChangesEnabled = autoDetectChanges || ReadOnly;
 
-            if( ReadOnly )
+            if (ReadOnly)
             {
                 ChangeTracker.LazyLoadingEnabled = false;
                 ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
@@ -118,7 +118,7 @@ namespace Intersect.Server.Database
         }
 
         private static ILoggerFactory MsExtLoggerFactory { get; } =
-            LoggerFactory.Create( builder => builder.AddConsole() );
+            LoggerFactory.Create(builder => builder.AddConsole());
 
         /// <summary>
         /// 
@@ -140,12 +140,12 @@ namespace Intersect.Server.Database
 
         public DbSet<TType> GetDbSet<TType>() where TType : class
         {
-            var searchType = typeof( DbSet<TType> );
+            var searchType = typeof(DbSet<TType>);
             var property = GetType()
                 .GetProperties()
-                .FirstOrDefault( propertyInfo => searchType == propertyInfo.PropertyType );
+                .FirstOrDefault(propertyInfo => searchType == propertyInfo.PropertyType);
 
-            return property?.GetValue( this ) as DbSet<TType>;
+            return property?.GetValue(this) as DbSet<TType>;
         }
 
         public static void Configure(
@@ -162,28 +162,28 @@ namespace Intersect.Server.Database
             DbConnectionStringBuilder connectionStringBuilder = null
         )
         {
-            var type = typeof( T );
-            if( !constructorCache.TryGetValue( type, out var constructorInfo ) )
+            var type = typeof(T);
+            if (!constructorCache.TryGetValue(type, out var constructorInfo))
             {
                 constructorInfo = type.GetConstructor(
-                    new[] { typeof( DbConnectionStringBuilder ), typeof( DatabaseOptions.DatabaseType ) }
+                    new[] { typeof(DbConnectionStringBuilder), typeof(DatabaseOptions.DatabaseType) }
                 );
 
                 constructorCache[type] = constructorInfo;
             }
 
-            if( constructorInfo == null )
+            if (constructorInfo == null)
             {
-                throw new InvalidOperationException( @"Missing IntersectDbContext constructor." );
+                throw new InvalidOperationException(@"Missing IntersectDbContext constructor.");
             }
 
-            if( !( constructorInfo.Invoke(
+            if (!(constructorInfo.Invoke(
                 new object[]
                 {
                     connectionStringBuilder ?? configuredConnectionStringBuilder,
                     databaseType ?? configuredDatabaseType
                 }
-            ) is T contextInstance ) )
+            ) is T contextInstance))
             {
                 throw new InvalidOperationException();
             }
@@ -191,29 +191,29 @@ namespace Intersect.Server.Database
             return contextInstance;
         }
 
-        protected override void OnConfiguring( DbContextOptionsBuilder optionsBuilder )
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring( optionsBuilder );
+            base.OnConfiguring(optionsBuilder);
 
             var connectionString = ConnectionStringBuilder.ToString();
 
             //optionsBuilder.UseLoggerFactory(MsExtLoggerFactory);
 
-            optionsBuilder.EnableSensitiveDataLogging( true );
-            switch( DatabaseType )
+            optionsBuilder.EnableSensitiveDataLogging(true);
+            switch (DatabaseType)
             {
                 case DatabaseOptions.DatabaseType.SQLite:
-                    optionsBuilder.UseLoggerFactory( loggerFactory ).UseSqlite( connectionString ).UseQueryTrackingBehavior( ReadOnly ? QueryTrackingBehavior.NoTracking : QueryTrackingBehavior.TrackAll );
+                    optionsBuilder.UseLoggerFactory(loggerFactory).UseSqlite(connectionString).UseQueryTrackingBehavior(ReadOnly ? QueryTrackingBehavior.NoTracking : QueryTrackingBehavior.TrackAll);
 
                     break;
 
                 case DatabaseOptions.DatabaseType.MySQL:
-                    optionsBuilder.UseLoggerFactory( loggerFactory ).UseMySql( connectionString, options => options.EnableRetryOnFailure( 5, TimeSpan.FromSeconds( 12 ), null ) ).UseQueryTrackingBehavior( ReadOnly ? QueryTrackingBehavior.NoTracking : QueryTrackingBehavior.TrackAll );
+                    optionsBuilder.UseLoggerFactory(loggerFactory).UseMySql(connectionString, options => options.EnableRetryOnFailure(5, TimeSpan.FromSeconds(12), null)).UseQueryTrackingBehavior(ReadOnly ? QueryTrackingBehavior.NoTracking : QueryTrackingBehavior.TrackAll);
 
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException( nameof( DatabaseType ) );
+                    throw new ArgumentOutOfRangeException(nameof(DatabaseType));
             }
         }
 
@@ -224,14 +224,14 @@ namespace Intersect.Server.Database
         public bool IsEmpty()
         {
             var connection = Database?.GetDbConnection();
-            if( connection == null )
+            if (connection == null)
             {
-                throw new InvalidOperationException( "Cannot get connection to the database." );
+                throw new InvalidOperationException("Cannot get connection to the database.");
             }
 
-            using( var command = connection.CreateCommand() )
+            using (var command = connection.CreateCommand())
             {
-                switch( DatabaseType )
+                switch (DatabaseType)
                 {
                     case DatabaseOptions.DatabaseType.SQLite:
                         command.CommandText = "SELECT name FROM sqlite_master WHERE type='table';";
@@ -244,51 +244,51 @@ namespace Intersect.Server.Database
                         break;
 
                     default:
-                        throw new ArgumentOutOfRangeException( nameof( DatabaseType ) );
+                        throw new ArgumentOutOfRangeException(nameof(DatabaseType));
                 }
 
                 command.CommandType = CommandType.Text;
 
                 Database.OpenConnection();
 
-                using( var result = command.ExecuteReader() )
+                using (var result = command.ExecuteReader())
                 {
-                    return !( result?.HasRows ?? false );
+                    return !(result?.HasRows ?? false);
                 }
             }
         }
 
-        public virtual void MigrationsProcessed( string[] migrations ) { }
+        public virtual void MigrationsProcessed(string[] migrations) { }
 
         public override int SaveChanges()
         {
-            if( ReadOnly )
-                throw new InvalidOperationException( "Cannot save changes on a read only context!" );
+            if (ReadOnly)
+                throw new InvalidOperationException("Cannot save changes on a read only context!");
 
             return base.SaveChanges();
         }
 
-        public override int SaveChanges( bool acceptAllChangesOnSuccess )
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
-            if( ReadOnly )
-                throw new InvalidOperationException( "Cannot save changes on a read only context!" );
+            if (ReadOnly)
+                throw new InvalidOperationException("Cannot save changes on a read only context!");
 
-            return base.SaveChanges( acceptAllChangesOnSuccess );
+            return base.SaveChanges(acceptAllChangesOnSuccess);
         }
 
-        public override Task<int> SaveChangesAsync( bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default )
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
-            if( ReadOnly )
-                throw new InvalidOperationException( "Cannot save changes on a read only context!" );
-            return base.SaveChangesAsync( acceptAllChangesOnSuccess, cancellationToken );
+            if (ReadOnly)
+                throw new InvalidOperationException("Cannot save changes on a read only context!");
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
-        public override Task<int> SaveChangesAsync( CancellationToken cancellationToken = default )
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            if( ReadOnly )
-                throw new InvalidOperationException( "Cannot save changes on a read only context!" );
+            if (ReadOnly)
+                throw new InvalidOperationException("Cannot save changes on a read only context!");
 
-            return base.SaveChangesAsync( cancellationToken );
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -57,15 +57,15 @@ namespace Intersect.Editor.Forms.Editors
             lstAnimations.GotFocus += itemList_FocusChanged;
         }
 
-        protected override void GameObjectUpdatedDelegate( GameObjectType type )
+        protected override void GameObjectUpdatedDelegate(GameObjectType type)
         {
-            if( type != GameObjectType.Animation )
+            if (type != GameObjectType.Animation)
             {
                 return;
             }
 
             InitEditor();
-            if( mEditorItem == null || AnimationBase.Lookup.Values.Contains( mEditorItem ) )
+            if (mEditorItem == null || AnimationBase.Lookup.Values.Contains(mEditorItem))
             {
                 return;
             }
@@ -74,9 +74,9 @@ namespace Intersect.Editor.Forms.Editors
             UpdateEditor();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
-            foreach( var item in mChanged )
+            foreach (var item in mChanged)
             {
                 item.RestoreBackup();
                 item.DeleteBackup();
@@ -87,12 +87,12 @@ namespace Intersect.Editor.Forms.Editors
             Dispose();
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
             //Send Changed items
-            foreach( var item in mChanged )
+            foreach (var item in mChanged)
             {
-                PacketSender.SendSaveObject( item );
+                PacketSender.SendSaveObject(item);
                 item.DeleteBackup();
             }
 
@@ -101,25 +101,25 @@ namespace Intersect.Editor.Forms.Editors
             Dispose();
         }
 
-        private void frmAnimation_Load( object sender, EventArgs e )
+        private void frmAnimation_Load(object sender, EventArgs e)
         {
             //Animation Sound
             cmbSound.Items.Clear();
-            cmbSound.Items.Add( Strings.General.none );
-            cmbSound.Items.AddRange( GameContentManager.SmartSortedSoundNames );
+            cmbSound.Items.Add(Strings.General.none);
+            cmbSound.Items.AddRange(GameContentManager.SmartSortedSoundNames);
 
             //Lower Animation Graphic
             cmbLowerGraphic.Items.Clear();
-            cmbLowerGraphic.Items.Add( Strings.General.none );
+            cmbLowerGraphic.Items.Add(Strings.General.none);
             cmbLowerGraphic.Items.AddRange(
-                GameContentManager.GetSmartSortedTextureNames( GameContentManager.TextureType.Animation )
+                GameContentManager.GetSmartSortedTextureNames(GameContentManager.TextureType.Animation)
             );
 
             //Upper Animation Graphic
             cmbUpperGraphic.Items.Clear();
-            cmbUpperGraphic.Items.Add( Strings.General.none );
+            cmbUpperGraphic.Items.Add(Strings.General.none);
             cmbUpperGraphic.Items.AddRange(
-                GameContentManager.GetSmartSortedTextureNames( GameContentManager.TextureType.Animation )
+                GameContentManager.GetSmartSortedTextureNames(GameContentManager.TextureType.Animation)
             );
 
             mLowerWindow = new SwapChainRenderTarget(
@@ -132,8 +132,8 @@ namespace Intersect.Editor.Forms.Editors
                 picUpperAnimation.Height
             );
 
-            mLowerDarkness = Core.Graphics.CreateRenderTexture( picLowerAnimation.Width, picLowerAnimation.Height );
-            mUpperDarkness = Core.Graphics.CreateRenderTexture( picUpperAnimation.Width, picUpperAnimation.Height );
+            mLowerDarkness = Core.Graphics.CreateRenderTexture(picLowerAnimation.Width, picLowerAnimation.Height);
+            mUpperDarkness = Core.Graphics.CreateRenderTexture(picUpperAnimation.Width, picUpperAnimation.Height);
 
             InitLocalization();
             UpdateEditor();
@@ -154,7 +154,7 @@ namespace Intersect.Editor.Forms.Editors
             lblName.Text = Strings.AnimationEditor.name;
             lblSound.Text = Strings.AnimationEditor.sound;
             chkCompleteSoundPlayback.Text = Strings.AnimationEditor.soundcomplete;
-            labelDarkness.Text = Strings.AnimationEditor.simulatedarkness.ToString( scrlDarkness.Value );
+            labelDarkness.Text = Strings.AnimationEditor.simulatedarkness.ToString(scrlDarkness.Value);
             btnSwap.Text = Strings.AnimationEditor.swap;
 
             grpLower.Text = Strings.AnimationEditor.lowergroup;
@@ -165,7 +165,7 @@ namespace Intersect.Editor.Forms.Editors
             lblLowerFrameDuration.Text = Strings.AnimationEditor.lowerframeduration;
             lblLowerLoopCount.Text = Strings.AnimationEditor.lowerloopcount;
             grpLowerPlayback.Text = Strings.AnimationEditor.lowerplayback;
-            lblLowerFrame.Text = Strings.AnimationEditor.lowerframe.ToString( scrlLowerFrame.Value );
+            lblLowerFrame.Text = Strings.AnimationEditor.lowerframe.ToString(scrlLowerFrame.Value);
             btnPlayLower.Text = Strings.AnimationEditor.lowerplay;
             grpLowerFrameOpts.Text = Strings.AnimationEditor.lowerframeoptions;
             btnLowerClone.Text = Strings.AnimationEditor.lowerclone;
@@ -180,7 +180,7 @@ namespace Intersect.Editor.Forms.Editors
             lblUpperFrameDuration.Text = Strings.AnimationEditor.upperframeduration;
             lblUpperLoopCount.Text = Strings.AnimationEditor.upperloopcount;
             grpUpperPlayback.Text = Strings.AnimationEditor.upperplayback;
-            lblUpperFrame.Text = Strings.AnimationEditor.upperframe.ToString( scrlUpperFrame.Value );
+            lblUpperFrame.Text = Strings.AnimationEditor.upperframe.ToString(scrlUpperFrame.Value);
             btnPlayUpper.Text = Strings.AnimationEditor.upperplay;
             grpUpperFrameOpts.Text = Strings.AnimationEditor.upperframeoptions;
             btnUpperClone.Text = Strings.AnimationEditor.upperclone;
@@ -198,18 +198,18 @@ namespace Intersect.Editor.Forms.Editors
 
         private void UpdateEditor()
         {
-            if( mEditorItem != null )
+            if (mEditorItem != null)
             {
                 pnlContainer.Show();
 
                 cmbFolder.Text = mEditorItem.Folder;
 
                 txtName.Text = mEditorItem.Name;
-                cmbSound.SelectedIndex = cmbSound.FindString( TextUtils.NullToNone( mEditorItem.Sound ) );
+                cmbSound.SelectedIndex = cmbSound.FindString(TextUtils.NullToNone(mEditorItem.Sound));
                 chkCompleteSoundPlayback.Checked = mEditorItem.CompleteSound;
 
                 cmbLowerGraphic.SelectedIndex =
-                    cmbLowerGraphic.FindString( TextUtils.NullToNone( mEditorItem.Lower.Sprite ) );
+                    cmbLowerGraphic.FindString(TextUtils.NullToNone(mEditorItem.Lower.Sprite));
 
                 nudLowerHorizontalFrames.Value = mEditorItem.Lower.XFrames;
                 nudLowerVerticalFrames.Value = mEditorItem.Lower.YFrames;
@@ -221,7 +221,7 @@ namespace Intersect.Editor.Forms.Editors
                 nudLowerLoopCount.Value = mEditorItem.Lower.LoopCount;
 
                 cmbUpperGraphic.SelectedIndex =
-                    cmbUpperGraphic.FindString( TextUtils.NullToNone( mEditorItem.Upper.Sprite ) );
+                    cmbUpperGraphic.FindString(TextUtils.NullToNone(mEditorItem.Upper.Sprite));
 
                 nudUpperHorizontalFrames.Value = mEditorItem.Upper.XFrames;
                 nudUpperVerticalFrames.Value = mEditorItem.Upper.YFrames;
@@ -243,9 +243,9 @@ namespace Intersect.Editor.Forms.Editors
                 LoadUpperLight();
                 DrawUpperFrame();
 
-                if( mChanged.IndexOf( mEditorItem ) == -1 )
+                if (mChanged.IndexOf(mEditorItem) == -1)
                 {
-                    mChanged.Add( mEditorItem );
+                    mChanged.Add(mEditorItem);
                     mEditorItem.MakeBackup();
                 }
             }
@@ -257,11 +257,11 @@ namespace Intersect.Editor.Forms.Editors
             UpdateToolStripItems();
         }
 
-        private void txtName_TextChanged( object sender, EventArgs e )
+        private void txtName_TextChanged(object sender, EventArgs e)
         {
             mChangingName = true;
             mEditorItem.Name = txtName.Text;
-            if( lstAnimations.SelectedNode != null && lstAnimations.SelectedNode.Tag != null )
+            if (lstAnimations.SelectedNode != null && lstAnimations.SelectedNode.Tag != null)
             {
                 lstAnimations.SelectedNode.Text = txtName.Text;
             }
@@ -269,32 +269,32 @@ namespace Intersect.Editor.Forms.Editors
             mChangingName = false;
         }
 
-        private void cmbSound_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbSound_SelectedIndexChanged(object sender, EventArgs e)
         {
-            mEditorItem.Sound = TextUtils.SanitizeNone( cmbSound?.Text );
+            mEditorItem.Sound = TextUtils.SanitizeNone(cmbSound?.Text);
         }
 
-        private void chkCompleteSoundPlayback_CheckedChanged( object sender, EventArgs e )
+        private void chkCompleteSoundPlayback_CheckedChanged(object sender, EventArgs e)
         {
             mEditorItem.CompleteSound = chkCompleteSoundPlayback.Checked;
         }
 
-        private void cmbLowerGraphic_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbLowerGraphic_SelectedIndexChanged(object sender, EventArgs e)
         {
-            mEditorItem.Lower.Sprite = TextUtils.SanitizeNone( cmbLowerGraphic?.Text );
+            mEditorItem.Lower.Sprite = TextUtils.SanitizeNone(cmbLowerGraphic?.Text);
         }
 
-        private void cmbUpperGraphic_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbUpperGraphic_SelectedIndexChanged(object sender, EventArgs e)
         {
-            mEditorItem.Upper.Sprite = TextUtils.SanitizeNone( cmbUpperGraphic?.Text );
+            mEditorItem.Upper.Sprite = TextUtils.SanitizeNone(cmbUpperGraphic?.Text);
         }
 
-        private void tmrLowerAnimation_Tick( object sender, EventArgs e )
+        private void tmrLowerAnimation_Tick(object sender, EventArgs e)
         {
-            if( mPlayLower )
+            if (mPlayLower)
             {
                 mLowerFrame++;
-                if( mLowerFrame >= (int)nudLowerFrameCount.Value )
+                if (mLowerFrame >= (int)nudLowerFrameCount.Value)
                 {
                     mLowerFrame = 0;
                 }
@@ -305,18 +305,18 @@ namespace Intersect.Editor.Forms.Editors
         {
             LightBase[] newArray;
             scrlLowerFrame.Maximum = (int)nudLowerFrameCount.Value;
-            if( mEditorItem.Lower.Lights == null || mEditorItem.Lower.FrameCount != mEditorItem.Lower.Lights.Length )
+            if (mEditorItem.Lower.Lights == null || mEditorItem.Lower.FrameCount != mEditorItem.Lower.Lights.Length)
             {
                 newArray = new LightBase[mEditorItem.Lower.FrameCount];
-                for( var i = 0; i < newArray.Length; i++ )
+                for (var i = 0; i < newArray.Length; i++)
                 {
-                    if( mEditorItem.Lower.Lights != null && i < mEditorItem.Lower.Lights.Length )
+                    if (mEditorItem.Lower.Lights != null && i < mEditorItem.Lower.Lights.Length)
                     {
                         newArray[i] = mEditorItem.Lower.Lights[i];
                     }
                     else
                     {
-                        newArray[i] = new LightBase( -1, -1 );
+                        newArray[i] = new LightBase(-1, -1);
                     }
                 }
 
@@ -328,18 +328,18 @@ namespace Intersect.Editor.Forms.Editors
         {
             LightBase[] newArray;
             scrlUpperFrame.Maximum = (int)nudUpperFrameCount.Value;
-            if( mEditorItem.Upper.Lights == null || mEditorItem.Upper.FrameCount != mEditorItem.Upper.Lights.Length )
+            if (mEditorItem.Upper.Lights == null || mEditorItem.Upper.FrameCount != mEditorItem.Upper.Lights.Length)
             {
                 newArray = new LightBase[mEditorItem.Upper.FrameCount];
-                for( var i = 0; i < newArray.Length; i++ )
+                for (var i = 0; i < newArray.Length; i++)
                 {
-                    if( mEditorItem.Upper.Lights != null && i < mEditorItem.Upper.Lights.Length )
+                    if (mEditorItem.Upper.Lights != null && i < mEditorItem.Upper.Lights.Length)
                     {
                         newArray[i] = mEditorItem.Upper.Lights[i];
                     }
                     else
                     {
-                        newArray[i] = new LightBase( -1, -1 );
+                        newArray[i] = new LightBase(-1, -1);
                     }
                 }
 
@@ -349,21 +349,21 @@ namespace Intersect.Editor.Forms.Editors
 
         void DrawLowerFrame()
         {
-            if( mLowerWindow == null || mEditorItem == null )
+            if (mLowerWindow == null || mEditorItem == null)
             {
                 return;
             }
 
-            if( !mPlayLower )
+            if (!mPlayLower)
             {
                 mLowerFrame = scrlLowerFrame.Value - 1;
             }
 
             var graphicsDevice = Core.Graphics.GetGraphicsDevice();
             Core.Graphics.EndSpriteBatch();
-            graphicsDevice.SetRenderTarget( mLowerDarkness );
-            graphicsDevice.Clear( Microsoft.Xna.Framework.Color.Black );
-            if( mLowerFrame < mEditorItem.Lower.Lights.Length )
+            graphicsDevice.SetRenderTarget(mLowerDarkness);
+            graphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
+            if (mLowerFrame < mEditorItem.Lower.Lights.Length)
             {
                 Core.Graphics.DrawLight(
                     picLowerAnimation.Width / 2 + mEditorItem.Lower.Lights[mLowerFrame].OffsetX,
@@ -373,32 +373,32 @@ namespace Intersect.Editor.Forms.Editors
             }
 
             Core.Graphics.DrawTexture(
-                Core.Graphics.GetWhiteTex(), new RectangleF( 0, 0, 1, 1 ),
-                new RectangleF( 0, 0, mLowerDarkness.Width, mLowerDarkness.Height ),
-                System.Drawing.Color.FromArgb( (byte)( (float)( 100 - scrlDarkness.Value ) / 100f * 255 ), 255, 255, 255 ),
+                Core.Graphics.GetWhiteTex(), new RectangleF(0, 0, 1, 1),
+                new RectangleF(0, 0, mLowerDarkness.Width, mLowerDarkness.Height),
+                System.Drawing.Color.FromArgb((byte)((float)(100 - scrlDarkness.Value) / 100f * 255), 255, 255, 255),
                 mLowerDarkness, BlendState.Additive
             );
 
             Core.Graphics.EndSpriteBatch();
-            graphicsDevice.SetRenderTarget( mLowerWindow );
-            graphicsDevice.Clear( Microsoft.Xna.Framework.Color.White );
+            graphicsDevice.SetRenderTarget(mLowerWindow);
+            graphicsDevice.Clear(Microsoft.Xna.Framework.Color.White);
             var animTexture = GameContentManager.GetTexture(
                 GameContentManager.TextureType.Animation, cmbLowerGraphic.Text
             );
 
-            if( animTexture != null )
+            if (animTexture != null)
             {
                 long w = animTexture.Width / (int)nudLowerHorizontalFrames.Value;
                 long h = animTexture.Height / (int)nudLowerVerticalFrames.Value;
                 long x = 0;
-                if( mLowerFrame > 0 )
+                if (mLowerFrame > 0)
                 {
                     x = mLowerFrame % (int)nudLowerHorizontalFrames.Value * w;
                 }
 
-                var y = (int)Math.Floor( mLowerFrame / nudLowerHorizontalFrames.Value ) * h;
+                var y = (int)Math.Floor(mLowerFrame / nudLowerHorizontalFrames.Value) * h;
                 Core.Graphics.DrawTexture(
-                    animTexture, new RectangleF( x, y, w, h ),
+                    animTexture, new RectangleF(x, y, w, h),
                     new RectangleF(
                         picLowerAnimation.Width / 2 - (int)w / 2, (int)picLowerAnimation.Height / 2 - (int)h / 2, w,
                         h
@@ -406,28 +406,28 @@ namespace Intersect.Editor.Forms.Editors
                 );
             }
 
-            Core.Graphics.DrawTexture( mLowerDarkness, 0, 0, mLowerWindow, Core.Graphics.MultiplyState );
+            Core.Graphics.DrawTexture(mLowerDarkness, 0, 0, mLowerWindow, Core.Graphics.MultiplyState);
             Core.Graphics.EndSpriteBatch();
             mLowerWindow.Present();
         }
 
         void DrawUpperFrame()
         {
-            if( mUpperWindow == null || mEditorItem == null )
+            if (mUpperWindow == null || mEditorItem == null)
             {
                 return;
             }
 
-            if( !mPlayUpper )
+            if (!mPlayUpper)
             {
                 mUpperFrame = scrlUpperFrame.Value - 1;
             }
 
             var graphicsDevice = Core.Graphics.GetGraphicsDevice();
             Core.Graphics.EndSpriteBatch();
-            graphicsDevice.SetRenderTarget( mUpperDarkness );
-            graphicsDevice.Clear( Microsoft.Xna.Framework.Color.Black );
-            if( mUpperFrame < mEditorItem.Upper.Lights.Length )
+            graphicsDevice.SetRenderTarget(mUpperDarkness);
+            graphicsDevice.Clear(Microsoft.Xna.Framework.Color.Black);
+            if (mUpperFrame < mEditorItem.Upper.Lights.Length)
             {
                 Core.Graphics.DrawLight(
                     picUpperAnimation.Width / 2 + mEditorItem.Upper.Lights[mUpperFrame].OffsetX,
@@ -437,32 +437,32 @@ namespace Intersect.Editor.Forms.Editors
             }
 
             Core.Graphics.DrawTexture(
-                Core.Graphics.GetWhiteTex(), new RectangleF( 0, 0, 1, 1 ),
-                new RectangleF( 0, 0, mUpperDarkness.Width, mUpperDarkness.Height ),
-                System.Drawing.Color.FromArgb( (byte)( (float)( 100 - scrlDarkness.Value ) / 100f * 255 ), 255, 255, 255 ),
+                Core.Graphics.GetWhiteTex(), new RectangleF(0, 0, 1, 1),
+                new RectangleF(0, 0, mUpperDarkness.Width, mUpperDarkness.Height),
+                System.Drawing.Color.FromArgb((byte)((float)(100 - scrlDarkness.Value) / 100f * 255), 255, 255, 255),
                 mUpperDarkness, BlendState.Additive
             );
 
             Core.Graphics.EndSpriteBatch();
-            graphicsDevice.SetRenderTarget( mUpperWindow );
-            graphicsDevice.Clear( Microsoft.Xna.Framework.Color.White );
+            graphicsDevice.SetRenderTarget(mUpperWindow);
+            graphicsDevice.Clear(Microsoft.Xna.Framework.Color.White);
             var animTexture = GameContentManager.GetTexture(
                 GameContentManager.TextureType.Animation, cmbUpperGraphic.Text
             );
 
-            if( animTexture != null )
+            if (animTexture != null)
             {
                 long w = animTexture.Width / (int)nudUpperHorizontalFrames.Value;
                 long h = animTexture.Height / (int)nudUpperVerticalFrames.Value;
                 long x = 0;
-                if( mUpperFrame > 0 )
+                if (mUpperFrame > 0)
                 {
                     x = mUpperFrame % (int)nudUpperHorizontalFrames.Value * w;
                 }
 
-                var y = (int)Math.Floor( mUpperFrame / nudUpperHorizontalFrames.Value ) * h;
+                var y = (int)Math.Floor(mUpperFrame / nudUpperHorizontalFrames.Value) * h;
                 Core.Graphics.DrawTexture(
-                    animTexture, new RectangleF( x, y, w, h ),
+                    animTexture, new RectangleF(x, y, w, h),
                     new RectangleF(
                         picUpperAnimation.Width / 2 - (int)w / 2, (int)picUpperAnimation.Height / 2 - (int)h / 2, w,
                         h
@@ -470,31 +470,31 @@ namespace Intersect.Editor.Forms.Editors
                 );
             }
 
-            Core.Graphics.DrawTexture( mUpperDarkness, 0, 0, mUpperWindow, Core.Graphics.MultiplyState );
+            Core.Graphics.DrawTexture(mUpperDarkness, 0, 0, mUpperWindow, Core.Graphics.MultiplyState);
             Core.Graphics.EndSpriteBatch();
             mUpperWindow.Present();
         }
 
-        private void tmrUpperAnimation_Tick( object sender, EventArgs e )
+        private void tmrUpperAnimation_Tick(object sender, EventArgs e)
         {
-            if( mPlayUpper )
+            if (mPlayUpper)
             {
                 mUpperFrame++;
-                if( mUpperFrame >= (int)nudUpperFrameCount.Value )
+                if (mUpperFrame >= (int)nudUpperFrameCount.Value)
                 {
                     mUpperFrame = 0;
                 }
             }
         }
 
-        private void frmAnimation_FormClosed( object sender, FormClosedEventArgs e )
+        private void frmAnimation_FormClosed(object sender, FormClosedEventArgs e)
         {
             Globals.CurrentEditor = -1;
         }
 
-        private void scrlLowerFrame_Scroll( object sender, ScrollValueEventArgs e )
+        private void scrlLowerFrame_Scroll(object sender, ScrollValueEventArgs e)
         {
-            lblLowerFrame.Text = Strings.AnimationEditor.lowerframe.ToString( scrlLowerFrame.Value );
+            lblLowerFrame.Text = Strings.AnimationEditor.lowerframe.ToString(scrlLowerFrame.Value);
             LoadLowerLight();
             DrawLowerFrame();
         }
@@ -502,26 +502,26 @@ namespace Intersect.Editor.Forms.Editors
         private void LoadLowerLight()
         {
             lightEditorLower.CanClose = false;
-            lightEditorLower.LoadEditor( mEditorItem.Lower.Lights[scrlLowerFrame.Value - 1] );
+            lightEditorLower.LoadEditor(mEditorItem.Lower.Lights[scrlLowerFrame.Value - 1]);
         }
 
         private void LoadUpperLight()
         {
             lightEditorUpper.CanClose = false;
-            lightEditorUpper.LoadEditor( mEditorItem.Upper.Lights[scrlUpperFrame.Value - 1] );
+            lightEditorUpper.LoadEditor(mEditorItem.Upper.Lights[scrlUpperFrame.Value - 1]);
         }
 
-        private void scrlUpperFrame_Scroll( object sender, ScrollValueEventArgs e )
+        private void scrlUpperFrame_Scroll(object sender, ScrollValueEventArgs e)
         {
-            lblUpperFrame.Text = Strings.AnimationEditor.upperframe.ToString( scrlUpperFrame.Value );
+            lblUpperFrame.Text = Strings.AnimationEditor.upperframe.ToString(scrlUpperFrame.Value);
             LoadUpperLight();
             DrawUpperFrame();
         }
 
-        private void btnPlayLower_Click( object sender, EventArgs e )
+        private void btnPlayLower_Click(object sender, EventArgs e)
         {
             mPlayLower = !mPlayLower;
-            if( mPlayLower )
+            if (mPlayLower)
             {
                 btnPlayLower.Text = Strings.AnimationEditor.lowerstop;
             }
@@ -531,22 +531,22 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void btnLowerClone_Click( object sender, EventArgs e )
+        private void btnLowerClone_Click(object sender, EventArgs e)
         {
-            if( scrlLowerFrame.Value > 1 )
+            if (scrlLowerFrame.Value > 1)
             {
                 mEditorItem.Lower.Lights[scrlLowerFrame.Value - 1] =
-                    new LightBase( mEditorItem.Lower.Lights[scrlLowerFrame.Value - 2] );
+                    new LightBase(mEditorItem.Lower.Lights[scrlLowerFrame.Value - 2]);
 
                 LoadLowerLight();
                 DrawLowerFrame();
             }
         }
 
-        private void btnPlayUpper_Click( object sender, EventArgs e )
+        private void btnPlayUpper_Click(object sender, EventArgs e)
         {
             mPlayUpper = !mPlayUpper;
-            if( mPlayUpper )
+            if (mPlayUpper)
             {
                 btnPlayUpper.Text = Strings.AnimationEditor.upperstop;
             }
@@ -556,24 +556,24 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void btnUpperClone_Click( object sender, EventArgs e )
+        private void btnUpperClone_Click(object sender, EventArgs e)
         {
-            if( scrlUpperFrame.Value > 1 )
+            if (scrlUpperFrame.Value > 1)
             {
                 mEditorItem.Upper.Lights[scrlUpperFrame.Value - 1] =
-                    new LightBase( mEditorItem.Upper.Lights[scrlUpperFrame.Value - 2] );
+                    new LightBase(mEditorItem.Upper.Lights[scrlUpperFrame.Value - 2]);
 
                 LoadUpperLight();
                 DrawUpperFrame();
             }
         }
 
-        private void scrlDarkness_Scroll( object sender, ScrollValueEventArgs e )
+        private void scrlDarkness_Scroll(object sender, ScrollValueEventArgs e)
         {
-            labelDarkness.Text = Strings.AnimationEditor.simulatedarkness.ToString( scrlDarkness.Value );
+            labelDarkness.Text = Strings.AnimationEditor.simulatedarkness.ToString(scrlDarkness.Value);
         }
 
-        private void btnSwap_Click( object sender, EventArgs e )
+        private void btnSwap_Click(object sender, EventArgs e)
         {
             var lowerAnimSprite = mEditorItem.Lower.Sprite;
             var lowerAnimXFrames = mEditorItem.Lower.XFrames;
@@ -607,53 +607,53 @@ namespace Intersect.Editor.Forms.Editors
             UpdateEditor();
         }
 
-        private void toolStripItemNew_Click( object sender, EventArgs e )
+        private void toolStripItemNew_Click(object sender, EventArgs e)
         {
-            PacketSender.SendCreateObject( GameObjectType.Animation );
+            PacketSender.SendCreateObject(GameObjectType.Animation);
         }
 
-        private void toolStripItemDelete_Click( object sender, EventArgs e )
+        private void toolStripItemDelete_Click(object sender, EventArgs e)
         {
-            if( mEditorItem != null && lstAnimations.Focused )
+            if (mEditorItem != null && lstAnimations.Focused)
             {
-                if( DarkMessageBox.ShowWarning(
+                if (DarkMessageBox.ShowWarning(
                         Strings.AnimationEditor.deleteprompt, Strings.AnimationEditor.deletetitle,
                         DarkDialogButton.YesNo, Properties.Resources.Icon
                     ) ==
-                    DialogResult.Yes )
+                    DialogResult.Yes)
                 {
-                    PacketSender.SendDeleteObject( mEditorItem );
+                    PacketSender.SendDeleteObject(mEditorItem);
                 }
             }
         }
 
-        private void toolStripItemCopy_Click( object sender, EventArgs e )
+        private void toolStripItemCopy_Click(object sender, EventArgs e)
         {
-            if( mEditorItem != null && lstAnimations.Focused )
+            if (mEditorItem != null && lstAnimations.Focused)
             {
                 mCopiedItem = mEditorItem.JsonData;
                 toolStripItemPaste.Enabled = true;
             }
         }
 
-        private void toolStripItemPaste_Click( object sender, EventArgs e )
+        private void toolStripItemPaste_Click(object sender, EventArgs e)
         {
-            if( mEditorItem != null && mCopiedItem != null && lstAnimations.Focused )
+            if (mEditorItem != null && mCopiedItem != null && lstAnimations.Focused)
             {
-                mEditorItem.Load( mCopiedItem, true );
+                mEditorItem.Load(mCopiedItem, true);
                 UpdateEditor();
             }
         }
 
-        private void toolStripItemUndo_Click( object sender, EventArgs e )
+        private void toolStripItemUndo_Click(object sender, EventArgs e)
         {
-            if( mChanged.Contains( mEditorItem ) && mEditorItem != null )
+            if (mChanged.Contains(mEditorItem) && mEditorItem != null)
             {
-                if( DarkMessageBox.ShowWarning(
+                if (DarkMessageBox.ShowWarning(
                         Strings.AnimationEditor.undoprompt, Strings.AnimationEditor.undotitle, DarkDialogButton.YesNo,
                         Properties.Resources.Icon
                     ) ==
-                    DialogResult.Yes )
+                    DialogResult.Yes)
                 {
                     mEditorItem.RestoreBackup();
                     UpdateEditor();
@@ -661,28 +661,28 @@ namespace Intersect.Editor.Forms.Editors
             }
         }
 
-        private void itemList_KeyDown( object sender, KeyEventArgs e )
+        private void itemList_KeyDown(object sender, KeyEventArgs e)
         {
-            if( e.Control )
+            if (e.Control)
             {
-                if( e.KeyCode == Keys.Z )
+                if (e.KeyCode == Keys.Z)
                 {
-                    toolStripItemUndo_Click( null, null );
+                    toolStripItemUndo_Click(null, null);
                 }
-                else if( e.KeyCode == Keys.V )
+                else if (e.KeyCode == Keys.V)
                 {
-                    toolStripItemPaste_Click( null, null );
+                    toolStripItemPaste_Click(null, null);
                 }
-                else if( e.KeyCode == Keys.C )
+                else if (e.KeyCode == Keys.C)
                 {
-                    toolStripItemCopy_Click( null, null );
+                    toolStripItemCopy_Click(null, null);
                 }
             }
             else
             {
-                if( e.KeyCode == Keys.Delete )
+                if (e.KeyCode == Keys.Delete)
                 {
-                    toolStripItemDelete_Click( null, null );
+                    toolStripItemDelete_Click(null, null);
                 }
             }
         }
@@ -695,110 +695,110 @@ namespace Intersect.Editor.Forms.Editors
             toolStripItemUndo.Enabled = mEditorItem != null && lstAnimations.Focused;
         }
 
-        private void itemList_FocusChanged( object sender, EventArgs e )
+        private void itemList_FocusChanged(object sender, EventArgs e)
         {
             UpdateToolStripItems();
         }
 
-        private void form_KeyDown( object sender, KeyEventArgs e )
+        private void form_KeyDown(object sender, KeyEventArgs e)
         {
-            if( e.Control )
+            if (e.Control)
             {
-                if( e.KeyCode == Keys.N )
+                if (e.KeyCode == Keys.N)
                 {
-                    toolStripItemNew_Click( null, null );
+                    toolStripItemNew_Click(null, null);
                 }
             }
         }
 
         private void CheckFrameCounts()
         {
-            nudLowerFrameCount.Value = Math.Min( mEditorItem.Lower.FrameCount, mEditorItem.Lower.XFrames * mEditorItem.Lower.YFrames );
-            nudUpperFrameCount.Value = Math.Min( mEditorItem.Upper.FrameCount, mEditorItem.Upper.XFrames * mEditorItem.Upper.YFrames );
+            nudLowerFrameCount.Value = Math.Min(mEditorItem.Lower.FrameCount, mEditorItem.Lower.XFrames * mEditorItem.Lower.YFrames);
+            nudUpperFrameCount.Value = Math.Min(mEditorItem.Upper.FrameCount, mEditorItem.Upper.XFrames * mEditorItem.Upper.YFrames);
         }
 
-        private void nudLowerHorizontalFrames_ValueChanged( object sender, EventArgs e )
+        private void nudLowerHorizontalFrames_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Lower.XFrames = (int)nudLowerHorizontalFrames.Value;
             CheckFrameCounts();
         }
 
-        private void nudLowerVerticalFrames_ValueChanged( object sender, EventArgs e )
+        private void nudLowerVerticalFrames_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Lower.YFrames = (int)nudLowerVerticalFrames.Value;
             CheckFrameCounts();
         }
 
-        private void nudLowerFrameCount_ValueChanged( object sender, EventArgs e )
+        private void nudLowerFrameCount_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Lower.FrameCount = (int)nudLowerFrameCount.Value;
             CheckFrameCounts();
             UpdateLowerFrames();
         }
 
-        private void nudLowerFrameDuration_ValueChanged( object sender, EventArgs e )
+        private void nudLowerFrameDuration_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Lower.FrameSpeed = (int)nudLowerFrameDuration.Value;
             tmrLowerAnimation.Interval = (int)nudLowerFrameDuration.Value;
         }
 
-        private void nudLowerLoopCount_ValueChanged( object sender, EventArgs e )
+        private void nudLowerLoopCount_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Lower.LoopCount = (int)nudLowerLoopCount.Value;
         }
 
-        private void nudUpperHorizontalFrames_ValueChanged( object sender, EventArgs e )
+        private void nudUpperHorizontalFrames_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Upper.XFrames = (int)nudUpperHorizontalFrames.Value;
             CheckFrameCounts();
         }
 
-        private void nudUpperVerticalFrames_ValueChanged( object sender, EventArgs e )
+        private void nudUpperVerticalFrames_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Upper.YFrames = (int)nudUpperVerticalFrames.Value;
             CheckFrameCounts();
         }
 
-        private void nudUpperFrameCount_ValueChanged( object sender, EventArgs e )
+        private void nudUpperFrameCount_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Upper.FrameCount = (int)nudUpperFrameCount.Value;
             CheckFrameCounts();
             UpdateUpperFrames();
         }
 
-        private void nudUpperFrameDuration_ValueChanged( object sender, EventArgs e )
+        private void nudUpperFrameDuration_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Upper.FrameSpeed = (int)nudUpperFrameDuration.Value;
             tmrUpperAnimation.Interval = (int)nudUpperFrameDuration.Value;
         }
 
-        private void nudUpperLoopCount_ValueChanged( object sender, EventArgs e )
+        private void nudUpperLoopCount_ValueChanged(object sender, EventArgs e)
         {
             mEditorItem.Upper.LoopCount = (int)nudUpperLoopCount.Value;
         }
 
-        private void tmrRender_Tick( object sender, EventArgs e )
+        private void tmrRender_Tick(object sender, EventArgs e)
         {
             DrawLowerFrame();
             DrawUpperFrame();
         }
 
-        private void chkDisableLowerRotations_CheckedChanged( object sender, EventArgs e )
+        private void chkDisableLowerRotations_CheckedChanged(object sender, EventArgs e)
         {
             mEditorItem.Lower.DisableRotations = chkDisableLowerRotations.Checked;
         }
 
-        private void chkDisableUpperRotations_CheckedChanged( object sender, EventArgs e )
+        private void chkDisableUpperRotations_CheckedChanged(object sender, EventArgs e)
         {
             mEditorItem.Upper.DisableRotations = chkDisableUpperRotations.Checked;
         }
 
-        private void chkRenderAbovePlayer_CheckedChanged( object sender, EventArgs e )
+        private void chkRenderAbovePlayer_CheckedChanged(object sender, EventArgs e)
         {
             mEditorItem.Lower.AlternateRenderLayer = chkRenderAbovePlayer.Checked;
         }
 
-        private void chkRenderBelowFringe_CheckedChanged( object sender, EventArgs e )
+        private void chkRenderBelowFringe_CheckedChanged(object sender, EventArgs e)
         {
             mEditorItem.Upper.AlternateRenderLayer = chkRenderBelowFringe.Checked;
         }
@@ -809,7 +809,7 @@ namespace Intersect.Editor.Forms.Editors
         {
             var selectedId = Guid.Empty;
             var folderNodes = new Dictionary<string, TreeNode>();
-            if( lstAnimations.SelectedNode != null && lstAnimations.SelectedNode.Tag != null )
+            if (lstAnimations.SelectedNode != null && lstAnimations.SelectedNode.Tag != null)
             {
                 selectedId = (Guid)lstAnimations.SelectedNode.Tag;
             }
@@ -818,15 +818,15 @@ namespace Intersect.Editor.Forms.Editors
 
             //Collect folders
             var mFolders = new List<string>();
-            foreach( var anim in AnimationBase.Lookup )
+            foreach (var anim in AnimationBase.Lookup)
             {
-                if( !string.IsNullOrEmpty( ( (AnimationBase)anim.Value ).Folder ) &&
-                    !mFolders.Contains( ( (AnimationBase)anim.Value ).Folder ) )
+                if (!string.IsNullOrEmpty(((AnimationBase)anim.Value).Folder) &&
+                    !mFolders.Contains(((AnimationBase)anim.Value).Folder))
                 {
-                    mFolders.Add( ( (AnimationBase)anim.Value ).Folder );
-                    if( !mKnownFolders.Contains( ( (AnimationBase)anim.Value ).Folder ) )
+                    mFolders.Add(((AnimationBase)anim.Value).Folder);
+                    if (!mKnownFolders.Contains(((AnimationBase)anim.Value).Folder))
                     {
-                        mKnownFolders.Add( ( (AnimationBase)anim.Value ).Folder );
+                        mKnownFolders.Add(((AnimationBase)anim.Value).Folder);
                     }
                 }
             }
@@ -834,53 +834,53 @@ namespace Intersect.Editor.Forms.Editors
             mFolders.Sort();
             mKnownFolders.Sort();
             cmbFolder.Items.Clear();
-            cmbFolder.Items.Add( "" );
-            cmbFolder.Items.AddRange( mKnownFolders.ToArray() );
+            cmbFolder.Items.Add("");
+            cmbFolder.Items.AddRange(mKnownFolders.ToArray());
 
             lstAnimations.Sorted = !btnChronological.Checked;
 
-            if( !btnChronological.Checked && !CustomSearch() )
+            if (!btnChronological.Checked && !CustomSearch())
             {
-                foreach( var folder in mFolders )
+                foreach (var folder in mFolders)
                 {
-                    var node = lstAnimations.Nodes.Add( folder );
+                    var node = lstAnimations.Nodes.Add(folder);
                     node.ImageIndex = 0;
                     node.SelectedImageIndex = 0;
-                    folderNodes.Add( folder, node );
+                    folderNodes.Add(folder, node);
                 }
             }
 
-            foreach( var itm in AnimationBase.ItemPairs )
+            foreach (var itm in AnimationBase.ItemPairs)
             {
-                var node = new TreeNode( itm.Value );
+                var node = new TreeNode(itm.Value);
                 node.Tag = itm.Key;
                 node.ImageIndex = 1;
                 node.SelectedImageIndex = 1;
 
-                var folder = AnimationBase.Get( itm.Key ).Folder;
-                if( !string.IsNullOrEmpty( folder ) && !btnChronological.Checked && !CustomSearch() )
+                var folder = AnimationBase.Get(itm.Key).Folder;
+                if (!string.IsNullOrEmpty(folder) && !btnChronological.Checked && !CustomSearch())
                 {
                     var folderNode = folderNodes[folder];
-                    folderNode.Nodes.Add( node );
-                    if( itm.Key == selectedId )
+                    folderNode.Nodes.Add(node);
+                    if (itm.Key == selectedId)
                     {
                         folderNode.Expand();
                     }
                 }
                 else
                 {
-                    lstAnimations.Nodes.Add( node );
+                    lstAnimations.Nodes.Add(node);
                 }
 
-                if( CustomSearch() )
+                if (CustomSearch())
                 {
-                    if( !node.Text.ToLower().Contains( txtSearch.Text.ToLower() ) )
+                    if (!node.Text.ToLower().Contains(txtSearch.Text.ToLower()))
                     {
                         node.Remove();
                     }
                 }
 
-                if( itm.Key == selectedId )
+                if (itm.Key == selectedId)
                 {
                     lstAnimations.SelectedNode = node;
                 }
@@ -888,22 +888,22 @@ namespace Intersect.Editor.Forms.Editors
 
             var selectedNode = lstAnimations.SelectedNode;
 
-            if( !btnChronological.Checked )
+            if (!btnChronological.Checked)
             {
                 lstAnimations.Sort();
             }
 
             lstAnimations.SelectedNode = selectedNode;
-            foreach( var node in mExpandedFolders )
+            foreach (var node in mExpandedFolders)
             {
-                if( folderNodes.ContainsKey( node ) )
+                if (folderNodes.ContainsKey(node))
                 {
                     folderNodes[node].Expand();
                 }
             }
         }
 
-        private void btnAddFolder_Click( object sender, EventArgs e )
+        private void btnAddFolder_Click(object sender, EventArgs e)
         {
             var folderName = "";
             var result = DarkInputBox.ShowInformation(
@@ -911,37 +911,37 @@ namespace Intersect.Editor.Forms.Editors
                 DarkDialogButton.OkCancel
             );
 
-            if( result == DialogResult.OK && !string.IsNullOrEmpty( folderName ) )
+            if (result == DialogResult.OK && !string.IsNullOrEmpty(folderName))
             {
-                if( !cmbFolder.Items.Contains( folderName ) )
+                if (!cmbFolder.Items.Contains(folderName))
                 {
                     mEditorItem.Folder = folderName;
-                    mExpandedFolders.Add( folderName );
+                    mExpandedFolders.Add(folderName);
                     InitEditor();
                     cmbFolder.Text = folderName;
                 }
             }
         }
 
-        private void lstAnimations_NodeMouseClick( object sender, TreeNodeMouseClickEventArgs e )
+        private void lstAnimations_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             var node = e.Node;
-            if( node != null )
+            if (node != null)
             {
-                if( e.Button == MouseButtons.Right )
+                if (e.Button == MouseButtons.Right)
                 {
-                    if( e.Node.Tag != null && e.Node.Tag.GetType() == typeof( Guid ) )
+                    if (e.Node.Tag != null && e.Node.Tag.GetType() == typeof(Guid))
                     {
-                        Clipboard.SetText( e.Node.Tag.ToString() );
+                        Clipboard.SetText(e.Node.Tag.ToString());
                     }
                 }
 
-                var hitTest = lstAnimations.HitTest( e.Location );
-                if( hitTest.Location != TreeViewHitTestLocations.PlusMinus )
+                var hitTest = lstAnimations.HitTest(e.Location);
+                if (hitTest.Location != TreeViewHitTestLocations.PlusMinus)
                 {
-                    if( node.Nodes.Count > 0 )
+                    if (node.Nodes.Count > 0)
                     {
-                        if( node.IsExpanded )
+                        if (node.IsExpanded)
                         {
                             node.Collapse();
                         }
@@ -952,84 +952,84 @@ namespace Intersect.Editor.Forms.Editors
                     }
                 }
 
-                if( node.IsExpanded )
+                if (node.IsExpanded)
                 {
-                    if( !mExpandedFolders.Contains( node.Text ) )
+                    if (!mExpandedFolders.Contains(node.Text))
                     {
-                        mExpandedFolders.Add( node.Text );
+                        mExpandedFolders.Add(node.Text);
                     }
                 }
                 else
                 {
-                    if( mExpandedFolders.Contains( node.Text ) )
+                    if (mExpandedFolders.Contains(node.Text))
                     {
-                        mExpandedFolders.Remove( node.Text );
+                        mExpandedFolders.Remove(node.Text);
                     }
                 }
             }
         }
 
-        private void lstAnimations_AfterSelect( object sender, TreeViewEventArgs e )
+        private void lstAnimations_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if( mChangingName )
+            if (mChangingName)
             {
                 return;
             }
 
-            if( lstAnimations.SelectedNode == null || lstAnimations.SelectedNode.Tag == null )
+            if (lstAnimations.SelectedNode == null || lstAnimations.SelectedNode.Tag == null)
             {
                 return;
             }
 
-            mEditorItem = AnimationBase.Get( (Guid)lstAnimations.SelectedNode.Tag );
+            mEditorItem = AnimationBase.Get((Guid)lstAnimations.SelectedNode.Tag);
             UpdateEditor();
         }
 
-        private void cmbFolder_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbFolder_SelectedIndexChanged(object sender, EventArgs e)
         {
             mEditorItem.Folder = cmbFolder.Text;
             InitEditor();
         }
 
-        private void btnChronological_Click( object sender, EventArgs e )
+        private void btnChronological_Click(object sender, EventArgs e)
         {
             btnChronological.Checked = !btnChronological.Checked;
             InitEditor();
         }
 
-        private void txtSearch_TextChanged( object sender, EventArgs e )
+        private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             InitEditor();
         }
 
-        private void txtSearch_Leave( object sender, EventArgs e )
+        private void txtSearch_Leave(object sender, EventArgs e)
         {
-            if( string.IsNullOrWhiteSpace( txtSearch.Text ) )
+            if (string.IsNullOrWhiteSpace(txtSearch.Text))
             {
                 txtSearch.Text = Strings.AnimationEditor.searchplaceholder;
             }
         }
 
-        private void txtSearch_Enter( object sender, EventArgs e )
+        private void txtSearch_Enter(object sender, EventArgs e)
         {
             txtSearch.SelectAll();
             txtSearch.Focus();
         }
 
-        private void btnClearSearch_Click( object sender, EventArgs e )
+        private void btnClearSearch_Click(object sender, EventArgs e)
         {
             txtSearch.Text = Strings.AnimationEditor.searchplaceholder;
         }
 
         private bool CustomSearch()
         {
-            return !string.IsNullOrWhiteSpace( txtSearch.Text ) &&
+            return !string.IsNullOrWhiteSpace(txtSearch.Text) &&
                    txtSearch.Text != Strings.AnimationEditor.searchplaceholder;
         }
 
-        private void txtSearch_Click( object sender, EventArgs e )
+        private void txtSearch_Click(object sender, EventArgs e)
         {
-            if( txtSearch.Text == Strings.AnimationEditor.searchplaceholder )
+            if (txtSearch.Text == Strings.AnimationEditor.searchplaceholder)
             {
                 txtSearch.SelectAll();
             }

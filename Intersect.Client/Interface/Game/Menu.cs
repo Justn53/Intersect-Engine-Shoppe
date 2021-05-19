@@ -75,69 +75,69 @@ namespace Intersect.Client.Interface.Game
         private Canvas mGameCanvas;
 
         //Init
-        public Menu( Canvas gameCanvas )
+        public Menu(Canvas gameCanvas)
         {
             mGameCanvas = gameCanvas;
 
-            mMenuContainer = new ImagePanel( gameCanvas, "MenuContainer" );
+            mMenuContainer = new ImagePanel(gameCanvas, "MenuContainer");
             mMenuContainer.ShouldCacheToTexture = true;
 
-            mInventoryBackground = new ImagePanel( mMenuContainer, "InventoryContainer" );
-            mInventoryButton = new Button( mInventoryBackground, "InventoryButton" );
-            mInventoryButton.SetToolTipText( Strings.GameMenu.items );
+            mInventoryBackground = new ImagePanel(mMenuContainer, "InventoryContainer");
+            mInventoryButton = new Button(mInventoryBackground, "InventoryButton");
+            mInventoryButton.SetToolTipText(Strings.GameMenu.items);
             mInventoryButton.Clicked += InventoryButton_Clicked;
 
-            mSpellsBackground = new ImagePanel( mMenuContainer, "SpellsContainer" );
-            mSpellsButton = new Button( mSpellsBackground, "SpellsButton" );
-            mSpellsButton.SetToolTipText( Strings.GameMenu.spells );
+            mSpellsBackground = new ImagePanel(mMenuContainer, "SpellsContainer");
+            mSpellsButton = new Button(mSpellsBackground, "SpellsButton");
+            mSpellsButton.SetToolTipText(Strings.GameMenu.spells);
             mSpellsButton.Clicked += SpellsButton_Clicked;
 
-            mCharacterBackground = new ImagePanel( mMenuContainer, "CharacterContainer" );
-            mCharacterButton = new Button( mCharacterBackground, "CharacterButton" );
-            mCharacterButton.SetToolTipText( Strings.GameMenu.character );
+            mCharacterBackground = new ImagePanel(mMenuContainer, "CharacterContainer");
+            mCharacterButton = new Button(mCharacterBackground, "CharacterButton");
+            mCharacterButton.SetToolTipText(Strings.GameMenu.character);
             mCharacterButton.Clicked += CharacterButton_Clicked;
 
-            mQuestsBackground = new ImagePanel( mMenuContainer, "QuestsContainer" );
-            mQuestsButton = new Button( mQuestsBackground, "QuestsButton" );
-            mQuestsButton.SetToolTipText( Strings.GameMenu.quest );
+            mQuestsBackground = new ImagePanel(mMenuContainer, "QuestsContainer");
+            mQuestsButton = new Button(mQuestsBackground, "QuestsButton");
+            mQuestsButton.SetToolTipText(Strings.GameMenu.quest);
             mQuestsButton.Clicked += QuestBtn_Clicked;
 
-            mFriendsBackground = new ImagePanel( mMenuContainer, "FriendsContainer" );
-            mFriendsButton = new Button( mFriendsBackground, "FriendsButton" );
-            mFriendsButton.SetToolTipText( Strings.GameMenu.friends );
+            mFriendsBackground = new ImagePanel(mMenuContainer, "FriendsContainer");
+            mFriendsButton = new Button(mFriendsBackground, "FriendsButton");
+            mFriendsButton.SetToolTipText(Strings.GameMenu.friends);
             mFriendsButton.Clicked += FriendsBtn_Clicked;
 
-            mPartyBackground = new ImagePanel( mMenuContainer, "PartyContainer" );
-            mPartyButton = new Button( mPartyBackground, "PartyButton" );
-            mPartyButton.SetToolTipText( Strings.GameMenu.party );
+            mPartyBackground = new ImagePanel(mMenuContainer, "PartyContainer");
+            mPartyButton = new Button(mPartyBackground, "PartyButton");
+            mPartyButton.SetToolTipText(Strings.GameMenu.party);
             mPartyButton.Clicked += PartyBtn_Clicked;
 
-            mMenuBackground = new ImagePanel( mMenuContainer, "MenuContainer" );
-            mMenuButton = new Button( mMenuBackground, "MenuButton" );
-            mMenuButton.SetToolTipText( Strings.GameMenu.Menu );
+            mMenuBackground = new ImagePanel(mMenuContainer, "MenuContainer");
+            mMenuButton = new Button(mMenuBackground, "MenuButton");
+            mMenuButton.SetToolTipText(Strings.GameMenu.Menu);
             mMenuButton.Clicked += MenuButtonClicked;
 
-            mMenuContainer.LoadJsonUi( GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString() );
+            mMenuContainer.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
 
             //Assign Window References
-            mPartyWindow = new PartyWindow( gameCanvas );
-            mFriendsWindow = new FriendsWindow( gameCanvas );
-            mInventoryWindow = new InventoryWindow( gameCanvas );
-            mSpellsWindow = new SpellsWindow( gameCanvas );
-            mCharacterWindow = new CharacterWindow( gameCanvas );
-            mQuestsWindow = new QuestsWindow( gameCanvas );
-            mMapItemWindow = new MapItemWindow( gameCanvas );
+            mPartyWindow = new PartyWindow(gameCanvas);
+            mFriendsWindow = new FriendsWindow(gameCanvas);
+            mInventoryWindow = new InventoryWindow(gameCanvas);
+            mSpellsWindow = new SpellsWindow(gameCanvas);
+            mCharacterWindow = new CharacterWindow(gameCanvas);
+            mQuestsWindow = new QuestsWindow(gameCanvas);
+            mMapItemWindow = new MapItemWindow(gameCanvas);
         }
 
         //Methods
-        public void Update( bool updateQuestLog )
+        public void Update(bool updateQuestLog)
         {
             mInventoryWindow.Update();
             mSpellsWindow.Update();
             mCharacterWindow.Update();
             mPartyWindow.Update();
             mFriendsWindow.Update();
-            mQuestsWindow.Update( updateQuestLog );
+            mQuestsWindow.Update(updateQuestLog);
             mMapItemWindow.Update();
         }
 
@@ -148,7 +148,7 @@ namespace Intersect.Client.Interface.Game
 
         public void HideWindows()
         {
-            if( !Globals.Database.HideOthersOnWindowOpen )
+            if (!Globals.Database.HideOthersOnWindowOpen)
             {
                 return;
             }
@@ -163,7 +163,7 @@ namespace Intersect.Client.Interface.Game
 
         public void ToggleCharacterWindow()
         {
-            if( mCharacterWindow.IsVisible() )
+            if (mCharacterWindow.IsVisible())
             {
                 mCharacterWindow.Hide();
             }
@@ -176,7 +176,7 @@ namespace Intersect.Client.Interface.Game
 
         public bool ToggleFriendsWindow()
         {
-            if( mFriendsWindow.IsVisible() )
+            if (mFriendsWindow.IsVisible())
             {
                 mFriendsWindow.Hide();
             }
@@ -193,7 +193,7 @@ namespace Intersect.Client.Interface.Game
 
         public void ToggleInventoryWindow()
         {
-            if( mInventoryWindow.IsVisible() )
+            if (mInventoryWindow.IsVisible())
             {
                 mInventoryWindow.Hide();
             }
@@ -216,7 +216,7 @@ namespace Intersect.Client.Interface.Game
 
         public void TogglePartyWindow()
         {
-            if( mPartyWindow.IsVisible() )
+            if (mPartyWindow.IsVisible())
             {
                 mPartyWindow.Hide();
             }
@@ -229,7 +229,7 @@ namespace Intersect.Client.Interface.Game
 
         public void ToggleQuestsWindow()
         {
-            if( mQuestsWindow.IsVisible() )
+            if (mQuestsWindow.IsVisible())
             {
                 mQuestsWindow.Hide();
             }
@@ -242,7 +242,7 @@ namespace Intersect.Client.Interface.Game
 
         public void ToggleSpellsWindow()
         {
-            if( mSpellsWindow.IsVisible() )
+            if (mSpellsWindow.IsVisible())
             {
                 mSpellsWindow.Hide();
             }
@@ -272,32 +272,32 @@ namespace Intersect.Client.Interface.Game
         {
             var windowsOpen = false;
 
-            if( mCharacterWindow.IsVisible() )
+            if (mCharacterWindow.IsVisible())
             {
                 windowsOpen = true;
             }
 
-            if( mFriendsWindow.IsVisible() )
+            if (mFriendsWindow.IsVisible())
             {
                 windowsOpen = true;
             }
 
-            if( mInventoryWindow.IsVisible() )
+            if (mInventoryWindow.IsVisible())
             {
                 windowsOpen = true;
             }
 
-            if( mQuestsWindow.IsVisible() )
+            if (mQuestsWindow.IsVisible())
             {
                 windowsOpen = true;
             }
 
-            if( mSpellsWindow.IsVisible() )
+            if (mSpellsWindow.IsVisible())
             {
                 windowsOpen = true;
             }
 
-            if( mPartyWindow.IsVisible() )
+            if (mPartyWindow.IsVisible())
             {
                 windowsOpen = true;
             }
@@ -306,37 +306,37 @@ namespace Intersect.Client.Interface.Game
         }
 
         //Input Handlers
-        private static void MenuButtonClicked( Base sender, ClickedEventArgs arguments )
+        private static void MenuButtonClicked(Base sender, ClickedEventArgs arguments)
         {
             Interface.GameUi?.EscapeMenu?.ToggleHidden();
         }
 
-        private void PartyBtn_Clicked( Base sender, ClickedEventArgs arguments )
+        private void PartyBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
             TogglePartyWindow();
         }
 
-        private void FriendsBtn_Clicked( Base sender, ClickedEventArgs arguments )
+        private void FriendsBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
             ToggleFriendsWindow();
         }
 
-        private void QuestBtn_Clicked( Base sender, ClickedEventArgs arguments )
+        private void QuestBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
             ToggleQuestsWindow();
         }
 
-        private void InventoryButton_Clicked( Base sender, ClickedEventArgs arguments )
+        private void InventoryButton_Clicked(Base sender, ClickedEventArgs arguments)
         {
             ToggleInventoryWindow();
         }
 
-        private void SpellsButton_Clicked( Base sender, ClickedEventArgs arguments )
+        private void SpellsButton_Clicked(Base sender, ClickedEventArgs arguments)
         {
             ToggleSpellsWindow();
         }
 
-        private void CharacterButton_Clicked( Base sender, ClickedEventArgs arguments )
+        private void CharacterButton_Clicked(Base sender, ClickedEventArgs arguments)
         {
             ToggleCharacterWindow();
         }

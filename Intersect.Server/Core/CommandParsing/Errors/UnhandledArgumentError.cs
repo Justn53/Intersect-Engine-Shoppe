@@ -10,7 +10,7 @@ namespace Intersect.Server.Core.CommandParsing.Errors
             string commandName,
             string argumentName,
             string message
-        ) : base( message )
+        ) : base(message)
         {
             CommandName = commandName;
             ArgumentName = argumentName;
@@ -21,7 +21,7 @@ namespace Intersect.Server.Core.CommandParsing.Errors
             int position,
             string value,
             string message
-        ) : base( message )
+        ) : base(message)
         {
             CommandName = commandName;
             Position = position;
@@ -36,7 +36,7 @@ namespace Intersect.Server.Core.CommandParsing.Errors
 
         public string Value { get; }
 
-        public bool Positional => string.IsNullOrWhiteSpace( ArgumentName );
+        public bool Positional => string.IsNullOrWhiteSpace(ArgumentName);
 
         public static UnhandledArgumentError Create(
             string commandName,
@@ -44,7 +44,7 @@ namespace Intersect.Server.Core.CommandParsing.Errors
             LocalizedString message
         )
         {
-            return new UnhandledArgumentError( commandName, argumentName, message.ToString( argumentName, commandName ) );
+            return new UnhandledArgumentError(commandName, argumentName, message.ToString(argumentName, commandName));
         }
 
         public static UnhandledArgumentError Create(
@@ -55,7 +55,7 @@ namespace Intersect.Server.Core.CommandParsing.Errors
         )
         {
             return new UnhandledArgumentError(
-                commandName, position, argumentValue, message.ToString( argumentValue, position, commandName )
+                commandName, position, argumentValue, message.ToString(argumentValue, position, commandName)
             );
         }
 

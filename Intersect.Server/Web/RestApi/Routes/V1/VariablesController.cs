@@ -11,19 +11,19 @@ using Intersect.Server.Web.RestApi.Payloads;
 namespace Intersect.Server.Web.RestApi.Routes.V1
 {
 
-    [RoutePrefix( "variables" )]
+    [RoutePrefix("variables")]
     [ConfigurableAuthorize]
     public sealed class VariablesController : ApiController
     {
 
-        [Route( "global" )]
+        [Route("global")]
         [HttpPost]
-        public object GlobalVariablesGet( [FromBody] PagingInfo pageInfo )
+        public object GlobalVariablesGet([FromBody] PagingInfo pageInfo)
         {
-            pageInfo.Page = Math.Max( pageInfo.Page, 0 );
-            pageInfo.Count = Math.Max( Math.Min( pageInfo.Count, 100 ), 5 );
+            pageInfo.Page = Math.Max(pageInfo.Page, 0);
+            pageInfo.Count = Math.Max(Math.Min(pageInfo.Count, 100), 5);
 
-            var entries = GameContext.Queries.ServerVariables( pageInfo.Page, pageInfo.Count )?.ToList();
+            var entries = GameContext.Queries.ServerVariables(pageInfo.Page, pageInfo.Count)?.ToList();
 
             return new
             {
@@ -34,39 +34,39 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
             };
         }
 
-        [Route( "global/{guid:guid}" )]
+        [Route("global/{guid:guid}")]
         [HttpGet]
-        public object GlobalVariableGet( Guid guid )
+        public object GlobalVariableGet(Guid guid)
         {
-            if( Guid.Empty == guid )
+            if (Guid.Empty == guid)
             {
-                return Request.CreateErrorResponse( HttpStatusCode.BadRequest, @"Invalid global variable id." );
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, @"Invalid global variable id.");
             }
 
-            var variable = GameContext.Queries.ServerVariableById( guid );
+            var variable = GameContext.Queries.ServerVariableById(guid);
 
-            if( variable == null )
+            if (variable == null)
             {
-                return Request.CreateErrorResponse( HttpStatusCode.NotFound, $@"No global variable with id '{guid}'." );
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, $@"No global variable with id '{guid}'.");
             }
 
             return variable;
         }
 
-        [Route( "global/{guid:guid}/value" )]
+        [Route("global/{guid:guid}/value")]
         [HttpGet]
-        public object GlobalVariableGetValue( Guid guid )
+        public object GlobalVariableGetValue(Guid guid)
         {
-            if( Guid.Empty == guid )
+            if (Guid.Empty == guid)
             {
-                return Request.CreateErrorResponse( HttpStatusCode.BadRequest, @"Invalid global variable id." );
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, @"Invalid global variable id.");
             }
 
-            var variable = GameContext.Queries.ServerVariableById( guid );
+            var variable = GameContext.Queries.ServerVariableById(guid);
 
-            if( variable == null )
+            if (variable == null)
             {
-                return Request.CreateErrorResponse( HttpStatusCode.NotFound, $@"No global variable with id '{guid}'." );
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, $@"No global variable with id '{guid}'.");
             }
 
             return new
@@ -75,20 +75,20 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
             };
         }
 
-        [Route( "global/{guid:guid}" )]
+        [Route("global/{guid:guid}")]
         [HttpPost]
-        public object GlobalVariableSet( Guid guid, [FromBody] VariableValue value )
+        public object GlobalVariableSet(Guid guid, [FromBody] VariableValue value)
         {
-            if( Guid.Empty == guid )
+            if (Guid.Empty == guid)
             {
-                return Request.CreateErrorResponse( HttpStatusCode.BadRequest, @"Invalid global variable id." );
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, @"Invalid global variable id.");
             }
 
-            var variable = GameContext.Queries.ServerVariableById( guid );
+            var variable = GameContext.Queries.ServerVariableById(guid);
 
-            if( variable == null )
+            if (variable == null)
             {
-                return Request.CreateErrorResponse( HttpStatusCode.NotFound, $@"No global variable with id '{guid}'." );
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, $@"No global variable with id '{guid}'.");
             }
 
             variable.Value.Value = value.Value;

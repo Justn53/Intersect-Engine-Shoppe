@@ -13,7 +13,7 @@ namespace Intersect.Security
     public class ApiVisibilityAttribute : Attribute
     {
 
-        public ApiVisibilityAttribute( ApiVisibility visibility )
+        public ApiVisibilityAttribute(ApiVisibility visibility)
         {
             Visibility = visibility;
         }

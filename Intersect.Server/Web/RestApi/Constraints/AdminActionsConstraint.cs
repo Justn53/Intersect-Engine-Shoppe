@@ -20,14 +20,14 @@ namespace Intersect.Server.Web.RestApi.Constraints
             HttpRouteDirection routeDirection
         )
         {
-            if( !values.TryGetValue( parameterName, out var value ) || value == null )
+            if (!values.TryGetValue(parameterName, out var value) || value == null)
             {
                 return false;
             }
 
-            var stringValue = value as string ?? Convert.ToString( value );
+            var stringValue = value as string ?? Convert.ToString(value);
 
-            return Enum.TryParse<AdminActions>( stringValue, out _ );
+            return Enum.TryParse<AdminActions>(stringValue, out _);
         }
 
     }

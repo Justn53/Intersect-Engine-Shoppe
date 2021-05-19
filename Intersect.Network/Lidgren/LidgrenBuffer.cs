@@ -11,7 +11,7 @@ namespace Intersect.Network.Lidgren
     public class LidgrenBuffer : IBuffer
     {
 
-        public LidgrenBuffer( NetBuffer buffer )
+        public LidgrenBuffer(NetBuffer buffer)
         {
             Buffer = buffer;
         }
@@ -30,15 +30,15 @@ namespace Intersect.Network.Lidgren
 
         public byte[] ToBytes()
         {
-            return Buffer?.ReadBytes( (int)Length );
+            return Buffer?.ReadBytes((int)Length);
         }
 
-        public bool Has( long bytes )
+        public bool Has(long bytes)
         {
             return bytes <= Remaining;
         }
 
-        public bool Read( out bool value )
+        public bool Read(out bool value)
         {
             try
             {
@@ -47,15 +47,15 @@ namespace Intersect.Network.Lidgren
 
                 return true;
             }
-            catch( Exception )
+            catch (Exception)
             {
-                value = default( bool );
+                value = default(bool);
 
                 return false;
             }
         }
 
-        public bool Read( out byte value )
+        public bool Read(out byte value)
         {
             try
             {
@@ -64,93 +64,93 @@ namespace Intersect.Network.Lidgren
 
                 return true;
             }
-            catch( Exception )
+            catch (Exception)
             {
-                value = default( byte );
+                value = default(byte);
 
                 return false;
             }
         }
 
-        public bool Read( out byte[] value )
+        public bool Read(out byte[] value)
         {
-            if( Read( out int count ) )
+            if (Read(out int count))
             {
-                return Read( out value, count );
+                return Read(out value, count);
             }
 
-            value = default( byte[] );
+            value = default(byte[]);
 
             return false;
         }
 
-        public bool Read( out byte[] value, long count )
+        public bool Read(out byte[] value, long count)
         {
             value = new byte[count];
 
-            return count < 1 || Read( ref value, 0, count );
+            return count < 1 || Read(ref value, 0, count);
         }
 
-        public bool Read( ref byte[] value, long offset, long count )
+        public bool Read(ref byte[] value, long offset, long count)
         {
             try
             {
                 // ReSharper disable once PossibleNullReferenceException
-                Buffer.ReadBytes( value, (int)offset, (int)count );
+                Buffer.ReadBytes(value, (int)offset, (int)count);
 
                 return true;
             }
-            catch( Exception )
+            catch (Exception)
             {
                 return false;
             }
         }
 
-        public bool Read( out char value )
+        public bool Read(out char value)
         {
-            if( Has( sizeof( char ) ) && Read( out var bytes, sizeof( char ) ) )
+            if (Has(sizeof(char)) && Read(out var bytes, sizeof(char)))
             {
-                value = BitConverter.ToChar( bytes, 0 );
+                value = BitConverter.ToChar(bytes, 0);
 
                 return true;
             }
 
-            value = default( char );
+            value = default(char);
 
             return false;
         }
 
-        public bool Read( out decimal value )
+        public bool Read(out decimal value)
         {
-            value = default( decimal );
+            value = default(decimal);
 
             var bits = new int[4];
-            if( !Read( out bits[0] ) )
+            if (!Read(out bits[0]))
             {
                 return false;
             }
 
-            if( !Read( out bits[1] ) )
+            if (!Read(out bits[1]))
             {
                 return false;
             }
 
-            if( !Read( out bits[2] ) )
+            if (!Read(out bits[2]))
             {
                 return false;
             }
 
-            if( !Read( out bits[3] ) )
+            if (!Read(out bits[3]))
             {
                 return false;
             }
 
-            value = new decimal( bits );
+            value = new decimal(bits);
 
             return true;
         }
 
-        public bool Read( out double value )
+        public bool Read(out double value)
         {
             try
             {
@@ -159,15 +159,15 @@ namespace Intersect.Network.Lidgren
 
                 return true;
             }
-            catch( Exception )
+            catch (Exception)
             {
-                value = default( double );
+                value = default(double);
 
                 return false;
             }
         }
 
-        public bool Read( out float value )
+        public bool Read(out float value)
         {
             try
             {
@@ -176,15 +176,15 @@ namespace Intersect.Network.Lidgren
 
                 return true;
             }
-            catch( Exception )
+            catch (Exception)
             {
-                value = default( float );
+                value = default(float);
 
                 return false;
             }
         }
 
-        public bool Read( out int value )
+        public bool Read(out int value)
         {
             try
             {
@@ -193,15 +193,15 @@ namespace Intersect.Network.Lidgren
 
                 return true;
             }
-            catch( Exception )
+            catch (Exception)
             {
-                value = default( int );
+                value = default(int);
 
                 return false;
             }
         }
 
-        public bool Read( out long value )
+        public bool Read(out long value)
         {
             try
             {
@@ -210,15 +210,15 @@ namespace Intersect.Network.Lidgren
 
                 return true;
             }
-            catch( Exception )
+            catch (Exception)
             {
-                value = default( long );
+                value = default(long);
 
                 return false;
             }
         }
 
-        public bool Read( out sbyte value )
+        public bool Read(out sbyte value)
         {
             try
             {
@@ -227,15 +227,15 @@ namespace Intersect.Network.Lidgren
 
                 return true;
             }
-            catch( Exception )
+            catch (Exception)
             {
-                value = default( sbyte );
+                value = default(sbyte);
 
                 return false;
             }
         }
 
-        public bool Read( out short value )
+        public bool Read(out short value)
         {
             try
             {
@@ -244,34 +244,34 @@ namespace Intersect.Network.Lidgren
 
                 return true;
             }
-            catch( Exception )
+            catch (Exception)
             {
-                value = default( short );
+                value = default(short);
 
                 return false;
             }
         }
 
-        public bool Read( out string value )
+        public bool Read(out string value)
         {
-            return Read( out value, Encoding.UTF8 );
+            return Read(out value, Encoding.UTF8);
         }
 
-        public bool Read( out string value, Encoding encoding, bool nullTerminated = false )
+        public bool Read(out string value, Encoding encoding, bool nullTerminated = false)
         {
-            if( encoding == null )
+            if (encoding == null)
             {
                 throw new ArgumentNullException();
             }
 
             int length;
-            if( nullTerminated )
+            if (nullTerminated)
             {
                 var position = Buffer?.PositionInBytes ?? int.MaxValue;
                 var buffer = Buffer?.PeekDataBuffer() ?? Array.Empty<byte>();
-                while( Buffer?.LengthBytes - position > 0 )
+                while (Buffer?.LengthBytes - position > 0)
                 {
-                    if( buffer[position] == 0 )
+                    if (buffer[position] == 0)
                     {
                         break;
                     }
@@ -281,14 +281,14 @@ namespace Intersect.Network.Lidgren
 
                 length = Buffer?.LengthBytes - Buffer?.PositionInBytes ?? -1;
             }
-            else if( !Read( out length ) )
+            else if (!Read(out length))
             {
-                value = default( string );
+                value = default(string);
 
                 return false;
             }
 
-            switch( length )
+            switch (length)
             {
                 case 0:
                     value = "";
@@ -301,7 +301,7 @@ namespace Intersect.Network.Lidgren
                     break;
 
                 default:
-                    value = Read( out var bytes, length ) ? encoding.GetString( bytes, 0, length ) : null;
+                    value = Read(out var bytes, length) ? encoding.GetString(bytes, 0, length) : null;
 
                     break;
             }
@@ -309,7 +309,7 @@ namespace Intersect.Network.Lidgren
             return true;
         }
 
-        public bool Read( out uint value )
+        public bool Read(out uint value)
         {
             try
             {
@@ -318,15 +318,15 @@ namespace Intersect.Network.Lidgren
 
                 return true;
             }
-            catch( Exception )
+            catch (Exception)
             {
-                value = default( uint );
+                value = default(uint);
 
                 return false;
             }
         }
 
-        public bool Read( out ulong value )
+        public bool Read(out ulong value)
         {
             try
             {
@@ -335,15 +335,15 @@ namespace Intersect.Network.Lidgren
 
                 return true;
             }
-            catch( Exception )
+            catch (Exception)
             {
-                value = default( ulong );
+                value = default(ulong);
 
                 return false;
             }
         }
 
-        public bool Read( out ushort value )
+        public bool Read(out ushort value)
         {
             try
             {
@@ -352,9 +352,9 @@ namespace Intersect.Network.Lidgren
 
                 return true;
             }
-            catch( Exception )
+            catch (Exception)
             {
-                value = default( ushort );
+                value = default(ushort);
 
                 return false;
             }
@@ -362,7 +362,7 @@ namespace Intersect.Network.Lidgren
 
         public bool ReadBool()
         {
-            if( Read( out bool value ) )
+            if (Read(out bool value))
             {
                 return value;
             }
@@ -372,7 +372,7 @@ namespace Intersect.Network.Lidgren
 
         public bool ReadBoolean()
         {
-            if( Read( out bool value ) )
+            if (Read(out bool value))
             {
                 return value;
             }
@@ -382,7 +382,7 @@ namespace Intersect.Network.Lidgren
 
         public byte ReadByte()
         {
-            if( Read( out byte value ) )
+            if (Read(out byte value))
             {
                 return value;
             }
@@ -392,7 +392,7 @@ namespace Intersect.Network.Lidgren
 
         public byte ReadUInt8()
         {
-            if( Read( out byte value ) )
+            if (Read(out byte value))
             {
                 return value;
             }
@@ -402,7 +402,7 @@ namespace Intersect.Network.Lidgren
 
         public byte[] ReadBytes()
         {
-            if( Read( out byte[] value ) )
+            if (Read(out byte[] value))
             {
                 return value;
             }
@@ -410,9 +410,9 @@ namespace Intersect.Network.Lidgren
             throw new OutOfMemoryException();
         }
 
-        public byte[] ReadBytes( long count )
+        public byte[] ReadBytes(long count)
         {
-            if( Read( out var value, count ) )
+            if (Read(out var value, count))
             {
                 return value;
             }
@@ -420,9 +420,9 @@ namespace Intersect.Network.Lidgren
             throw new OutOfMemoryException();
         }
 
-        public byte[] ReadBytes( ref byte[] bytes, long offset, long count )
+        public byte[] ReadBytes(ref byte[] bytes, long offset, long count)
         {
-            if( Read( ref bytes, offset, count ) )
+            if (Read(ref bytes, offset, count))
             {
                 return bytes;
             }
@@ -432,7 +432,7 @@ namespace Intersect.Network.Lidgren
 
         public char ReadChar()
         {
-            if( Read( out char value ) )
+            if (Read(out char value))
             {
                 return value;
             }
@@ -442,7 +442,7 @@ namespace Intersect.Network.Lidgren
 
         public char ReadCharacter()
         {
-            if( Read( out char value ) )
+            if (Read(out char value))
             {
                 return value;
             }
@@ -452,7 +452,7 @@ namespace Intersect.Network.Lidgren
 
         public decimal ReadDecimal()
         {
-            if( Read( out decimal value ) )
+            if (Read(out decimal value))
             {
                 return value;
             }
@@ -462,7 +462,7 @@ namespace Intersect.Network.Lidgren
 
         public double ReadDouble()
         {
-            if( Read( out double value ) )
+            if (Read(out double value))
             {
                 return value;
             }
@@ -472,7 +472,7 @@ namespace Intersect.Network.Lidgren
 
         public float ReadFloat()
         {
-            if( Read( out float value ) )
+            if (Read(out float value))
             {
                 return value;
             }
@@ -482,7 +482,7 @@ namespace Intersect.Network.Lidgren
 
         public float ReadSingle()
         {
-            if( Read( out float value ) )
+            if (Read(out float value))
             {
                 return value;
             }
@@ -492,7 +492,7 @@ namespace Intersect.Network.Lidgren
 
         public int ReadInt()
         {
-            if( Read( out int value ) )
+            if (Read(out int value))
             {
                 return value;
             }
@@ -502,7 +502,7 @@ namespace Intersect.Network.Lidgren
 
         public int ReadInt32()
         {
-            if( Read( out int value ) )
+            if (Read(out int value))
             {
                 return value;
             }
@@ -512,7 +512,7 @@ namespace Intersect.Network.Lidgren
 
         public int ReadInteger()
         {
-            if( Read( out int value ) )
+            if (Read(out int value))
             {
                 return value;
             }
@@ -522,7 +522,7 @@ namespace Intersect.Network.Lidgren
 
         public long ReadInt64()
         {
-            if( Read( out long value ) )
+            if (Read(out long value))
             {
                 return value;
             }
@@ -532,7 +532,7 @@ namespace Intersect.Network.Lidgren
 
         public long ReadLong()
         {
-            if( Read( out long value ) )
+            if (Read(out long value))
             {
                 return value;
             }
@@ -542,7 +542,7 @@ namespace Intersect.Network.Lidgren
 
         public sbyte ReadInt8()
         {
-            if( Read( out sbyte value ) )
+            if (Read(out sbyte value))
             {
                 return value;
             }
@@ -552,7 +552,7 @@ namespace Intersect.Network.Lidgren
 
         public sbyte ReadSByte()
         {
-            if( Read( out sbyte value ) )
+            if (Read(out sbyte value))
             {
                 return value;
             }
@@ -562,7 +562,7 @@ namespace Intersect.Network.Lidgren
 
         public short ReadInt16()
         {
-            if( Read( out short value ) )
+            if (Read(out short value))
             {
                 return value;
             }
@@ -572,7 +572,7 @@ namespace Intersect.Network.Lidgren
 
         public short ReadShort()
         {
-            if( Read( out short value ) )
+            if (Read(out short value))
             {
                 return value;
             }
@@ -582,7 +582,7 @@ namespace Intersect.Network.Lidgren
 
         public string ReadString()
         {
-            if( Read( out string value ) )
+            if (Read(out string value))
             {
                 return value;
             }
@@ -590,9 +590,9 @@ namespace Intersect.Network.Lidgren
             throw new OutOfMemoryException();
         }
 
-        public string ReadString( Encoding encoding, bool nullTerminated = false )
+        public string ReadString(Encoding encoding, bool nullTerminated = false)
         {
-            if( Read( out var value, encoding, nullTerminated ) )
+            if (Read(out var value, encoding, nullTerminated))
             {
                 return value;
             }
@@ -602,7 +602,7 @@ namespace Intersect.Network.Lidgren
 
         public uint ReadUInt()
         {
-            if( Read( out uint value ) )
+            if (Read(out uint value))
             {
                 return value;
             }
@@ -612,7 +612,7 @@ namespace Intersect.Network.Lidgren
 
         public uint ReadUInt32()
         {
-            if( Read( out uint value ) )
+            if (Read(out uint value))
             {
                 return value;
             }
@@ -622,7 +622,7 @@ namespace Intersect.Network.Lidgren
 
         public uint ReadUnsignedInteger()
         {
-            if( Read( out uint value ) )
+            if (Read(out uint value))
             {
                 return value;
             }
@@ -632,7 +632,7 @@ namespace Intersect.Network.Lidgren
 
         public ulong ReadULong()
         {
-            if( Read( out ulong value ) )
+            if (Read(out ulong value))
             {
                 return value;
             }
@@ -642,7 +642,7 @@ namespace Intersect.Network.Lidgren
 
         public ulong ReadUInt64()
         {
-            if( Read( out ulong value ) )
+            if (Read(out ulong value))
             {
                 return value;
             }
@@ -652,7 +652,7 @@ namespace Intersect.Network.Lidgren
 
         public ushort ReadUInt16()
         {
-            if( Read( out ushort value ) )
+            if (Read(out ushort value))
             {
                 return value;
             }
@@ -662,7 +662,7 @@ namespace Intersect.Network.Lidgren
 
         public ushort ReadUShort()
         {
-            if( Read( out ushort value ) )
+            if (Read(out ushort value))
             {
                 return value;
             }
@@ -670,120 +670,120 @@ namespace Intersect.Network.Lidgren
             throw new OutOfMemoryException();
         }
 
-        public void Write( bool value )
+        public void Write(bool value)
         {
-            Buffer?.Write( value );
+            Buffer?.Write(value);
         }
 
-        public void Write( byte value )
+        public void Write(byte value)
         {
-            Buffer?.Write( value );
+            Buffer?.Write(value);
         }
 
-        public void Write( byte[] value )
+        public void Write(byte[] value)
         {
-            Write( value?.Length ?? 0 );
-            Write( value, value?.Length ?? 0 );
+            Write(value?.Length ?? 0);
+            Write(value, value?.Length ?? 0);
         }
 
-        public void Write( byte[] value, long count )
+        public void Write(byte[] value, long count)
         {
-            Write( value, 0, count );
+            Write(value, 0, count);
         }
 
-        public void Write( byte[] value, long offset, long count )
+        public void Write(byte[] value, long offset, long count)
         {
-            Buffer?.Write( value, (int)offset, (int)count );
+            Buffer?.Write(value, (int)offset, (int)count);
         }
 
-        public void Write( char value )
+        public void Write(char value)
         {
-            Buffer?.Write( BitConverter.GetBytes( value ) );
+            Buffer?.Write(BitConverter.GetBytes(value));
         }
 
-        public void Write( decimal value )
+        public void Write(decimal value)
         {
-            var bits = decimal.GetBits( value );
-            Write( bits[0] );
-            Write( bits[1] );
-            Write( bits[2] );
-            Write( bits[3] );
+            var bits = decimal.GetBits(value);
+            Write(bits[0]);
+            Write(bits[1]);
+            Write(bits[2]);
+            Write(bits[3]);
         }
 
-        public void Write( double value )
+        public void Write(double value)
         {
-            Buffer?.Write( value );
+            Buffer?.Write(value);
         }
 
-        public void Write( float value )
+        public void Write(float value)
         {
-            Buffer?.Write( value );
+            Buffer?.Write(value);
         }
 
-        public void Write( int value )
+        public void Write(int value)
         {
-            Buffer?.Write( value );
+            Buffer?.Write(value);
         }
 
-        public void Write( long value )
+        public void Write(long value)
         {
-            Buffer?.Write( value );
+            Buffer?.Write(value);
         }
 
-        public void Write( sbyte value )
+        public void Write(sbyte value)
         {
-            Buffer?.Write( value );
+            Buffer?.Write(value);
         }
 
-        public void Write( short value )
+        public void Write(short value)
         {
-            Buffer?.Write( value );
+            Buffer?.Write(value);
         }
 
-        public void Write( string value )
+        public void Write(string value)
         {
-            Write( value, Encoding.UTF8 );
+            Write(value, Encoding.UTF8);
         }
 
-        public void Write( string value, Encoding encoding, bool nullTerminated = false )
+        public void Write(string value, Encoding encoding, bool nullTerminated = false)
         {
-            if( encoding == null )
+            if (encoding == null)
             {
                 throw new ArgumentNullException();
             }
 
-            if( !nullTerminated )
+            if (!nullTerminated)
             {
-                Write( value?.Length ?? -1 );
+                Write(value?.Length ?? -1);
             }
 
-            if( value == null )
-            {
-                return;
-            }
-
-            if( value.Length < 1 )
+            if (value == null)
             {
                 return;
             }
 
-            var bytes = encoding.GetBytes( value );
-            Write( bytes, bytes.Length );
+            if (value.Length < 1)
+            {
+                return;
+            }
+
+            var bytes = encoding.GetBytes(value);
+            Write(bytes, bytes.Length);
         }
 
-        public void Write( uint value )
+        public void Write(uint value)
         {
-            Buffer?.Write( value );
+            Buffer?.Write(value);
         }
 
-        public void Write( ulong value )
+        public void Write(ulong value)
         {
-            Buffer?.Write( value );
+            Buffer?.Write(value);
         }
 
-        public void Write( ushort value )
+        public void Write(ushort value)
         {
-            Buffer?.Write( value );
+            Buffer?.Write(value);
         }
 
     }

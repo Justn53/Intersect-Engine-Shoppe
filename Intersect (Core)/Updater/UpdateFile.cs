@@ -13,7 +13,7 @@
 
         }
 
-        public UpdateFile( string path, string hash, long size )
+        public UpdateFile(string path, string hash, long size)
         {
             Path = path;
             Hash = hash;

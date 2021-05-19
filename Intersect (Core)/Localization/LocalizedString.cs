@@ -8,9 +8,9 @@ namespace Intersect.Localization
     public class LocalizedStringConverter : JsonConverter<LocalizedString>
     {
 
-        public override void WriteJson( JsonWriter writer, LocalizedString value, JsonSerializer serializer )
+        public override void WriteJson(JsonWriter writer, LocalizedString value, JsonSerializer serializer)
         {
-            writer.WriteValue( value?.ToString() );
+            writer.WriteValue(value?.ToString());
         }
 
         public override LocalizedString ReadJson(
@@ -32,17 +32,17 @@ namespace Intersect.Localization
 
         private readonly string mValue;
 
-        public LocalizedString( string value )
+        public LocalizedString(string value)
         {
             mValue = value;
         }
 
-        public static implicit operator LocalizedString( string value )
+        public static implicit operator LocalizedString(string value)
         {
-            return new LocalizedString( value );
+            return new LocalizedString(value);
         }
 
-        public static implicit operator string( LocalizedString str )
+        public static implicit operator string(LocalizedString str)
         {
             return str.mValue;
         }
@@ -52,13 +52,13 @@ namespace Intersect.Localization
             return mValue;
         }
 
-        public string ToString( params object[] args )
+        public string ToString(params object[] args)
         {
             try
             {
-                return args?.Length == 0 ? mValue : string.Format( mValue, args ?? new object[] { } );
+                return args?.Length == 0 ? mValue : string.Format(mValue, args ?? new object[] { });
             }
-            catch( FormatException )
+            catch (FormatException)
             {
                 return "Format Exception!";
             }

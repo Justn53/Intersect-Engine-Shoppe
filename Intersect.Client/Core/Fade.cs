@@ -51,19 +51,19 @@ namespace Intersect.Client.Core
 
         public static void Update()
         {
-            if( sCurrentAction == FadeType.In )
+            if (sCurrentAction == FadeType.In)
             {
-                sFadeAmt -= ( Globals.System.GetTimeMs() - sLastUpdate ) / sFadeRate * 255f;
-                if( sFadeAmt <= 0f )
+                sFadeAmt -= (Globals.System.GetTimeMs() - sLastUpdate) / sFadeRate * 255f;
+                if (sFadeAmt <= 0f)
                 {
                     sCurrentAction = FadeType.None;
                     sFadeAmt = 0f;
                 }
             }
-            else if( sCurrentAction == FadeType.Out )
+            else if (sCurrentAction == FadeType.Out)
             {
-                sFadeAmt += ( Globals.System.GetTimeMs() - sLastUpdate ) / sFadeRate * 255f;
-                if( sFadeAmt >= 255f )
+                sFadeAmt += (Globals.System.GetTimeMs() - sLastUpdate) / sFadeRate * 255f;
+                if (sFadeAmt >= 255f)
                 {
                     sCurrentAction = FadeType.None;
                     sFadeAmt = 255f;

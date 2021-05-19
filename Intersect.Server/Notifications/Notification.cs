@@ -12,7 +12,7 @@ namespace Intersect.Server.Notifications
     public class Notification
     {
 
-        public Notification( string to, string subject = "", bool html = false )
+        public Notification(string to, string subject = "", bool html = false)
         {
             ToAddress = to;
             Subject = subject;
@@ -30,16 +30,16 @@ namespace Intersect.Server.Notifications
         public void Send()
         {
             //Check and see if smtp is even setup
-            if( Options.Smtp.IsValid() )
+            if (Options.Smtp.IsValid())
             {
                 //Make sure we have a body
-                if( !string.IsNullOrEmpty( Body ) )
+                if (!string.IsNullOrEmpty(Body))
                 {
                     try
                     {
                         //Send the email
-                        var fromAddress = new MailAddress( Options.Smtp.FromAddress, Options.Smtp.FromName );
-                        var toAddress = new MailAddress( ToAddress );
+                        var fromAddress = new MailAddress(Options.Smtp.FromAddress, Options.Smtp.FromName);
+                        var toAddress = new MailAddress(ToAddress);
 
                         var smtp = new SmtpClient
                         {
@@ -48,20 +48,20 @@ namespace Intersect.Server.Notifications
                             EnableSsl = Options.Smtp.UseSsl,
                             DeliveryMethod = SmtpDeliveryMethod.Network,
                             UseDefaultCredentials = false,
-                            Credentials = new NetworkCredential( Options.Smtp.Username, Options.Smtp.Password )
+                            Credentials = new NetworkCredential(Options.Smtp.Username, Options.Smtp.Password)
                         };
 
-                        using( var message = new MailMessage( fromAddress, toAddress )
+                        using (var message = new MailMessage(fromAddress, toAddress)
                         {
                             Subject = Subject,
                             Body = Body,
                             IsBodyHtml = IsHtml
-                        } )
+                        })
                         {
-                            smtp.Send( message );
+                            smtp.Send(message);
                         }
                     }
-                    catch( Exception ex )
+                    catch (Exception ex)
                     {
                         Log.Error(
                             "Failed to send email (Subject: " +
@@ -93,22 +93,22 @@ namespace Intersect.Server.Notifications
             }
         }
 
-        protected bool LoadFromTemplate( string templatename, string username )
+        protected bool LoadFromTemplate(string templatename, string username)
         {
-            var templatesDir = Path.Combine( "resources", "notifications" );
-            if( !Directory.Exists( templatesDir ) )
+            var templatesDir = Path.Combine("resources", "notifications");
+            if (!Directory.Exists(templatesDir))
             {
-                Directory.CreateDirectory( templatesDir );
+                Directory.CreateDirectory(templatesDir);
             }
 
-            var filepath = Path.Combine( "resources", "notifications", templatename + ".html" );
-            if( File.Exists( filepath ) )
+            var filepath = Path.Combine("resources", "notifications", templatename + ".html");
+            if (File.Exists(filepath))
             {
                 IsHtml = true;
-                Body = File.ReadAllText( filepath );
-                Body = Body.Replace( "{{product}}", Strings.Notifications.product );
-                Body = Body.Replace( "{{copyright}}", Strings.Notifications.copyright );
-                Body = Body.Replace( "{{name}}", username );
+                Body = File.ReadAllText(filepath);
+                Body = Body.Replace("{{product}}", Strings.Notifications.product);
+                Body = Body.Replace("{{copyright}}", Strings.Notifications.copyright);
+                Body = Body.Replace("{{name}}", username);
 
                 return true;
             }

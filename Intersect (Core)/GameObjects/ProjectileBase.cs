@@ -24,12 +24,12 @@ namespace Intersect.GameObjects
 
         //Init
         [JsonConstructor]
-        public ProjectileBase( Guid id ) : base( id )
+        public ProjectileBase(Guid id) : base(id)
         {
             Name = "New Projectile";
-            for( var x = 0; x < SPAWN_LOCATIONS_WIDTH; x++ )
+            for (var x = 0; x < SPAWN_LOCATIONS_WIDTH; x++)
             {
-                for( var y = 0; y < SPAWN_LOCATIONS_HEIGHT; y++ )
+                for (var y = 0; y < SPAWN_LOCATIONS_HEIGHT; y++)
                 {
                     SpawnLocations[x, y] = new Location();
                 }
@@ -40,34 +40,34 @@ namespace Intersect.GameObjects
         public ProjectileBase()
         {
             Name = "New Projectile";
-            for( var x = 0; x < SPAWN_LOCATIONS_WIDTH; x++ )
+            for (var x = 0; x < SPAWN_LOCATIONS_WIDTH; x++)
             {
-                for( var y = 0; y < SPAWN_LOCATIONS_HEIGHT; y++ )
+                for (var y = 0; y < SPAWN_LOCATIONS_HEIGHT; y++)
                 {
                     SpawnLocations[x, y] = new Location();
                 }
             }
         }
 
-        [Column( "Ammo" )]
+        [Column("Ammo")]
         public Guid AmmoItemId { get; set; } = Guid.Empty;
 
         [NotMapped]
         [JsonIgnore]
         public ItemBase Ammo
         {
-            get => ItemBase.Get( AmmoItemId );
+            get => ItemBase.Get(AmmoItemId);
             set => AmmoItemId = value?.Id ?? Guid.Empty;
         }
 
         public int AmmoRequired { get; set; } = 1;
 
-        [Column( "Animations" )]
+        [Column("Animations")]
         [JsonIgnore]
         public string AnimationsJson
         {
-            get => JsonConvert.SerializeObject( Animations );
-            set => Animations = JsonConvert.DeserializeObject<List<ProjectileAnimation>>( value );
+            get => JsonConvert.SerializeObject(Animations);
+            set => Animations = JsonConvert.DeserializeObject<List<ProjectileAnimation>>(value);
         }
 
         public int Delay { get; set; } = 1;
@@ -90,24 +90,24 @@ namespace Intersect.GameObjects
 
         public int Range { get; set; } = 1;
 
-        [Column( "SpawnLocations" )]
+        [Column("SpawnLocations")]
         [JsonIgnore]
         public string SpawnsJson
         {
-            get => JsonConvert.SerializeObject( SpawnLocations );
-            set => SpawnLocations = JsonConvert.DeserializeObject<Location[,]>( value );
+            get => JsonConvert.SerializeObject(SpawnLocations);
+            set => SpawnLocations = JsonConvert.DeserializeObject<Location[,]>(value);
         }
 
         public int Speed { get; set; } = 1;
 
-        [Column( "Spell" )]
+        [Column("Spell")]
         public Guid SpellId { get; set; } = Guid.Empty;
 
         [NotMapped]
         [JsonIgnore]
         public SpellBase Spell
         {
-            get => SpellBase.Get( SpellId );
+            get => SpellBase.Get(SpellId);
             set => SpellId = value?.Id ?? Guid.Empty;
         }
 
@@ -132,7 +132,7 @@ namespace Intersect.GameObjects
 
         public int SpawnRange = 1;
 
-        public ProjectileAnimation( Guid animationId, int spawnRange, bool autoRotate )
+        public ProjectileAnimation(Guid animationId, int spawnRange, bool autoRotate)
         {
             AnimationId = animationId;
             SpawnRange = spawnRange;

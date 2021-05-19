@@ -24,7 +24,7 @@ namespace Intersect.Editor.Forms.Editors
         {
             PacketHandler.GameObjectUpdatedDelegate = type =>
             {
-                if( IsDisposed || mClosing || Disposing )
+                if (IsDisposed || mClosing || Disposing)
                 {
                     return;
                 }
@@ -32,58 +32,58 @@ namespace Intersect.Editor.Forms.Editors
                 var action = (Action<GameObjectType>)FireGameObjectUpdatedDelegate;
                 try
                 {
-                    if( !this.Disposing && !this.IsDisposed )
+                    if (!this.Disposing && !this.IsDisposed)
                     {
-                        if( InvokeRequired )
+                        if (InvokeRequired)
                         {
-                            Invoke( action, type );
+                            Invoke(action, type);
                         }
                         else
                         {
-                            action( type );
+                            action(type);
                         }
                     }
                 }
-                catch( Exception e )
+                catch (Exception e)
                 {
-                    Log.Debug( e );
+                    Log.Debug(e);
                 }
             };
 
             this.Closing += EditorForm_Closing;
         }
 
-        private void EditorForm_Closing( object sender, System.ComponentModel.CancelEventArgs e )
+        private void EditorForm_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             mClosing = true;
         }
 
-        private void FireGameObjectUpdatedDelegate( GameObjectType type )
+        private void FireGameObjectUpdatedDelegate(GameObjectType type)
         {
-            if( IsDisposed || mClosing || Disposing )
+            if (IsDisposed || mClosing || Disposing)
             {
                 return;
             }
 
-            GameObjectUpdatedDelegate( type );
+            GameObjectUpdatedDelegate(type);
         }
 
-        protected virtual void GameObjectUpdatedDelegate( GameObjectType type )
+        protected virtual void GameObjectUpdatedDelegate(GameObjectType type)
         {
         }
 
         private void InitializeComponent()
         {
-            var resources = new System.ComponentModel.ComponentResourceManager( typeof( EditorForm ) );
+            var resources = new System.ComponentModel.ComponentResourceManager(typeof(EditorForm));
             this.SuspendLayout();
 
             // 
             // EditorForm
             // 
-            this.ClientSize = new System.Drawing.Size( 284, 261 );
-            this.Icon = (System.Drawing.Icon)resources.GetObject( "$this.Icon" );
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Icon = (System.Drawing.Icon)resources.GetObject("$this.Icon");
             this.Name = "EditorForm";
-            this.ResumeLayout( false );
+            this.ResumeLayout(false);
         }
 
     }

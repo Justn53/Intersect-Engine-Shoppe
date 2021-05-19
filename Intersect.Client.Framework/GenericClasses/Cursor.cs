@@ -10,7 +10,7 @@
         {
         }
 
-        public Cursor( Cursors.CursorTypes t )
+        public Cursor(Cursors.CursorTypes t)
         {
             mType = (int)t;
         }
@@ -41,19 +41,19 @@
 
         }
 
-        public static Cursor Default => new Cursor( CursorTypes.Default );
+        public static Cursor Default => new Cursor(CursorTypes.Default);
 
-        public static Cursor SizeNs => new Cursor( CursorTypes.SizeNs );
+        public static Cursor SizeNs => new Cursor(CursorTypes.SizeNs);
 
-        public static Cursor SizeWe => new Cursor( CursorTypes.SizeWe );
+        public static Cursor SizeWe => new Cursor(CursorTypes.SizeWe);
 
-        public static Cursor SizeAll => new Cursor( CursorTypes.SizeAll );
+        public static Cursor SizeAll => new Cursor(CursorTypes.SizeAll);
 
-        public static Cursor SizeNwse => new Cursor( CursorTypes.SizeNwse );
+        public static Cursor SizeNwse => new Cursor(CursorTypes.SizeNwse);
 
-        public static Cursor SizeNesw => new Cursor( CursorTypes.SizeNesw );
+        public static Cursor SizeNesw => new Cursor(CursorTypes.SizeNesw);
 
-        public static Cursor No => new Cursor( CursorTypes.No );
+        public static Cursor No => new Cursor(CursorTypes.No);
 
     }
 

@@ -24,7 +24,7 @@ namespace Intersect.Localization
                 : new SortedDictionary<TKey, TValue>(
                     defaults is IDictionary<TKey, TValue> dictionaryDefaults
                         ? dictionaryDefaults
-                        : defaults.ToDictionary( pair => pair.Key, pair => pair.Value )
+                        : defaults.ToDictionary(pair => pair.Key, pair => pair.Value)
                 );
 
             mValues = values == null
@@ -32,7 +32,7 @@ namespace Intersect.Localization
                 : new SortedDictionary<TKey, TValue>(
                     values is IDictionary<TKey, TValue> dictionaryValues
                         ? dictionaryValues
-                        : values.ToDictionary( pair => pair.Key, pair => pair.Value )
+                        : values.ToDictionary(pair => pair.Key, pair => pair.Value)
                 );
         }
 
@@ -40,14 +40,14 @@ namespace Intersect.Localization
             Keys.Select(
                     key =>
                     {
-                        if( key == null )
+                        if (key == null)
                         {
-                            throw new ArgumentNullException( nameof( key ) );
+                            throw new ArgumentNullException(nameof(key));
                         }
 
-                        if( mValues.TryGetValue( key, out var value ) || mDefaults.TryGetValue( key, out value ) )
+                        if (mValues.TryGetValue(key, out var value) || mDefaults.TryGetValue(key, out value))
                         {
-                            return new KeyValuePair<TKey, TValue>( key, value );
+                            return new KeyValuePair<TKey, TValue>(key, value);
                         }
 
                         throw new InvalidOperationException();
@@ -57,11 +57,11 @@ namespace Intersect.Localization
 
         public TValue this[TKey key]
         {
-            get => mValues.TryGetValue( key, out var backingValue ) ? backingValue : mDefaults[key];
+            get => mValues.TryGetValue(key, out var backingValue) ? backingValue : mDefaults[key];
 
             set
             {
-                if( !mDefaults.ContainsKey( key ) )
+                if (!mDefaults.ContainsKey(key))
                 {
                     throw new InvalidOperationException(
                         $@"Cannot add value with key {key.ToString()} because it is not a valid key for this dictionary."
@@ -81,7 +81,7 @@ namespace Intersect.Localization
         public ICollection<TValue> Values => Keys.Select(
                 key =>
                 {
-                    if( key == null )
+                    if (key == null)
                     {
                         throw new InvalidOperationException();
                     }
@@ -91,31 +91,31 @@ namespace Intersect.Localization
             )
             .ToList();
 
-        public bool ContainsKey( TKey key )
+        public bool ContainsKey(TKey key)
         {
-            return mDefaults.ContainsKey( key );
+            return mDefaults.ContainsKey(key);
         }
 
-        public void Add( TKey key, TValue value )
+        public void Add(TKey key, TValue value)
         {
-            if( !mDefaults.ContainsKey( key ) )
+            if (!mDefaults.ContainsKey(key))
             {
                 throw new InvalidOperationException(
                     $@"Cannot add value with key {key.ToString()} because it is not a valid key for this dictionary."
                 );
             }
 
-            mValues.Add( key, value );
+            mValues.Add(key, value);
         }
 
-        public bool Remove( TKey key )
+        public bool Remove(TKey key)
         {
-            return mValues.Remove( key );
+            return mValues.Remove(key);
         }
 
-        public bool TryGetValue( TKey key, out TValue value )
+        public bool TryGetValue(TKey key, out TValue value)
         {
-            return mValues.TryGetValue( key, out value ) || mDefaults.TryGetValue( key, out value );
+            return mValues.TryGetValue(key, out value) || mDefaults.TryGetValue(key, out value);
         }
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
@@ -128,9 +128,9 @@ namespace Intersect.Localization
             return GetEnumerator();
         }
 
-        public void Add( KeyValuePair<TKey, TValue> item )
+        public void Add(KeyValuePair<TKey, TValue> item)
         {
-            mValues.Add( item );
+            mValues.Add(item);
         }
 
         public void Clear()
@@ -138,19 +138,19 @@ namespace Intersect.Localization
             mValues.Clear();
         }
 
-        public bool Contains( KeyValuePair<TKey, TValue> item )
+        public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            return mValues.Contains( item );
+            return mValues.Contains(item);
         }
 
-        public void CopyTo( KeyValuePair<TKey, TValue>[] array, int arrayIndex )
+        public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            Pairs.CopyTo( array, arrayIndex );
+            Pairs.CopyTo(array, arrayIndex);
         }
 
-        public bool Remove( KeyValuePair<TKey, TValue> item )
+        public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            return mValues.Remove( item );
+            return mValues.Remove(item);
         }
 
     }

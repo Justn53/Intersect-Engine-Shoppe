@@ -17,39 +17,39 @@ namespace Intersect.Server.Core.CommandParsing.Commands
         where TContext : IApplicationContext
     {
 
-        protected HelpableCommand( LocaleCommand localization, params ICommandArgument[] arguments ) :
-            base( localization, arguments.Prepend( new HelpArgument() ) )
+        protected HelpableCommand(LocaleCommand localization, params ICommandArgument[] arguments) :
+            base(localization, arguments.Prepend(new HelpArgument()))
         {
         }
 
         public HelpArgument Help => FindArgumentOrThrow<HelpArgument>();
 
-        public static bool RequiredIfNotHelp( ParserContext context )
+        public static bool RequiredIfNotHelp(ParserContext context)
         {
-            if( !( context.Command is HelpableCommand<TContext> command ) )
+            if (!(context.Command is HelpableCommand<TContext> command))
             {
                 return false;
             }
 
-            if( context.Parsed == null )
+            if (context.Parsed == null)
             {
                 return false;
             }
 
-            return !( context.Parsed.TryGetValue( command.Help, out var value ) && ( !value?.IsImplicit ?? true ) );
+            return !(context.Parsed.TryGetValue(command.Help, out var value) && (!value?.IsImplicit ?? true));
         }
 
-        protected override void Handle( TContext context, ParserResult result )
+        protected override void Handle(TContext context, ParserResult result)
         {
-            if( result.Find( Help ) )
+            if (result.Find(Help))
             {
                 return;
             }
 
-            HandleValue( context, result );
+            HandleValue(context, result);
         }
 
-        protected abstract void HandleValue( TContext context, ParserResult result );
+        protected abstract void HandleValue(TContext context, ParserResult result);
 
     }
 

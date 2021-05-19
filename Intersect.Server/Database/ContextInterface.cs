@@ -10,10 +10,10 @@ namespace Intersect.Server.Database
     {
         private static readonly object Lock = new object();
 
-        protected ContextInterface( TContext context )
+        protected ContextInterface(TContext context)
         {
             Context = context;
-            Monitor.Enter( Lock );
+            Monitor.Enter(Lock);
         }
 
         public TContext Context { get; }
@@ -27,35 +27,35 @@ namespace Intersect.Server.Database
         public int SaveChanges() => Context.SaveChanges();
 
         /// <inheritdoc />
-        public int SaveChanges( bool acceptAllChangesOnSuccess ) => Context.SaveChanges( acceptAllChangesOnSuccess );
+        public int SaveChanges(bool acceptAllChangesOnSuccess) => Context.SaveChanges(acceptAllChangesOnSuccess);
 
         /// <inheritdoc />
         public Task<int>
-            SaveChangesAsync( bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default ) =>
-            Context.SaveChangesAsync( acceptAllChangesOnSuccess, cancellationToken );
+            SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default) =>
+            Context.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
 
         /// <inheritdoc />
-        public Task<int> SaveChangesAsync( CancellationToken cancellationToken = default ) =>
-            Context.SaveChangesAsync( cancellationToken );
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
+            Context.SaveChangesAsync(cancellationToken);
 
         #endregion
 
         #region IDisposable
 
-        protected void Dispose( bool disposing )
+        protected void Dispose(bool disposing)
         {
-            if( disposing )
+            if (disposing)
             {
                 Context.SaveChanges();
-                Monitor.Exit( Lock );
+                Monitor.Exit(Lock);
             }
         }
 
         /// <inheritdoc />
         public void Dispose()
         {
-            Dispose( true );
-            GC.SuppressFinalize( this );
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion IDisposable

@@ -8,43 +8,43 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Intersect.Server.Migrations.Logging
 {
-    [DbContext( typeof( LoggingContext ) )]
-    [Migration( "20191118024649_RequestLogs" )]
+    [DbContext(typeof(LoggingContext))]
+    [Migration("20191118024649_RequestLogs")]
     partial class RequestLogs
     {
-        protected override void BuildTargetModel( ModelBuilder modelBuilder )
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation( "ProductVersion", "2.1.3-rtm-32065" );
+                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065");
 
-            modelBuilder.Entity( "Intersect.Server.Database.Logging.RequestLog", b =>
-                 {
-                     b.Property<Guid>( "Id" )
-                         .ValueGeneratedOnAdd();
+            modelBuilder.Entity("Intersect.Server.Database.Logging.RequestLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
 
-                     b.Property<byte>( "Level" );
+                    b.Property<byte>("Level");
 
-                     b.Property<string>( "Method" );
+                    b.Property<string>("Method");
 
-                     b.Property<string>( "SerializedRequestHeaders" )
-                         .HasColumnName( "RequestHeaders" );
+                    b.Property<string>("SerializedRequestHeaders")
+                        .HasColumnName("RequestHeaders");
 
-                     b.Property<string>( "SerializedResponseHeaders" )
-                         .HasColumnName( "ResponseHeaders" );
+                    b.Property<string>("SerializedResponseHeaders")
+                        .HasColumnName("ResponseHeaders");
 
-                     b.Property<int>( "StatusCode" );
+                    b.Property<int>("StatusCode");
 
-                     b.Property<string>( "StatusMessage" );
+                    b.Property<string>("StatusMessage");
 
-                     b.Property<DateTime>( "Time" );
+                    b.Property<DateTime>("Time");
 
-                     b.Property<string>( "Uri" );
+                    b.Property<string>("Uri");
 
-                     b.HasKey( "Id" );
+                    b.HasKey("Id");
 
-                     b.ToTable( "RequestLogs" );
-                 } );
+                    b.ToTable("RequestLogs");
+                });
 #pragma warning restore 612, 618
         }
     }

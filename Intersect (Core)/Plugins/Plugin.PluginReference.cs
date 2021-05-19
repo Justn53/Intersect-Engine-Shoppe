@@ -45,12 +45,12 @@ namespace Intersect.Plugins
         /// <summary>
         /// The path to the configuration file for this plugin.
         /// </summary>
-        internal string ConfigurationFile => Path.Combine( Directory, "config.json" );
+        internal string ConfigurationFile => Path.Combine(Directory, "config.json");
 
         /// <summary>
         /// The path to the directory this plugin is located in.
         /// </summary>
-        internal string Directory => Path.GetDirectoryName( Assembly.Location ) ??
+        internal string Directory => Path.GetDirectoryName(Assembly.Location) ??
                                      throw new InvalidOperationException(
                                          $"Error getting plugin directory for assembly {Assembly.FullName} ({Assembly.Location})."
                                      );
@@ -60,6 +60,6 @@ namespace Intersect.Plugins
         /// </summary>
         /// <returns>an instance of <see cref="IPluginEntry"/> specific to this plugin</returns>
         internal IPluginEntry CreateInstance() =>
-            Activator.CreateInstance( EntryType ) as IPluginEntry ?? throw new InvalidOperationException();
+            Activator.CreateInstance(EntryType) as IPluginEntry ?? throw new InvalidOperationException();
     }
 }

@@ -6,7 +6,7 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
 {
 
     [ConfigurableAuthorize]
-    [RoutePrefix( "demo" )]
+    [RoutePrefix("demo")]
     public sealed class DemoController : ApiController
     {
 
@@ -18,7 +18,7 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
             return "GET:demo";
         }
 
-        [Route( "authorize" )]
+        [Route("authorize")]
         [HttpGet]
         [Authorize]
         public object Authorize()
@@ -26,7 +26,7 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
             return "GET:demo/authorize";
         }
 
-        [Route( "configurable_authorize" )]
+        [Route("configurable_authorize")]
         [HttpGet]
         [ConfigurableAuthorize]
         public string ConfigurableAuthorize()
@@ -34,18 +34,18 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
             return "GET:demo/configurable_authorize";
         }
 
-        [Route( "configurable_authorize/{param}" )]
+        [Route("configurable_authorize/{param}")]
         [HttpGet]
         [ConfigurableAuthorize]
-        public string ConfigurableAuthorize( string param )
+        public string ConfigurableAuthorize(string param)
         {
             return "GET:demo/configurable_authorize:" + param;
         }
 
-        [Route( "configurable_authorize/{*param}" )]
+        [Route("configurable_authorize/{*param}")]
         [HttpGet]
         [ConfigurableAuthorize]
-        public string ConfigurableAuthorizeParams( string param )
+        public string ConfigurableAuthorizeParams(string param)
         {
             return "GET:demo/configurable_authorize:" + param;
         }

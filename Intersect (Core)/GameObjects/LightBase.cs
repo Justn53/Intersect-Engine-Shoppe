@@ -4,9 +4,9 @@
     public class LightBase
     {
 
-        public LightBase() : this( -1, -1 ) { }
+        public LightBase() : this(-1, -1) { }
 
-        public LightBase( int x, int y )
+        public LightBase(int x, int y)
         {
             TileX = x;
             TileY = y;
@@ -14,7 +14,7 @@
             Intensity = 255;
         }
 
-        public LightBase( LightBase copy )
+        public LightBase(LightBase copy)
         {
             TileX = copy.TileX;
             TileY = copy.TileY;
@@ -23,7 +23,7 @@
             Intensity = copy.Intensity;
             Size = copy.Size;
             Expand = copy.Expand;
-            Color = Color.FromArgb( copy.Color.R, copy.Color.G, copy.Color.B );
+            Color = Color.FromArgb(copy.Color.R, copy.Color.G, copy.Color.B);
         }
 
         public LightBase(

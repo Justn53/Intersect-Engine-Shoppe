@@ -30,22 +30,22 @@ namespace Intersect.Network.Packets.Server
             VitalShields = vitalShields;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid SpellId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public StatusTypes Type { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public string TransformSprite { get; set; }
 
-        [Key( 3 )]
+        [Key(3)]
         public long TimeRemaining { get; set; }
 
-        [Key( 4 )]
+        [Key(4)]
         public long TotalDuration { get; set; }
 
-        [Key( 5 )]
+        [Key(5)]
         public int[] VitalShields { get; set; }
 
     }

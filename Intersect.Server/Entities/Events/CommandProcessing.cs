@@ -23,14 +23,14 @@ namespace Intersect.Server.Entities.Events
     public static class CommandProcessing
     {
 
-        public static void ProcessCommand( EventCommand command, Player player, Event instance )
+        public static void ProcessCommand(EventCommand command, Player player, Event instance)
         {
             var stackInfo = instance.CallStack.Peek();
             stackInfo.WaitingForResponse = CommandInstance.EventResponse.None;
             stackInfo.WaitingOnCommand = null;
             stackInfo.BranchIds = null;
 
-            ProcessCommand( (dynamic)command, player, instance, instance.CallStack.Peek(), instance.CallStack );
+            ProcessCommand((dynamic)command, player, instance, instance.CallStack.Peek(), instance.CallStack);
 
             stackInfo.CommandIndex++;
         }
@@ -45,7 +45,7 @@ namespace Intersect.Server.Entities.Events
         )
         {
             PacketSender.SendEventDialog(
-                player, ParseEventText( command.Text, player, instance ), command.Face, instance.PageInstance.Id
+                player, ParseEventText(command.Text, player, instance), command.Face, instance.PageInstance.Id
             );
 
             stackInfo.WaitingForResponse = CommandInstance.EventResponse.Dialogue;
@@ -60,12 +60,12 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            var txt = ParseEventText( command.Text, player, instance );
-            var opt1 = ParseEventText( command.Options[0], player, instance );
-            var opt2 = ParseEventText( command.Options[1], player, instance );
-            var opt3 = ParseEventText( command.Options[2], player, instance );
-            var opt4 = ParseEventText( command.Options[3], player, instance );
-            PacketSender.SendEventDialog( player, txt, opt1, opt2, opt3, opt4, command.Face, instance.PageInstance.Id );
+            var txt = ParseEventText(command.Text, player, instance);
+            var opt1 = ParseEventText(command.Options[0], player, instance);
+            var opt2 = ParseEventText(command.Options[1], player, instance);
+            var opt3 = ParseEventText(command.Options[2], player, instance);
+            var opt4 = ParseEventText(command.Options[3], player, instance);
+            PacketSender.SendEventDialog(player, txt, opt1, opt2, opt3, opt4, command.Face, instance.PageInstance.Id);
             stackInfo.WaitingForResponse = CommandInstance.EventResponse.Dialogue;
             stackInfo.WaitingOnCommand = command;
             stackInfo.BranchIds = command.BranchIds;
@@ -80,22 +80,22 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            var title = ParseEventText( command.Title, player, instance );
-            var txt = ParseEventText( command.Text, player, instance );
+            var title = ParseEventText(command.Title, player, instance);
+            var txt = ParseEventText(command.Text, player, instance);
             var type = VariableDataTypes.Integer;
 
-            if( command.VariableType == VariableTypes.PlayerVariable )
+            if (command.VariableType == VariableTypes.PlayerVariable)
             {
-                var variable = PlayerVariableBase.Get( command.VariableId );
+                var variable = PlayerVariableBase.Get(command.VariableId);
                 type = variable.Type;
             }
             else
             {
-                var variable = ServerVariableBase.Get( command.VariableId );
+                var variable = ServerVariableBase.Get(command.VariableId);
                 type = variable.Type;
             }
 
-            PacketSender.SendInputVariableDialog( player, title, txt, type, instance.PageInstance.Id );
+            PacketSender.SendInputVariableDialog(player, title, txt, type, instance.PageInstance.Id);
             stackInfo.WaitingForResponse = CommandInstance.EventResponse.Dialogue;
             stackInfo.WaitingOnCommand = command;
             stackInfo.BranchIds = command.BranchIds;
@@ -110,20 +110,20 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            var txt = ParseEventText( command.Text, player, instance );
-            var color = Color.FromName( command.Color, Strings.Colors.presets );
-            switch( command.Channel )
+            var txt = ParseEventText(command.Text, player, instance);
+            var color = Color.FromName(command.Color, Strings.Colors.presets);
+            switch (command.Channel)
             {
                 case ChatboxChannel.Player:
-                    PacketSender.SendChatMsg( player, txt, command.MessageType, color );
+                    PacketSender.SendChatMsg(player, txt, command.MessageType, color);
 
                     break;
                 case ChatboxChannel.Local:
-                    PacketSender.SendProximityMsg( txt, command.MessageType, player.MapId, color );
+                    PacketSender.SendProximityMsg(txt, command.MessageType, player.MapId, color);
 
                     break;
                 case ChatboxChannel.Global:
-                    PacketSender.SendGlobalMsg( txt, color, string.Empty, command.MessageType );
+                    PacketSender.SendGlobalMsg(txt, color, string.Empty, command.MessageType);
 
                     break;
             }
@@ -138,7 +138,7 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            ProcessVariableModification( command, (dynamic)command.Modification, player, instance );
+            ProcessVariableModification(command, (dynamic)command.Modification, player, instance);
         }
 
         //Set Self Switch Command
@@ -150,12 +150,12 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            if( instance.Global )
+            if (instance.Global)
             {
-                var evts = MapInstance.Get( instance.MapId ).GlobalEventInstances.Values.ToList();
-                for( var i = 0; i < evts.Count; i++ )
+                var evts = MapInstance.Get(instance.MapId).GlobalEventInstances.Values.ToList();
+                for (var i = 0; i < evts.Count; i++)
                 {
-                    if( evts[i] != null && evts[i].BaseEvent == instance.BaseEvent )
+                    if (evts[i] != null && evts[i].BaseEvent == instance.BaseEvent)
                     {
                         evts[i].SelfSwitch[command.SwitchId] = command.Value;
                     }
@@ -176,32 +176,32 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            var success = Conditions.MeetsCondition( command.Condition, player, instance, null );
-            if( command.Condition.Negated )
+            var success = Conditions.MeetsCondition(command.Condition, player, instance, null);
+            if (command.Condition.Negated)
             {
                 success = !success;
             }
 
             List<EventCommand> newCommandList = null;
-            if( success && stackInfo.Page.CommandLists.ContainsKey( command.BranchIds[0] ) )
+            if (success && stackInfo.Page.CommandLists.ContainsKey(command.BranchIds[0]))
             {
                 newCommandList = stackInfo.Page.CommandLists[command.BranchIds[0]];
             }
 
-            if( !success && command.Condition.ElseEnabled && stackInfo.Page.CommandLists.ContainsKey( command.BranchIds[1] ) )
+            if (!success && command.Condition.ElseEnabled && stackInfo.Page.CommandLists.ContainsKey(command.BranchIds[1]))
             {
                 newCommandList = stackInfo.Page.CommandLists[command.BranchIds[1]];
             }
 
-            if( newCommandList != null )
+            if (newCommandList != null)
             {
-                var tmpStack = new CommandInstance( stackInfo.Page )
+                var tmpStack = new CommandInstance(stackInfo.Page)
                 {
                     CommandList = newCommandList,
                     CommandIndex = 0,
                 };
 
-                callStack.Push( tmpStack );
+                callStack.Push(tmpStack);
             }
         }
 
@@ -239,20 +239,20 @@ namespace Intersect.Server.Entities.Events
         )
         {
             //Recursively search through commands for the label, and create a brand new call stack based on where that label is located.
-            var newCallStack = LoadLabelCallstack( command.Label, stackInfo.Page );
-            if( newCallStack != null )
+            var newCallStack = LoadLabelCallstack(command.Label, stackInfo.Page);
+            if (newCallStack != null)
             {
                 newCallStack.Reverse();
-                while( callStack.Peek().CommandListId != Guid.Empty )
+                while (callStack.Peek().CommandListId != Guid.Empty)
                 {
                     callStack.Pop();
                 }
 
                 //also pop the current event
                 callStack.Pop();
-                foreach( var itm in newCallStack )
+                foreach (var itm in newCallStack)
                 {
-                    callStack.Push( itm );
+                    callStack.Push(itm);
                 }
             }
         }
@@ -266,15 +266,15 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            var commonEvent = EventBase.Get( command.EventId );
-            if( commonEvent != null )
+            var commonEvent = EventBase.Get(command.EventId);
+            if (commonEvent != null)
             {
-                for( var i = 0; i < commonEvent.Pages.Count; i++ )
+                for (var i = 0; i < commonEvent.Pages.Count; i++)
                 {
-                    if( Conditions.CanSpawnPage( commonEvent.Pages[i], player, instance ) )
+                    if (Conditions.CanSpawnPage(commonEvent.Pages[i], player, instance))
                     {
-                        var commonEventStack = new CommandInstance( commonEvent.Pages[i] );
-                        callStack.Push( commonEventStack );
+                        var commonEventStack = new CommandInstance(commonEvent.Pages[i]);
+                        callStack.Push(commonEventStack);
                     }
                 }
             }
@@ -294,7 +294,7 @@ namespace Intersect.Server.Entities.Events
             var xModifier = 0;
             var yModifier = 0;
 
-            switch( command.StoredDirection )
+            switch (command.StoredDirection)
             {
                 case 0:
                     yModifier--;
@@ -309,12 +309,12 @@ namespace Intersect.Server.Entities.Events
                     xModifier++;
                     break;
             }
-            var tileIndex = ( command.StoredPlayerY + yModifier ) * Options.MapWidth + ( command.StoredPlayerX + xModifier );
-            var mapInstance = MapInstance.Get( command.MapId );
-            var mapItem = mapInstance.FindItemsAt( tileIndex ).FirstOrDefault();
-            mapInstance.RemoveItem( mapItem, false );
-            var itemToSpawn = new Item( command.NewItem.Id, 1 );
-            mapInstance.SpawnItem( mapItem.X, mapItem.Y, itemToSpawn, 1 );
+            var tileIndex = (command.StoredPlayerY + yModifier) * Options.MapWidth + (command.StoredPlayerX + xModifier);
+            var mapInstance = MapInstance.Get(command.MapId);
+            var mapItem = mapInstance.FindItemsAt(tileIndex).FirstOrDefault();
+            mapInstance.RemoveItem(mapItem, false);
+            var itemToSpawn = new Item(command.NewItem.Id, 1);
+            mapInstance.SpawnItem(mapItem.X, mapItem.Y, itemToSpawn, 1);
         }
 
         //Remove Item
@@ -330,7 +330,7 @@ namespace Intersect.Server.Entities.Events
             var xModifier = 0;
             var yModifier = 0;
 
-            switch( player.Dir )
+            switch (player.Dir)
             {
                 case 0:
                     yModifier--;
@@ -345,10 +345,10 @@ namespace Intersect.Server.Entities.Events
                     xModifier++;
                     break;
             }
-            var tileIndex = ( command.StoredPlayerY + yModifier ) * Options.MapWidth + ( command.StoredPlayerX + xModifier );
-            var mapInstance = MapInstance.Get( command.MapId );
-            var mapItem = mapInstance.FindItemsAt( tileIndex ).FirstOrDefault();
-            mapInstance.RemoveItem( mapItem, false );
+            var tileIndex = (command.StoredPlayerY + yModifier) * Options.MapWidth + (command.StoredPlayerX + xModifier);
+            var mapInstance = MapInstance.Get(command.MapId);
+            var mapItem = mapInstance.FindItemsAt(tileIndex).FirstOrDefault();
+            mapInstance.RemoveItem(mapItem, false);
         }
 
         //Restore Hp Command
@@ -360,25 +360,25 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            if( command.Amount > 0 )
+            if (command.Amount > 0)
             {
-                player.AddVital( Vitals.Health, command.Amount );
+                player.AddVital(Vitals.Health, command.Amount);
             }
-            else if( command.Amount < 0 )
+            else if (command.Amount < 0)
             {
-                player.SubVital( Vitals.Health, -command.Amount );
+                player.SubVital(Vitals.Health, -command.Amount);
                 player.CombatTimer = Globals.Timing.Milliseconds + Options.CombatTime;
-                if( player.GetVital( Vitals.Health ) <= 0 )
+                if (player.GetVital(Vitals.Health) <= 0)
                 {
-                    lock( player.EntityLock )
+                    lock (player.EntityLock)
                     {
-                        player.Die( Options.ItemDropChance );
+                        player.Die(Options.ItemDropChance);
                     }
                 }
             }
             else
             {
-                player.RestoreVital( Vitals.Health );
+                player.RestoreVital(Vitals.Health);
             }
         }
 
@@ -391,18 +391,18 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            if( command.Amount > 0 )
+            if (command.Amount > 0)
             {
-                player.AddVital( Vitals.Mana, command.Amount );
+                player.AddVital(Vitals.Mana, command.Amount);
             }
-            else if( command.Amount < 0 )
+            else if (command.Amount < 0)
             {
-                player.SubVital( Vitals.Mana, -command.Amount );
+                player.SubVital(Vitals.Mana, -command.Amount);
                 player.CombatTimer = Globals.Timing.Milliseconds + Options.CombatTime;
             }
             else
             {
-                player.RestoreVital( Vitals.Mana );
+                player.RestoreVital(Vitals.Mana);
             }
         }
 
@@ -428,21 +428,21 @@ namespace Intersect.Server.Entities.Events
         )
         {
             var quantity = command.Exp;
-            if( command.UseVariable )
+            if (command.UseVariable)
             {
-                switch( command.VariableType )
+                switch (command.VariableType)
                 {
                     case VariableTypes.PlayerVariable:
-                        quantity = (int)player.GetVariableValue( command.VariableId ).Integer;
+                        quantity = (int)player.GetVariableValue(command.VariableId).Integer;
 
                         break;
                     case VariableTypes.ServerVariable:
-                        quantity = (int)ServerVariableBase.Get( command.VariableId )?.Value.Integer;
+                        quantity = (int)ServerVariableBase.Get(command.VariableId)?.Value.Integer;
                         break;
                 }
             }
 
-            player.GiveExperience( quantity );
+            player.GiveExperience(quantity);
         }
 
         //Change Level Command
@@ -454,7 +454,7 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            player.SetLevel( command.Level, true );
+            player.SetLevel(command.Level, true);
         }
 
         //Change Spells Command
@@ -468,37 +468,37 @@ namespace Intersect.Server.Entities.Events
         {
             //0 is add, 1 is remove
             var success = false;
-            if( command.Add ) //Try to add a spell
+            if (command.Add) //Try to add a spell
             {
-                success = player.TryTeachSpell( new Spell( command.SpellId ) );
+                success = player.TryTeachSpell(new Spell(command.SpellId));
             }
             else
             {
-                if( player.FindSpell( command.SpellId ) > -1 && command.SpellId != Guid.Empty )
+                if (player.FindSpell(command.SpellId) > -1 && command.SpellId != Guid.Empty)
                 {
-                    player.ForgetSpell( player.FindSpell( command.SpellId ) );
+                    player.ForgetSpell(player.FindSpell(command.SpellId));
                     success = true;
                 }
             }
 
             List<EventCommand> newCommandList = null;
-            if( success && stackInfo.Page.CommandLists.ContainsKey( command.BranchIds[0] ) )
+            if (success && stackInfo.Page.CommandLists.ContainsKey(command.BranchIds[0]))
             {
                 newCommandList = stackInfo.Page.CommandLists[command.BranchIds[0]];
             }
 
-            if( !success && stackInfo.Page.CommandLists.ContainsKey( command.BranchIds[1] ) )
+            if (!success && stackInfo.Page.CommandLists.ContainsKey(command.BranchIds[1]))
             {
                 newCommandList = stackInfo.Page.CommandLists[command.BranchIds[1]];
             }
 
-            var tmpStack = new CommandInstance( stackInfo.Page )
+            var tmpStack = new CommandInstance(stackInfo.Page)
             {
                 CommandList = newCommandList,
                 CommandIndex = 0,
             };
 
-            callStack.Push( tmpStack );
+            callStack.Push(tmpStack);
         }
 
         //Change Items Command
@@ -515,36 +515,36 @@ namespace Intersect.Server.Entities.Events
 
             // Use the command quantity, unless we're using a variable for input!
             var quantity = command.Quantity;
-            if( command.UseVariable )
+            if (command.UseVariable)
             {
-                switch( command.VariableType )
+                switch (command.VariableType)
                 {
                     case VariableTypes.PlayerVariable:
-                        quantity = (int)player.GetVariableValue( command.VariableId ).Integer;
+                        quantity = (int)player.GetVariableValue(command.VariableId).Integer;
 
                         break;
                     case VariableTypes.ServerVariable:
-                        quantity = (int)ServerVariableBase.Get( command.VariableId )?.Value.Integer;
+                        quantity = (int)ServerVariableBase.Get(command.VariableId)?.Value.Integer;
                         break;
                 }
 
                 // The code further ahead converts 0 to quantity 1, due to some legacy junk where some editors would (maybe still do?) set quantity to 0 for non-stackable items.
                 // but if we want to give a player no items through an event we should listen to that.
-                if( quantity <= 0 )
+                if (quantity <= 0)
                 {
                     skip = true;
                 }
             }
 
-            if( !skip )
+            if (!skip)
             {
-                if( command.Add )
+                if (command.Add)
                 {
-                    success = player.TryGiveItem( command.ItemId, quantity, command.ItemHandling );
+                    success = player.TryGiveItem(command.ItemId, quantity, command.ItemHandling);
                 }
                 else
                 {
-                    success = player.TryTakeItem( command.ItemId, quantity, command.ItemHandling );
+                    success = player.TryTakeItem(command.ItemId, quantity, command.ItemHandling);
                 }
             }
             else
@@ -554,23 +554,23 @@ namespace Intersect.Server.Entities.Events
             }
 
             List<EventCommand> newCommandList = null;
-            if( success && stackInfo.Page.CommandLists.ContainsKey( command.BranchIds[0] ) )
+            if (success && stackInfo.Page.CommandLists.ContainsKey(command.BranchIds[0]))
             {
                 newCommandList = stackInfo.Page.CommandLists[command.BranchIds[0]];
             }
 
-            if( !success && stackInfo.Page.CommandLists.ContainsKey( command.BranchIds[1] ) )
+            if (!success && stackInfo.Page.CommandLists.ContainsKey(command.BranchIds[1]))
             {
                 newCommandList = stackInfo.Page.CommandLists[command.BranchIds[1]];
             }
 
-            var tmpStack = new CommandInstance( stackInfo.Page )
+            var tmpStack = new CommandInstance(stackInfo.Page)
             {
                 CommandList = newCommandList,
                 CommandIndex = 0,
             };
 
-            callStack.Push( tmpStack );
+            callStack.Push(tmpStack);
         }
 
         //Equip Items Command
@@ -582,20 +582,20 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            var itm = ItemBase.Get( command.ItemId );
+            var itm = ItemBase.Get(command.ItemId);
 
-            if( itm == null )
+            if (itm == null)
             {
                 return;
             }
 
-            if( command.Unequip )
+            if (command.Unequip)
             {
-                player.UnequipItem( command.ItemId );
+                player.UnequipItem(command.ItemId);
             }
             else
             {
-                player.EquipItem( ItemBase.Get( command.ItemId ) );
+                player.EquipItem(ItemBase.Get(command.ItemId));
             }
         }
 
@@ -609,7 +609,7 @@ namespace Intersect.Server.Entities.Events
         )
         {
             player.Sprite = command.Sprite;
-            PacketSender.SendEntityDataToProximity( player );
+            PacketSender.SendEntityDataToProximity(player);
         }
 
         //Change Face Command
@@ -622,7 +622,7 @@ namespace Intersect.Server.Entities.Events
         )
         {
             player.Face = command.Face;
-            PacketSender.SendEntityDataToProximity( player );
+            PacketSender.SendEntityDataToProximity(player);
         }
 
         //Change Gender Command
@@ -635,7 +635,7 @@ namespace Intersect.Server.Entities.Events
         )
         {
             player.Gender = command.Gender;
-            PacketSender.SendEntityDataToProximity( player );
+            PacketSender.SendEntityDataToProximity(player);
         }
 
         //Change Name Color Command
@@ -647,22 +647,22 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            if( command.Remove )
+            if (command.Remove)
             {
                 player.NameColor = null;
-                PacketSender.SendEntityDataToProximity( player );
+                PacketSender.SendEntityDataToProximity(player);
 
                 return;
             }
 
             //Don't set the name color if it doesn't override admin name colors.
-            if( player.Power != UserRights.None && !command.Override )
+            if (player.Power != UserRights.None && !command.Override)
             {
                 return;
             }
 
             player.NameColor = command.Color;
-            PacketSender.SendEntityDataToProximity( player );
+            PacketSender.SendEntityDataToProximity(player);
         }
 
         //Change Player Label Command
@@ -674,24 +674,24 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            var label = ParseEventText( command.Value, player, instance );
+            var label = ParseEventText(command.Value, player, instance);
 
             var color = command.Color;
-            if( command.MatchNameColor )
+            if (command.MatchNameColor)
             {
                 color = Color.Transparent;
             }
 
-            if( command.Position == 0 ) // Header
+            if (command.Position == 0) // Header
             {
-                player.HeaderLabel = new Label( label, color );
+                player.HeaderLabel = new Label(label, color);
             }
-            else if( command.Position == 1 ) // Footer
+            else if (command.Position == 1) // Footer
             {
-                player.FooterLabel = new Label( label, color );
+                player.FooterLabel = new Label(label, color);
             }
 
-            PacketSender.SendEntityDataToProximity( player );
+            PacketSender.SendEntityDataToProximity(player);
         }
 
         //Set Access Command (wtf why would we even allow this? lol)
@@ -703,12 +703,12 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            if( player.Client == null )
+            if (player.Client == null)
             {
                 return;
             }
 
-            switch( command.Access )
+            switch (command.Access)
             {
                 case Access.Moderator:
                     player.Client.Power = UserRights.Moderation;
@@ -724,8 +724,8 @@ namespace Intersect.Server.Entities.Events
                     break;
             }
 
-            PacketSender.SendEntityDataToProximity( player );
-            PacketSender.SendChatMsg( player, Strings.Player.powerchanged, ChatMessageType.Notice, Color.Red );
+            PacketSender.SendEntityDataToProximity(player);
+            PacketSender.SendChatMsg(player, Strings.Player.powerchanged, ChatMessageType.Notice, Color.Red);
         }
 
         //Warp Player Command
@@ -739,7 +739,7 @@ namespace Intersect.Server.Entities.Events
         {
             player.Warp(
                 command.MapId, command.X, command.Y,
-                command.Direction == WarpDirection.Retain ? (byte)player.Dir : (byte)( command.Direction - 1 )
+                command.Direction == WarpDirection.Retain ? (byte)player.Dir : (byte)(command.Direction - 1)
             );
         }
 
@@ -752,24 +752,24 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            if( command.Route.Target == Guid.Empty )
+            if (command.Route.Target == Guid.Empty)
             {
                 player.MoveRoute = new EventMoveRoute();
                 player.MoveRouteSetter = instance.PageInstance;
-                player.MoveRoute.CopyFrom( command.Route );
-                PacketSender.SendMoveRouteToggle( player, true );
+                player.MoveRoute.CopyFrom(command.Route);
+                PacketSender.SendMoveRouteToggle(player, true);
             }
             else
             {
-                foreach( var evt in player.EventLookup )
+                foreach (var evt in player.EventLookup)
                 {
-                    if( evt.Value.BaseEvent.Id == command.Route.Target )
+                    if (evt.Value.BaseEvent.Id == command.Route.Target)
                     {
-                        if( evt.Value.PageInstance != null )
+                        if (evt.Value.PageInstance != null)
                         {
-                            evt.Value.PageInstance.MoveRoute.CopyFrom( command.Route );
+                            evt.Value.PageInstance.MoveRoute.CopyFrom(command.Route);
                             evt.Value.PageInstance.MovementType = EventMovementType.MoveRoute;
-                            if( evt.Value.PageInstance.GlobalClone != null )
+                            if (evt.Value.PageInstance.GlobalClone != null)
                             {
                                 evt.Value.PageInstance.GlobalClone.MovementType = EventMovementType.MoveRoute;
                             }
@@ -788,16 +788,16 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            if( command.TargetId == Guid.Empty )
+            if (command.TargetId == Guid.Empty)
             {
                 stackInfo.WaitingForRoute = player.Id;
                 stackInfo.WaitingForRouteMap = player.MapId;
             }
             else
             {
-                foreach( var evt in player.EventLookup )
+                foreach (var evt in player.EventLookup)
                 {
-                    if( evt.Value.BaseEvent.Id == command.TargetId )
+                    if (evt.Value.BaseEvent.Id == command.TargetId)
                     {
                         stackInfo.WaitingForRoute = evt.Value.BaseEvent.Id;
                         stackInfo.WaitingForRouteMap = evt.Value.MapId;
@@ -823,7 +823,7 @@ namespace Intersect.Server.Entities.Events
             var tileY = 0;
             var direction = (byte)Directions.Up;
             var targetEntity = (Entity)player;
-            if( mapId != Guid.Empty )
+            if (mapId != Guid.Empty)
             {
                 tileX = command.X;
                 tileY = command.Y;
@@ -831,16 +831,16 @@ namespace Intersect.Server.Entities.Events
             }
             else
             {
-                if( command.EntityId != Guid.Empty )
+                if (command.EntityId != Guid.Empty)
                 {
-                    foreach( var evt in player.EventLookup )
+                    foreach (var evt in player.EventLookup)
                     {
-                        if( evt.Value.MapId != instance.MapId )
+                        if (evt.Value.MapId != instance.MapId)
                         {
                             continue;
                         }
 
-                        if( evt.Value.BaseEvent.Id == command.EntityId )
+                        if (evt.Value.BaseEvent.Id == command.EntityId)
                         {
                             targetEntity = evt.Value.PageInstance;
 
@@ -849,14 +849,14 @@ namespace Intersect.Server.Entities.Events
                     }
                 }
 
-                if( targetEntity != null )
+                if (targetEntity != null)
                 {
                     int xDiff = command.X;
                     int yDiff = command.Y;
-                    if( command.Dir == 1 )
+                    if (command.Dir == 1)
                     {
                         var tmp = 0;
-                        switch( targetEntity.Dir )
+                        switch (targetEntity.Dir)
                         {
                             case (int)Directions.Down:
                                 yDiff *= -1;
@@ -881,8 +881,8 @@ namespace Intersect.Server.Entities.Events
                     }
 
                     mapId = targetEntity.MapId;
-                    tileX = (byte)( targetEntity.X + xDiff );
-                    tileY = (byte)( targetEntity.Y + yDiff );
+                    tileX = (byte)(targetEntity.X + xDiff);
+                    tileY = (byte)(targetEntity.Y + yDiff);
                 }
                 else
                 {
@@ -890,11 +890,11 @@ namespace Intersect.Server.Entities.Events
                 }
             }
 
-            var tile = new TileHelper( mapId, tileX, tileY );
-            if( tile.TryFix() )
+            var tile = new TileHelper(mapId, tileX, tileY);
+            if (tile.TryFix())
             {
-                var npc = MapInstance.Get( mapId ).SpawnNpc( (byte)tileX, (byte)tileY, direction, npcId, true );
-                player.SpawnedNpcs.Add( (Npc)npc );
+                var npc = MapInstance.Get(mapId).SpawnNpc((byte)tileX, (byte)tileY, direction, npcId, true);
+                player.SpawnedNpcs.Add((Npc)npc);
             }
         }
 
@@ -908,15 +908,15 @@ namespace Intersect.Server.Entities.Events
         )
         {
             var entities = player.SpawnedNpcs.ToArray();
-            for( var i = 0; i < entities.Length; i++ )
+            for (var i = 0; i < entities.Length; i++)
             {
-                if( entities[i] != null && entities[i].GetType() == typeof( Npc ) )
+                if (entities[i] != null && entities[i].GetType() == typeof(Npc))
                 {
-                    if( ( (Npc)entities[i] ).Despawnable == true )
+                    if (((Npc)entities[i]).Despawnable == true)
                     {
-                        lock( player.EntityLock )
+                        lock (player.EntityLock)
                         {
-                            ( (Npc)entities[i] ).Die( 100 );
+                            ((Npc)entities[i]).Die(100);
                         }
                     }
                 }
@@ -942,7 +942,7 @@ namespace Intersect.Server.Entities.Events
             var tileY = 0;
             var direction = (byte)Directions.Up;
             var targetEntity = (Entity)player;
-            if( mapId != Guid.Empty )
+            if (mapId != Guid.Empty)
             {
                 tileX = command.X;
                 tileY = command.Y;
@@ -950,16 +950,16 @@ namespace Intersect.Server.Entities.Events
             }
             else
             {
-                if( command.EntityId != Guid.Empty )
+                if (command.EntityId != Guid.Empty)
                 {
-                    foreach( var evt in player.EventLookup )
+                    foreach (var evt in player.EventLookup)
                     {
-                        if( evt.Value.MapId != instance.MapId )
+                        if (evt.Value.MapId != instance.MapId)
                         {
                             continue;
                         }
 
-                        if( evt.Value.BaseEvent.Id == command.EntityId )
+                        if (evt.Value.BaseEvent.Id == command.EntityId)
                         {
                             targetEntity = evt.Value.PageInstance;
 
@@ -968,9 +968,9 @@ namespace Intersect.Server.Entities.Events
                     }
                 }
 
-                if( targetEntity != null )
+                if (targetEntity != null)
                 {
-                    if( command.X == 0 && command.Y == 0 && command.Dir == 0 )
+                    if (command.X == 0 && command.Y == 0 && command.Dir == 0)
                     {
                         //Attach to entity instead of playing on tile
                         PacketSender.SendAnimationToProximity(
@@ -983,10 +983,10 @@ namespace Intersect.Server.Entities.Events
 
                     int xDiff = command.X;
                     int yDiff = command.Y;
-                    if( command.Dir == 1 )
+                    if (command.Dir == 1)
                     {
                         var tmp = 0;
-                        switch( targetEntity.Dir )
+                        switch (targetEntity.Dir)
                         {
                             case (int)Directions.Down:
                                 yDiff *= -1;
@@ -1020,8 +1020,8 @@ namespace Intersect.Server.Entities.Events
                 }
             }
 
-            var tile = new TileHelper( mapId, tileX, tileY );
-            if( tile.TryFix() )
+            var tile = new TileHelper(mapId, tileX, tileY);
+            if (tile.TryFix())
             {
                 PacketSender.SendAnimationToProximity(
                     animId, -1, Guid.Empty, tile.GetMapId(), tile.GetX(), tile.GetY(), (sbyte)direction
@@ -1039,7 +1039,7 @@ namespace Intersect.Server.Entities.Events
         )
         {
             instance.HoldingPlayer = true;
-            PacketSender.SendHoldPlayer( player, instance.BaseEvent.Id, instance.BaseEvent.MapId );
+            PacketSender.SendHoldPlayer(player, instance.BaseEvent.Id, instance.BaseEvent.MapId);
         }
 
         //Release Player Command
@@ -1052,7 +1052,7 @@ namespace Intersect.Server.Entities.Events
         )
         {
             instance.HoldingPlayer = false;
-            PacketSender.SendReleasePlayer( player, instance.BaseEvent.Id );
+            PacketSender.SendReleasePlayer(player, instance.BaseEvent.Id);
         }
 
         //Hide Player Command
@@ -1066,7 +1066,7 @@ namespace Intersect.Server.Entities.Events
         {
             player.HideEntity = true;
             player.HideName = true;
-            PacketSender.SendEntityDataToProximity( player );
+            PacketSender.SendEntityDataToProximity(player);
         }
 
         //Show Player Command
@@ -1080,7 +1080,7 @@ namespace Intersect.Server.Entities.Events
         {
             player.HideEntity = false;
             player.HideName = false;
-            PacketSender.SendEntityDataToProximity( player );
+            PacketSender.SendEntityDataToProximity(player);
         }
 
         //Play Bgm Command
@@ -1092,7 +1092,7 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            PacketSender.SendPlayMusic( player, command.File );
+            PacketSender.SendPlayMusic(player, command.File);
         }
 
         //Fadeout Bgm Command
@@ -1104,7 +1104,7 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            PacketSender.SendFadeMusic( player );
+            PacketSender.SendFadeMusic(player);
         }
 
         //Play Sound Command
@@ -1116,7 +1116,7 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            PacketSender.SendPlaySound( player, command.File );
+            PacketSender.SendPlaySound(player, command.File);
         }
 
         //Stop Sounds Command
@@ -1128,7 +1128,7 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            PacketSender.SendStopSounds( player );
+            PacketSender.SendStopSounds(player);
         }
 
         //Show Picture Command
@@ -1140,7 +1140,7 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            PacketSender.SendShowPicture( player, command.File, command.Size, command.Clickable );
+            PacketSender.SendShowPicture(player, command.File, command.Size, command.Clickable);
         }
 
         //Hide Picture Command
@@ -1152,7 +1152,7 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            PacketSender.SendHidePicture( player );
+            PacketSender.SendHidePicture(player);
         }
 
         //Wait Command
@@ -1190,7 +1190,7 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            player.OpenShop( ShopBase.Get( command.ShopId ) );
+            player.OpenShop(ShopBase.Get(command.ShopId));
             callStack.Peek().WaitingForResponse = CommandInstance.EventResponse.Shop;
         }
 
@@ -1203,7 +1203,7 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            player.OpenCraftingTable( CraftingTableBase.Get( command.CraftingTableId ) );
+            player.OpenCraftingTable(CraftingTableBase.Get(command.CraftingTableId));
             callStack.Peek().WaitingForResponse = CommandInstance.EventResponse.Crafting;
         }
 
@@ -1216,14 +1216,14 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            if( ClassBase.Get( command.ClassId ) != null )
+            if (ClassBase.Get(command.ClassId) != null)
             {
                 player.ClassId = command.ClassId;
                 player.RecalculateStatsAndPoints();
                 player.UnequipInvalidItems();
             }
 
-            PacketSender.SendEntityDataToProximity( player );
+            PacketSender.SendEntityDataToProximity(player);
         }
 
         //Start Quest Command
@@ -1236,14 +1236,14 @@ namespace Intersect.Server.Entities.Events
         )
         {
             var success = false;
-            var quest = QuestBase.Get( command.QuestId );
-            if( quest != null )
+            var quest = QuestBase.Get(command.QuestId);
+            if (quest != null)
             {
-                if( player.CanStartQuest( quest ) )
+                if (player.CanStartQuest(quest))
                 {
-                    if( command.Offer )
+                    if (command.Offer)
                     {
-                        player.OfferQuest( quest );
+                        player.OfferQuest(quest);
                         stackInfo.WaitingForResponse = CommandInstance.EventResponse.Quest;
                         stackInfo.BranchIds = command.BranchIds;
                         stackInfo.WaitingOnCommand = command;
@@ -1252,30 +1252,30 @@ namespace Intersect.Server.Entities.Events
                     }
                     else
                     {
-                        player.StartQuest( quest );
+                        player.StartQuest(quest);
                         success = true;
                     }
                 }
             }
 
             List<EventCommand> newCommandList = null;
-            if( success && stackInfo.Page.CommandLists.ContainsKey( command.BranchIds[0] ) )
+            if (success && stackInfo.Page.CommandLists.ContainsKey(command.BranchIds[0]))
             {
                 newCommandList = stackInfo.Page.CommandLists[command.BranchIds[0]];
             }
 
-            if( !success && stackInfo.Page.CommandLists.ContainsKey( command.BranchIds[1] ) )
+            if (!success && stackInfo.Page.CommandLists.ContainsKey(command.BranchIds[1]))
             {
                 newCommandList = stackInfo.Page.CommandLists[command.BranchIds[1]];
             }
 
-            var tmpStack = new CommandInstance( stackInfo.Page )
+            var tmpStack = new CommandInstance(stackInfo.Page)
             {
                 CommandList = newCommandList,
                 CommandIndex = 0,
             };
 
-            callStack.Push( tmpStack );
+            callStack.Push(tmpStack);
         }
 
         //Complete Quest Task Command
@@ -1287,7 +1287,7 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            player.CompleteQuestTask( command.QuestId, command.TaskId );
+            player.CompleteQuestTask(command.QuestId, command.TaskId);
         }
 
         //End Quest Command
@@ -1299,7 +1299,7 @@ namespace Intersect.Server.Entities.Events
             Stack<CommandInstance> callStack
         )
         {
-            player.CompleteQuest( command.QuestId, command.SkipCompletionEvent );
+            player.CompleteQuest(command.QuestId, command.SkipCompletionEvent);
         }
 
         // Change Player Color Command
@@ -1312,7 +1312,7 @@ namespace Intersect.Server.Entities.Events
         )
         {
             player.Color = command.Color;
-            PacketSender.SendEntityDataToProximity( player );
+            PacketSender.SendEntityDataToProximity(player);
         }
 
         private static void ProcessCommand(
@@ -1325,44 +1325,44 @@ namespace Intersect.Server.Entities.Events
         {
             var success = false;
 
-            var variable = PlayerVariableBase.Get( command.VariableId );
-            if( variable != null )
+            var variable = PlayerVariableBase.Get(command.VariableId);
+            if (variable != null)
             {
-                if( variable.Type == VariableDataTypes.String )
+                if (variable.Type == VariableDataTypes.String)
                 {
-                    var data = player.GetVariable( variable.Id )?.Value;
-                    if( data != null )
+                    var data = player.GetVariable(variable.Id)?.Value;
+                    if (data != null)
                     {
-                        success = player.TryChangeName( data.String );
+                        success = player.TryChangeName(data.String);
                     }
                 }
             }
 
             List<EventCommand> newCommandList = null;
-            if( success && stackInfo.Page.CommandLists.ContainsKey( command.BranchIds[0] ) )
+            if (success && stackInfo.Page.CommandLists.ContainsKey(command.BranchIds[0]))
             {
                 newCommandList = stackInfo.Page.CommandLists[command.BranchIds[0]];
             }
 
-            if( !success && stackInfo.Page.CommandLists.ContainsKey( command.BranchIds[1] ) )
+            if (!success && stackInfo.Page.CommandLists.ContainsKey(command.BranchIds[1]))
             {
                 newCommandList = stackInfo.Page.CommandLists[command.BranchIds[1]];
             }
 
-            var tmpStack = new CommandInstance( stackInfo.Page )
+            var tmpStack = new CommandInstance(stackInfo.Page)
             {
                 CommandList = newCommandList,
                 CommandIndex = 0,
             };
 
-            callStack.Push( tmpStack );
+            callStack.Push(tmpStack);
         }
 
-        private static Stack<CommandInstance> LoadLabelCallstack( string label, EventPage currentPage )
+        private static Stack<CommandInstance> LoadLabelCallstack(string label, EventPage currentPage)
         {
             var newStack = new Stack<CommandInstance>();
-            newStack.Push( new CommandInstance( currentPage ) ); //Start from the top
-            if( FindLabelResursive( newStack, currentPage, newStack.Peek().CommandList, label ) )
+            newStack.Push(new CommandInstance(currentPage)); //Start from the top
+            if (FindLabelResursive(newStack, currentPage, newStack.Peek().CommandList, label))
             {
                 return newStack;
             }
@@ -1377,41 +1377,41 @@ namespace Intersect.Server.Entities.Events
             string label
         )
         {
-            if( page.CommandLists.ContainsValue( commandList ) )
+            if (page.CommandLists.ContainsValue(commandList))
             {
-                while( stack.Peek().CommandIndex < commandList.Count )
+                while (stack.Peek().CommandIndex < commandList.Count)
                 {
                     var command = commandList[stack.Peek().CommandIndex];
                     var branchIds = new List<Guid>();
-                    switch( command.Type )
+                    switch (command.Type)
                     {
                         case EventCommandType.ShowOptions:
-                            branchIds.AddRange( ( (ShowOptionsCommand)command ).BranchIds );
+                            branchIds.AddRange(((ShowOptionsCommand)command).BranchIds);
 
                             break;
                         case EventCommandType.InputVariable:
-                            branchIds.AddRange( ( (InputVariableCommand)command ).BranchIds );
+                            branchIds.AddRange(((InputVariableCommand)command).BranchIds);
 
                             break;
                         case EventCommandType.ConditionalBranch:
-                            branchIds.AddRange( ( (ConditionalBranchCommand)command ).BranchIds );
+                            branchIds.AddRange(((ConditionalBranchCommand)command).BranchIds);
 
                             break;
                         case EventCommandType.ChangeSpells:
-                            branchIds.AddRange( ( (ChangeSpellsCommand)command ).BranchIds );
+                            branchIds.AddRange(((ChangeSpellsCommand)command).BranchIds);
 
                             break;
                         case EventCommandType.ChangeItems:
-                            branchIds.AddRange( ( (ChangeItemsCommand)command ).BranchIds );
+                            branchIds.AddRange(((ChangeItemsCommand)command).BranchIds);
 
                             break;
                         case EventCommandType.StartQuest:
-                            branchIds.AddRange( ( (StartQuestCommand)command ).BranchIds );
+                            branchIds.AddRange(((StartQuestCommand)command).BranchIds);
 
                             break;
                         case EventCommandType.Label:
                             //See if we found the label!
-                            if( ( (LabelCommand)command ).Label == label )
+                            if (((LabelCommand)command).Label == label)
                             {
                                 return true;
                             }
@@ -1420,19 +1420,19 @@ namespace Intersect.Server.Entities.Events
                     }
 
                     //Test each branch
-                    foreach( var branch in branchIds )
+                    foreach (var branch in branchIds)
                     {
-                        if( page.CommandLists.ContainsKey( branch ) )
+                        if (page.CommandLists.ContainsKey(branch))
                         {
-                            var tmpStack = new CommandInstance( page )
+                            var tmpStack = new CommandInstance(page)
                             {
                                 CommandList = page.CommandLists[branch],
                                 CommandIndex = 0,
                             };
 
                             stack.Peek().CommandIndex++;
-                            stack.Push( tmpStack );
-                            if( FindLabelResursive( stack, page, tmpStack.CommandList, label ) )
+                            stack.Push(tmpStack);
+                            if (FindLabelResursive(stack, page, tmpStack.CommandList, label))
                             {
                                 return true;
                             }
@@ -1450,16 +1450,16 @@ namespace Intersect.Server.Entities.Events
             return false;
         }
 
-        public static string ParseEventText( string input, Player player, Event instance )
+        public static string ParseEventText(string input, Player player, Event instance)
         {
-            if( input == null )
+            if (input == null)
             {
                 input = "";
             }
 
-            if( player != null && input.Contains( "\\" ) )
+            if (player != null && input.Contains("\\"))
             {
-                var sb = new StringBuilder( input );
+                var sb = new StringBuilder(input);
                 var time = Time.GetTime();
                 var replacements = new Dictionary<string, string>()
                 {
@@ -1477,30 +1477,30 @@ namespace Intersect.Server.Entities.Events
 
                 };
 
-                foreach( var val in replacements )
+                foreach (var val in replacements)
                 {
-                    if( input.Contains( val.Key ) )
-                        sb.Replace( val.Key, val.Value );
+                    if (input.Contains(val.Key))
+                        sb.Replace(val.Key, val.Value);
                 }
 
-                foreach( var val in DbInterface.ServerVariableEventTextLookup )
+                foreach (var val in DbInterface.ServerVariableEventTextLookup)
                 {
-                    if( input.Contains( val.Key ) )
-                        sb.Replace( val.Key, ( val.Value ).Value.ToString( ( val.Value ).Type ) );
+                    if (input.Contains(val.Key))
+                        sb.Replace(val.Key, (val.Value).Value.ToString((val.Value).Type));
                 }
 
-                foreach( var val in DbInterface.PlayerVariableEventTextLookup )
+                foreach (var val in DbInterface.PlayerVariableEventTextLookup)
                 {
-                    if( input.Contains( val.Key ) )
-                        sb.Replace( val.Key, player.GetVariableValue( val.Value.Id ).ToString( ( val.Value ).Type ) );
+                    if (input.Contains(val.Key))
+                        sb.Replace(val.Key, player.GetVariableValue(val.Value.Id).ToString((val.Value).Type));
                 }
 
-                if( instance != null )
+                if (instance != null)
                 {
-                    var parms = instance.GetParams( player );
-                    foreach( var val in parms )
+                    var parms = instance.GetParams(player);
+                    foreach (var val in parms)
                     {
-                        sb.Replace( Strings.Events.eventparam + "{" + val.Key + "}", val.Value );
+                        sb.Replace(Strings.Events.eventparam + "{" + val.Key + "}", val.Value);
                     }
                 }
 
@@ -1527,32 +1527,32 @@ namespace Intersect.Server.Entities.Events
         )
         {
             VariableValue value = null;
-            if( command.VariableType == VariableTypes.PlayerVariable )
+            if (command.VariableType == VariableTypes.PlayerVariable)
             {
-                value = player.GetVariableValue( command.VariableId );
+                value = player.GetVariableValue(command.VariableId);
             }
-            else if( command.VariableType == VariableTypes.ServerVariable )
+            else if (command.VariableType == VariableTypes.ServerVariable)
             {
-                value = ServerVariableBase.Get( command.VariableId )?.Value;
+                value = ServerVariableBase.Get(command.VariableId)?.Value;
             }
 
-            if( value == null )
+            if (value == null)
             {
                 value = new VariableValue();
             }
 
-            if( mod.DuplicateVariableId != Guid.Empty )
+            if (mod.DuplicateVariableId != Guid.Empty)
             {
-                if( mod.DupVariableType == VariableTypes.PlayerVariable )
+                if (mod.DupVariableType == VariableTypes.PlayerVariable)
                 {
-                    value.Boolean = player.GetVariableValue( mod.DuplicateVariableId ).Boolean;
+                    value.Boolean = player.GetVariableValue(mod.DuplicateVariableId).Boolean;
                 }
-                else if( mod.DupVariableType == VariableTypes.ServerVariable )
+                else if (mod.DupVariableType == VariableTypes.ServerVariable)
                 {
-                    var variable = ServerVariableBase.Get( mod.DuplicateVariableId );
-                    if( variable != null )
+                    var variable = ServerVariableBase.Get(mod.DuplicateVariableId);
+                    if (variable != null)
                     {
-                        value.Boolean = ServerVariableBase.Get( mod.DuplicateVariableId ).Value.Boolean;
+                        value.Boolean = ServerVariableBase.Get(mod.DuplicateVariableId).Value.Boolean;
                     }
                 }
             }
@@ -1561,16 +1561,16 @@ namespace Intersect.Server.Entities.Events
                 value.Boolean = mod.Value;
             }
 
-            if( command.VariableType == VariableTypes.PlayerVariable )
+            if (command.VariableType == VariableTypes.PlayerVariable)
             {
                 // Set the party member switches too if Sync Party enabled!
-                if( command.SyncParty )
+                if (command.SyncParty)
                 {
-                    foreach( var partyMember in player.Party )
+                    foreach (var partyMember in player.Party)
                     {
-                        if( partyMember != player )
+                        if (partyMember != player)
                         {
-                            partyMember.SetSwitchValue( command.VariableId, mod.Value );
+                            partyMember.SetSwitchValue(command.VariableId, mod.Value);
                         }
                     }
                 }
@@ -1578,7 +1578,7 @@ namespace Intersect.Server.Entities.Events
             else
             {
                 //TODO: Make async SaveGameObject for performance? We don't want to await on a save during the server loop...
-                DbInterface.SaveGameObject( ServerVariableBase.Get( command.VariableId ) );
+                DbInterface.SaveGameObject(ServerVariableBase.Get(command.VariableId));
             }
         }
 
@@ -1590,21 +1590,21 @@ namespace Intersect.Server.Entities.Events
         )
         {
             VariableValue value = null;
-            if( command.VariableType == VariableTypes.PlayerVariable )
+            if (command.VariableType == VariableTypes.PlayerVariable)
             {
-                value = player.GetVariableValue( command.VariableId );
+                value = player.GetVariableValue(command.VariableId);
             }
-            else if( command.VariableType == VariableTypes.ServerVariable )
+            else if (command.VariableType == VariableTypes.ServerVariable)
             {
-                value = ServerVariableBase.Get( command.VariableId )?.Value;
+                value = ServerVariableBase.Get(command.VariableId)?.Value;
             }
 
-            if( value == null )
+            if (value == null)
             {
                 value = new VariableValue();
             }
 
-            switch( mod.ModType )
+            switch (mod.ModType)
             {
                 case Enums.VariableMods.Set:
                     value.Integer = mod.Value;
@@ -1623,7 +1623,7 @@ namespace Intersect.Server.Entities.Events
 
                     break;
                 case Enums.VariableMods.Divide:
-                    if( mod.Value != 0 )  //Idiot proofing divide by 0 LOL
+                    if (mod.Value != 0)  //Idiot proofing divide by 0 LOL
                     {
                         value.Integer /= mod.Value;
                     }
@@ -1639,76 +1639,76 @@ namespace Intersect.Server.Entities.Events
                     break;
                 case Enums.VariableMods.Random:
                     //TODO: Fix - Random doesnt work with longs lolz
-                    value.Integer = Randomization.Next( (int)mod.Value, (int)mod.HighValue + 1 );
+                    value.Integer = Randomization.Next((int)mod.Value, (int)mod.HighValue + 1);
 
                     break;
                 case Enums.VariableMods.SystemTime:
-                    var ms = (long)( DateTime.UtcNow - new DateTime( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc ) )
+                    var ms = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))
                         .TotalMilliseconds;
 
                     value.Integer = ms;
 
                     break;
                 case Enums.VariableMods.DupPlayerVar:
-                    value.Integer = player.GetVariableValue( mod.DuplicateVariableId ).Integer;
+                    value.Integer = player.GetVariableValue(mod.DuplicateVariableId).Integer;
 
                     break;
                 case Enums.VariableMods.DupGlobalVar:
-                    var dupServerVariable = ServerVariableBase.Get( mod.DuplicateVariableId );
-                    if( dupServerVariable != null )
+                    var dupServerVariable = ServerVariableBase.Get(mod.DuplicateVariableId);
+                    if (dupServerVariable != null)
                     {
                         value.Integer = dupServerVariable.Value.Integer;
                     }
 
                     break;
                 case Enums.VariableMods.AddPlayerVar:
-                    value.Integer += player.GetVariableValue( mod.DuplicateVariableId ).Integer;
+                    value.Integer += player.GetVariableValue(mod.DuplicateVariableId).Integer;
 
                     break;
                 case Enums.VariableMods.AddGlobalVar:
-                    var asv = ServerVariableBase.Get( mod.DuplicateVariableId );
-                    if( asv != null )
+                    var asv = ServerVariableBase.Get(mod.DuplicateVariableId);
+                    if (asv != null)
                     {
                         value.Integer += asv.Value.Integer;
                     }
 
                     break;
                 case Enums.VariableMods.SubtractPlayerVar:
-                    value.Integer -= player.GetVariableValue( mod.DuplicateVariableId ).Integer;
+                    value.Integer -= player.GetVariableValue(mod.DuplicateVariableId).Integer;
 
                     break;
                 case Enums.VariableMods.SubtractGlobalVar:
-                    var ssv = ServerVariableBase.Get( mod.DuplicateVariableId );
-                    if( ssv != null )
+                    var ssv = ServerVariableBase.Get(mod.DuplicateVariableId);
+                    if (ssv != null)
                     {
                         value.Integer -= ssv.Value.Integer;
                     }
 
                     break;
                 case Enums.VariableMods.MultiplyPlayerVar:
-                    value.Integer *= player.GetVariableValue( mod.DuplicateVariableId ).Integer;
+                    value.Integer *= player.GetVariableValue(mod.DuplicateVariableId).Integer;
 
                     break;
                 case Enums.VariableMods.MultiplyGlobalVar:
-                    var msv = ServerVariableBase.Get( mod.DuplicateVariableId );
-                    if( msv != null )
+                    var msv = ServerVariableBase.Get(mod.DuplicateVariableId);
+                    if (msv != null)
                     {
                         value.Integer *= msv.Value.Integer;
                     }
 
                     break;
                 case Enums.VariableMods.DividePlayerVar:
-                    if( player.GetVariableValue( mod.DuplicateVariableId ).Integer != 0 ) //Idiot proofing divide by 0 LOL
+                    if (player.GetVariableValue(mod.DuplicateVariableId).Integer != 0) //Idiot proofing divide by 0 LOL
                     {
-                        value.Integer /= player.GetVariableValue( mod.DuplicateVariableId ).Integer;
+                        value.Integer /= player.GetVariableValue(mod.DuplicateVariableId).Integer;
                     }
 
                     break;
                 case Enums.VariableMods.DivideGlobalVar:
-                    var dsv = ServerVariableBase.Get( mod.DuplicateVariableId );
-                    if( dsv != null )
+                    var dsv = ServerVariableBase.Get(mod.DuplicateVariableId);
+                    if (dsv != null)
                     {
-                        if( dsv.Value != 0 ) //Idiot proofing divide by 0 LOL
+                        if (dsv.Value != 0) //Idiot proofing divide by 0 LOL
                         {
                             value.Integer /= dsv.Value.Integer;
                         }
@@ -1716,24 +1716,24 @@ namespace Intersect.Server.Entities.Events
 
                     break;
                 case Enums.VariableMods.LeftShiftPlayerVar:
-                    value.Integer = value.Integer << (int)player.GetVariableValue( mod.DuplicateVariableId ).Integer;
+                    value.Integer = value.Integer << (int)player.GetVariableValue(mod.DuplicateVariableId).Integer;
 
                     break;
                 case Enums.VariableMods.LeftShiftGlobalVar:
-                    var lhsv = ServerVariableBase.Get( mod.DuplicateVariableId );
-                    if( lhsv != null )
+                    var lhsv = ServerVariableBase.Get(mod.DuplicateVariableId);
+                    if (lhsv != null)
                     {
                         value.Integer = value.Integer << (int)lhsv.Value.Integer;
                     }
 
                     break;
                 case Enums.VariableMods.RightShiftPlayerVar:
-                    value.Integer = value.Integer >> (int)player.GetVariableValue( mod.DuplicateVariableId ).Integer;
+                    value.Integer = value.Integer >> (int)player.GetVariableValue(mod.DuplicateVariableId).Integer;
 
                     break;
                 case Enums.VariableMods.RightShiftGlobalVar:
-                    var rhsv = ServerVariableBase.Get( mod.DuplicateVariableId );
-                    if( rhsv != null )
+                    var rhsv = ServerVariableBase.Get(mod.DuplicateVariableId);
+                    if (rhsv != null)
                     {
                         value.Integer = value.Integer >> (int)rhsv.Value.Integer;
                     }
@@ -1741,16 +1741,16 @@ namespace Intersect.Server.Entities.Events
                     break;
             }
 
-            if( command.VariableType == VariableTypes.PlayerVariable )
+            if (command.VariableType == VariableTypes.PlayerVariable)
             {
                 // Set the party member switches too if Sync Party enabled!
-                if( command.SyncParty )
+                if (command.SyncParty)
                 {
-                    foreach( var partyMember in player.Party )
+                    foreach (var partyMember in player.Party)
                     {
-                        if( partyMember != player )
+                        if (partyMember != player)
                         {
-                            partyMember.SetVariableValue( command.VariableId, value.Integer );
+                            partyMember.SetVariableValue(command.VariableId, value.Integer);
                         }
                     }
                 }
@@ -1758,7 +1758,7 @@ namespace Intersect.Server.Entities.Events
             else
             {
                 //TODO: Make async SaveGameObject for performance? We don't want to await on a save during the server loop...
-                DbInterface.SaveGameObject( ServerVariableBase.Get( command.VariableId ) );
+                DbInterface.SaveGameObject(ServerVariableBase.Get(command.VariableId));
             }
         }
 
@@ -1770,44 +1770,44 @@ namespace Intersect.Server.Entities.Events
         )
         {
             VariableValue value = null;
-            if( command.VariableType == VariableTypes.PlayerVariable )
+            if (command.VariableType == VariableTypes.PlayerVariable)
             {
-                value = player.GetVariableValue( command.VariableId );
+                value = player.GetVariableValue(command.VariableId);
             }
-            else if( command.VariableType == VariableTypes.ServerVariable )
+            else if (command.VariableType == VariableTypes.ServerVariable)
             {
-                value = ServerVariableBase.Get( command.VariableId )?.Value;
+                value = ServerVariableBase.Get(command.VariableId)?.Value;
             }
 
-            if( value == null )
+            if (value == null)
             {
                 value = new VariableValue();
             }
 
-            switch( mod.ModType )
+            switch (mod.ModType)
             {
                 case Enums.VariableMods.Set:
-                    value.String = ParseEventText( mod.Value, player, instance );
+                    value.String = ParseEventText(mod.Value, player, instance);
 
                     break;
                 case Enums.VariableMods.Replace:
-                    var find = ParseEventText( mod.Value, player, instance );
-                    var replace = ParseEventText( mod.Replace, player, instance );
-                    value.String = value.String.Replace( find, replace );
+                    var find = ParseEventText(mod.Value, player, instance);
+                    var replace = ParseEventText(mod.Replace, player, instance);
+                    value.String = value.String.Replace(find, replace);
 
                     break;
             }
 
-            if( command.VariableType == VariableTypes.PlayerVariable )
+            if (command.VariableType == VariableTypes.PlayerVariable)
             {
                 // Set the party member switches too if Sync Party enabled!
-                if( command.SyncParty )
+                if (command.SyncParty)
                 {
-                    foreach( var partyMember in player.Party )
+                    foreach (var partyMember in player.Party)
                     {
-                        if( partyMember != player )
+                        if (partyMember != player)
                         {
-                            partyMember.SetVariableValue( command.VariableId, value.String );
+                            partyMember.SetVariableValue(command.VariableId, value.String);
                         }
                     }
                 }
@@ -1815,7 +1815,7 @@ namespace Intersect.Server.Entities.Events
             else
             {
                 //TODO: Make async SaveGameObject for performance? We don't want to await on a save during the server loop...
-                DbInterface.SaveGameObject( ServerVariableBase.Get( command.VariableId ) );
+                DbInterface.SaveGameObject(ServerVariableBase.Get(command.VariableId));
             }
         }
 

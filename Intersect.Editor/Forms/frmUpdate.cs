@@ -21,44 +21,44 @@ namespace Intersect.Editor.Forms
 
         public FrmUpdate()
         {
-            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo( "en-US" );
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
             InitializeComponent();
         }
 
-        private void frmUpdate_Load( object sender, EventArgs e )
+        private void frmUpdate_Load(object sender, EventArgs e)
         {
             AppDomain.CurrentDomain.UnhandledException += Program.CurrentDomain_UnhandledException;
             Strings.Load();
             GameContentManager.CheckForResources();
             Database.LoadOptions();
             InitLocalization();
-            mUpdater = new Updater.Updater( ClientConfiguration.Instance.UpdateUrl, Path.Combine( "version.json" ), false, 5 );
+            mUpdater = new Updater.Updater(ClientConfiguration.Instance.UpdateUrl, Path.Combine("version.json"), false, 5);
         }
 
         private void InitLocalization()
         {
             Text = Strings.Update.Title;
-            lblVersion.Text = Strings.Login.version.ToString( Application.ProductVersion );
+            lblVersion.Text = Strings.Login.version.ToString(Application.ProductVersion);
             lblStatus.Text = Strings.Update.Checking;
         }
 
-        protected override void OnClosed( EventArgs e )
+        protected override void OnClosed(EventArgs e)
         {
             mUpdater.Stop();
-            base.OnClosed( e );
+            base.OnClosed(e);
             Application.Exit();
         }
 
-        private void tmrUpdate_Tick( object sender, EventArgs e )
+        private void tmrUpdate_Tick(object sender, EventArgs e)
         {
-            if( mUpdater != null )
+            if (mUpdater != null)
             {
 
                 progressBar.Style = mUpdater.Status == UpdateStatus.Checking
                     ? ProgressBarStyle.Marquee
                     : ProgressBarStyle.Continuous;
 
-                switch( mUpdater.Status )
+                switch (mUpdater.Status)
                 {
                     case UpdateStatus.Checking:
                         lblStatus.Text = Strings.Update.Checking;
@@ -66,9 +66,9 @@ namespace Intersect.Editor.Forms
                     case UpdateStatus.Updating:
                         lblFiles.Show();
                         lblSize.Show();
-                        lblFiles.Text = Strings.Update.Files.ToString( mUpdater.FilesRemaining );
-                        lblSize.Text = Strings.Update.Size.ToString( mUpdater.GetHumanReadableFileSize( mUpdater.SizeRemaining ) );
-                        lblStatus.Text = Strings.Update.Updating.ToString( (int)mUpdater.Progress );
+                        lblFiles.Text = Strings.Update.Files.ToString(mUpdater.FilesRemaining);
+                        lblSize.Text = Strings.Update.Size.ToString(mUpdater.GetHumanReadableFileSize(mUpdater.SizeRemaining));
+                        lblStatus.Text = Strings.Update.Updating.ToString((int)mUpdater.Progress);
                         progressBar.Value = (int)mUpdater.Progress;
                         break;
                     case UpdateStatus.Restart:
@@ -80,7 +80,7 @@ namespace Intersect.Editor.Forms
                         Process.Start(
                             Environment.GetCommandLineArgs()[0],
                             Environment.GetCommandLineArgs().Length > 1
-                                ? string.Join( " ", Environment.GetCommandLineArgs().Skip( 1 ) )
+                                ? string.Join(" ", Environment.GetCommandLineArgs().Skip(1))
                                 : null
                         );
 
@@ -100,7 +100,7 @@ namespace Intersect.Editor.Forms
                         lblFiles.Hide();
                         lblSize.Hide();
                         progressBar.Value = 100;
-                        lblStatus.Text = Strings.Update.Error.ToString( mUpdater.Exception?.Message ?? "" );
+                        lblStatus.Text = Strings.Update.Error.ToString(mUpdater.Exception?.Message ?? "");
                         break;
                     case UpdateStatus.None:
                         lblFiles.Hide();

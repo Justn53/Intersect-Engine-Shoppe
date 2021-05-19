@@ -15,7 +15,7 @@ namespace Intersect.Server.Entities.Combat
 
         public SpellBase Spell;
 
-        public Buff( SpellBase spell, int flatStats, int percentageStats, int duration )
+        public Buff(SpellBase spell, int flatStats, int percentageStats, int duration)
         {
             Spell = spell;
             FlatStatcount = flatStats;

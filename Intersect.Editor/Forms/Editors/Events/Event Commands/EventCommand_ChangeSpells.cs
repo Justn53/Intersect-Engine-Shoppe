@@ -18,7 +18,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private ChangeSpellsCommand mMyCommand;
 
-        public EventCommandChangeSpells( ChangeSpellsCommand refCommand, EventPage refPage, FrmEvent editor )
+        public EventCommandChangeSpells(ChangeSpellsCommand refCommand, EventPage refPage, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
@@ -26,18 +26,18 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             mCurrentPage = refPage;
             InitLocalization();
             cmbSpell.Items.Clear();
-            cmbSpell.Items.AddRange( SpellBase.Names );
+            cmbSpell.Items.AddRange(SpellBase.Names);
             cmbAction.SelectedIndex = refCommand.Add ? 0 : 1;
-            cmbSpell.SelectedIndex = SpellBase.ListIndex( mMyCommand.SpellId );
+            cmbSpell.SelectedIndex = SpellBase.ListIndex(mMyCommand.SpellId);
         }
 
         private void InitLocalization()
         {
             grpChangeSpells.Text = Strings.EventChangeSpells.title;
             cmbAction.Items.Clear();
-            for( var i = 0; i < Strings.EventChangeSpells.actions.Count; i++ )
+            for (var i = 0; i < Strings.EventChangeSpells.actions.Count; i++)
             {
-                cmbAction.Items.Add( Strings.EventChangeSpells.actions[i] );
+                cmbAction.Items.Add(Strings.EventChangeSpells.actions[i]);
             }
 
             lblAction.Text = Strings.EventChangeSpells.action;
@@ -46,14 +46,14 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             btnCancel.Text = Strings.EventChangeSpells.cancel;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            mMyCommand.Add = !Convert.ToBoolean( cmbAction.SelectedIndex );
-            mMyCommand.SpellId = SpellBase.IdFromList( cmbSpell.SelectedIndex );
+            mMyCommand.Add = !Convert.ToBoolean(cmbAction.SelectedIndex);
+            mMyCommand.SpellId = SpellBase.IdFromList(cmbSpell.SelectedIndex);
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }

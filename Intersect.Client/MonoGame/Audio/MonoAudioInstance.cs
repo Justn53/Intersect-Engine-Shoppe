@@ -9,7 +9,7 @@ namespace Intersect.Client.MonoGame.Audio
     {
 
         /// <inheritdoc />
-        protected MonoAudioInstance( GameAudioSource source ) : base( source )
+        protected MonoAudioInstance(GameAudioSource source) : base(source)
         {
         }
 

@@ -24,9 +24,9 @@ namespace Intersect.Compression
             cryptoProvider = new AesCryptoServiceProvider();
 
             // Take a few bytes out of this delicious morsel and grow stronk.
-            var keyBytes = ASCIIEncoding.ASCII.GetBytes( cryptoKey );
-            cryptoProvider.Key = keyBytes.Take( 16 ).ToArray();
-            cryptoProvider.IV = keyBytes.Reverse().Take( 16 ).ToArray();
+            var keyBytes = ASCIIEncoding.ASCII.GetBytes(cryptoKey);
+            cryptoProvider.Key = keyBytes.Take(16).ToArray();
+            cryptoProvider.IV = keyBytes.Reverse().Take(16).ToArray();
         }
 
         /// <summary>
@@ -34,9 +34,9 @@ namespace Intersect.Compression
         /// </summary>
         /// <param name="fileName">The file to decompress.</param>
         /// <returns>Returns the decompressed file's content as a string.</returns>
-        public static string ReadDecompressedString( string fileName )
+        public static string ReadDecompressedString(string fileName)
         {
-            using( var reader = new StreamReader( CreateDecompressedFileStream( fileName ) ) )
+            using (var reader = new StreamReader(CreateDecompressedFileStream(fileName)))
             {
                 return reader.ReadToEnd();
             }
@@ -47,14 +47,14 @@ namespace Intersect.Compression
         /// </summary>
         /// <param name="fileName">The file to decompress.</param>
         /// <returns>Returns a decompressed <see cref="CryptoStream"/> of the file's content.</returns>
-        public static CryptoStream CreateDecompressedFileStream( string fileName )
+        public static CryptoStream CreateDecompressedFileStream(string fileName)
         {
-            if( cryptoProvider == null )
+            if (cryptoProvider == null)
             {
                 CreateProvider();
             }
 
-            return new CryptoStream( new GZipStream( File.OpenRead( fileName ), CompressionMode.Decompress, false ), cryptoProvider.CreateDecryptor(), CryptoStreamMode.Read );
+            return new CryptoStream(new GZipStream(File.OpenRead(fileName), CompressionMode.Decompress, false), cryptoProvider.CreateDecryptor(), CryptoStreamMode.Read);
         }
 
         /// <summary>
@@ -62,14 +62,14 @@ namespace Intersect.Compression
         /// </summary>
         /// <param name="stream">The Filestream to write data from.</param>
         /// <returns>Returns a decompressed <see cref="CryptoStream"/> of the stream's content.</returns>
-        public static CryptoStream CreateDecompressedFileStream( FileStream stream )
+        public static CryptoStream CreateDecompressedFileStream(FileStream stream)
         {
-            if( cryptoProvider == null )
+            if (cryptoProvider == null)
             {
                 CreateProvider();
             }
 
-            return new CryptoStream( new GZipStream( stream, CompressionMode.Decompress, false ), cryptoProvider.CreateDecryptor(), CryptoStreamMode.Read );
+            return new CryptoStream(new GZipStream(stream, CompressionMode.Decompress, false), cryptoProvider.CreateDecryptor(), CryptoStreamMode.Read);
         }
 
         /// <summary>
@@ -77,12 +77,12 @@ namespace Intersect.Compression
         /// </summary>
         /// <param name="fileName">The file to write the string to.</param>
         /// <param name="data">The string to compress and write to the file.</param>
-        public static void WriteCompressedString( string fileName, string data )
+        public static void WriteCompressedString(string fileName, string data)
         {
-            using( var stream = CreateCompressedFileStream( fileName ) )
+            using (var stream = CreateCompressedFileStream(fileName))
             {
-                var bytes = Encoding.UTF8.GetBytes( data );
-                stream.Write( bytes, 0, bytes.Length );
+                var bytes = Encoding.UTF8.GetBytes(data);
+                stream.Write(bytes, 0, bytes.Length);
             }
         }
 
@@ -91,14 +91,14 @@ namespace Intersect.Compression
         /// </summary>
         /// <param name="fileName">The file to write the data to.</param>
         /// <returns>Returns a <see cref="CryptoStream"/> to write data to, saving compressed data to a file.</returns>
-        public static CryptoStream CreateCompressedFileStream( string fileName )
+        public static CryptoStream CreateCompressedFileStream(string fileName)
         {
-            if( cryptoProvider == null )
+            if (cryptoProvider == null)
             {
                 CreateProvider();
             }
 
-            return new CryptoStream( new GZipStream( new FileStream( fileName, FileMode.Create ), CompressionMode.Compress, false ), cryptoProvider.CreateEncryptor(), CryptoStreamMode.Write );
+            return new CryptoStream(new GZipStream(new FileStream(fileName, FileMode.Create), CompressionMode.Compress, false), cryptoProvider.CreateEncryptor(), CryptoStreamMode.Write);
         }
 
     }

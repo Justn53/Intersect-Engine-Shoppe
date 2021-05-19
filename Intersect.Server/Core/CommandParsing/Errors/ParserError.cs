@@ -9,7 +9,7 @@ namespace Intersect.Server.Core.CommandParsing.Errors
     public class ParserError
     {
 
-        public ParserError( string message = null, bool fatal = true )
+        public ParserError(string message = null, bool fatal = true)
         {
             IsFatal = fatal;
 
@@ -20,13 +20,13 @@ namespace Intersect.Server.Core.CommandParsing.Errors
             Message = message ?? "Unknown parser error occurred.";
         }
 
-        public ParserError( string message, Exception exception, params string[] arguments ) : this(
+        public ParserError(string message, Exception exception, params string[] arguments) : this(
             message, exception, true, arguments
         )
         {
         }
 
-        public ParserError( string message, Exception exception, bool fatal = true, params string[] arguments ) : this(
+        public ParserError(string message, Exception exception, bool fatal = true, params string[] arguments) : this(
             message, fatal
         )
         {
@@ -42,14 +42,14 @@ namespace Intersect.Server.Core.CommandParsing.Errors
 
         public ImmutableArray<string> Arguments { get; }
 
-        public ParserResult AsResult( ICommand command = null )
+        public ParserResult AsResult(ICommand command = null)
         {
-            return new ParserResult( command, this );
+            return new ParserResult(command, this);
         }
 
-        public ParserResult<TCommand> AsResult<TCommand>( TCommand command ) where TCommand : ICommand
+        public ParserResult<TCommand> AsResult<TCommand>(TCommand command) where TCommand : ICommand
         {
-            return new ParserResult<TCommand>( command, this );
+            return new ParserResult<TCommand>(command, this);
         }
 
         public override string ToString()

@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public RequestPasswordResetPacket( string nameOrEmail )
+        public RequestPasswordResetPacket(string nameOrEmail)
         {
             NameOrEmail = nameOrEmail;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public string NameOrEmail { get; set; }
 
     }

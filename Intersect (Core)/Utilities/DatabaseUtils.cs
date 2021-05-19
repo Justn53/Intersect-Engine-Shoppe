@@ -8,16 +8,16 @@ namespace Intersect.Utilities
     public static class DatabaseUtils
     {
 
-        public static int[] LoadIntArray( string json, int arrayLen )
+        public static int[] LoadIntArray(string json, int arrayLen)
         {
             var output = new int[arrayLen];
             var jsonList = new List<int>();
-            if( json != null )
+            if (json != null)
             {
-                jsonList = JsonConvert.DeserializeObject<List<int>>( json );
+                jsonList = JsonConvert.DeserializeObject<List<int>>(json);
             }
 
-            for( var i = 0; i < arrayLen && i < jsonList.Count; i++ )
+            for (var i = 0; i < arrayLen && i < jsonList.Count; i++)
             {
                 output[i] = jsonList[i];
             }
@@ -25,54 +25,54 @@ namespace Intersect.Utilities
             return output;
         }
 
-        public static void LoadIntArray( ref int[] output, string json, int arrayLen )
+        public static void LoadIntArray(ref int[] output, string json, int arrayLen)
         {
-            var jsonList = JsonConvert.DeserializeObject<List<int>>( json );
-            for( var i = 0; i < arrayLen && i < jsonList.Count; i++ )
+            var jsonList = JsonConvert.DeserializeObject<List<int>>(json);
+            for (var i = 0; i < arrayLen && i < jsonList.Count; i++)
             {
                 output[i] = jsonList[i];
             }
         }
 
-        public static string SaveIntArray( int[] array, int arrayLen )
+        public static string SaveIntArray(int[] array, int arrayLen)
         {
-            if( array == null )
+            if (array == null)
             {
                 array = new int[arrayLen];
             }
 
             var output = new List<int>();
-            for( var i = 0; i < arrayLen; i++ )
+            for (var i = 0; i < arrayLen; i++)
             {
-                if( i < array.Length )
+                if (i < array.Length)
                 {
-                    output.Add( array[i] );
+                    output.Add(array[i]);
                 }
                 else
                 {
-                    output.Add( 0 );
+                    output.Add(0);
                 }
             }
 
-            return JsonConvert.SerializeObject( output );
+            return JsonConvert.SerializeObject(output);
         }
 
-        public static string SaveColor( Color color )
+        public static string SaveColor(Color color)
         {
-            if( color == null )
+            if (color == null)
             {
                 color = new Color();
             }
 
-            return JsonConvert.SerializeObject( color );
+            return JsonConvert.SerializeObject(color);
         }
 
-        public static Color LoadColor( string json )
+        public static Color LoadColor(string json)
         {
             var color = new Color();
-            if( json != null )
+            if (json != null)
             {
-                color = JsonConvert.DeserializeObject<Color>( json );
+                color = JsonConvert.DeserializeObject<Color>(json);
             }
 
             return color;

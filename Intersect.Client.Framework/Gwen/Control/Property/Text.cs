@@ -13,9 +13,9 @@
         ///     Initializes a new instance of the <see cref="Text" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Text( Control.Base parent ) : base( parent )
+        public Text(Control.Base parent) : base(parent)
         {
-            mTextBox = new TextBox( this );
+            mTextBox = new TextBox(this);
             mTextBox.Dock = Pos.Fill;
             mTextBox.ShouldDrawBackground = false;
             mTextBox.TextChanged += OnValueChanged;
@@ -45,9 +45,9 @@
         /// </summary>
         /// <param name="value">Value to set.</param>
         /// <param name="fireEvents">Determines whether to fire "value changed" event.</param>
-        public override void SetValue( string value, bool fireEvents = false )
+        public override void SetValue(string value, bool fireEvents = false)
         {
-            mTextBox.SetText( value, fireEvents );
+            mTextBox.SetText(value, fireEvents);
         }
 
     }

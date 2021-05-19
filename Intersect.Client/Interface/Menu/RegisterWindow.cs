@@ -56,73 +56,73 @@ namespace Intersect.Client.Interface.Menu
         private TextBox mUsernameTextbox;
 
         //Init
-        public RegisterWindow( Canvas parent, MainMenu mainMenu, ImagePanel parentPanel )
+        public RegisterWindow(Canvas parent, MainMenu mainMenu, ImagePanel parentPanel)
         {
             //Assign References
             mMainMenu = mainMenu;
 
             //Main Menu Window
-            mRegistrationPanel = new ImagePanel( parent, "RegistrationWindow" );
+            mRegistrationPanel = new ImagePanel(parent, "RegistrationWindow");
 
             //Menu Header
-            mRegistrationHeader = new Label( mRegistrationPanel, "RegistrationLabel" );
-            mRegistrationHeader.SetText( Strings.Registration.title );
+            mRegistrationHeader = new Label(mRegistrationPanel, "RegistrationLabel");
+            mRegistrationHeader.SetText(Strings.Registration.title);
 
             //Register Username Background
-            mUsernameBackground = new ImagePanel( mRegistrationPanel, "UsernamePanel" );
+            mUsernameBackground = new ImagePanel(mRegistrationPanel, "UsernamePanel");
 
             //Register Username Label
-            mUsernameLabel = new Label( mUsernameBackground, "UsernameLabel" );
-            mUsernameLabel.SetText( Strings.Registration.username );
+            mUsernameLabel = new Label(mUsernameBackground, "UsernameLabel");
+            mUsernameLabel.SetText(Strings.Registration.username);
 
             //Register Username Textbox
-            mUsernameTextbox = new TextBox( mUsernameBackground, "UsernameField" );
+            mUsernameTextbox = new TextBox(mUsernameBackground, "UsernameField");
             mUsernameTextbox.SubmitPressed += UsernameTextbox_SubmitPressed;
 
             //Register Email Background
-            mEmailBackground = new ImagePanel( mRegistrationPanel, "EmailPanel" );
+            mEmailBackground = new ImagePanel(mRegistrationPanel, "EmailPanel");
 
             //Register Email Label
-            mEmailLabel = new Label( mEmailBackground, "EmailLabel" );
-            mEmailLabel.SetText( Strings.Registration.email );
+            mEmailLabel = new Label(mEmailBackground, "EmailLabel");
+            mEmailLabel.SetText(Strings.Registration.email);
 
             //Register Email Textbox
-            mEmailTextbox = new TextBox( mEmailBackground, "EmailField" );
+            mEmailTextbox = new TextBox(mEmailBackground, "EmailField");
             mEmailTextbox.SubmitPressed += EmailTextbox_SubmitPressed;
 
             //Register Password Background
-            mPasswordBackground = new ImagePanel( mRegistrationPanel, "Password1Panel" );
+            mPasswordBackground = new ImagePanel(mRegistrationPanel, "Password1Panel");
 
             //Register Password Label
-            mPasswordLabel = new Label( mPasswordBackground, "Password1Label" );
-            mPasswordLabel.SetText( Strings.Registration.password );
+            mPasswordLabel = new Label(mPasswordBackground, "Password1Label");
+            mPasswordLabel.SetText(Strings.Registration.password);
 
             //Register Password Textbox
-            mPasswordTextbox = new TextBoxPassword( mPasswordBackground, "Password1Field" );
+            mPasswordTextbox = new TextBoxPassword(mPasswordBackground, "Password1Field");
             mPasswordTextbox.SubmitPressed += PasswordTextbox_SubmitPressed;
 
             //Register Password Background
-            mPasswordBackground2 = new ImagePanel( mRegistrationPanel, "Password2Panel" );
+            mPasswordBackground2 = new ImagePanel(mRegistrationPanel, "Password2Panel");
 
             //Register Password Label2
-            mPasswordLabel2 = new Label( mPasswordBackground2, "Password2Label" );
-            mPasswordLabel2.SetText( Strings.Registration.confirmpass );
+            mPasswordLabel2 = new Label(mPasswordBackground2, "Password2Label");
+            mPasswordLabel2.SetText(Strings.Registration.confirmpass);
 
             //Register Password Textbox2
-            mPasswordTextbox2 = new TextBoxPassword( mPasswordBackground2, "Password2Field" );
+            mPasswordTextbox2 = new TextBoxPassword(mPasswordBackground2, "Password2Field");
             mPasswordTextbox2.SubmitPressed += PasswordTextbox2_SubmitPressed;
 
             //Register - Send Registration Button
-            mRegisterBtn = new Button( mRegistrationPanel, "RegisterButton" );
-            mRegisterBtn.SetText( Strings.Registration.register );
+            mRegisterBtn = new Button(mRegistrationPanel, "RegisterButton");
+            mRegisterBtn.SetText(Strings.Registration.register);
             mRegisterBtn.Clicked += RegisterBtn_Clicked;
 
             //Register - Back Button
-            mBackBtn = new Button( mRegistrationPanel, "BackButton" );
-            mBackBtn.SetText( Strings.Registration.back );
+            mBackBtn = new Button(mRegistrationPanel, "BackButton");
+            mBackBtn.SetText(Strings.Registration.back);
             mBackBtn.Clicked += BackBtn_Clicked;
 
-            mRegistrationPanel.LoadJsonUi( GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString() );
+            mRegistrationPanel.LoadJsonUi(GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString());
         }
 
         public bool IsHidden => mRegistrationPanel.IsHidden;
@@ -130,15 +130,15 @@ namespace Intersect.Client.Interface.Menu
         //Methods
         public void Update()
         {
-            if( !Networking.Network.Connected )
+            if (!Networking.Network.Connected)
             {
                 Hide();
                 mMainMenu.Show();
-                Interface.MsgboxErrors.Add( new KeyValuePair<string, string>( "", Strings.Errors.lostconnection ) );
+                Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", Strings.Errors.lostconnection));
             }
 
             // Re-Enable our buttons if we're not waiting for the server anymore with it disabled.
-            if( !Globals.WaitingOnServer && mRegisterBtn.IsDisabled )
+            if (!Globals.WaitingOnServer && mRegisterBtn.IsDisabled)
             {
                 mRegisterBtn.Enable();
             }
@@ -155,40 +155,40 @@ namespace Intersect.Client.Interface.Menu
             mRegistrationPanel.Hide();
         }
 
-        private static string ComputePasswordHash( string password )
+        private static string ComputePasswordHash(string password)
         {
-            using( var sha = new SHA256Managed() )
+            using (var sha = new SHA256Managed())
             {
-                return BitConverter.ToString( sha.ComputeHash( Encoding.UTF8.GetBytes( password ?? "" ) ) ).Replace( "-", "" );
+                return BitConverter.ToString(sha.ComputeHash(Encoding.UTF8.GetBytes(password ?? ""))).Replace("-", "");
             }
         }
 
         void TryRegister()
         {
-            if( Globals.WaitingOnServer )
+            if (Globals.WaitingOnServer)
             {
                 return;
             }
 
-            if( Networking.Network.Connected )
+            if (Networking.Network.Connected)
             {
-                if( FieldChecking.IsValidUsername( mUsernameTextbox.Text, Strings.Regex.username ) )
+                if (FieldChecking.IsValidUsername(mUsernameTextbox.Text, Strings.Regex.username))
                 {
-                    if( mPasswordTextbox.Text == mPasswordTextbox2.Text )
+                    if (mPasswordTextbox.Text == mPasswordTextbox2.Text)
                     {
-                        if( FieldChecking.IsValidPassword( mPasswordTextbox.Text, Strings.Regex.password ) )
+                        if (FieldChecking.IsValidPassword(mPasswordTextbox.Text, Strings.Regex.password))
                         {
-                            if( FieldChecking.IsWellformedEmailAddress( mEmailTextbox.Text, Strings.Regex.email ) )
+                            if (FieldChecking.IsWellformedEmailAddress(mEmailTextbox.Text, Strings.Regex.email))
                             {
                                 Hide();
 
                                 //Hash Password
-                                using( var sha = new SHA256Managed() )
+                                using (var sha = new SHA256Managed())
                                 {
                                     var hashedPass = BitConverter.ToString(
-                                            sha.ComputeHash( Encoding.UTF8.GetBytes( mPasswordTextbox.Text.Trim() ) )
+                                            sha.ComputeHash(Encoding.UTF8.GetBytes(mPasswordTextbox.Text.Trim()))
                                         )
-                                        .Replace( "-", "" );
+                                        .Replace("-", "");
 
                                     PacketSender.SendCreateAccount(
                                         mUsernameTextbox.Text, hashedPass, mEmailTextbox.Text
@@ -202,62 +202,62 @@ namespace Intersect.Client.Interface.Menu
                             else
                             {
                                 Interface.MsgboxErrors.Add(
-                                    new KeyValuePair<string, string>( "", Strings.Registration.emailinvalid )
+                                    new KeyValuePair<string, string>("", Strings.Registration.emailinvalid)
                                 );
                             }
                         }
                         else
                         {
                             Interface.MsgboxErrors.Add(
-                                new KeyValuePair<string, string>( "", Strings.Errors.passwordinvalid )
+                                new KeyValuePair<string, string>("", Strings.Errors.passwordinvalid)
                             );
                         }
                     }
                     else
                     {
                         Interface.MsgboxErrors.Add(
-                            new KeyValuePair<string, string>( "", Strings.Registration.passwordmatch )
+                            new KeyValuePair<string, string>("", Strings.Registration.passwordmatch)
                         );
                     }
                 }
                 else
                 {
-                    Interface.MsgboxErrors.Add( new KeyValuePair<string, string>( "", Strings.Errors.usernameinvalid ) );
+                    Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", Strings.Errors.usernameinvalid));
                 }
             }
             else
             {
-                Interface.MsgboxErrors.Add( new KeyValuePair<string, string>( "", Strings.Errors.notconnected ) );
+                Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", Strings.Errors.notconnected));
             }
         }
 
         //Input Handlers
-        void UsernameTextbox_SubmitPressed( Base sender, EventArgs arguments )
+        void UsernameTextbox_SubmitPressed(Base sender, EventArgs arguments)
         {
             TryRegister();
         }
 
-        void EmailTextbox_SubmitPressed( Base sender, EventArgs arguments )
+        void EmailTextbox_SubmitPressed(Base sender, EventArgs arguments)
         {
             TryRegister();
         }
 
-        void PasswordTextbox_SubmitPressed( Base sender, EventArgs arguments )
+        void PasswordTextbox_SubmitPressed(Base sender, EventArgs arguments)
         {
             TryRegister();
         }
 
-        void PasswordTextbox2_SubmitPressed( Base sender, EventArgs arguments )
+        void PasswordTextbox2_SubmitPressed(Base sender, EventArgs arguments)
         {
             TryRegister();
         }
 
-        void RegisterBtn_Clicked( Base sender, ClickedEventArgs arguments )
+        void RegisterBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
             TryRegister();
         }
 
-        void BackBtn_Clicked( Base sender, ClickedEventArgs arguments )
+        void BackBtn_Clicked(Base sender, ClickedEventArgs arguments)
         {
             Hide();
             mMainMenu.Show();

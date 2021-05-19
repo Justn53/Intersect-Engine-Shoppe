@@ -33,33 +33,33 @@ namespace Intersect.Config
         public int WeaponSlot = 2;
 
         [OnDeserializing]
-        internal void OnDeserializingMethod( StreamingContext context )
+        internal void OnDeserializingMethod(StreamingContext context)
         {
             Slots.Clear();
             ToolTypes.Clear();
         }
 
         [OnDeserialized]
-        internal void OnDeserializedMethod( StreamingContext context )
+        internal void OnDeserializedMethod(StreamingContext context)
         {
             Validate();
         }
 
         public void Validate()
         {
-            Slots = new List<string>( Slots.Distinct() );
-            ToolTypes = new List<string>( ToolTypes.Distinct() );
-            if( WeaponSlot < -1 || WeaponSlot > Slots.Count - 1 )
+            Slots = new List<string>(Slots.Distinct());
+            ToolTypes = new List<string>(ToolTypes.Distinct());
+            if (WeaponSlot < -1 || WeaponSlot > Slots.Count - 1)
             {
-                throw new Exception( "Config Error: (WeaponSlot) was out of bounds!" );
+                throw new Exception("Config Error: (WeaponSlot) was out of bounds!");
             }
 
-            if( ShieldSlot < -1 || ShieldSlot > Slots.Count - 1 )
+            if (ShieldSlot < -1 || ShieldSlot > Slots.Count - 1)
             {
-                throw new Exception( "Config Error: (ShieldSlot) was out of bounds!" );
+                throw new Exception("Config Error: (ShieldSlot) was out of bounds!");
             }
 
-            Paperdoll.Validate( this );
+            Paperdoll.Validate(this);
         }
 
     }

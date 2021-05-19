@@ -17,97 +17,97 @@ namespace Intersect.Editor.Localization
     public static class Strings
     {
 
-        public static string GetEventConditionalDesc( VariableIsCondition condition )
+        public static string GetEventConditionalDesc(VariableIsCondition condition)
         {
-            var pVar = GetVariableComparisonString( (dynamic)condition.Comparison );
+            var pVar = GetVariableComparisonString((dynamic)condition.Comparison);
 
-            if( condition.VariableType == VariableTypes.PlayerVariable )
+            if (condition.VariableType == VariableTypes.PlayerVariable)
             {
                 return Strings.EventConditionDesc.playervariable.ToString(
-                    PlayerVariableBase.GetName( condition.VariableId ), pVar
+                    PlayerVariableBase.GetName(condition.VariableId), pVar
                 );
             }
-            else if( condition.VariableType == VariableTypes.ServerVariable )
+            else if (condition.VariableType == VariableTypes.ServerVariable)
             {
                 return Strings.EventConditionDesc.globalvariable.ToString(
-                    ServerVariableBase.GetName( condition.VariableId ), pVar
+                    ServerVariableBase.GetName(condition.VariableId), pVar
                 );
             }
 
             return "";
         }
 
-        public static string GetEventConditionalDesc( HasItemCondition condition )
+        public static string GetEventConditionalDesc(HasItemCondition condition)
         {
-            if( condition.UseVariable )
+            if (condition.UseVariable)
             {
                 var amount = string.Empty;
-                switch( condition.VariableType )
+                switch (condition.VariableType)
                 {
                     case VariableTypes.PlayerVariable:
-                        amount = string.Format( @"({0}: {1})", Strings.EventConditional.playervariable, PlayerVariableBase.GetName( condition.VariableId ) );
+                        amount = string.Format(@"({0}: {1})", Strings.EventConditional.playervariable, PlayerVariableBase.GetName(condition.VariableId));
                         break;
                     case VariableTypes.ServerVariable:
-                        amount = string.Format( @"({0}: {1})", Strings.EventConditional.globalvariable, ServerVariableBase.GetName( condition.VariableId ) );
+                        amount = string.Format(@"({0}: {1})", Strings.EventConditional.globalvariable, ServerVariableBase.GetName(condition.VariableId));
                         break;
                 }
 
-                return Strings.EventConditionDesc.hasitem.ToString( amount, ItemBase.GetName( condition.ItemId ) );
+                return Strings.EventConditionDesc.hasitem.ToString(amount, ItemBase.GetName(condition.ItemId));
             }
             else
             {
-                return Strings.EventConditionDesc.hasitem.ToString( condition.Quantity, ItemBase.GetName( condition.ItemId ) );
+                return Strings.EventConditionDesc.hasitem.ToString(condition.Quantity, ItemBase.GetName(condition.ItemId));
             }
         }
 
-        public static string GetEventConditionalDesc( IsItemEquippedCondition condition )
+        public static string GetEventConditionalDesc(IsItemEquippedCondition condition)
         {
-            return Strings.EventConditionDesc.hasitemequipped.ToString( ItemBase.GetName( condition.ItemId ) );
+            return Strings.EventConditionDesc.hasitemequipped.ToString(ItemBase.GetName(condition.ItemId));
         }
 
-        public static string GetEventConditionalDesc( ClassIsCondition condition )
+        public static string GetEventConditionalDesc(ClassIsCondition condition)
         {
-            return Strings.EventConditionDesc.Class.ToString( ClassBase.GetName( condition.ClassId ) );
+            return Strings.EventConditionDesc.Class.ToString(ClassBase.GetName(condition.ClassId));
         }
 
-        public static string GetEventConditionalDesc( KnowsSpellCondition condition )
+        public static string GetEventConditionalDesc(KnowsSpellCondition condition)
         {
-            return Strings.EventConditionDesc.knowsspell.ToString( SpellBase.GetName( condition.SpellId ) );
+            return Strings.EventConditionDesc.knowsspell.ToString(SpellBase.GetName(condition.SpellId));
         }
 
-        public static string GetEventConditionalDesc( LevelOrStatCondition condition )
+        public static string GetEventConditionalDesc(LevelOrStatCondition condition)
         {
             var pLvl = "";
-            switch( condition.Comparator )
+            switch (condition.Comparator)
             {
                 case VariableComparators.Equal:
-                    pLvl = Strings.EventConditionDesc.equal.ToString( condition.Value );
+                    pLvl = Strings.EventConditionDesc.equal.ToString(condition.Value);
 
                     break;
                 case VariableComparators.GreaterOrEqual:
-                    pLvl = Strings.EventConditionDesc.greaterequal.ToString( condition.Value );
+                    pLvl = Strings.EventConditionDesc.greaterequal.ToString(condition.Value);
 
                     break;
                 case VariableComparators.LesserOrEqual:
-                    pLvl = Strings.EventConditionDesc.lessthanequal.ToString( condition.Value );
+                    pLvl = Strings.EventConditionDesc.lessthanequal.ToString(condition.Value);
 
                     break;
                 case VariableComparators.Greater:
-                    pLvl = Strings.EventConditionDesc.greater.ToString( condition.Value );
+                    pLvl = Strings.EventConditionDesc.greater.ToString(condition.Value);
 
                     break;
                 case VariableComparators.Less:
-                    pLvl = Strings.EventConditionDesc.lessthan.ToString( condition.Value );
+                    pLvl = Strings.EventConditionDesc.lessthan.ToString(condition.Value);
 
                     break;
                 case VariableComparators.NotEqual:
-                    pLvl = Strings.EventConditionDesc.notequal.ToString( condition.Value );
+                    pLvl = Strings.EventConditionDesc.notequal.ToString(condition.Value);
 
                     break;
             }
 
             var lvlorstat = "";
-            if( condition.ComparingLevel )
+            if (condition.ComparingLevel)
             {
                 lvlorstat = Strings.EventConditionDesc.level;
             }
@@ -116,13 +116,13 @@ namespace Intersect.Editor.Localization
                 lvlorstat = Strings.Combat.stats[(int)condition.Stat];
             }
 
-            return Strings.EventConditionDesc.levelorstat.ToString( lvlorstat, pLvl );
+            return Strings.EventConditionDesc.levelorstat.ToString(lvlorstat, pLvl);
         }
 
-        public static string GetEventConditionalDesc( SelfSwitchCondition condition )
+        public static string GetEventConditionalDesc(SelfSwitchCondition condition)
         {
             var sValue = Strings.EventConditionDesc.False;
-            if( condition.Value )
+            if (condition.Value)
             {
                 sValue = Strings.EventConditionDesc.True;
             }
@@ -132,33 +132,33 @@ namespace Intersect.Editor.Localization
             );
         }
 
-        public static string GetEventConditionalDesc( AccessIsCondition condition )
+        public static string GetEventConditionalDesc(AccessIsCondition condition)
         {
-            if( condition.Access == Access.None )
+            if (condition.Access == Access.None)
             {
-                return Strings.EventConditionDesc.power.ToString( Strings.EventConditionDesc.modadmin );
+                return Strings.EventConditionDesc.power.ToString(Strings.EventConditionDesc.modadmin);
             }
             else
             {
-                return Strings.EventConditionDesc.power.ToString( Strings.EventConditionDesc.admin );
+                return Strings.EventConditionDesc.power.ToString(Strings.EventConditionDesc.admin);
             }
         }
 
-        public static string GetEventConditionalDesc( TimeBetweenCondition condition )
+        public static string GetEventConditionalDesc(TimeBetweenCondition condition)
         {
             var timeRanges = new List<string>();
-            var time = new DateTime( 2000, 1, 1, 0, 0, 0 );
-            for( var i = 0; i < 1440; i += TimeBase.GetTimeBase().RangeInterval )
+            var time = new DateTime(2000, 1, 1, 0, 0, 0);
+            for (var i = 0; i < 1440; i += TimeBase.GetTimeBase().RangeInterval)
             {
-                var addRange = time.ToString( "h:mm:ss tt" ) + " to ";
-                time = time.AddMinutes( TimeBase.GetTimeBase().RangeInterval );
-                addRange += time.ToString( "h:mm:ss tt" );
-                timeRanges.Add( addRange );
+                var addRange = time.ToString("h:mm:ss tt") + " to ";
+                time = time.AddMinutes(TimeBase.GetTimeBase().RangeInterval);
+                addRange += time.ToString("h:mm:ss tt");
+                timeRanges.Add(addRange);
             }
 
             var time1 = "";
             var time2 = "";
-            if( condition.Ranges[0] > -1 && condition.Ranges[0] < timeRanges.Count )
+            if (condition.Ranges[0] > -1 && condition.Ranges[0] < timeRanges.Count)
             {
                 time1 = timeRanges[condition.Ranges[0]];
             }
@@ -167,7 +167,7 @@ namespace Intersect.Editor.Localization
                 time1 = Strings.EventConditionDesc.timeinvalid;
             }
 
-            if( condition.Ranges[1] > -1 && condition.Ranges[1] < timeRanges.Count )
+            if (condition.Ranges[1] > -1 && condition.Ranges[1] < timeRanges.Count)
             {
                 time2 = timeRanges[condition.Ranges[1]];
             }
@@ -176,200 +176,200 @@ namespace Intersect.Editor.Localization
                 time2 = Strings.EventConditionDesc.timeinvalid;
             }
 
-            return Strings.EventConditionDesc.time.ToString( time1, time2 );
+            return Strings.EventConditionDesc.time.ToString(time1, time2);
         }
 
-        public static string GetEventConditionalDesc( CanStartQuestCondition condition )
+        public static string GetEventConditionalDesc(CanStartQuestCondition condition)
         {
-            return Strings.EventConditionDesc.startquest.ToString( QuestBase.GetName( condition.QuestId ) );
+            return Strings.EventConditionDesc.startquest.ToString(QuestBase.GetName(condition.QuestId));
         }
 
-        public static string GetEventConditionalDesc( QuestInProgressCondition condition )
+        public static string GetEventConditionalDesc(QuestInProgressCondition condition)
         {
-            var quest = QuestBase.Get( condition.QuestId );
-            if( quest != null )
+            var quest = QuestBase.Get(condition.QuestId);
+            if (quest != null)
             {
                 QuestBase.QuestTask task = null;
-                foreach( var tsk in quest.Tasks )
+                foreach (var tsk in quest.Tasks)
                 {
-                    if( tsk.Id == condition.TaskId )
+                    if (tsk.Id == condition.TaskId)
                     {
                         task = tsk;
                     }
                 }
 
                 var taskName = task != null
-                    ? task.GetTaskString( Strings.TaskEditor.descriptions )
+                    ? task.GetTaskString(Strings.TaskEditor.descriptions)
                     : Strings.EventConditionDesc.tasknotfound.ToString();
 
-                switch( condition.Progress )
+                switch (condition.Progress)
                 {
                     case QuestProgressState.BeforeTask:
                         return Strings.EventConditionDesc.questinprogress.ToString(
-                            QuestBase.GetName( condition.QuestId ),
-                            Strings.EventConditionDesc.beforetask.ToString( taskName )
+                            QuestBase.GetName(condition.QuestId),
+                            Strings.EventConditionDesc.beforetask.ToString(taskName)
                         );
                     case QuestProgressState.AfterTask:
                         return Strings.EventConditionDesc.questinprogress.ToString(
-                            QuestBase.GetName( condition.QuestId ),
-                            Strings.EventConditionDesc.aftertask.ToString( taskName )
+                            QuestBase.GetName(condition.QuestId),
+                            Strings.EventConditionDesc.aftertask.ToString(taskName)
                         );
                     case QuestProgressState.OnTask:
                         return Strings.EventConditionDesc.questinprogress.ToString(
-                            QuestBase.GetName( condition.QuestId ), Strings.EventConditionDesc.ontask.ToString( taskName )
+                            QuestBase.GetName(condition.QuestId), Strings.EventConditionDesc.ontask.ToString(taskName)
                         );
                     default: //On Any task
                         return Strings.EventConditionDesc.questinprogress.ToString(
-                            QuestBase.GetName( condition.QuestId ), Strings.EventConditionDesc.onanytask
+                            QuestBase.GetName(condition.QuestId), Strings.EventConditionDesc.onanytask
                         );
                 }
             }
 
-            return Strings.EventConditionDesc.questinprogress.ToString( QuestBase.GetName( condition.QuestId ) );
+            return Strings.EventConditionDesc.questinprogress.ToString(QuestBase.GetName(condition.QuestId));
         }
 
-        public static string GetEventConditionalDesc( QuestCompletedCondition condition )
+        public static string GetEventConditionalDesc(QuestCompletedCondition condition)
         {
-            return Strings.EventConditionDesc.questcompleted.ToString( QuestBase.GetName( condition.QuestId ) );
+            return Strings.EventConditionDesc.questcompleted.ToString(QuestBase.GetName(condition.QuestId));
         }
 
-        public static string GetEventConditionalDesc( NoNpcsOnMapCondition condition )
+        public static string GetEventConditionalDesc(NoNpcsOnMapCondition condition)
         {
             return Strings.EventConditionDesc.nonpcsonmap;
         }
 
-        public static string GetEventConditionalDesc( GenderIsCondition condition )
+        public static string GetEventConditionalDesc(GenderIsCondition condition)
         {
             return Strings.EventConditionDesc.gender.ToString(
                 condition.Gender == 0 ? Strings.EventConditionDesc.male : Strings.EventConditionDesc.female
             );
         }
 
-        public static string GetEventConditionalDesc( MapIsCondition condition )
+        public static string GetEventConditionalDesc(MapIsCondition condition)
         {
-            var map = Intersect.GameObjects.Maps.MapList.MapList.List.FindMap( condition.MapId );
-            if( map != null )
+            var map = Intersect.GameObjects.Maps.MapList.MapList.List.FindMap(condition.MapId);
+            if (map != null)
             {
-                return Strings.EventConditionDesc.map.ToString( map.Name );
+                return Strings.EventConditionDesc.map.ToString(map.Name);
             }
 
-            return Strings.EventConditionDesc.map.ToString( EventConditionDesc.mapnotfound );
+            return Strings.EventConditionDesc.map.ToString(EventConditionDesc.mapnotfound);
         }
 
-        public static string GetEventConditionalDesc( HasFreeInventorySlots condition )
+        public static string GetEventConditionalDesc(HasFreeInventorySlots condition)
         {
-            if( condition.UseVariable )
+            if (condition.UseVariable)
             {
                 var amount = string.Empty;
-                switch( condition.VariableType )
+                switch (condition.VariableType)
                 {
                     case VariableTypes.PlayerVariable:
-                        amount = string.Format( @"({0}: {1})", Strings.EventConditional.playervariable, PlayerVariableBase.GetName( condition.VariableId ) );
+                        amount = string.Format(@"({0}: {1})", Strings.EventConditional.playervariable, PlayerVariableBase.GetName(condition.VariableId));
                         break;
                     case VariableTypes.ServerVariable:
-                        amount = string.Format( @"({0}: {1})", Strings.EventConditional.globalvariable, ServerVariableBase.GetName( condition.VariableId ) );
+                        amount = string.Format(@"({0}: {1})", Strings.EventConditional.globalvariable, ServerVariableBase.GetName(condition.VariableId));
                         break;
                 }
 
-                return Strings.EventConditionDesc.HasFreeInventorySlots.ToString( amount );
+                return Strings.EventConditionDesc.HasFreeInventorySlots.ToString(amount);
             }
             else
             {
-                return Strings.EventConditionDesc.HasFreeInventorySlots.ToString( condition.Quantity );
+                return Strings.EventConditionDesc.HasFreeInventorySlots.ToString(condition.Quantity);
             }
         }
 
-        public static string GetVariableComparisonString( VariableCompaison comparison )
+        public static string GetVariableComparisonString(VariableCompaison comparison)
         {
             return "";
         }
 
-        public static string GetVariableComparisonString( BooleanVariableComparison comparison )
+        public static string GetVariableComparisonString(BooleanVariableComparison comparison)
         {
             var value = "";
             var pVar = "";
 
-            if( comparison.CompareVariableId == Guid.Empty )
+            if (comparison.CompareVariableId == Guid.Empty)
             {
                 value = comparison.Value.ToString();
             }
             else
             {
-                if( comparison.CompareVariableType == VariableTypes.PlayerVariable )
+                if (comparison.CompareVariableType == VariableTypes.PlayerVariable)
                 {
                     value = Strings.EventConditionDesc.playervariablevalue.ToString(
-                        PlayerVariableBase.GetName( comparison.CompareVariableId )
+                        PlayerVariableBase.GetName(comparison.CompareVariableId)
                     );
                 }
-                else if( comparison.CompareVariableType == VariableTypes.ServerVariable )
+                else if (comparison.CompareVariableType == VariableTypes.ServerVariable)
                 {
                     value = Strings.EventConditionDesc.globalvariablevalue.ToString(
-                        ServerVariableBase.GetName( comparison.CompareVariableId )
+                        ServerVariableBase.GetName(comparison.CompareVariableId)
                     );
                 }
             }
 
-            if( comparison.ComparingEqual )
+            if (comparison.ComparingEqual)
             {
-                pVar = Strings.EventConditionDesc.equal.ToString( value );
+                pVar = Strings.EventConditionDesc.equal.ToString(value);
             }
             else
             {
-                pVar = Strings.EventConditionDesc.notequal.ToString( value );
+                pVar = Strings.EventConditionDesc.notequal.ToString(value);
             }
 
             return pVar;
         }
 
-        public static string GetVariableComparisonString( IntegerVariableComparison comparison )
+        public static string GetVariableComparisonString(IntegerVariableComparison comparison)
         {
             var value = "";
             var pVar = "";
 
-            if( comparison.CompareVariableId == Guid.Empty )
+            if (comparison.CompareVariableId == Guid.Empty)
             {
                 value = comparison.Value.ToString();
             }
             else
             {
-                if( comparison.CompareVariableType == VariableTypes.PlayerVariable )
+                if (comparison.CompareVariableType == VariableTypes.PlayerVariable)
                 {
                     value = Strings.EventConditionDesc.playervariablevalue.ToString(
-                        PlayerVariableBase.GetName( comparison.CompareVariableId )
+                        PlayerVariableBase.GetName(comparison.CompareVariableId)
                     );
                 }
-                else if( comparison.CompareVariableType == VariableTypes.ServerVariable )
+                else if (comparison.CompareVariableType == VariableTypes.ServerVariable)
                 {
                     value = Strings.EventConditionDesc.globalvariablevalue.ToString(
-                        ServerVariableBase.GetName( comparison.CompareVariableId )
+                        ServerVariableBase.GetName(comparison.CompareVariableId)
                     );
                 }
             }
 
-            switch( comparison.Comparator )
+            switch (comparison.Comparator)
             {
                 case VariableComparators.Equal:
-                    pVar = Strings.EventConditionDesc.equal.ToString( value );
+                    pVar = Strings.EventConditionDesc.equal.ToString(value);
 
                     break;
                 case VariableComparators.GreaterOrEqual:
-                    pVar = Strings.EventConditionDesc.greaterequal.ToString( value );
+                    pVar = Strings.EventConditionDesc.greaterequal.ToString(value);
 
                     break;
                 case VariableComparators.LesserOrEqual:
-                    pVar = Strings.EventConditionDesc.lessthanequal.ToString( value );
+                    pVar = Strings.EventConditionDesc.lessthanequal.ToString(value);
 
                     break;
                 case VariableComparators.Greater:
-                    pVar = Strings.EventConditionDesc.greater.ToString( value );
+                    pVar = Strings.EventConditionDesc.greater.ToString(value);
 
                     break;
                 case VariableComparators.Less:
-                    pVar = Strings.EventConditionDesc.lessthan.ToString( value );
+                    pVar = Strings.EventConditionDesc.lessthan.ToString(value);
 
                     break;
                 case VariableComparators.NotEqual:
-                    pVar = Strings.EventConditionDesc.notequal.ToString( value );
+                    pVar = Strings.EventConditionDesc.notequal.ToString(value);
 
                     break;
             }
@@ -377,14 +377,14 @@ namespace Intersect.Editor.Localization
             return pVar;
         }
 
-        public static string GetVariableComparisonString( StringVariableComparison comparison )
+        public static string GetVariableComparisonString(StringVariableComparison comparison)
         {
-            switch( comparison.Comparator )
+            switch (comparison.Comparator)
             {
                 case StringVariableComparators.Equal:
-                    return Strings.EventConditionDesc.equal.ToString( comparison.Value );
+                    return Strings.EventConditionDesc.equal.ToString(comparison.Value);
                 case StringVariableComparators.Contains:
-                    return Strings.EventConditionDesc.contains.ToString( comparison.Value );
+                    return Strings.EventConditionDesc.contains.ToString(comparison.Value);
             }
 
             return "";
@@ -392,64 +392,64 @@ namespace Intersect.Editor.Localization
 
         public static void Load()
         {
-            if( File.Exists( Path.Combine( "resources", "editor_strings.json" ) ) )
+            if (File.Exists(Path.Combine("resources", "editor_strings.json")))
             {
                 var strings = new Dictionary<string, Dictionary<string, object>>();
                 strings = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(
-                    File.ReadAllText( Path.Combine( "resources", "editor_strings.json" ) )
+                    File.ReadAllText(Path.Combine("resources", "editor_strings.json"))
                 );
 
-                var type = typeof( Strings );
+                var type = typeof(Strings);
 
                 var fields = new List<Type>();
                 fields.AddRange(
-                    type.GetNestedTypes( System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public )
+                    type.GetNestedTypes(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public)
                 );
 
-                foreach( var p in fields )
+                foreach (var p in fields)
                 {
-                    if( !strings.ContainsKey( p.Name ) )
+                    if (!strings.ContainsKey(p.Name))
                     {
                         continue;
                     }
 
                     var dict = strings[p.Name];
-                    foreach( var fieldInfo in p.GetFields(
+                    foreach (var fieldInfo in p.GetFields(
                         System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public
-                    ) )
+                    ))
                     {
-                        var fieldValue = fieldInfo.GetValue( null );
-                        if( !dict.ContainsKey( fieldInfo.Name.ToLower() ) )
+                        var fieldValue = fieldInfo.GetValue(null);
+                        if (!dict.ContainsKey(fieldInfo.Name.ToLower()))
                         {
                             continue;
                         }
 
-                        if( fieldValue is LocalizedString )
+                        if (fieldValue is LocalizedString)
                         {
-                            fieldInfo.SetValue( null, new LocalizedString( (string)dict[fieldInfo.Name.ToLower()] ) );
+                            fieldInfo.SetValue(null, new LocalizedString((string)dict[fieldInfo.Name.ToLower()]));
                         }
-                        else if( fieldValue is Dictionary<int, LocalizedString> )
+                        else if (fieldValue is Dictionary<int, LocalizedString>)
                         {
-                            var existingDict = (Dictionary<int, LocalizedString>)fieldInfo.GetValue( null );
-                            var values = ( (JObject)dict[fieldInfo.Name] ).ToObject<Dictionary<int, string>>();
+                            var existingDict = (Dictionary<int, LocalizedString>)fieldInfo.GetValue(null);
+                            var values = ((JObject)dict[fieldInfo.Name]).ToObject<Dictionary<int, string>>();
                             var dic = values.ToDictionary<KeyValuePair<int, string>, int, LocalizedString>(
                                 val => val.Key, val => val.Value
                             );
 
-                            foreach( var val in dic )
+                            foreach (var val in dic)
                             {
                                 existingDict[val.Key] = val.Value;
                             }
                         }
-                        else if( fieldValue is Dictionary<string, LocalizedString> )
+                        else if (fieldValue is Dictionary<string, LocalizedString>)
                         {
-                            var existingDict = (Dictionary<string, LocalizedString>)fieldInfo.GetValue( null );
-                            var pairs = ( (JObject)dict[fieldInfo.Name] )?.ToObject<Dictionary<string, string>>() ??
+                            var existingDict = (Dictionary<string, LocalizedString>)fieldInfo.GetValue(null);
+                            var pairs = ((JObject)dict[fieldInfo.Name])?.ToObject<Dictionary<string, string>>() ??
                                         new Dictionary<string, string>();
 
-                            foreach( var pair in pairs )
+                            foreach (var pair in pairs)
                             {
-                                if( pair.Key == null )
+                                if (pair.Key == null)
                                 {
                                     continue;
                                 }
@@ -467,53 +467,53 @@ namespace Intersect.Editor.Localization
         public static void Save()
         {
             var strings = new Dictionary<string, Dictionary<string, object>>();
-            var type = typeof( Strings );
+            var type = typeof(Strings);
             var fields = type.GetNestedTypes(
                 System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public
             );
 
-            foreach( var p in fields )
+            foreach (var p in fields)
             {
                 var dict = new Dictionary<string, object>();
-                foreach( var p1 in p.GetFields(
+                foreach (var p1 in p.GetFields(
                     System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public
-                ) )
+                ))
                 {
-                    if( p1.GetValue( null ).GetType() == typeof( LocalizedString ) )
+                    if (p1.GetValue(null).GetType() == typeof(LocalizedString))
                     {
-                        dict.Add( p1.Name.ToLower(), ( (LocalizedString)p1.GetValue( null ) ).ToString() );
+                        dict.Add(p1.Name.ToLower(), ((LocalizedString)p1.GetValue(null)).ToString());
                     }
-                    else if( p1.GetValue( null ).GetType() == typeof( Dictionary<int, LocalizedString> ) )
+                    else if (p1.GetValue(null).GetType() == typeof(Dictionary<int, LocalizedString>))
                     {
                         var dic = new Dictionary<int, string>();
-                        foreach( var val in (Dictionary<int, LocalizedString>)p1.GetValue( null ) )
+                        foreach (var val in (Dictionary<int, LocalizedString>)p1.GetValue(null))
                         {
-                            dic.Add( val.Key, val.Value.ToString() );
+                            dic.Add(val.Key, val.Value.ToString());
                         }
 
-                        dict.Add( p1.Name, dic );
+                        dict.Add(p1.Name, dic);
                     }
-                    else if( p1.GetValue( null ).GetType() == typeof( Dictionary<string, LocalizedString> ) )
+                    else if (p1.GetValue(null).GetType() == typeof(Dictionary<string, LocalizedString>))
                     {
                         var dic = new Dictionary<string, string>();
-                        foreach( var val in (Dictionary<string, LocalizedString>)p1.GetValue( null ) )
+                        foreach (var val in (Dictionary<string, LocalizedString>)p1.GetValue(null))
                         {
-                            dic.Add( val.Key.ToLower(), val.Value.ToString() );
+                            dic.Add(val.Key.ToLower(), val.Value.ToString());
                         }
 
-                        dict.Add( p1.Name, dic );
+                        dict.Add(p1.Name, dic);
                     }
                 }
 
-                strings.Add( p.Name, dict );
+                strings.Add(p.Name, dict);
             }
 
-            var languageDirectory = Path.Combine( "resources" );
-            if( Directory.Exists( languageDirectory ) )
+            var languageDirectory = Path.Combine("resources");
+            if (Directory.Exists(languageDirectory))
             {
                 File.WriteAllText(
-                    Path.Combine( languageDirectory, "editor_strings.json" ),
-                    JsonConvert.SerializeObject( strings, Formatting.Indented )
+                    Path.Combine(languageDirectory, "editor_strings.json"),
+                    JsonConvert.SerializeObject(strings, Formatting.Indented)
                 );
             }
         }
@@ -1260,29 +1260,29 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString amount = @"Amount:";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString AmountType = @"Amount Type";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Variable = @"Variable";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Manual = @"Manual";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString PlayerVariable = @"Player Variable";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString ServerVariable = @"Global Variable";
 
             public static LocalizedString cancel = @"Cancel";
 
             public static LocalizedString item = @"Item:";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Method = @"Method:";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static Dictionary<int, LocalizedString> Methods = new Dictionary<int, LocalizedString>
             {
                 {0, @"Normal"},
@@ -1741,32 +1741,32 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString replaceitemdesc = @"Item Replaced with {00}";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString ChangePlayerColor = @"Change Player Color to: R: {00} G: {01} B: {02} A: {03}";
 
         }
 
         public struct EventChangePlayerColor
         {
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Cancel = @"Cancel";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Okay = @"Ok";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Title = @"Change Player Color";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Red = @"Red:";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Green = @"Green:";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Blue = @"Blue:";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Alpha = @"Alpha:";
 
         }
@@ -1963,7 +1963,7 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString negated = @"Negated";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString HasElse = @"Has Else";
 
             public static LocalizedString numericvariable = @"Numeric Variable:";
@@ -2040,16 +2040,16 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString variable = @"Variable Is...";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString FreeInventorySlots = @"Has X free Inventory slots";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString AmountType = @"Amount Type";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString VariableLabel = @"Variable";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Manual = @"Manual";
 
         }
@@ -2328,19 +2328,19 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString title = @"Give Experience";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString AmountType = @"Amount Type";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Variable = @"Variable";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Manual = @"Manual";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString PlayerVariable = @"Player Variable";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString ServerVariable = @"Global Variable";
 
         }
@@ -2881,7 +2881,7 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString none = @"None";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Missing = @"Missing Translation";
 
         }
@@ -2944,16 +2944,16 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString cooldown = @"Cooldown (ms):";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString CooldownGroup = @"Cooldown Group:";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString CooldownGroupTitle = @"Add Cooldown Group";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString CooldownGroupPrompt = @"Enter a name for the cooldown group you'd like to add:";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString IgnoreGlobalCooldown = @"Ignore Global Cooldown?";
 
             public static LocalizedString copy = @"Copy Item";
@@ -3020,16 +3020,16 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString picture = @"Pic:";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Red = @"Red:";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Green = @"Green:";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Blue = @"Blue:";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Alpha = @"Alpha:";
 
             public static LocalizedString price = @"Price:";
@@ -3261,7 +3261,7 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString resources = @"Resources";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Events = @"Events";
 
             public static LocalizedString revision = @"Revision: {00}";
@@ -3717,16 +3717,16 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString sprite = @"Sprite";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Red = @"Red:";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Green = @"Green:";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Blue = @"Blue:";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString Alpha = @"Alpha:";
 
             public static LocalizedString stats = @"Stats:";
@@ -3784,22 +3784,22 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString title = @"Options";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString UpdateTab = @"Update";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString PackageUpdates = @"Package assets when generating updates.";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString PackageOptions = @"Asset Packing Options";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString MusicBatch = @"Music Batch Size";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString SoundBatch = @"Sound Batch Size";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString TextureSize = @"Texture Pack Size";
         }
 
@@ -4199,16 +4199,16 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString cooldown = @"Cooldown (ms):";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString CooldownGroup = @"Cooldown Group:";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString CooldownGroupTitle = @"Add Cooldown Group";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString CooldownGroupPrompt = @"Enter a name for the cooldown group you'd like to add:";
 
-            [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public static LocalizedString IgnoreGlobalCooldown = @"Ignore Global Cooldown?";
 
             public static LocalizedString copy = @"Copy Spell";

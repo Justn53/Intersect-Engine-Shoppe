@@ -51,37 +51,37 @@ namespace Intersect.Server.Entities
             ProjectileBase = projectileBase;
             Parent = parent;
             TransmittionTimer = Globals.Timing.Milliseconds +
-                                (long)( (float)ProjectileBase.Speed / (float)ProjectileBase.Range );
+                                (long)((float)ProjectileBase.Speed / (float)ProjectileBase.Range);
         }
 
-        public bool IsAtLocation( Guid mapId, int x, int y, int z )
+        public bool IsAtLocation(Guid mapId, int x, int y, int z)
         {
             return MapId == mapId && X == x && Y == y && Z == z;
         }
 
-        public bool HitEntity( Entity en )
+        public bool HitEntity(Entity en)
         {
             var targetEntity = en;
-            if( targetEntity is EventPageInstance ) return false;
+            if (targetEntity is EventPageInstance) return false;
 
             var scalingStat = Enums.Stats.StatCount;
 
-            if( Parent.Spell != null && Parent.Spell.Combat != null )
+            if (Parent.Spell != null && Parent.Spell.Combat != null)
             {
                 scalingStat = (Enums.Stats)Parent.Spell.Combat.ScalingStat;
             }
-            if( Parent.Item != null )
+            if (Parent.Item != null)
             {
                 scalingStat = (Enums.Stats)Parent.Item.ScalingStat;
             }
 
-            if( targetEntity != null && targetEntity != Parent.Owner )
+            if (targetEntity != null && targetEntity != Parent.Owner)
             {
 
                 // Have we collided with this entity before? If so, cancel out.
-                if( mEntitiesCollided.Contains( en.Id ) )
+                if (mEntitiesCollided.Contains(en.Id))
                 {
-                    if( !Parent.Base.PierceTarget )
+                    if (!Parent.Base.PierceTarget)
                     {
                         return true;
                     }
@@ -90,14 +90,14 @@ namespace Intersect.Server.Entities
                         return false;
                     }
                 }
-                mEntitiesCollided.Add( en.Id );
+                mEntitiesCollided.Add(en.Id);
 
-                if( targetEntity.GetType() == typeof( Player ) ) //Player
+                if (targetEntity.GetType() == typeof(Player)) //Player
                 {
-                    if( Parent.Owner != Parent.Target )
+                    if (Parent.Owner != Parent.Target)
                     {
-                        Parent.Owner.TryAttack( targetEntity, Parent.Base, Parent.Spell, Parent.Item, Dir );
-                        if( Dir <= 3 && Parent.Base.GrappleHook && !Parent.HasGrappled
+                        Parent.Owner.TryAttack(targetEntity, Parent.Base, Parent.Spell, Parent.Item, Dir);
+                        if (Dir <= 3 && Parent.Base.GrappleHook && !Parent.HasGrappled
                         ) //Don't handle directional projectile grapplehooks
                         {
                             Parent.HasGrappled = true;
@@ -109,21 +109,21 @@ namespace Intersect.Server.Entities
                             );
                         }
 
-                        if( !Parent.Base.PierceTarget )
+                        if (!Parent.Base.PierceTarget)
                         {
                             return true;
                         }
                     }
                 }
-                else if( targetEntity.GetType() == typeof( Resource ) )
+                else if (targetEntity.GetType() == typeof(Resource))
                 {
-                    if( ( (Resource)targetEntity ).IsDead() && !ProjectileBase.IgnoreExhaustedResources ||
-                        !( (Resource)targetEntity ).IsDead() && !ProjectileBase.IgnoreActiveResources )
+                    if (((Resource)targetEntity).IsDead() && !ProjectileBase.IgnoreExhaustedResources ||
+                        !((Resource)targetEntity).IsDead() && !ProjectileBase.IgnoreActiveResources)
                     {
-                        if( Parent.Owner.GetType() == typeof( Player ) && !( (Resource)targetEntity ).IsDead() )
+                        if (Parent.Owner.GetType() == typeof(Player) && !((Resource)targetEntity).IsDead())
                         {
-                            Parent.Owner.TryAttack( targetEntity, Parent.Base, Parent.Spell, Parent.Item, Dir );
-                            if( Dir <= 3 && Parent.Base.GrappleHook && !Parent.HasGrappled
+                            Parent.Owner.TryAttack(targetEntity, Parent.Base, Parent.Spell, Parent.Item, Dir);
+                            if (Dir <= 3 && Parent.Base.GrappleHook && !Parent.HasGrappled
                             ) //Don't handle directional projectile grapplehooks
                             {
                                 Parent.HasGrappled = true;
@@ -142,11 +142,11 @@ namespace Intersect.Server.Entities
                 else //Any other Parent.Target
                 {
                     var ownerNpc = Parent.Owner as Npc;
-                    if( ownerNpc == null ||
-                        ownerNpc.CanNpcCombat( targetEntity, Parent.Spell != null && Parent.Spell.Combat.Friendly ) )
+                    if (ownerNpc == null ||
+                        ownerNpc.CanNpcCombat(targetEntity, Parent.Spell != null && Parent.Spell.Combat.Friendly))
                     {
-                        Parent.Owner.TryAttack( targetEntity, Parent.Base, Parent.Spell, Parent.Item, Dir );
-                        if( Dir <= 3 && Parent.Base.GrappleHook && !Parent.HasGrappled
+                        Parent.Owner.TryAttack(targetEntity, Parent.Base, Parent.Spell, Parent.Item, Dir);
+                        if (Dir <= 3 && Parent.Base.GrappleHook && !Parent.HasGrappled
                         ) //Don't handle directional projectile grapplehooks
                         {
                             Parent.HasGrappled = true;
@@ -158,7 +158,7 @@ namespace Intersect.Server.Entities
                             );
                         }
 
-                        if( !Parent.Base.PierceTarget )
+                        if (!Parent.Base.PierceTarget)
                         {
                             return true;
                         }
@@ -169,9 +169,9 @@ namespace Intersect.Server.Entities
             return false;
         }
 
-        public void Dispose( int spawnIndex )
+        public void Dispose(int spawnIndex)
         {
-            PacketSender.SendRemoveProjectileSpawn( MapId, Parent.Id, spawnIndex );
+            PacketSender.SendRemoveProjectileSpawn(MapId, Parent.Id, spawnIndex);
         }
 
     }

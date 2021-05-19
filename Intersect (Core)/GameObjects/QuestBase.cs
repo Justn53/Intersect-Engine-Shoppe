@@ -35,9 +35,9 @@ namespace Intersect.GameObjects
 
         public int TaskProgress;
 
-        public QuestProgress( string data )
+        public QuestProgress(string data)
         {
-            JsonConvert.PopulateObject( data, this );
+            JsonConvert.PopulateObject(data, this);
         }
 
     }
@@ -55,7 +55,7 @@ namespace Intersect.GameObjects
         [NotMapped] public List<QuestTask> Tasks = new List<QuestTask>();
 
         [JsonConstructor]
-        public QuestBase( Guid Id ) : base( Id )
+        public QuestBase(Guid Id) : base(Id)
         {
             Name = "New Quest";
         }
@@ -84,45 +84,45 @@ namespace Intersect.GameObjects
         public bool Repeatable { get; set; }
 
         //Requirements - Store with json
-        [Column( "Requirements" )]
+        [Column("Requirements")]
         [JsonIgnore]
         public string JsonRequirements
         {
             get => Requirements.Data();
-            set => Requirements.Load( value );
+            set => Requirements.Load(value);
         }
 
         [NotMapped]
         public ConditionLists Requirements { get; set; } = new ConditionLists();
 
-        [Column( "StartEvent" )]
+        [Column("StartEvent")]
         public Guid StartEventId { get; set; }
 
         [NotMapped]
         [JsonIgnore]
         public EventBase StartEvent
         {
-            get => EventBase.Get( StartEventId );
+            get => EventBase.Get(StartEventId);
             set => StartEventId = value.Id;
         }
 
-        [Column( "EndEvent" )]
+        [Column("EndEvent")]
         public Guid EndEventId { get; set; }
 
         [NotMapped]
         [JsonIgnore]
         public EventBase EndEvent
         {
-            get => EventBase.Get( EndEventId );
+            get => EventBase.Get(EndEventId);
             set => EndEventId = value.Id;
         }
 
-        [Column( "Tasks" )]
+        [Column("Tasks")]
         [JsonIgnore]
         public string TasksJson
         {
-            get => JsonConvert.SerializeObject( Tasks );
-            set => Tasks = JsonConvert.DeserializeObject<List<QuestTask>>( value );
+            get => JsonConvert.SerializeObject(Tasks);
+            set => Tasks = JsonConvert.DeserializeObject<List<QuestTask>>(value);
         }
 
         [NotMapped]
@@ -156,11 +156,11 @@ namespace Intersect.GameObjects
         /// <inheritdoc />
         public string Folder { get; set; } = "";
 
-        public int GetTaskIndex( Guid taskId )
+        public int GetTaskIndex(Guid taskId)
         {
-            for( var i = 0; i < Tasks.Count; i++ )
+            for (var i = 0; i < Tasks.Count; i++)
             {
-                if( Tasks[i].Id == taskId )
+                if (Tasks[i].Id == taskId)
                 {
                     return i;
                 }
@@ -169,11 +169,11 @@ namespace Intersect.GameObjects
             return -1;
         }
 
-        public QuestTask FindTask( Guid taskId )
+        public QuestTask FindTask(Guid taskId)
         {
-            for( var i = 0; i < Tasks.Count; i++ )
+            for (var i = 0; i < Tasks.Count; i++)
             {
-                if( Tasks[i].Id == taskId )
+                if (Tasks[i].Id == taskId)
                 {
                     return Tasks[i];
                 }
@@ -187,7 +187,7 @@ namespace Intersect.GameObjects
 
             [NotMapped] [JsonIgnore] public EventBase EditingEvent;
 
-            public QuestTask( Guid id )
+            public QuestTask(Guid id)
             {
                 Id = id;
             }
@@ -199,7 +199,7 @@ namespace Intersect.GameObjects
             [JsonIgnore]
             public EventBase CompletionEvent
             {
-                get => EventBase.Get( CompletionEventId );
+                get => EventBase.Get(CompletionEventId);
                 set => CompletionEventId = value.Id;
             }
 
@@ -212,23 +212,23 @@ namespace Intersect.GameObjects
 
             public string Description { get; set; } = "";
 
-            public string GetTaskString( Dictionary<int, LocalizedString> descriptions )
+            public string GetTaskString(Dictionary<int, LocalizedString> descriptions)
             {
                 var taskString = "";
-                switch( Objective )
+                switch (Objective)
                 {
                     case QuestObjective.EventDriven: //Event Driven
-                        taskString = descriptions[(int)Objective].ToString( Description );
+                        taskString = descriptions[(int)Objective].ToString(Description);
 
                         break;
                     case QuestObjective.GatherItems: //Gather Items
                         taskString = descriptions[(int)Objective]
-                            .ToString( ItemBase.GetName( TargetId ), Quantity, Description );
+                            .ToString(ItemBase.GetName(TargetId), Quantity, Description);
 
                         break;
                     case QuestObjective.KillNpcs: //Kill Npcs
                         taskString = descriptions[(int)Objective]
-                            .ToString( NpcBase.GetName( TargetId ), Quantity, Description );
+                            .ToString(NpcBase.GetName(TargetId), Quantity, Description);
 
                         break;
                 }

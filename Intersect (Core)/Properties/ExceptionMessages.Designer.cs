@@ -20,7 +20,7 @@ namespace Intersect.Properties
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute( "System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0" )]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class ExceptionMessages
@@ -30,7 +30,7 @@ namespace Intersect.Properties
 
         private static global::System.Globalization.CultureInfo resourceCulture;
 
-        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute( "Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode" )]
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal ExceptionMessages()
         {
         }
@@ -38,14 +38,14 @@ namespace Intersect.Properties
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute( global::System.ComponentModel.EditorBrowsableState.Advanced )]
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Resources.ResourceManager ResourceManager
         {
             get
             {
-                if( object.ReferenceEquals( resourceMan, null ) )
+                if (object.ReferenceEquals(resourceMan, null))
                 {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager( "Intersect.Properties.ExceptionMessages", typeof( ExceptionMessages ).Assembly );
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Intersect.Properties.ExceptionMessages", typeof(ExceptionMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -56,7 +56,7 @@ namespace Intersect.Properties
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
-        [global::System.ComponentModel.EditorBrowsableAttribute( global::System.ComponentModel.EditorBrowsableState.Advanced )]
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Globalization.CultureInfo Culture
         {
             get
@@ -76,7 +76,7 @@ namespace Intersect.Properties
         {
             get
             {
-                return ResourceManager.GetString( "FoundPluginEntryTypeMissingDefaultConstructor", resourceCulture );
+                return ResourceManager.GetString("FoundPluginEntryTypeMissingDefaultConstructor", resourceCulture);
             }
         }
 
@@ -87,7 +87,7 @@ namespace Intersect.Properties
         {
             get
             {
-                return ResourceManager.GetString( "MissingPluginAssembly", resourceCulture );
+                return ResourceManager.GetString("MissingPluginAssembly", resourceCulture);
             }
         }
 
@@ -98,7 +98,7 @@ namespace Intersect.Properties
         {
             get
             {
-                return ResourceManager.GetString( "MissingPluginEntryExceptionAssemblyName", resourceCulture );
+                return ResourceManager.GetString("MissingPluginEntryExceptionAssemblyName", resourceCulture);
             }
         }
 
@@ -109,7 +109,7 @@ namespace Intersect.Properties
         {
             get
             {
-                return ResourceManager.GetString( "MissingPluginEntryExceptionDefault", resourceCulture );
+                return ResourceManager.GetString("MissingPluginEntryExceptionDefault", resourceCulture);
             }
         }
 
@@ -120,7 +120,7 @@ namespace Intersect.Properties
         {
             get
             {
-                return ResourceManager.GetString( "PluginBootstrapContextMissingPluginArgument", resourceCulture );
+                return ResourceManager.GetString("PluginBootstrapContextMissingPluginArgument", resourceCulture);
             }
         }
 
@@ -131,7 +131,7 @@ namespace Intersect.Properties
         {
             get
             {
-                return ResourceManager.GetString( "SwallowingExceptionFrom", resourceCulture );
+                return ResourceManager.GetString("SwallowingExceptionFrom", resourceCulture);
             }
         }
 
@@ -142,7 +142,7 @@ namespace Intersect.Properties
         {
             get
             {
-                return ResourceManager.GetString( "SwallowingExceptionFromWithQualifiedName", resourceCulture );
+                return ResourceManager.GetString("SwallowingExceptionFromWithQualifiedName", resourceCulture);
             }
         }
     }

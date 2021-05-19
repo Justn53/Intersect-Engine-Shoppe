@@ -19,12 +19,12 @@ namespace Intersect.GameObjects.Events
                 Type = Type
             };
 
-            if( Type == MoveRouteEnum.SetGraphic )
+            if (Type == MoveRouteEnum.SetGraphic)
             {
                 copy.Graphic = new EventGraphic();
-                copy.Graphic.CopyFrom( Graphic );
+                copy.Graphic.CopyFrom(Graphic);
             }
-            else if( Type == MoveRouteEnum.SetAnimation )
+            else if (Type == MoveRouteEnum.SetAnimation)
             {
                 copy.AnimationId = AnimationId;
             }

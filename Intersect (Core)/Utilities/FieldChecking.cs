@@ -15,9 +15,9 @@ namespace Intersect.Utilities
 
         public const string PATTERN_USERNAME = @"^[a-zA-Z0-9]{2,24}$";
 
-        public static bool IsWellformedEmailAddress( string email, string emailRegex )
+        public static bool IsWellformedEmailAddress(string email, string emailRegex)
         {
-            if( email == null )
+            if (email == null)
             {
                 return false;
             }
@@ -25,22 +25,22 @@ namespace Intersect.Utilities
             try
             {
                 var customPattern = emailRegex;
-                if( string.IsNullOrEmpty( customPattern ) )
+                if (string.IsNullOrEmpty(customPattern))
                 {
                     customPattern = PATTERN_EMAIL_ADDRESS;
                 }
 
-                return Regex.IsMatch( email, customPattern );
+                return Regex.IsMatch(email, customPattern);
             }
-            catch( ArgumentException )
+            catch (ArgumentException)
             {
-                return Regex.IsMatch( email, PATTERN_EMAIL_ADDRESS );
+                return Regex.IsMatch(email, PATTERN_EMAIL_ADDRESS);
             }
         }
 
-        public static bool IsValidUsername( string username, string usernameRegex )
+        public static bool IsValidUsername(string username, string usernameRegex)
         {
-            if( username == null )
+            if (username == null)
             {
                 return false;
             }
@@ -48,22 +48,22 @@ namespace Intersect.Utilities
             try
             {
                 var customPattern = usernameRegex;
-                if( string.IsNullOrEmpty( customPattern ) )
+                if (string.IsNullOrEmpty(customPattern))
                 {
                     customPattern = PATTERN_USERNAME;
                 }
 
-                return Regex.IsMatch( username.Trim(), customPattern );
+                return Regex.IsMatch(username.Trim(), customPattern);
             }
-            catch( ArgumentException )
+            catch (ArgumentException)
             {
-                return Regex.IsMatch( username.Trim(), PATTERN_USERNAME );
+                return Regex.IsMatch(username.Trim(), PATTERN_USERNAME);
             }
         }
 
-        public static bool IsValidPassword( string password, string passwordRegex )
+        public static bool IsValidPassword(string password, string passwordRegex)
         {
-            if( password == null )
+            if (password == null)
             {
                 return false;
             }
@@ -71,16 +71,16 @@ namespace Intersect.Utilities
             try
             {
                 var customPattern = passwordRegex;
-                if( string.IsNullOrEmpty( customPattern ) )
+                if (string.IsNullOrEmpty(customPattern))
                 {
                     customPattern = PATTERN_PASSWORD;
                 }
 
-                return Regex.IsMatch( password.Trim(), customPattern );
+                return Regex.IsMatch(password.Trim(), customPattern);
             }
-            catch( ArgumentException )
+            catch (ArgumentException)
             {
-                return Regex.IsMatch( password.Trim(), PATTERN_PASSWORD );
+                return Regex.IsMatch(password.Trim(), PATTERN_PASSWORD);
             }
         }
 

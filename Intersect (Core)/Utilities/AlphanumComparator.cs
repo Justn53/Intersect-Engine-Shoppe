@@ -48,12 +48,12 @@ namespace Intersect.Utilities
     public class AlphanumComparator : IComparer
     {
 
-        public int Compare( object x, object y )
+        public int Compare(object x, object y)
         {
             var s1 = x as string;
             var s2 = y as string;
 
-            if( s1 == null || s2 == null )
+            if (s1 == null || s2 == null)
             {
                 return 0;
             }
@@ -61,14 +61,14 @@ namespace Intersect.Utilities
             var thisMarker = 0;
             var thatMarker = 0;
 
-            while( thisMarker < s1.Length || thatMarker < s2.Length )
+            while (thisMarker < s1.Length || thatMarker < s2.Length)
             {
-                if( thisMarker >= s1.Length )
+                if (thisMarker >= s1.Length)
                 {
                     return -1;
                 }
 
-                if( thatMarker >= s2.Length )
+                if (thatMarker >= s2.Length)
                 {
                     return 1;
                 }
@@ -79,23 +79,23 @@ namespace Intersect.Utilities
                 var thisChunk = new StringBuilder();
                 var thatChunk = new StringBuilder();
 
-                while( thisMarker < s1.Length && ( thisChunk.Length == 0 || InChunk( thisCh, thisChunk[0] ) ) )
+                while (thisMarker < s1.Length && (thisChunk.Length == 0 || InChunk(thisCh, thisChunk[0])))
                 {
-                    thisChunk.Append( thisCh );
+                    thisChunk.Append(thisCh);
                     thisMarker++;
 
-                    if( thisMarker < s1.Length )
+                    if (thisMarker < s1.Length)
                     {
                         thisCh = s1[thisMarker];
                     }
                 }
 
-                while( thatMarker < s2.Length && ( thatChunk.Length == 0 || InChunk( thatCh, thatChunk[0] ) ) )
+                while (thatMarker < s2.Length && (thatChunk.Length == 0 || InChunk(thatCh, thatChunk[0])))
                 {
-                    thatChunk.Append( thatCh );
+                    thatChunk.Append(thatCh);
                     thatMarker++;
 
-                    if( thatMarker < s2.Length )
+                    if (thatMarker < s2.Length)
                     {
                         thatCh = s2[thatMarker];
                     }
@@ -104,27 +104,27 @@ namespace Intersect.Utilities
                 var result = 0;
 
                 // If both chunks contain numeric characters, sort them numerically
-                if( char.IsDigit( thisChunk[0] ) && char.IsDigit( thatChunk[0] ) )
+                if (char.IsDigit(thisChunk[0]) && char.IsDigit(thatChunk[0]))
                 {
-                    var thisNumericChunk = Convert.ToInt32( thisChunk.ToString() );
-                    var thatNumericChunk = Convert.ToInt32( thatChunk.ToString() );
+                    var thisNumericChunk = Convert.ToInt32(thisChunk.ToString());
+                    var thatNumericChunk = Convert.ToInt32(thatChunk.ToString());
 
-                    if( thisNumericChunk < thatNumericChunk )
+                    if (thisNumericChunk < thatNumericChunk)
                     {
                         result = -1;
                     }
 
-                    if( thisNumericChunk > thatNumericChunk )
+                    if (thisNumericChunk > thatNumericChunk)
                     {
                         result = 1;
                     }
                 }
                 else
                 {
-                    result = string.Compare( thisChunk.ToString(), thatChunk.ToString(), StringComparison.Ordinal );
+                    result = string.Compare(thisChunk.ToString(), thatChunk.ToString(), StringComparison.Ordinal);
                 }
 
-                if( result != 0 )
+                if (result != 0)
                 {
                     return result;
                 }
@@ -133,17 +133,17 @@ namespace Intersect.Utilities
             return 0;
         }
 
-        private static bool InChunk( char ch, char otherCh )
+        private static bool InChunk(char ch, char otherCh)
         {
             var type = ChunkType.Alphanumeric;
 
-            if( char.IsDigit( otherCh ) )
+            if (char.IsDigit(otherCh))
             {
                 type = ChunkType.Numeric;
             }
 
-            return ( type != ChunkType.Alphanumeric || !char.IsDigit( ch ) ) &&
-                   ( type != ChunkType.Numeric || char.IsDigit( ch ) );
+            return (type != ChunkType.Alphanumeric || !char.IsDigit(ch)) &&
+                   (type != ChunkType.Numeric || char.IsDigit(ch));
         }
 
         private enum ChunkType

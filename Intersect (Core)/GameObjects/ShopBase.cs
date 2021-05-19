@@ -17,7 +17,7 @@ namespace Intersect.GameObjects
         [NotMapped] public List<ShopItem> SellingItems = new List<ShopItem>();
 
         [JsonConstructor]
-        public ShopBase( Guid id ) : base( id )
+        public ShopBase(Guid id) : base(id)
         {
             Name = "New Shop";
         }
@@ -31,7 +31,7 @@ namespace Intersect.GameObjects
         public bool BuyingWhitelist { get; set; } = true;
 
         //Spawn Info
-        [Column( "DefaultCurrency" )]
+        [Column("DefaultCurrency")]
         [JsonProperty]
         public Guid DefaultCurrencyId { get; set; }
 
@@ -39,24 +39,24 @@ namespace Intersect.GameObjects
         [JsonIgnore]
         public ItemBase DefaultCurrency
         {
-            get => ItemBase.Get( DefaultCurrencyId );
+            get => ItemBase.Get(DefaultCurrencyId);
             set => DefaultCurrencyId = value?.Id ?? Guid.Empty;
         }
 
-        [Column( "BuyingItems" )]
+        [Column("BuyingItems")]
         [JsonIgnore]
         public string JsonBuyingItems
         {
-            get => JsonConvert.SerializeObject( BuyingItems );
-            set => BuyingItems = JsonConvert.DeserializeObject<List<ShopItem>>( value );
+            get => JsonConvert.SerializeObject(BuyingItems);
+            set => BuyingItems = JsonConvert.DeserializeObject<List<ShopItem>>(value);
         }
 
-        [Column( "SellingItems" )]
+        [Column("SellingItems")]
         [JsonIgnore]
         public string JsonSellingItems
         {
-            get => JsonConvert.SerializeObject( SellingItems );
-            set => SellingItems = JsonConvert.DeserializeObject<List<ShopItem>>( value );
+            get => JsonConvert.SerializeObject(SellingItems);
+            set => SellingItems = JsonConvert.DeserializeObject<List<ShopItem>>(value);
         }
 
         /// <inheritdoc />
@@ -74,7 +74,7 @@ namespace Intersect.GameObjects
         public Guid ItemId;
 
         [JsonConstructor]
-        public ShopItem( Guid itemId, Guid costItemId, int costVal )
+        public ShopItem(Guid itemId, Guid costItemId, int costVal)
         {
             ItemId = itemId;
             CostItemId = costItemId;
@@ -83,7 +83,7 @@ namespace Intersect.GameObjects
 
         [NotMapped]
         [JsonIgnore]
-        public ItemBase Item => ItemBase.Get( ItemId );
+        public ItemBase Item => ItemBase.Get(ItemId);
 
     }
 

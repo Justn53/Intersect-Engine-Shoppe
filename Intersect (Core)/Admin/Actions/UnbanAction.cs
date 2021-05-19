@@ -12,15 +12,15 @@ namespace Intersect.Admin.Actions
 
         }
 
-        public UnbanAction( string name )
+        public UnbanAction(string name)
         {
             Name = name;
         }
 
-        [Key( 1 )]
+        [Key(1)]
         public override AdminActions Action { get; } = AdminActions.UnBan;
 
-        [Key( 2 )]
+        [Key(2)]
         public string Name { get; set; }
 
     }

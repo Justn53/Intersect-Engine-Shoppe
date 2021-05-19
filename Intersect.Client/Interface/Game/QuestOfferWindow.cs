@@ -31,56 +31,56 @@ namespace Intersect.Client.Interface.Game
 
         private Label mQuestTitle;
 
-        public QuestOfferWindow( Canvas gameCanvas )
+        public QuestOfferWindow(Canvas gameCanvas)
         {
-            mQuestOfferWindow = new WindowControl( gameCanvas, Strings.QuestOffer.title, false, "QuestOfferWindow" );
+            mQuestOfferWindow = new WindowControl(gameCanvas, Strings.QuestOffer.title, false, "QuestOfferWindow");
             mQuestOfferWindow.DisableResizing();
             mQuestOfferWindow.IsClosable = false;
 
             //Menu Header
-            mQuestTitle = new Label( mQuestOfferWindow, "QuestTitle" );
+            mQuestTitle = new Label(mQuestOfferWindow, "QuestTitle");
 
-            mQuestPromptArea = new ScrollControl( mQuestOfferWindow, "QuestOfferArea" );
+            mQuestPromptArea = new ScrollControl(mQuestOfferWindow, "QuestOfferArea");
 
-            mQuestPromptTemplate = new Label( mQuestPromptArea, "QuestOfferTemplate" );
+            mQuestPromptTemplate = new Label(mQuestPromptArea, "QuestOfferTemplate");
 
-            mQuestPromptLabel = new RichLabel( mQuestPromptArea );
+            mQuestPromptLabel = new RichLabel(mQuestPromptArea);
 
             //Accept Button
-            mAcceptButton = new Button( mQuestOfferWindow, "AcceptButton" );
-            mAcceptButton.SetText( Strings.QuestOffer.accept );
+            mAcceptButton = new Button(mQuestOfferWindow, "AcceptButton");
+            mAcceptButton.SetText(Strings.QuestOffer.accept);
             mAcceptButton.Clicked += _acceptButton_Clicked;
 
             //Decline Button
-            mDeclineButton = new Button( mQuestOfferWindow, "DeclineButton" );
-            mDeclineButton.SetText( Strings.QuestOffer.decline );
+            mDeclineButton = new Button(mQuestOfferWindow, "DeclineButton");
+            mDeclineButton.SetText(Strings.QuestOffer.decline);
             mDeclineButton.Clicked += _declineButton_Clicked;
 
-            mQuestOfferWindow.LoadJsonUi( GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString() );
-            Interface.InputBlockingElements.Add( mQuestOfferWindow );
+            mQuestOfferWindow.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
+            Interface.InputBlockingElements.Add(mQuestOfferWindow);
         }
 
-        private void _declineButton_Clicked( Base sender, ClickedEventArgs arguments )
+        private void _declineButton_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            if( Globals.QuestOffers.Count > 0 )
+            if (Globals.QuestOffers.Count > 0)
             {
-                PacketSender.SendDeclineQuest( Globals.QuestOffers[0] );
-                Globals.QuestOffers.RemoveAt( 0 );
+                PacketSender.SendDeclineQuest(Globals.QuestOffers[0]);
+                Globals.QuestOffers.RemoveAt(0);
             }
         }
 
-        private void _acceptButton_Clicked( Base sender, ClickedEventArgs arguments )
+        private void _acceptButton_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            if( Globals.QuestOffers.Count > 0 )
+            if (Globals.QuestOffers.Count > 0)
             {
-                PacketSender.SendAcceptQuest( Globals.QuestOffers[0] );
-                Globals.QuestOffers.RemoveAt( 0 );
+                PacketSender.SendAcceptQuest(Globals.QuestOffers[0]);
+                Globals.QuestOffers.RemoveAt(0);
             }
         }
 
-        public void Update( QuestBase quest )
+        public void Update(QuestBase quest)
         {
-            if( quest == null )
+            if (quest == null)
             {
                 Hide();
             }
@@ -88,7 +88,7 @@ namespace Intersect.Client.Interface.Game
             {
                 Show();
                 mQuestTitle.Text = quest.Name;
-                if( mQuestOfferText != quest.StartDescription )
+                if (mQuestOfferText != quest.StartDescription)
                 {
                     mQuestPromptLabel.ClearText();
                     mQuestPromptLabel.Width = mQuestPromptArea.Width - mQuestPromptArea.GetVerticalScrollBar().Width;
@@ -99,7 +99,7 @@ namespace Intersect.Client.Interface.Game
                             : Alignments.Left, mQuestPromptTemplate.Font
                     );
 
-                    mQuestPromptLabel.SizeToChildren( false, true );
+                    mQuestPromptLabel.SizeToChildren(false, true);
                     mQuestOfferText = quest.StartDescription;
                 }
             }

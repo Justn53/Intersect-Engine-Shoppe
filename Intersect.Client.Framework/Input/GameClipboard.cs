@@ -12,7 +12,7 @@ namespace Intersect.Client.Framework.Input
         /// Set the contents of the clipboard.
         /// </summary>
         /// <param name="data">The data to place on the clipboard.</param>
-        public abstract void SetText( string data );
+        public abstract void SetText(string data);
 
         /// <summary>
         /// Get the current content of the clipboard.

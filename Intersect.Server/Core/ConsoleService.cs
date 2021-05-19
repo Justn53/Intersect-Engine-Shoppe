@@ -22,21 +22,21 @@ namespace Intersect.Server.Core
         public override bool IsEnabled => true;
 
         /// <inheritdoc />
-        protected override void TaskStart( IServerContext applicationContext )
+        protected override void TaskStart(IServerContext applicationContext)
         {
-            if( !applicationContext.StartupOptions.DoNotShowConsole )
+            if (!applicationContext.StartupOptions.DoNotShowConsole)
             {
-                Thread = mConsoleThread.Start( applicationContext );
+                Thread = mConsoleThread.Start(applicationContext);
             }
         }
 
         /// <inheritdoc />
-        protected override void TaskStop( IServerContext applicationContext )
+        protected override void TaskStop(IServerContext applicationContext)
         {
             // Nothing to do, the thread already has a stopping condition
         }
 
-        public void Wait( bool doNotContinue = false ) => mConsoleThread.Wait( doNotContinue );
+        public void Wait(bool doNotContinue = false) => mConsoleThread.Wait(doNotContinue);
 
     }
 

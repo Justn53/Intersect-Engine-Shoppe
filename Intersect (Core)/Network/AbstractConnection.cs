@@ -12,7 +12,7 @@ namespace Intersect.Network
 
         private bool mDisposed;
 
-        protected AbstractConnection( Guid? guid = null )
+        protected AbstractConnection(Guid? guid = null)
         {
             mDisposeLock = new object();
 
@@ -22,9 +22,9 @@ namespace Intersect.Network
 
         public virtual void Dispose()
         {
-            lock( mDisposeLock )
+            lock (mDisposeLock)
             {
-                if( mDisposed )
+                if (mDisposed)
                 {
                     return;
                 }
@@ -43,25 +43,25 @@ namespace Intersect.Network
 
         public ConnectionStatistics Statistics { get; }
 
-        public abstract bool Send( IPacket packet, TransmissionMode mode = TransmissionMode.All );
+        public abstract bool Send(IPacket packet, TransmissionMode mode = TransmissionMode.All);
 
         public virtual void HandleConnected()
         {
             IsConnected = true;
 
-            Log.Debug( $"Connection established to remote [{Guid}/{Ip}:{Port}]." );
+            Log.Debug($"Connection established to remote [{Guid}/{Ip}:{Port}].");
         }
 
         public void HandleApproved()
         {
-            Log.Debug( $"Connection approved to remote [{Guid}/{Ip}:{Port}]." );
+            Log.Debug($"Connection approved to remote [{Guid}/{Ip}:{Port}].");
         }
 
         public virtual void HandleDisconnected()
         {
             IsConnected = false;
 
-            Log.Debug( $"Connection terminated to remote [{Guid}/{Ip}:{Port}]." );
+            Log.Debug($"Connection terminated to remote [{Guid}/{Ip}:{Port}].");
         }
 
     }

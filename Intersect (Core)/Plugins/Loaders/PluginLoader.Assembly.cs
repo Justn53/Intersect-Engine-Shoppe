@@ -18,21 +18,21 @@ namespace Intersect.Plugins.Loaders
         [SuppressMessage(
             "Design", "CA1031:Do not catch general exception types", Justification = "Intentional catch-all-and-log."
         )]
-        internal Plugin LoadFrom( IApplicationContext applicationContext, string assemblyPath )
+        internal Plugin LoadFrom(IApplicationContext applicationContext, string assemblyPath)
         {
             try
             {
-                var assembly = Assembly.LoadFrom( assemblyPath );
-                if( assembly == null )
+                var assembly = Assembly.LoadFrom(assemblyPath);
+                if (assembly == null)
                 {
-                    throw new DllNotFoundException( ExceptionMessages.MissingPluginAssembly );
+                    throw new DllNotFoundException(ExceptionMessages.MissingPluginAssembly);
                 }
 
-                return LoadFrom( applicationContext, assembly );
+                return LoadFrom(applicationContext, assembly);
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                applicationContext.Logger.Error( exception );
+                applicationContext.Logger.Error(exception);
                 return default;
             }
         }
@@ -43,24 +43,24 @@ namespace Intersect.Plugins.Loaders
         /// <param name="applicationContext">the <see cref="IApplicationContext"/> in which to load the plugin</param>
         /// <param name="assembly">the <see cref="Assembly"/> to load the <see cref="Plugin"/> from</param>
         /// <returns>a <see cref="Plugin"/> or null if one cannot be found</returns>
-        internal Plugin LoadFrom( IApplicationContext applicationContext, Assembly assembly )
+        internal Plugin LoadFrom(IApplicationContext applicationContext, Assembly assembly)
         {
-            var manifest = ManifestLoader.FindManifest( assembly );
-            if( manifest == null )
+            var manifest = ManifestLoader.FindManifest(assembly);
+            if (manifest == null)
             {
-                applicationContext.Logger.Warn( $"Unable to find a manifest in '{assembly.FullName}' ({assembly.Location})" );
+                applicationContext.Logger.Warn($"Unable to find a manifest in '{assembly.FullName}' ({assembly.Location})");
                 return default;
             }
 
-            applicationContext.Logger.Info( $"Loading plugin {manifest.Name} v{manifest.Version} ({manifest.Key})." );
+            applicationContext.Logger.Info($"Loading plugin {manifest.Name} v{manifest.Version} ({manifest.Key}).");
 
-            var pluginReference = CreatePluginReference( assembly );
-            if( pluginReference != null )
+            var pluginReference = CreatePluginReference(assembly);
+            if (pluginReference != null)
             {
-                return Plugin.Create( applicationContext, manifest, pluginReference );
+                return Plugin.Create(applicationContext, manifest, pluginReference);
             }
 
-            applicationContext.Logger.Error( $"Unable to find a plugin entry point in '{assembly.FullName}' ({assembly.Location})" );
+            applicationContext.Logger.Error($"Unable to find a plugin entry point in '{assembly.FullName}' ({assembly.Location})");
             return default;
         }
     }

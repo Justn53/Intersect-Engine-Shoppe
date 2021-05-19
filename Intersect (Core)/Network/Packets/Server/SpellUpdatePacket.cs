@@ -11,16 +11,16 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public SpellUpdatePacket( int slot, Guid spellId )
+        public SpellUpdatePacket(int slot, Guid spellId)
         {
             Slot = slot;
             SpellId = spellId;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public int Slot { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public Guid SpellId { get; set; }
 
     }

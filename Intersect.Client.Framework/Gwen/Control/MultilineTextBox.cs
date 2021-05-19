@@ -29,57 +29,57 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="TextBox" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public MultilineTextBox( Base parent ) : base( parent )
+        public MultilineTextBox(Base parent) : base(parent)
         {
             AutoSizeToContents = false;
-            SetSize( 200, 20 );
+            SetSize(200, 20);
 
             MouseInputEnabled = true;
             KeyboardInputEnabled = true;
 
             Alignment = Pos.Left | Pos.Top;
-            TextPadding = new Padding( 4, 2, 4, 2 );
+            TextPadding = new Padding(4, 2, 4, 2);
 
-            mCursorPos = new Point( 0, 0 );
-            mCursorEnd = new Point( 0, 0 );
+            mCursorPos = new Point(0, 0);
+            mCursorEnd = new Point(0, 0);
             mSelectAll = false;
 
-            TextColor = Color.FromArgb( 255, 50, 50, 50 ); // TODO: From Skin
+            TextColor = Color.FromArgb(255, 50, 50, 50); // TODO: From Skin
 
             IsTabable = false;
             AcceptTabs = true;
 
-            mScrollControl = new ScrollControl( this );
+            mScrollControl = new ScrollControl(this);
             mScrollControl.Dock = Pos.Fill;
-            mScrollControl.EnableScroll( true, true );
+            mScrollControl.EnableScroll(true, true);
             mScrollControl.AutoHideBars = true;
             mScrollControl.Margin = Margin.One;
             mInnerPanel = mScrollControl;
             mText.Parent = mInnerPanel;
-            mScrollControl.InnerPanel.BoundsChanged += new GwenEventHandler<EventArgs>( ScrollChanged );
+            mScrollControl.InnerPanel.BoundsChanged += new GwenEventHandler<EventArgs>(ScrollChanged);
 
-            mTextLines.Add( String.Empty );
+            mTextLines.Add(String.Empty);
 
             // [halfofastaple] TODO Figure out where these numbers come from. See if we can remove the magic numbers.
             //	This should be as simple as 'm_ScrollControl.AutoSizeToContents = true' or 'm_ScrollControl.NoBounds()'
-            mScrollControl.SetInnerSize( 1000, 1000 );
+            mScrollControl.SetInnerSize(1000, 1000);
 
             // Some platforms it works with spaces, others without.. so why not both?
-            AddAccelerator( "Ctrl + C", OnCopy );
-            AddAccelerator( "Ctrl + X", OnCut );
-            AddAccelerator( "Ctrl + V", OnPaste );
-            AddAccelerator( "Ctrl + A", OnSelectAll );
-            AddAccelerator( "Ctrl+C", OnCopy );
-            AddAccelerator( "Ctrl+X", OnCut );
-            AddAccelerator( "Ctrl+V", OnPaste );
-            AddAccelerator( "Ctrl+A", OnSelectAll );
+            AddAccelerator("Ctrl + C", OnCopy);
+            AddAccelerator("Ctrl + X", OnCut);
+            AddAccelerator("Ctrl + V", OnPaste);
+            AddAccelerator("Ctrl + A", OnSelectAll);
+            AddAccelerator("Ctrl+C", OnCopy);
+            AddAccelerator("Ctrl+X", OnCut);
+            AddAccelerator("Ctrl+V", OnPaste);
+            AddAccelerator("Ctrl+A", OnSelectAll);
         }
 
         private Point StartPoint
         {
             get
             {
-                if( CursorPosition.Y == mCursorEnd.Y )
+                if (CursorPosition.Y == mCursorEnd.Y)
                 {
                     return CursorPosition.X < CursorEnd.X ? CursorPosition : CursorEnd;
                 }
@@ -94,7 +94,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         {
             get
             {
-                if( CursorPosition.Y == mCursorEnd.Y )
+                if (CursorPosition.Y == mCursorEnd.Y)
                 {
                     return CursorPosition.X > CursorEnd.X ? CursorPosition : CursorEnd;
                 }
@@ -118,22 +118,22 @@ namespace Intersect.Client.Framework.Gwen.Control
         {
             get
             {
-                if( mTextLines == null || mTextLines.Count() == 0 )
+                if (mTextLines == null || mTextLines.Count() == 0)
                 {
-                    return new Point( 0, 0 );
+                    return new Point(0, 0);
                 }
 
                 var y = mCursorPos.Y;
-                y = Math.Max( y, 0 );
-                y = Math.Min( y, mTextLines.Count() - 1 );
+                y = Math.Max(y, 0);
+                y = Math.Min(y, mTextLines.Count() - 1);
 
                 var x = mCursorPos
                     .X; //X may be beyond the last character, but we will want to draw it at the end of line.
 
-                x = Math.Max( x, 0 );
-                x = Math.Min( x, mTextLines[y].Length );
+                x = Math.Max(x, 0);
+                x = Math.Min(x, mTextLines[y].Length);
 
-                return new Point( x, y );
+                return new Point(x, y);
             }
             set
             {
@@ -151,22 +151,22 @@ namespace Intersect.Client.Framework.Gwen.Control
         {
             get
             {
-                if( mTextLines == null || mTextLines.Count() == 0 )
+                if (mTextLines == null || mTextLines.Count() == 0)
                 {
-                    return new Point( 0, 0 );
+                    return new Point(0, 0);
                 }
 
                 var y = mCursorEnd.Y;
-                y = Math.Max( y, 0 );
-                y = Math.Min( y, mTextLines.Count() - 1 );
+                y = Math.Max(y, 0);
+                y = Math.Min(y, mTextLines.Count() - 1);
 
                 var x = mCursorEnd
                     .X; //X may be beyond the last character, but we will want to draw it at the end of line.
 
-                x = Math.Max( x, 0 );
-                x = Math.Min( x, mTextLines[y].Length );
+                x = Math.Max(x, 0);
+                x = Math.Min(x, mTextLines[y].Length);
 
-                return new Point( x, y );
+                return new Point(x, y);
             }
             set
             {
@@ -195,10 +195,10 @@ namespace Intersect.Client.Framework.Gwen.Control
             get
             {
                 var ret = "";
-                for( var i = 0; i < TotalLines; i++ )
+                for (var i = 0; i < TotalLines; i++)
                 {
                     ret += mTextLines[i];
-                    if( i != TotalLines - 1 )
+                    if (i != TotalLines - 1)
                     {
                         ret += Environment.NewLine;
                     }
@@ -214,12 +214,12 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         public event GwenEventHandler<EventArgs> TextChanged;
 
-        public string GetTextLine( int index )
+        public string GetTextLine(int index)
         {
             return mTextLines[index];
         }
 
-        public void SetTextLine( int index, string value )
+        public void SetTextLine(int index, string value)
         {
             mTextLines[index] = value;
         }
@@ -228,7 +228,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Refreshes the cursor location and selected area when the inner panel scrolls
         /// </summary>
         /// <param name="control">The inner panel the text is embedded in</param>
-        private void ScrollChanged( Base control, EventArgs args )
+        private void ScrollChanged(Base control, EventArgs args)
         {
             RefreshCursorBounds();
         }
@@ -239,9 +239,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         protected override void OnTextChanged()
         {
             base.OnTextChanged();
-            if( TextChanged != null )
+            if (TextChanged != null)
             {
-                TextChanged.Invoke( this, EventArgs.Empty );
+                TextChanged.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -252,15 +252,15 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnChar( char chr )
+        protected override bool OnChar(char chr)
         {
             //base.OnChar(chr);
-            if( chr == '\t' && !AcceptTabs )
+            if (chr == '\t' && !AcceptTabs)
             {
                 return false;
             }
 
-            InsertText( chr.ToString() );
+            InsertText(chr.ToString());
 
             return true;
         }
@@ -269,17 +269,17 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Inserts text at current cursor position, erasing selection if any.
         /// </summary>
         /// <param name="text">Text to insert.</param>
-        protected void InsertText( string text )
+        protected void InsertText(string text)
         {
             // TODO: Make sure fits (implement maxlength)
 
-            if( HasSelection )
+            if (HasSelection)
             {
                 EraseSelection();
             }
 
             var str = mTextLines[mCursorPos.Y];
-            str = str.Insert( CursorPosition.X, text );
+            str = str.Insert(CursorPosition.X, text);
             mTextLines[mCursorPos.Y] = str;
 
             mCursorPos.X = CursorPosition.X + text.Length;
@@ -293,16 +293,16 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            base.Render( skin );
+            base.Render(skin);
 
-            if( ShouldDrawBackground )
+            if (ShouldDrawBackground)
             {
-                skin.DrawTextBox( this );
+                skin.DrawTextBox(this);
             }
 
-            if( !HasFocus )
+            if (!HasFocus)
             {
                 return;
             }
@@ -311,75 +311,75 @@ namespace Intersect.Client.Framework.Gwen.Control
             var verticalSize = 10 + 6;
 
             // Draw selection.. if selected..
-            if( mCursorPos != mCursorEnd )
+            if (mCursorPos != mCursorEnd)
             {
-                if( StartPoint.Y == EndPoint.Y )
+                if (StartPoint.Y == EndPoint.Y)
                 {
-                    var pA = GetCharacterPosition( StartPoint );
-                    var pB = GetCharacterPosition( EndPoint );
+                    var pA = GetCharacterPosition(StartPoint);
+                    var pB = GetCharacterPosition(EndPoint);
 
                     var selectionBounds = new Rectangle();
-                    selectionBounds.X = Math.Min( pA.X, pB.X );
+                    selectionBounds.X = Math.Min(pA.X, pB.X);
                     selectionBounds.Y = pA.Y - verticalOffset;
-                    selectionBounds.Width = Math.Max( pA.X, pB.X ) - selectionBounds.X;
+                    selectionBounds.Width = Math.Max(pA.X, pB.X) - selectionBounds.X;
                     selectionBounds.Height = verticalSize;
 
-                    skin.Renderer.DrawColor = Color.FromArgb( 200, 50, 170, 255 );
-                    skin.Renderer.DrawFilledRect( selectionBounds );
+                    skin.Renderer.DrawColor = Color.FromArgb(200, 50, 170, 255);
+                    skin.Renderer.DrawFilledRect(selectionBounds);
                 }
                 else
                 {
                     /* Start */
-                    var pA = GetCharacterPosition( StartPoint );
-                    var pB = GetCharacterPosition( new Point( mTextLines[StartPoint.Y].Length, StartPoint.Y ) );
+                    var pA = GetCharacterPosition(StartPoint);
+                    var pB = GetCharacterPosition(new Point(mTextLines[StartPoint.Y].Length, StartPoint.Y));
 
                     var selectionBounds = new Rectangle();
-                    selectionBounds.X = Math.Min( pA.X, pB.X );
+                    selectionBounds.X = Math.Min(pA.X, pB.X);
                     selectionBounds.Y = pA.Y - verticalOffset;
-                    selectionBounds.Width = Math.Max( pA.X, pB.X ) - selectionBounds.X;
+                    selectionBounds.Width = Math.Max(pA.X, pB.X) - selectionBounds.X;
                     selectionBounds.Height = verticalSize;
 
-                    skin.Renderer.DrawColor = Color.FromArgb( 200, 50, 170, 255 );
-                    skin.Renderer.DrawFilledRect( selectionBounds );
+                    skin.Renderer.DrawColor = Color.FromArgb(200, 50, 170, 255);
+                    skin.Renderer.DrawFilledRect(selectionBounds);
 
                     /* Middle */
-                    for( var i = 1; i < EndPoint.Y - StartPoint.Y; i++ )
+                    for (var i = 1; i < EndPoint.Y - StartPoint.Y; i++)
                     {
-                        pA = GetCharacterPosition( new Point( 0, StartPoint.Y + i ) );
-                        pB = GetCharacterPosition( new Point( mTextLines[StartPoint.Y + i].Length, StartPoint.Y + i ) );
+                        pA = GetCharacterPosition(new Point(0, StartPoint.Y + i));
+                        pB = GetCharacterPosition(new Point(mTextLines[StartPoint.Y + i].Length, StartPoint.Y + i));
 
                         selectionBounds = new Rectangle();
-                        selectionBounds.X = Math.Min( pA.X, pB.X );
+                        selectionBounds.X = Math.Min(pA.X, pB.X);
                         selectionBounds.Y = pA.Y - verticalOffset;
-                        selectionBounds.Width = Math.Max( pA.X, pB.X ) - selectionBounds.X;
+                        selectionBounds.Width = Math.Max(pA.X, pB.X) - selectionBounds.X;
                         selectionBounds.Height = verticalSize;
 
-                        skin.Renderer.DrawColor = Color.FromArgb( 200, 50, 170, 255 );
-                        skin.Renderer.DrawFilledRect( selectionBounds );
+                        skin.Renderer.DrawColor = Color.FromArgb(200, 50, 170, 255);
+                        skin.Renderer.DrawFilledRect(selectionBounds);
                     }
 
                     /* End */
-                    pA = GetCharacterPosition( new Point( 0, EndPoint.Y ) );
-                    pB = GetCharacterPosition( EndPoint );
+                    pA = GetCharacterPosition(new Point(0, EndPoint.Y));
+                    pB = GetCharacterPosition(EndPoint);
 
                     selectionBounds = new Rectangle();
-                    selectionBounds.X = Math.Min( pA.X, pB.X );
+                    selectionBounds.X = Math.Min(pA.X, pB.X);
                     selectionBounds.Y = pA.Y - verticalOffset;
-                    selectionBounds.Width = Math.Max( pA.X, pB.X ) - selectionBounds.X;
+                    selectionBounds.Width = Math.Max(pA.X, pB.X) - selectionBounds.X;
                     selectionBounds.Height = verticalSize;
 
-                    skin.Renderer.DrawColor = Color.FromArgb( 200, 50, 170, 255 );
-                    skin.Renderer.DrawFilledRect( selectionBounds );
+                    skin.Renderer.DrawColor = Color.FromArgb(200, 50, 170, 255);
+                    skin.Renderer.DrawFilledRect(selectionBounds);
                 }
             }
 
             // Draw caret
             var time = Platform.Neutral.GetTimeInSeconds() - mLastInputTime;
 
-            if( time % 1.0f <= 0.5f )
+            if (time % 1.0f <= 0.5f)
             {
                 skin.Renderer.DrawColor = Color.Black;
-                skin.Renderer.DrawFilledRect( mCaretBounds );
+                skin.Renderer.DrawFilledRect(mCaretBounds);
             }
         }
 
@@ -389,8 +389,8 @@ namespace Intersect.Client.Framework.Gwen.Control
 
             MakeCaretVisible();
 
-            var pA = GetCharacterPosition( CursorPosition );
-            var pB = GetCharacterPosition( mCursorEnd );
+            var pA = GetCharacterPosition(CursorPosition);
+            var pB = GetCharacterPosition(mCursorEnd);
 
             //m_SelectionBounds.X = Math.Min(pA.X, pB.X);
             //m_SelectionBounds.Y = TextY - 1;
@@ -412,42 +412,42 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Handler for Paste event.
         /// </summary>
         /// <param name="from">Source control.</param>
-        protected override void OnPaste( Base from, EventArgs args )
+        protected override void OnPaste(Base from, EventArgs args)
         {
-            base.OnPaste( from, args );
-            InsertText( Platform.Neutral.GetClipboardText() );
+            base.OnPaste(from, args);
+            InsertText(Platform.Neutral.GetClipboardText());
         }
 
         /// <summary>
         ///     Handler for Copy event.
         /// </summary>
         /// <param name="from">Source control.</param>
-        protected override void OnCopy( Base from, EventArgs args )
+        protected override void OnCopy(Base from, EventArgs args)
         {
-            if( !HasSelection )
+            if (!HasSelection)
             {
                 return;
             }
 
-            base.OnCopy( from, args );
+            base.OnCopy(from, args);
 
-            Platform.Neutral.SetClipboardText( GetSelection() );
+            Platform.Neutral.SetClipboardText(GetSelection());
         }
 
         /// <summary>
         ///     Handler for Cut event.
         /// </summary>
         /// <param name="from">Source control.</param>
-        protected override void OnCut( Base from, EventArgs args )
+        protected override void OnCut(Base from, EventArgs args)
         {
-            if( !HasSelection )
+            if (!HasSelection)
             {
                 return;
             }
 
-            base.OnCut( from, args );
+            base.OnCut(from, args);
 
-            Platform.Neutral.SetClipboardText( GetSelection() );
+            Platform.Neutral.SetClipboardText(GetSelection());
             EraseSelection();
         }
 
@@ -455,11 +455,11 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Handler for Select All event.
         /// </summary>
         /// <param name="from">Source control.</param>
-        protected override void OnSelectAll( Base from, EventArgs args )
+        protected override void OnSelectAll(Base from, EventArgs args)
         {
             //base.OnSelectAll(from);
-            mCursorEnd = new Point( 0, 0 );
-            mCursorPos = new Point( mTextLines.Last().Length, mTextLines.Count() );
+            mCursorEnd = new Point(0, 0);
+            mCursorPos = new Point(mTextLines.Last().Length, mTextLines.Count());
 
             RefreshCursorBounds();
         }
@@ -469,10 +469,10 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
-        protected override void OnMouseDoubleClickedLeft( int x, int y )
+        protected override void OnMouseDoubleClickedLeft(int x, int y)
         {
             //base.OnMouseDoubleClickedLeft(x, y);
-            OnSelectAll( this, EventArgs.Empty );
+            OnSelectAll(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -482,25 +482,25 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyReturn( bool down )
+        protected override bool OnKeyReturn(bool down)
         {
-            if( down )
+            if (down)
             {
                 return true;
             }
 
             //Split current string, putting the rhs on a new line
             var currentLine = mTextLines[mCursorPos.Y];
-            var lhs = currentLine.Substring( 0, CursorPosition.X );
-            var rhs = currentLine.Substring( CursorPosition.X );
+            var lhs = currentLine.Substring(0, CursorPosition.X);
+            var rhs = currentLine.Substring(CursorPosition.X);
 
             mTextLines[mCursorPos.Y] = lhs;
-            mTextLines.Insert( mCursorPos.Y + 1, rhs );
+            mTextLines.Insert(mCursorPos.Y + 1, rhs);
 
-            OnKeyDown( true );
-            OnKeyHome( true );
+            OnKeyDown(true);
+            OnKeyHome(true);
 
-            if( mCursorPos.Y == TotalLines - 1 )
+            if (mCursorPos.Y == TotalLines - 1)
             {
                 mScrollControl.ScrollToBottom();
             }
@@ -518,23 +518,23 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyBackspace( bool down )
+        protected override bool OnKeyBackspace(bool down)
         {
-            if( !down )
+            if (!down)
             {
                 return true;
             }
 
-            if( HasSelection )
+            if (HasSelection)
             {
                 EraseSelection();
 
                 return true;
             }
 
-            if( mCursorPos.X == 0 )
+            if (mCursorPos.X == 0)
             {
-                if( mCursorPos.Y == 0 )
+                if (mCursorPos.Y == 0)
                 {
                     return true; //Nothing left to delete
                 }
@@ -542,19 +542,19 @@ namespace Intersect.Client.Framework.Gwen.Control
                 {
                     var lhs = mTextLines[mCursorPos.Y - 1];
                     var rhs = mTextLines[mCursorPos.Y];
-                    mTextLines.RemoveAt( mCursorPos.Y );
-                    OnKeyUp( true );
-                    OnKeyEnd( true );
+                    mTextLines.RemoveAt(mCursorPos.Y);
+                    OnKeyUp(true);
+                    OnKeyEnd(true);
                     mTextLines[mCursorPos.Y] = lhs + rhs;
                 }
             }
             else
             {
                 var currentLine = mTextLines[mCursorPos.Y];
-                var lhs = currentLine.Substring( 0, CursorPosition.X - 1 );
-                var rhs = currentLine.Substring( CursorPosition.X );
+                var lhs = currentLine.Substring(0, CursorPosition.X - 1);
+                var rhs = currentLine.Substring(CursorPosition.X);
                 mTextLines[mCursorPos.Y] = lhs + rhs;
-                OnKeyLeft( true );
+                OnKeyLeft(true);
             }
 
             Invalidate();
@@ -570,23 +570,23 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyDelete( bool down )
+        protected override bool OnKeyDelete(bool down)
         {
-            if( !down )
+            if (!down)
             {
                 return true;
             }
 
-            if( HasSelection )
+            if (HasSelection)
             {
                 EraseSelection();
 
                 return true;
             }
 
-            if( mCursorPos.X == mTextLines[mCursorPos.Y].Length )
+            if (mCursorPos.X == mTextLines[mCursorPos.Y].Length)
             {
-                if( mCursorPos.Y == mTextLines.Count - 1 )
+                if (mCursorPos.Y == mTextLines.Count - 1)
                 {
                     return true; //Nothing left to delete
                 }
@@ -594,16 +594,16 @@ namespace Intersect.Client.Framework.Gwen.Control
                 {
                     var lhs = mTextLines[mCursorPos.Y];
                     var rhs = mTextLines[mCursorPos.Y + 1];
-                    mTextLines.RemoveAt( mCursorPos.Y + 1 );
-                    OnKeyEnd( true );
+                    mTextLines.RemoveAt(mCursorPos.Y + 1);
+                    OnKeyEnd(true);
                     mTextLines[mCursorPos.Y] = lhs + rhs;
                 }
             }
             else
             {
                 var currentLine = mTextLines[mCursorPos.Y];
-                var lhs = currentLine.Substring( 0, CursorPosition.X );
-                var rhs = currentLine.Substring( CursorPosition.X + 1 );
+                var lhs = currentLine.Substring(0, CursorPosition.X);
+                var rhs = currentLine.Substring(CursorPosition.X + 1);
                 mTextLines[mCursorPos.Y] = lhs + rhs;
             }
 
@@ -620,19 +620,19 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyUp( bool down )
+        protected override bool OnKeyUp(bool down)
         {
-            if( !down )
+            if (!down)
             {
                 return true;
             }
 
-            if( mCursorPos.Y > 0 )
+            if (mCursorPos.Y > 0)
             {
                 mCursorPos.Y -= 1;
             }
 
-            if( !Input.InputHandler.IsShiftDown )
+            if (!Input.InputHandler.IsShiftDown)
             {
                 mCursorEnd = mCursorPos;
             }
@@ -650,19 +650,19 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyDown( bool down )
+        protected override bool OnKeyDown(bool down)
         {
-            if( !down )
+            if (!down)
             {
                 return true;
             }
 
-            if( mCursorPos.Y < TotalLines - 1 )
+            if (mCursorPos.Y < TotalLines - 1)
             {
                 mCursorPos.Y += 1;
             }
 
-            if( !Input.InputHandler.IsShiftDown )
+            if (!Input.InputHandler.IsShiftDown)
             {
                 mCursorEnd = mCursorPos;
             }
@@ -680,27 +680,27 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyLeft( bool down )
+        protected override bool OnKeyLeft(bool down)
         {
-            if( !down )
+            if (!down)
             {
                 return true;
             }
 
-            if( mCursorPos.X > 0 )
+            if (mCursorPos.X > 0)
             {
-                mCursorPos.X = Math.Min( mCursorPos.X - 1, mTextLines[mCursorPos.Y].Length );
+                mCursorPos.X = Math.Min(mCursorPos.X - 1, mTextLines[mCursorPos.Y].Length);
             }
             else
             {
-                if( mCursorPos.Y > 0 )
+                if (mCursorPos.Y > 0)
                 {
-                    OnKeyUp( down );
-                    OnKeyEnd( down );
+                    OnKeyUp(down);
+                    OnKeyEnd(down);
                 }
             }
 
-            if( !Input.InputHandler.IsShiftDown )
+            if (!Input.InputHandler.IsShiftDown)
             {
                 mCursorEnd = mCursorPos;
             }
@@ -718,27 +718,27 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyRight( bool down )
+        protected override bool OnKeyRight(bool down)
         {
-            if( !down )
+            if (!down)
             {
                 return true;
             }
 
-            if( mCursorPos.X < mTextLines[mCursorPos.Y].Length )
+            if (mCursorPos.X < mTextLines[mCursorPos.Y].Length)
             {
-                mCursorPos.X = Math.Min( mCursorPos.X + 1, mTextLines[mCursorPos.Y].Length );
+                mCursorPos.X = Math.Min(mCursorPos.X + 1, mTextLines[mCursorPos.Y].Length);
             }
             else
             {
-                if( mCursorPos.Y < mTextLines.Count - 1 )
+                if (mCursorPos.Y < mTextLines.Count - 1)
                 {
-                    OnKeyDown( down );
-                    OnKeyHome( down );
+                    OnKeyDown(down);
+                    OnKeyHome(down);
                 }
             }
 
-            if( !Input.InputHandler.IsShiftDown )
+            if (!Input.InputHandler.IsShiftDown)
             {
                 mCursorEnd = mCursorPos;
             }
@@ -756,16 +756,16 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyHome( bool down )
+        protected override bool OnKeyHome(bool down)
         {
-            if( !down )
+            if (!down)
             {
                 return true;
             }
 
             mCursorPos.X = 0;
 
-            if( !Input.InputHandler.IsShiftDown )
+            if (!Input.InputHandler.IsShiftDown)
             {
                 mCursorEnd = mCursorPos;
             }
@@ -783,16 +783,16 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyEnd( bool down )
+        protected override bool OnKeyEnd(bool down)
         {
-            if( !down )
+            if (!down)
             {
                 return true;
             }
 
             mCursorPos.X = mTextLines[mCursorPos.Y].Length;
 
-            if( !Input.InputHandler.IsShiftDown )
+            if (!Input.InputHandler.IsShiftDown)
             {
                 mCursorEnd = mCursorPos;
             }
@@ -810,19 +810,19 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>
         ///     True if handled.
         /// </returns>
-        protected override bool OnKeyTab( bool down )
+        protected override bool OnKeyTab(bool down)
         {
-            if( !AcceptTabs )
+            if (!AcceptTabs)
             {
-                return base.OnKeyTab( down );
+                return base.OnKeyTab(down);
             }
 
-            if( !down )
+            if (!down)
             {
                 return false;
             }
 
-            OnChar( '\t' );
+            OnChar('\t');
 
             return true;
         }
@@ -833,31 +833,31 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <returns>Current selection.</returns>
         public string GetSelection()
         {
-            if( !HasSelection )
+            if (!HasSelection)
             {
                 return String.Empty;
             }
 
             var str = String.Empty;
 
-            if( StartPoint.Y == EndPoint.Y )
+            if (StartPoint.Y == EndPoint.Y)
             {
                 var start = StartPoint.X;
                 var end = EndPoint.X;
 
                 str = mTextLines[mCursorPos.Y];
-                str = str.Substring( start, end - start );
+                str = str.Substring(start, end - start);
             }
             else
             {
                 str = String.Empty;
-                str += mTextLines[StartPoint.Y].Substring( StartPoint.X ); //Copy start
-                for( var i = 1; i < EndPoint.Y - StartPoint.Y; i++ )
+                str += mTextLines[StartPoint.Y].Substring(StartPoint.X); //Copy start
+                for (var i = 1; i < EndPoint.Y - StartPoint.Y; i++)
                 {
                     str += mTextLines[StartPoint.Y + i]; //Copy middle
                 }
 
-                str += mTextLines[EndPoint.Y].Substring( 0, EndPoint.X ); //Copy end
+                str += mTextLines[EndPoint.Y].Substring(0, EndPoint.X); //Copy end
             }
 
             return str;
@@ -893,34 +893,34 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         public void EraseSelection()
         {
-            if( StartPoint.Y == EndPoint.Y )
+            if (StartPoint.Y == EndPoint.Y)
             {
                 var start = StartPoint.X;
                 var end = EndPoint.X;
 
-                mTextLines[StartPoint.Y] = mTextLines[StartPoint.Y].Remove( start, end - start );
+                mTextLines[StartPoint.Y] = mTextLines[StartPoint.Y].Remove(start, end - start);
             }
             else
             {
                 /* Remove Start */
-                if( StartPoint.X < mTextLines[StartPoint.Y].Length )
+                if (StartPoint.X < mTextLines[StartPoint.Y].Length)
                 {
-                    mTextLines[StartPoint.Y] = mTextLines[StartPoint.Y].Remove( StartPoint.X );
+                    mTextLines[StartPoint.Y] = mTextLines[StartPoint.Y].Remove(StartPoint.X);
                 }
 
                 /* Remove Middle */
-                for( var i = 1; i < EndPoint.Y - StartPoint.Y; i++ )
+                for (var i = 1; i < EndPoint.Y - StartPoint.Y; i++)
                 {
-                    mTextLines.RemoveAt( StartPoint.Y + 1 );
+                    mTextLines.RemoveAt(StartPoint.Y + 1);
                 }
 
                 /* Remove End */
-                if( EndPoint.X < mTextLines[StartPoint.Y + 1].Length )
+                if (EndPoint.X < mTextLines[StartPoint.Y + 1].Length)
                 {
-                    mTextLines[StartPoint.Y] += mTextLines[StartPoint.Y + 1].Substring( EndPoint.X );
+                    mTextLines[StartPoint.Y] += mTextLines[StartPoint.Y + 1].Substring(EndPoint.X);
                 }
 
-                mTextLines.RemoveAt( StartPoint.Y + 1 );
+                mTextLines.RemoveAt(StartPoint.Y + 1);
             }
 
             // Move the cursor to the start of the selection, 
@@ -938,24 +938,24 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        protected override void OnMouseClickedLeft( int x, int y, bool down, bool automated = false )
+        protected override void OnMouseClickedLeft(int x, int y, bool down, bool automated = false)
         {
-            base.OnMouseClickedLeft( x, y, down );
-            if( mSelectAll )
+            base.OnMouseClickedLeft(x, y, down);
+            if (mSelectAll)
             {
-                OnSelectAll( this, EventArgs.Empty );
+                OnSelectAll(this, EventArgs.Empty);
 
                 //m_SelectAll = false;
                 return;
             }
 
-            var coords = GetClosestCharacter( x, y );
+            var coords = GetClosestCharacter(x, y);
 
-            if( down )
+            if (down)
             {
                 CursorPosition = coords;
 
-                if( !Input.InputHandler.IsShiftDown )
+                if (!Input.InputHandler.IsShiftDown)
                 {
                     CursorEnd = coords;
                 }
@@ -964,7 +964,7 @@ namespace Intersect.Client.Framework.Gwen.Control
             }
             else
             {
-                if( InputHandler.MouseFocus == this )
+                if (InputHandler.MouseFocus == this)
                 {
                     CursorPosition = coords;
                     InputHandler.MouseFocus = null;
@@ -981,21 +981,21 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        protected override Point GetClosestCharacter( int px, int py )
+        protected override Point GetClosestCharacter(int px, int py)
         {
-            var p = CanvasPosToLocal( new Point( px, py ) );
+            var p = CanvasPosToLocal(new Point(px, py));
             var distance = Double.MaxValue;
-            var best = new Point( 0, 0 );
+            var best = new Point(0, 0);
             var sub = String.Empty;
 
             /* Find the appropriate Y row (always pick whichever y the mouse currently is on) */
-            for( var y = 0; y < mTextLines.Count(); y++ )
+            for (var y = 0; y < mTextLines.Count(); y++)
             {
                 sub += mTextLines[y] + Environment.NewLine;
-                var cp = Skin.Renderer.MeasureText( Font, sub );
+                var cp = Skin.Renderer.MeasureText(Font, sub);
 
-                double yDist = Math.Abs( cp.Y - p.Y );
-                if( yDist < distance )
+                double yDist = Math.Abs(cp.Y - p.Y);
+                if (yDist < distance)
                 {
                     distance = yDist;
                     best.Y = y;
@@ -1005,9 +1005,9 @@ namespace Intersect.Client.Framework.Gwen.Control
             /* Find the best X row, closest char */
             sub = String.Empty;
             distance = Double.MaxValue;
-            for( var x = 0; x <= mTextLines[best.Y].Count(); x++ )
+            for (var x = 0; x <= mTextLines[best.Y].Count(); x++)
             {
-                if( x < mTextLines[best.Y].Count() )
+                if (x < mTextLines[best.Y].Count())
                 {
                     sub += mTextLines[best.Y][x];
                 }
@@ -1016,11 +1016,11 @@ namespace Intersect.Client.Framework.Gwen.Control
                     sub += " ";
                 }
 
-                var cp = Skin.Renderer.MeasureText( Font, sub );
+                var cp = Skin.Renderer.MeasureText(Font, sub);
 
-                double xDiff = Math.Abs( cp.X - p.X );
+                double xDiff = Math.Abs(cp.X - p.X);
 
-                if( xDiff < distance )
+                if (xDiff < distance)
                 {
                     distance = xDiff;
                     best.X = x;
@@ -1037,15 +1037,15 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <param name="y">Y coordinate.</param>
         /// <param name="dx">X change.</param>
         /// <param name="dy">Y change.</param>
-        protected override void OnMouseMoved( int x, int y, int dx, int dy )
+        protected override void OnMouseMoved(int x, int y, int dx, int dy)
         {
-            base.OnMouseMoved( x, y, dx, dy );
-            if( InputHandler.MouseFocus != this )
+            base.OnMouseMoved(x, y, dx, dy);
+            if (InputHandler.MouseFocus != this)
             {
                 return;
             }
 
-            var c = GetClosestCharacter( x, y );
+            var c = GetClosestCharacter(x, y);
 
             CursorPosition = c;
 
@@ -1055,33 +1055,33 @@ namespace Intersect.Client.Framework.Gwen.Control
 
         protected virtual void MakeCaretVisible()
         {
-            var caretPos = GetCharacterPosition( CursorPosition ).X - TextX;
+            var caretPos = GetCharacterPosition(CursorPosition).X - TextX;
 
             // If the caret is already in a semi-good position, leave it.
             {
                 var realCaretPos = caretPos + TextX;
-                if( realCaretPos > Width * 0.1f && realCaretPos < Width * 0.9f )
+                if (realCaretPos > Width * 0.1f && realCaretPos < Width * 0.9f)
                 {
                     return;
                 }
             }
 
             // The ideal position is for the caret to be right in the middle
-            var idealx = (int)( -caretPos + Width * 0.5f );
+            var idealx = (int)(-caretPos + Width * 0.5f);
 
             // Don't show too much whitespace to the right
-            if( idealx + TextWidth < Width - TextPadding.Right - Padding.Right )
+            if (idealx + TextWidth < Width - TextPadding.Right - Padding.Right)
             {
-                idealx = -TextWidth + ( Width - TextPadding.Right - Padding.Right );
+                idealx = -TextWidth + (Width - TextPadding.Right - Padding.Right);
             }
 
             // Or the left
-            if( idealx > TextPadding.Left + Padding.Left )
+            if (idealx > TextPadding.Left + Padding.Left)
             {
                 idealx = TextPadding.Left + Padding.Left;
             }
 
-            SetTextPosition( idealx, TextY );
+            SetTextPosition(idealx, TextY);
         }
 
         /// <summary>
@@ -1089,9 +1089,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         /// <param name="oldChildBounds"></param>
         /// <param name="child"></param>
-        protected override void OnChildBoundsChanged( Rectangle oldChildBounds, Base child )
+        protected override void OnChildBoundsChanged(Rectangle oldChildBounds, Base child)
         {
-            if( mScrollControl != null )
+            if (mScrollControl != null)
             {
                 mScrollControl.UpdateScrollBars();
             }
@@ -1102,12 +1102,12 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         /// <param name="str">Text to set.</param>
         /// <param name="doEvents">Determines whether to invoke "text changed" event.</param>
-        public override void SetText( string str, bool doEvents = true )
+        public override void SetText(string str, bool doEvents = true)
         {
-            var easySplit = str.Replace( "\r\n", "\n" ).Replace( "\r", "\n" );
-            var lines = easySplit.Split( '\n' );
+            var easySplit = str.Replace("\r\n", "\n").Replace("\r", "\n");
+            var lines = easySplit.Split('\n');
 
-            mTextLines = new List<string>( lines );
+            mTextLines = new List<string>(lines);
 
             Invalidate();
             RefreshCursorBounds();
@@ -1121,12 +1121,12 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </remarks>
         public override void Invalidate()
         {
-            if( mText != null )
+            if (mText != null)
             {
                 mText.String = Text;
             }
 
-            if( AutoSizeToContents )
+            if (AutoSizeToContents)
             {
                 SizeToContents();
             }
@@ -1136,30 +1136,30 @@ namespace Intersect.Client.Framework.Gwen.Control
             OnTextChanged();
         }
 
-        private Point GetCharacterPosition( Point cursorPosition )
+        private Point GetCharacterPosition(Point cursorPosition)
         {
-            if( mTextLines.Count == 0 )
+            if (mTextLines.Count == 0)
             {
-                return new Point( 0, 0 );
+                return new Point(0, 0);
             }
 
             var currLine = mTextLines[cursorPosition.Y]
-                .Substring( 0, Math.Min( cursorPosition.X, mTextLines[cursorPosition.Y].Length ) );
+                .Substring(0, Math.Min(cursorPosition.X, mTextLines[cursorPosition.Y].Length));
 
             var sub = "";
-            for( var i = 0; i < cursorPosition.Y; i++ )
+            for (var i = 0; i < cursorPosition.Y; i++)
             {
                 sub += mTextLines[i] + "\n";
             }
 
-            var p = new Point( Skin.Renderer.MeasureText( Font, currLine ).X, Skin.Renderer.MeasureText( Font, sub ).Y );
+            var p = new Point(Skin.Renderer.MeasureText(Font, currLine).X, Skin.Renderer.MeasureText(Font, sub).Y);
 
-            return new Point( p.X + mText.X, p.Y + mText.Y + TextPadding.Top );
+            return new Point(p.X + mText.X, p.Y + mText.Y + TextPadding.Top);
         }
 
-        protected override bool OnMouseWheeled( int delta )
+        protected override bool OnMouseWheeled(int delta)
         {
-            return mScrollControl.InputMouseWheeled( delta );
+            return mScrollControl.InputMouseWheeled(delta);
         }
 
     }

@@ -18,23 +18,23 @@ namespace Intersect.GameObjects.Maps.MapList
             Type = 1;
         }
 
-        public int CompareTo( MapListMap obj )
+        public int CompareTo(MapListMap obj)
         {
-            return TimeCreated.CompareTo( obj.TimeCreated );
+            return TimeCreated.CompareTo(obj.TimeCreated);
         }
 
-        public void PostLoad( DatabaseObjectLookup gameMaps, bool isServer = true )
+        public void PostLoad(DatabaseObjectLookup gameMaps, bool isServer = true)
         {
-            if( !isServer )
+            if (!isServer)
             {
-                if( gameMaps.Keys.Contains( MapId ) )
+                if (gameMaps.Keys.Contains(MapId))
                 {
                     gameMaps[MapId].Name = Name;
                 }
             }
             else
             {
-                if( gameMaps.Keys.Contains( MapId ) )
+                if (gameMaps.Keys.Contains(MapId))
                 {
                     Name = gameMaps[MapId].Name;
                 }

@@ -20,9 +20,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="CollapsibleCategory" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public CollapsibleCategory( CollapsibleList parent ) : base( parent )
+        public CollapsibleCategory(CollapsibleList parent) : base(parent)
         {
-            mHeaderButton = new CategoryHeaderButton( this );
+            mHeaderButton = new CategoryHeaderButton(this);
             mHeaderButton.Text = "Category Title"; // [omeg] todo: i18n
             mHeaderButton.Dock = Pos.Top;
             mHeaderButton.Height = 20;
@@ -30,8 +30,8 @@ namespace Intersect.Client.Framework.Gwen.Control
 
             mList = parent;
 
-            Padding = new Padding( 1, 0, 1, 5 );
-            SetSize( 512, 512 );
+            Padding = new Padding(1, 0, 1, 5);
+            SetSize(512, 512);
         }
 
         /// <summary>
@@ -67,15 +67,15 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         public Button GetSelectedButton()
         {
-            foreach( var child in Children )
+            foreach (var child in Children)
             {
                 var button = child as CategoryButton;
-                if( button == null )
+                if (button == null)
                 {
                     continue;
                 }
 
-                if( button.ToggleState )
+                if (button.ToggleState)
                 {
                     return button;
                 }
@@ -88,11 +88,11 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Handler for header button toggle event.
         /// </summary>
         /// <param name="control">Source control.</param>
-        protected virtual void OnHeaderToggle( Base control, EventArgs args )
+        protected virtual void OnHeaderToggle(Base control, EventArgs args)
         {
-            if( Collapsed != null )
+            if (Collapsed != null)
             {
-                Collapsed.Invoke( this, EventArgs.Empty );
+                Collapsed.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -100,15 +100,15 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Handler for Selected event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnSelected( Base control, EventArgs args )
+        protected virtual void OnSelected(Base control, EventArgs args)
         {
             var child = control as CategoryButton;
-            if( child == null )
+            if (child == null)
             {
                 return;
             }
 
-            if( mList != null )
+            if (mList != null)
             {
                 mList.UnselectAll();
             }
@@ -119,9 +119,9 @@ namespace Intersect.Client.Framework.Gwen.Control
 
             child.ToggleState = true;
 
-            if( Selected != null )
+            if (Selected != null)
             {
-                Selected.Invoke( this, new ItemSelectedEventArgs( control ) );
+                Selected.Invoke(this, new ItemSelectedEventArgs(control));
             }
         }
 
@@ -130,14 +130,14 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         /// <param name="name">Entry name (displayed).</param>
         /// <returns>Newly created control.</returns>
-        public Button Add( string name )
+        public Button Add(string name)
         {
-            var button = new CategoryButton( this );
+            var button = new CategoryButton(this);
             button.Text = name;
             button.Dock = Pos.Top;
             button.SizeToContents();
-            button.SetSize( button.Width + 4, button.Height + 4 );
-            button.Padding = new Padding( 5, 2, 2, 2 );
+            button.SetSize(button.Width + 4, button.Height + 4);
+            button.Padding = new Padding(5, 2, 2, 2);
             button.Clicked += OnSelected;
 
             return button;
@@ -147,10 +147,10 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawCategoryInner( this, mHeaderButton.ToggleState );
-            base.Render( skin );
+            skin.DrawCategoryInner(this, mHeaderButton.ToggleState);
+            base.Render(skin);
         }
 
         /// <summary>
@@ -158,10 +158,10 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         public void UnselectAll()
         {
-            foreach( var child in Children )
+            foreach (var child in Children)
             {
                 var button = child as CategoryButton;
-                if( button == null )
+                if (button == null)
                 {
                     continue;
                 }
@@ -174,23 +174,23 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Function invoked after layout.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void PostLayout( Skin.Base skin )
+        protected override void PostLayout(Skin.Base skin)
         {
-            if( IsCollapsed )
+            if (IsCollapsed)
             {
                 Height = mHeaderButton.Height;
             }
             else
             {
-                SizeToChildren( false, true );
+                SizeToChildren(false, true);
             }
 
             // alternate row coloring
             var b = true;
-            foreach( var child in Children )
+            foreach (var child in Children)
             {
                 var button = child as CategoryButton;
-                if( button == null )
+                if (button == null)
                 {
                     continue;
                 }

@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public TimeDataPacket( string timeJson )
+        public TimeDataPacket(string timeJson)
         {
             TimeJson = timeJson;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public string TimeJson { get; set; }
 
     }

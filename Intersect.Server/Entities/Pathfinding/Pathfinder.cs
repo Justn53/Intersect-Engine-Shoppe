@@ -40,12 +40,12 @@ namespace Intersect.Server.Entities.Pathfinding
 
         private PathNode[,] mGrid = new PathNode[Options.MapWidth * 3, Options.MapHeight * 3];
 
-        public Pathfinder( Entity parent )
+        public Pathfinder(Entity parent)
         {
             mEntity = parent;
         }
 
-        public void SetTarget( PathfinderTarget target )
+        public void SetTarget(PathfinderTarget target)
         {
             mTarget = target;
         }
@@ -55,7 +55,7 @@ namespace Intersect.Server.Entities.Pathfinding
             return mTarget;
         }
 
-        public PathfinderResult Update( long timeMs )
+        public PathfinderResult Update(long timeMs)
         {
             //TODO: Pull this out into server config :) 
             var pathfindingRange = Math.Max(
@@ -69,12 +69,12 @@ namespace Intersect.Server.Entities.Pathfinding
                 PathNode[,] mapGrid;
                 SpatialAStar aStar;
                 var path = mPath;
-                if( mWaitTime < timeMs )
+                if (mWaitTime < timeMs)
                 {
-                    var currentMap = MapInstance.Get( mEntity.MapId );
-                    if( currentMap != null && mTarget != null )
+                    var currentMap = MapInstance.Get(mEntity.MapId);
+                    if (currentMap != null && mTarget != null)
                     {
-                        var grid = DbInterface.GetGrid( currentMap.MapGrid );
+                        var grid = DbInterface.GetGrid(currentMap.MapGrid);
                         var gridX = currentMap.MapGridX;
                         var gridY = currentMap.MapGridY;
 
@@ -85,35 +85,35 @@ namespace Intersect.Server.Entities.Pathfinding
                         var sourceY = Options.MapHeight + mEntity.Y;
 
                         //Loop through surrouding maps to see if our target is even around.
-                        for( var x = gridX - 1; x <= gridX + 1; x++ )
+                        for (var x = gridX - 1; x <= gridX + 1; x++)
                         {
-                            if( x == -1 || x >= grid.Width )
+                            if (x == -1 || x >= grid.Width)
                             {
                                 continue;
                             }
 
-                            for( var y = gridY - 1; y <= gridY + 1; y++ )
+                            for (var y = gridY - 1; y <= gridY + 1; y++)
                             {
-                                if( y == -1 || y >= grid.Height )
+                                if (y == -1 || y >= grid.Height)
                                 {
                                     continue;
                                 }
 
-                                if( grid.MyGrid[x, y] != Guid.Empty )
+                                if (grid.MyGrid[x, y] != Guid.Empty)
                                 {
-                                    if( grid.MyGrid[x, y] == mTarget.TargetMapId )
+                                    if (grid.MyGrid[x, y] == mTarget.TargetMapId)
                                     {
-                                        targetX = ( x - gridX + 1 ) * Options.MapWidth + mTarget.TargetX;
-                                        targetY = ( y - gridY + 1 ) * Options.MapHeight + mTarget.TargetY;
+                                        targetX = (x - gridX + 1) * Options.MapWidth + mTarget.TargetX;
+                                        targetY = (y - gridY + 1) * Options.MapHeight + mTarget.TargetY;
                                         targetFound = true;
                                     }
                                 }
                             }
                         }
 
-                        if( targetFound )
+                        if (targetFound)
                         {
-                            if( AlongPath( mPath, targetX, targetY, mEntity.Passable ) )
+                            if (AlongPath(mPath, targetX, targetY, mEntity.Passable))
                             {
                                 path = mPath;
                                 returnVal = PathfinderResult.Success;
@@ -121,18 +121,18 @@ namespace Intersect.Server.Entities.Pathfinding
                             else
                             {
                                 //See if the target is physically within range:
-                                if( Math.Abs( sourceX - targetX ) + Math.Abs( sourceY - targetY ) < pathfindingRange )
+                                if (Math.Abs(sourceX - targetX) + Math.Abs(sourceY - targetY) < pathfindingRange)
                                 {
                                     //Doing good...
                                     mapGrid = mGrid;
 
-                                    for( var x = 0; x < Options.MapWidth * 3; x++ )
+                                    for (var x = 0; x < Options.MapWidth * 3; x++)
                                     {
-                                        for( var y = 0; y < Options.MapHeight * 3; y++ )
+                                        for (var y = 0; y < Options.MapHeight * 3; y++)
                                         {
-                                            if( mapGrid[x, y] == null )
+                                            if (mapGrid[x, y] == null)
                                             {
-                                                mapGrid[x, y] = new PathNode( x, y, false );
+                                                mapGrid[x, y] = new PathNode(x, y, false);
 
                                             }
                                             else
@@ -140,10 +140,10 @@ namespace Intersect.Server.Entities.Pathfinding
                                                 mapGrid[x, y].Reset();
                                             }
 
-                                            if( x < sourceX - pathfindingRange ||
+                                            if (x < sourceX - pathfindingRange ||
                                                     x > sourceX + pathfindingRange ||
                                                     y < sourceY - pathfindingRange ||
-                                                    y > sourceY + pathfindingRange )
+                                                    y > sourceY + pathfindingRange)
                                             {
                                                 mapGrid[x, y].IsWall = true;
                                             }
@@ -151,14 +151,14 @@ namespace Intersect.Server.Entities.Pathfinding
                                     }
 
                                     //loop through all surrounding maps.. gather blocking elements, resources, players, npcs, global events, and local events (if this is a local event)
-                                    for( var x = gridX - 1; x <= gridX + 1; x++ )
+                                    for (var x = gridX - 1; x <= gridX + 1; x++)
                                     {
-                                        if( x == -1 || x >= grid.Width )
+                                        if (x == -1 || x >= grid.Width)
                                         {
-                                            for( var y = 0; y < 3; y++ )
+                                            for (var y = 0; y < 3; y++)
                                             {
                                                 FillArea(
-                                                    mapGrid, ( x + 1 - gridX ) * Options.MapWidth, y * Options.MapHeight,
+                                                    mapGrid, (x + 1 - gridX) * Options.MapWidth, y * Options.MapHeight,
                                                     Options.MapWidth, Options.MapHeight
                                                 );
                                             }
@@ -166,60 +166,60 @@ namespace Intersect.Server.Entities.Pathfinding
                                             continue;
                                         }
 
-                                        for( var y = gridY - 1; y <= gridY + 1; y++ )
+                                        for (var y = gridY - 1; y <= gridY + 1; y++)
                                         {
-                                            if( y == -1 || y >= grid.Height )
+                                            if (y == -1 || y >= grid.Height)
                                             {
                                                 FillArea(
-                                                    mapGrid, ( x + 1 - gridX ) * Options.MapWidth,
-                                                    ( y + 1 - gridY ) * Options.MapHeight, Options.MapWidth,
+                                                    mapGrid, (x + 1 - gridX) * Options.MapWidth,
+                                                    (y + 1 - gridY) * Options.MapHeight, Options.MapWidth,
                                                     Options.MapHeight
                                                 );
 
                                                 continue;
                                             }
 
-                                            if( grid.MyGrid[x, y] != Guid.Empty )
+                                            if (grid.MyGrid[x, y] != Guid.Empty)
                                             {
-                                                var tmpMap = MapInstance.Get( grid.MyGrid[x, y] );
-                                                if( tmpMap != null )
+                                                var tmpMap = MapInstance.Get(grid.MyGrid[x, y]);
+                                                if (tmpMap != null)
                                                 {
                                                     //Copy the cached array of tile blocks
                                                     var blocks = tmpMap.GetCachedBlocks(
-                                                        mEntity.GetType() == typeof( Player )
+                                                        mEntity.GetType() == typeof(Player)
                                                     );
 
-                                                    foreach( var block in blocks )
+                                                    foreach (var block in blocks)
                                                     {
-                                                        mapGrid[( x + 1 - gridX ) * Options.MapWidth + block.X,
-                                                                ( y + 1 - gridY ) * Options.MapHeight + block.Y]
+                                                        mapGrid[(x + 1 - gridX) * Options.MapWidth + block.X,
+                                                                (y + 1 - gridY) * Options.MapHeight + block.Y]
                                                             .IsWall = true;
                                                     }
 
                                                     //Block of Players, Npcs, and Resources
-                                                    foreach( var en in tmpMap.GetEntities() )
+                                                    foreach (var en in tmpMap.GetEntities())
                                                     {
-                                                        if( !en.IsPassable() && en.X > -1 && en.X < Options.MapWidth && en.Y > -1 && en.Y < Options.MapHeight )
+                                                        if (!en.IsPassable() && en.X > -1 && en.X < Options.MapWidth && en.Y > -1 && en.Y < Options.MapHeight)
                                                         {
-                                                            mapGrid[( x + 1 - gridX ) * Options.MapWidth + en.X,
-                                                                    ( y + 1 - gridY ) * Options.MapHeight + en.Y]
+                                                            mapGrid[(x + 1 - gridX) * Options.MapWidth + en.X,
+                                                                    (y + 1 - gridY) * Options.MapHeight + en.Y]
                                                                 .IsWall = true;
                                                         }
                                                     }
 
                                                     //Block Global Events if they are not passable.
-                                                    foreach( var en in tmpMap.GlobalEventInstances )
+                                                    foreach (var en in tmpMap.GlobalEventInstances)
                                                     {
-                                                        if( en.Value != null && en.Value.X > -1 && en.Value.X < Options.MapWidth && en.Value.Y > -1 && en.Value.Y < Options.MapHeight )
+                                                        if (en.Value != null && en.Value.X > -1 && en.Value.X < Options.MapWidth && en.Value.Y > -1 && en.Value.Y < Options.MapHeight)
                                                         {
-                                                            foreach( var page in en.Value.GlobalPageInstance )
+                                                            foreach (var page in en.Value.GlobalPageInstance)
                                                             {
-                                                                if( !page.Passable )
+                                                                if (!page.Passable)
                                                                 {
                                                                     mapGrid[
-                                                                            ( x + 1 - gridX ) * Options.MapWidth +
+                                                                            (x + 1 - gridX) * Options.MapWidth +
                                                                             en.Value.X,
-                                                                            ( y + 1 - gridY ) * Options.MapHeight +
+                                                                            (y + 1 - gridY) * Options.MapHeight +
                                                                             en.Value.Y]
                                                                         .IsWall = true;
                                                                 }
@@ -228,42 +228,42 @@ namespace Intersect.Server.Entities.Pathfinding
                                                     }
 
                                                     //If this is a local event then we gotta loop through all other local events for the player
-                                                    if( mEntity.GetType() == typeof( EventPageInstance ) )
+                                                    if (mEntity.GetType() == typeof(EventPageInstance))
                                                     {
                                                         var ev = (EventPageInstance)mEntity;
-                                                        if( !ev.Passable && ev.Player != null )
+                                                        if (!ev.Passable && ev.Player != null)
 
                                                         //Make sure this is a local event
                                                         {
                                                             var player = ev.Player;
-                                                            if( player != null )
+                                                            if (player != null)
                                                             {
-                                                                if( player.EventLookup.Values.Count >
-                                                                    Options.MapWidth * Options.MapHeight )
+                                                                if (player.EventLookup.Values.Count >
+                                                                    Options.MapWidth * Options.MapHeight)
                                                                 {
                                                                     //Find all events on this map (since events can't switch maps)
-                                                                    for( var mapX = 0; mapX < Options.MapWidth; mapX++ )
+                                                                    for (var mapX = 0; mapX < Options.MapWidth; mapX++)
                                                                     {
-                                                                        for( var mapY = 0;
+                                                                        for (var mapY = 0;
                                                                             mapY < Options.MapHeight;
-                                                                            mapY++ )
+                                                                            mapY++)
                                                                         {
-                                                                            var evt = player.EventExists( new MapTileLoc(
+                                                                            var evt = player.EventExists(new MapTileLoc(
                                                                                 ev.MapId, mapX, mapY
-                                                                            ) );
+                                                                            ));
 
-                                                                            if( evt != null )
+                                                                            if (evt != null)
                                                                             {
-                                                                                if( evt.PageInstance != null &&
+                                                                                if (evt.PageInstance != null &&
                                                                                     !evt.PageInstance.Passable &&
                                                                                     evt.PageInstance.X > -1 &&
-                                                                                    evt.PageInstance.Y > -1 )
+                                                                                    evt.PageInstance.Y > -1)
                                                                                 {
                                                                                     mapGrid[
-                                                                                            ( x + 1 - gridX ) *
+                                                                                            (x + 1 - gridX) *
                                                                                             Options.MapWidth +
                                                                                             evt.X,
-                                                                                            ( y + 1 - gridY ) *
+                                                                                            (y + 1 - gridY) *
                                                                                             Options.MapHeight +
                                                                                             evt.Y]
                                                                                         .IsWall = true;
@@ -275,18 +275,18 @@ namespace Intersect.Server.Entities.Pathfinding
                                                                 else
                                                                 {
                                                                     var playerEvents = player.EventLookup.Values;
-                                                                    foreach( var evt in playerEvents )
+                                                                    foreach (var evt in playerEvents)
                                                                     {
-                                                                        if( evt != null &&
+                                                                        if (evt != null &&
                                                                             evt.PageInstance != null &&
                                                                             !evt.PageInstance.Passable &&
                                                                             evt.PageInstance.X > -1 &&
-                                                                            evt.PageInstance.Y > -1 )
+                                                                            evt.PageInstance.Y > -1)
                                                                         {
                                                                             mapGrid[
-                                                                                    ( x + 1 - gridX ) * Options.MapWidth +
+                                                                                    (x + 1 - gridX) * Options.MapWidth +
                                                                                     evt.PageInstance.X,
-                                                                                    ( y + 1 - gridY ) *
+                                                                                    (y + 1 - gridY) *
                                                                                     Options.MapHeight +
                                                                                     evt.PageInstance.Y]
                                                                                 .IsWall = true;
@@ -306,9 +306,9 @@ namespace Intersect.Server.Entities.Pathfinding
 
                                     //Finally done.. let's get a path from the pathfinder.
                                     mapGrid[targetX, targetY].IsWall = false;
-                                    aStar = new SpatialAStar( mapGrid );
-                                    path = aStar.Search( new Point( sourceX, sourceY ), new Point( targetX, targetY ), null );
-                                    if( path == null )
+                                    aStar = new SpatialAStar(mapGrid);
+                                    path = aStar.Search(new Point(sourceX, sourceY), new Point(targetX, targetY), null);
+                                    if (path == null)
                                     {
                                         returnVal = PathfinderResult.NoPathToTarget;
                                     }
@@ -339,7 +339,7 @@ namespace Intersect.Server.Entities.Pathfinding
                     returnVal = PathfinderResult.Wait;
                 }
 
-                switch( returnVal )
+                switch (returnVal)
                 {
                     case PathfinderResult.Success:
                         //Use the same path for at least a second before trying again.
@@ -374,44 +374,44 @@ namespace Intersect.Server.Entities.Pathfinding
 
                 mPath = path;
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                Log.Error( exception );
+                Log.Error(exception);
             }
 
             return returnVal;
         }
 
-        private void FillArea( PathNode[,] dest, int startX, int startY, int width, int height )
+        private void FillArea(PathNode[,] dest, int startX, int startY, int width, int height)
         {
-            for( var x = startX; x < startX + width; x++ )
+            for (var x = startX; x < startX + width; x++)
             {
-                for( var y = startY; y < startY + height; y++ )
+                for (var y = startY; y < startY + height; y++)
                 {
                     dest[x, y].IsWall = true;
                 }
             }
         }
 
-        public bool AlongPath( IEnumerable<PathNode> path, int x, int y, bool exact )
+        public bool AlongPath(IEnumerable<PathNode> path, int x, int y, bool exact)
         {
-            if( path == null )
+            if (path == null)
             {
                 return false;
             }
 
             var foundUs = false;
             var enm = path.GetEnumerator();
-            while( enm.MoveNext() )
+            while (enm.MoveNext())
             {
-                if( enm.Current.X - Options.MapWidth == mEntity.X && enm.Current.Y - Options.MapHeight == mEntity.Y )
+                if (enm.Current.X - Options.MapWidth == mEntity.X && enm.Current.Y - Options.MapHeight == mEntity.Y)
                 {
                     foundUs = true;
                 }
 
-                if( foundUs && enm.Current.X == x )
+                if (foundUs && enm.Current.X == x)
                 {
-                    if( enm.Current.Y == y || ( enm.Current.Y - 1 == y || enm.Current.Y + 1 == y ) & !exact )
+                    if (enm.Current.Y == y || (enm.Current.Y - 1 == y || enm.Current.Y + 1 == y) & !exact)
                     {
                         enm.Dispose();
 
@@ -419,9 +419,9 @@ namespace Intersect.Server.Entities.Pathfinding
                     }
                 }
 
-                if( foundUs && enm.Current.Y == y )
+                if (foundUs && enm.Current.Y == y)
                 {
-                    if( enm.Current.X == x || ( enm.Current.X - 1 == x || enm.Current.X + 1 == x ) & !exact )
+                    if (enm.Current.X == x || (enm.Current.X - 1 == x || enm.Current.X + 1 == x) & !exact)
                     {
                         enm.Dispose();
 
@@ -435,7 +435,7 @@ namespace Intersect.Server.Entities.Pathfinding
             return false;
         }
 
-        public void PathFailed( long timeMs )
+        public void PathFailed(long timeMs)
         {
             mPath = null;
             mConsecutiveFails++;
@@ -444,39 +444,39 @@ namespace Intersect.Server.Entities.Pathfinding
 
         public sbyte GetMove()
         {
-            if( mPath == null )
+            if (mPath == null)
             {
                 return -1;
             }
 
             var enm = mPath.GetEnumerator();
-            while( enm.MoveNext() )
+            while (enm.MoveNext())
             {
-                if( enm.Current.X - Options.MapWidth == mEntity.X && enm.Current.Y - Options.MapHeight == mEntity.Y )
+                if (enm.Current.X - Options.MapWidth == mEntity.X && enm.Current.Y - Options.MapHeight == mEntity.Y)
                 {
-                    if( enm.MoveNext() )
+                    if (enm.MoveNext())
                     {
                         var newX = enm.Current.X - Options.MapWidth;
                         var newY = enm.Current.Y - Options.MapHeight;
-                        if( mEntity.X < newX )
+                        if (mEntity.X < newX)
                         {
                             enm.Dispose();
 
                             return (int)Directions.Right;
                         }
-                        else if( mEntity.X > newX )
+                        else if (mEntity.X > newX)
                         {
                             enm.Dispose();
 
                             return (int)Directions.Left;
                         }
-                        else if( mEntity.Y < newY )
+                        else if (mEntity.Y < newY)
                         {
                             enm.Dispose();
 
                             return (int)Directions.Down;
                         }
-                        else if( mEntity.Y > newY )
+                        else if (mEntity.Y > newY)
                         {
                             enm.Dispose();
 
@@ -496,18 +496,18 @@ namespace Intersect.Server.Entities.Pathfinding
     public class AStarSolver : SpatialAStar
     {
 
-        public AStarSolver( PathNode[,] inGrid ) : base( inGrid )
+        public AStarSolver(PathNode[,] inGrid) : base(inGrid)
         {
         }
 
-        protected override double Heuristic( PathNode inStart, PathNode inEnd )
+        protected override double Heuristic(PathNode inStart, PathNode inEnd)
         {
-            return Math.Abs( inStart.X - inEnd.X ) + Math.Abs( inStart.Y - inEnd.Y );
+            return Math.Abs(inStart.X - inEnd.X) + Math.Abs(inStart.Y - inEnd.Y);
         }
 
-        protected override double NeighborDistance( PathNode inStart, PathNode inEnd )
+        protected override double NeighborDistance(PathNode inStart, PathNode inEnd)
         {
-            return Heuristic( inStart, inEnd );
+            return Heuristic(inStart, inEnd);
         }
 
     }

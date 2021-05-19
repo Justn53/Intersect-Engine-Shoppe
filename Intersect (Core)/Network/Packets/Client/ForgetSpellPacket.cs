@@ -13,19 +13,19 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public ForgetSpellPacket( int slot )
+        public ForgetSpellPacket(int slot)
         {
             Slot = slot;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public int Slot { get; set; }
 
         public override Dictionary<string, SanitizedValue<object>> Sanitize()
         {
             var sanitizer = new Sanitizer();
 
-            Slot = sanitizer.Maximum( nameof( Slot ), Slot, 0 );
+            Slot = sanitizer.Maximum(nameof(Slot), Slot, 0);
 
             return sanitizer.Sanitized;
         }

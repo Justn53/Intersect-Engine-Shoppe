@@ -87,69 +87,69 @@ namespace Intersect.Client.Interface.Menu
             mSelectCharacterWindow = selectCharacterWindow;
 
             //Main Menu Window
-            mCharCreationPanel = new ImagePanel( parent, "CharacterCreationWindow" );
+            mCharCreationPanel = new ImagePanel(parent, "CharacterCreationWindow");
             mCharCreationPanel.IsHidden = true;
 
             //Menu Header
-            mCharCreationHeader = new Label( mCharCreationPanel, "CharacterCreationHeader" );
-            mCharCreationHeader.SetText( Strings.CharacterCreation.title );
+            mCharCreationHeader = new Label(mCharCreationPanel, "CharacterCreationHeader");
+            mCharCreationHeader.SetText(Strings.CharacterCreation.title);
 
             //Character Name Background
-            mCharacterNameBackground = new ImagePanel( mCharCreationPanel, "CharacterNamePanel" );
+            mCharacterNameBackground = new ImagePanel(mCharCreationPanel, "CharacterNamePanel");
 
             //Character name Label
-            mCharnameLabel = new Label( mCharacterNameBackground, "CharacterNameLabel" );
-            mCharnameLabel.SetText( Strings.CharacterCreation.name );
+            mCharnameLabel = new Label(mCharacterNameBackground, "CharacterNameLabel");
+            mCharnameLabel.SetText(Strings.CharacterCreation.name);
 
             //Character name Textbox
-            mCharnameTextbox = new TextBox( mCharacterNameBackground, "CharacterNameField" );
+            mCharnameTextbox = new TextBox(mCharacterNameBackground, "CharacterNameField");
             mCharnameTextbox.SubmitPressed += CharnameTextbox_SubmitPressed;
 
             //Class Background
-            mClassBackground = new ImagePanel( mCharCreationPanel, "ClassPanel" );
+            mClassBackground = new ImagePanel(mCharCreationPanel, "ClassPanel");
 
             //Class Label
-            mClassLabel = new Label( mClassBackground, "ClassLabel" );
-            mClassLabel.SetText( Strings.CharacterCreation.Class );
+            mClassLabel = new Label(mClassBackground, "ClassLabel");
+            mClassLabel.SetText(Strings.CharacterCreation.Class);
 
             //Class Combobox
-            mClassCombobox = new ComboBox( mClassBackground, "ClassCombobox" );
+            mClassCombobox = new ComboBox(mClassBackground, "ClassCombobox");
             mClassCombobox.ItemSelected += classCombobox_ItemSelected;
 
             //Hint Label
-            mHintLabel = new Label( mCharCreationPanel, "HintLabel" );
-            mHintLabel.SetText( Strings.CharacterCreation.hint );
+            mHintLabel = new Label(mCharCreationPanel, "HintLabel");
+            mHintLabel.SetText(Strings.CharacterCreation.hint);
             mHintLabel.IsHidden = true;
 
             //Hint2 Label
-            mHint2Label = new Label( mCharCreationPanel, "Hint2Label" );
-            mHint2Label.SetText( Strings.CharacterCreation.hint2 );
+            mHint2Label = new Label(mCharCreationPanel, "Hint2Label");
+            mHint2Label.SetText(Strings.CharacterCreation.hint2);
             mHint2Label.IsHidden = true;
 
             //Character Container
-            mCharacterContainer = new ImagePanel( mCharCreationPanel, "CharacterContainer" );
+            mCharacterContainer = new ImagePanel(mCharCreationPanel, "CharacterContainer");
 
             //Character sprite
-            mCharacterPortrait = new ImagePanel( mCharacterContainer, "CharacterPortait" );
-            mCharacterPortrait.SetSize( 48, 48 );
+            mCharacterPortrait = new ImagePanel(mCharacterContainer, "CharacterPortait");
+            mCharacterPortrait.SetSize(48, 48);
 
             //Next Sprite Button
-            mNextSpriteButton = new Button( mCharacterContainer, "NextSpriteButton" );
+            mNextSpriteButton = new Button(mCharacterContainer, "NextSpriteButton");
             mNextSpriteButton.Clicked += _nextSpriteButton_Clicked;
 
             //Prev Sprite Button
-            mPrevSpriteButton = new Button( mCharacterContainer, "PreviousSpriteButton" );
+            mPrevSpriteButton = new Button(mCharacterContainer, "PreviousSpriteButton");
             mPrevSpriteButton.Clicked += _prevSpriteButton_Clicked;
 
             //Class Background
-            mGenderBackground = new ImagePanel( mCharCreationPanel, "GenderPanel" );
+            mGenderBackground = new ImagePanel(mCharCreationPanel, "GenderPanel");
 
             //Gender Label
-            mGenderLabel = new Label( mGenderBackground, "GenderLabel" );
-            mGenderLabel.SetText( Strings.CharacterCreation.gender );
+            mGenderLabel = new Label(mGenderBackground, "GenderLabel");
+            mGenderLabel.SetText(Strings.CharacterCreation.gender);
 
             //Male Checkbox
-            mMaleChk = new LabeledCheckBox( mGenderBackground, "MaleCheckbox" )
+            mMaleChk = new LabeledCheckBox(mGenderBackground, "MaleCheckbox")
             {
                 Text = Strings.CharacterCreation.male
             };
@@ -159,7 +159,7 @@ namespace Intersect.Client.Interface.Menu
             mMaleChk.UnChecked += femaleChk_Checked; // If you notice this, feel free to hate us ;)
 
             //Female Checkbox
-            mFemaleChk = new LabeledCheckBox( mGenderBackground, "FemaleCheckbox" )
+            mFemaleChk = new LabeledCheckBox(mGenderBackground, "FemaleCheckbox")
             {
                 Text = Strings.CharacterCreation.female
             };
@@ -168,16 +168,16 @@ namespace Intersect.Client.Interface.Menu
             mFemaleChk.UnChecked += maleChk_Checked;
 
             //Register - Send Registration Button
-            mCreateButton = new Button( mCharCreationPanel, "CreateButton" );
-            mCreateButton.SetText( Strings.CharacterCreation.create );
+            mCreateButton = new Button(mCharCreationPanel, "CreateButton");
+            mCreateButton.SetText(Strings.CharacterCreation.create);
             mCreateButton.Clicked += CreateButton_Clicked;
 
-            mBackButton = new Button( mCharCreationPanel, "BackButton" );
+            mBackButton = new Button(mCharCreationPanel, "BackButton");
             mBackButton.IsHidden = true;
-            mBackButton.SetText( Strings.CharacterCreation.back );
+            mBackButton.SetText(Strings.CharacterCreation.back);
             mBackButton.Clicked += BackButton_Clicked;
 
-            mCharCreationPanel.LoadJsonUi( GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString() );
+            mCharCreationPanel.LoadJsonUi(GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString());
         }
 
         public bool IsHidden => mCharCreationPanel.IsHidden;
@@ -186,11 +186,11 @@ namespace Intersect.Client.Interface.Menu
         {
             mClassCombobox.DeleteAll();
             var classCount = 0;
-            foreach( ClassBase cls in ClassBase.Lookup.Values )
+            foreach (ClassBase cls in ClassBase.Lookup.Values)
             {
-                if( !cls.Locked )
+                if (!cls.Locked)
                 {
-                    mClassCombobox.AddItem( cls.Name );
+                    mClassCombobox.AddItem(cls.Name);
                     classCount++;
                 }
             }
@@ -201,17 +201,17 @@ namespace Intersect.Client.Interface.Menu
 
         public void Update()
         {
-            if( !Networking.Network.Connected )
+            if (!Networking.Network.Connected)
             {
                 Hide();
                 mMainMenu.Show();
-                Interface.MsgboxErrors.Add( new KeyValuePair<string, string>( "", Strings.Errors.lostconnection ) );
+                Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", Strings.Errors.lostconnection));
 
                 return;
             }
 
             // Re-Enable our buttons if we're not waiting for the server anymore with it disabled.
-            if( !Globals.WaitingOnServer && mCreateButton.IsDisabled )
+            if (!Globals.WaitingOnServer && mCreateButton.IsDisabled)
             {
                 mCreateButton.Enable();
             }
@@ -221,18 +221,18 @@ namespace Intersect.Client.Interface.Menu
         private void UpdateDisplay()
         {
             var isFace = true;
-            if( GetClass() != null && mDisplaySpriteIndex != -1 )
+            if (GetClass() != null && mDisplaySpriteIndex != -1)
             {
                 mCharacterPortrait.IsHidden = false;
-                if( GetClass().Sprites.Count > 0 )
+                if (GetClass().Sprites.Count > 0)
                 {
-                    if( mMaleChk.IsChecked )
+                    if (mMaleChk.IsChecked)
                     {
                         mCharacterPortrait.Texture = Globals.ContentManager.GetTexture(
                             GameContentManager.TextureType.Face, mMaleSprites[mDisplaySpriteIndex].Value.Face
                         );
 
-                        if( mCharacterPortrait.Texture == null )
+                        if (mCharacterPortrait.Texture == null)
                         {
                             mCharacterPortrait.Texture = Globals.ContentManager.GetTexture(
                                 GameContentManager.TextureType.Entity, mMaleSprites[mDisplaySpriteIndex].Value.Sprite
@@ -247,7 +247,7 @@ namespace Intersect.Client.Interface.Menu
                             GameContentManager.TextureType.Face, mFemaleSprites[mDisplaySpriteIndex].Value.Face
                         );
 
-                        if( mCharacterPortrait.Texture == null )
+                        if (mCharacterPortrait.Texture == null)
                         {
                             mCharacterPortrait.Texture = Globals.ContentManager.GetTexture(
                                 GameContentManager.TextureType.Entity, mFemaleSprites[mDisplaySpriteIndex].Value.Sprite
@@ -257,9 +257,9 @@ namespace Intersect.Client.Interface.Menu
                         }
                     }
 
-                    if( mCharacterPortrait.Texture != null )
+                    if (mCharacterPortrait.Texture != null)
                     {
-                        if( isFace )
+                        if (isFace)
                         {
                             mCharacterPortrait.SetTextureRect(
                                 0, 0, mCharacterPortrait.Texture.GetWidth(), mCharacterPortrait.Texture.GetHeight()
@@ -271,8 +271,8 @@ namespace Intersect.Client.Interface.Menu
                             );
 
                             mCharacterPortrait.SetSize(
-                                (int)( mCharacterPortrait.Texture.GetWidth() * scale ),
-                                (int)( mCharacterPortrait.Texture.GetHeight() * scale )
+                                (int)(mCharacterPortrait.Texture.GetWidth() * scale),
+                                (int)(mCharacterPortrait.Texture.GetHeight() * scale)
                             );
 
                             mCharacterPortrait.SetPosition(
@@ -317,14 +317,14 @@ namespace Intersect.Client.Interface.Menu
 
         private ClassBase GetClass()
         {
-            if( mClassCombobox.SelectedItem == null )
+            if (mClassCombobox.SelectedItem == null)
             {
                 return null;
             }
 
-            foreach( var cls in ClassBase.Lookup )
+            foreach (var cls in ClassBase.Lookup)
             {
-                if( mClassCombobox.SelectedItem.Text == cls.Value.Name && !( (ClassBase)cls.Value ).Locked )
+                if (mClassCombobox.SelectedItem.Text == cls.Value.Name && !((ClassBase)cls.Value).Locked)
                 {
                     return (ClassBase)cls.Value;
                 }
@@ -339,17 +339,17 @@ namespace Intersect.Client.Interface.Menu
             mMaleSprites.Clear();
             mFemaleSprites.Clear();
             mDisplaySpriteIndex = -1;
-            if( cls != null )
+            if (cls != null)
             {
-                for( var i = 0; i < cls.Sprites.Count; i++ )
+                for (var i = 0; i < cls.Sprites.Count; i++)
                 {
-                    if( cls.Sprites[i].Gender == 0 )
+                    if (cls.Sprites[i].Gender == 0)
                     {
-                        mMaleSprites.Add( new KeyValuePair<int, ClassSprite>( i, cls.Sprites[i] ) );
+                        mMaleSprites.Add(new KeyValuePair<int, ClassSprite>(i, cls.Sprites[i]));
                     }
                     else
                     {
-                        mFemaleSprites.Add( new KeyValuePair<int, ClassSprite>( i, cls.Sprites[i] ) );
+                        mFemaleSprites.Add(new KeyValuePair<int, ClassSprite>(i, cls.Sprites[i]));
                     }
                 }
             }
@@ -361,12 +361,12 @@ namespace Intersect.Client.Interface.Menu
         {
             mNextSpriteButton.IsHidden = true;
             mPrevSpriteButton.IsHidden = true;
-            if( mMaleChk.IsChecked )
+            if (mMaleChk.IsChecked)
             {
-                if( mMaleSprites.Count > 0 )
+                if (mMaleSprites.Count > 0)
                 {
                     mDisplaySpriteIndex = 0;
-                    if( mMaleSprites.Count > 1 )
+                    if (mMaleSprites.Count > 1)
                     {
                         mNextSpriteButton.IsHidden = false;
                         mPrevSpriteButton.IsHidden = false;
@@ -379,10 +379,10 @@ namespace Intersect.Client.Interface.Menu
             }
             else
             {
-                if( mFemaleSprites.Count > 0 )
+                if (mFemaleSprites.Count > 0)
                 {
                     mDisplaySpriteIndex = 0;
-                    if( mFemaleSprites.Count > 1 )
+                    if (mFemaleSprites.Count > 1)
                     {
                         mNextSpriteButton.IsHidden = false;
                         mPrevSpriteButton.IsHidden = false;
@@ -395,14 +395,14 @@ namespace Intersect.Client.Interface.Menu
             }
         }
 
-        private void _prevSpriteButton_Clicked( Base sender, ClickedEventArgs arguments )
+        private void _prevSpriteButton_Clicked(Base sender, ClickedEventArgs arguments)
         {
             mDisplaySpriteIndex--;
-            if( mMaleChk.IsChecked )
+            if (mMaleChk.IsChecked)
             {
-                if( mMaleSprites.Count > 0 )
+                if (mMaleSprites.Count > 0)
                 {
-                    if( mDisplaySpriteIndex == -1 )
+                    if (mDisplaySpriteIndex == -1)
                     {
                         mDisplaySpriteIndex = mMaleSprites.Count - 1;
                     }
@@ -414,9 +414,9 @@ namespace Intersect.Client.Interface.Menu
             }
             else
             {
-                if( mFemaleSprites.Count > 0 )
+                if (mFemaleSprites.Count > 0)
                 {
-                    if( mDisplaySpriteIndex == -1 )
+                    if (mDisplaySpriteIndex == -1)
                     {
                         mDisplaySpriteIndex = mFemaleSprites.Count - 1;
                     }
@@ -430,14 +430,14 @@ namespace Intersect.Client.Interface.Menu
             UpdateDisplay();
         }
 
-        private void _nextSpriteButton_Clicked( Base sender, ClickedEventArgs arguments )
+        private void _nextSpriteButton_Clicked(Base sender, ClickedEventArgs arguments)
         {
             mDisplaySpriteIndex++;
-            if( mMaleChk.IsChecked )
+            if (mMaleChk.IsChecked)
             {
-                if( mMaleSprites.Count > 0 )
+                if (mMaleSprites.Count > 0)
                 {
-                    if( mDisplaySpriteIndex >= mMaleSprites.Count )
+                    if (mDisplaySpriteIndex >= mMaleSprites.Count)
                     {
                         mDisplaySpriteIndex = 0;
                     }
@@ -449,9 +449,9 @@ namespace Intersect.Client.Interface.Menu
             }
             else
             {
-                if( mFemaleSprites.Count > 0 )
+                if (mFemaleSprites.Count > 0)
                 {
-                    if( mDisplaySpriteIndex >= mFemaleSprites.Count )
+                    if (mDisplaySpriteIndex >= mFemaleSprites.Count)
                     {
                         mDisplaySpriteIndex = 0;
                     }
@@ -465,16 +465,16 @@ namespace Intersect.Client.Interface.Menu
             UpdateDisplay();
         }
 
-        void TryCreateCharacter( int gender )
+        void TryCreateCharacter(int gender)
         {
-            if( Globals.WaitingOnServer || mDisplaySpriteIndex == -1 )
+            if (Globals.WaitingOnServer || mDisplaySpriteIndex == -1)
             {
                 return;
             }
 
-            if( FieldChecking.IsValidUsername( mCharnameTextbox.Text, Strings.Regex.username ) )
+            if (FieldChecking.IsValidUsername(mCharnameTextbox.Text, Strings.Regex.username))
             {
-                if( mMaleChk.IsChecked )
+                if (mMaleChk.IsChecked)
                 {
                     PacketSender.SendCreateCharacter(
                         mCharnameTextbox.Text, GetClass().Id, mMaleSprites[mDisplaySpriteIndex].Key
@@ -493,30 +493,30 @@ namespace Intersect.Client.Interface.Menu
             }
             else
             {
-                Interface.MsgboxErrors.Add( new KeyValuePair<string, string>( "", Strings.CharacterCreation.invalidname ) );
+                Interface.MsgboxErrors.Add(new KeyValuePair<string, string>("", Strings.CharacterCreation.invalidname));
             }
         }
 
         //Input Handlers
-        void CharnameTextbox_SubmitPressed( Base sender, EventArgs arguments )
+        void CharnameTextbox_SubmitPressed(Base sender, EventArgs arguments)
         {
-            if( mMaleChk.IsChecked == true )
+            if (mMaleChk.IsChecked == true)
             {
-                TryCreateCharacter( 0 );
+                TryCreateCharacter(0);
             }
             else
             {
-                TryCreateCharacter( 1 );
+                TryCreateCharacter(1);
             }
         }
 
-        void classCombobox_ItemSelected( Base control, ItemSelectedEventArgs args )
+        void classCombobox_ItemSelected(Base control, ItemSelectedEventArgs args)
         {
             LoadClass();
             UpdateDisplay();
         }
 
-        void maleChk_Checked( Base sender, EventArgs arguments )
+        void maleChk_Checked(Base sender, EventArgs arguments)
         {
             mMaleChk.IsChecked = true;
             mFemaleChk.IsChecked = false;
@@ -524,7 +524,7 @@ namespace Intersect.Client.Interface.Menu
             UpdateDisplay();
         }
 
-        void femaleChk_Checked( Base sender, EventArgs arguments )
+        void femaleChk_Checked(Base sender, EventArgs arguments)
         {
             mFemaleChk.IsChecked = true;
             mMaleChk.IsChecked = false;
@@ -532,27 +532,27 @@ namespace Intersect.Client.Interface.Menu
             UpdateDisplay();
         }
 
-        void CreateButton_Clicked( Base sender, ClickedEventArgs arguments )
+        void CreateButton_Clicked(Base sender, ClickedEventArgs arguments)
         {
-            if( Globals.WaitingOnServer )
+            if (Globals.WaitingOnServer)
             {
                 return;
             }
 
-            if( mMaleChk.IsChecked == true )
+            if (mMaleChk.IsChecked == true)
             {
-                TryCreateCharacter( 0 );
+                TryCreateCharacter(0);
             }
             else
             {
-                TryCreateCharacter( 1 );
+                TryCreateCharacter(1);
             }
         }
 
-        private void BackButton_Clicked( Base sender, ClickedEventArgs arguments )
+        private void BackButton_Clicked(Base sender, ClickedEventArgs arguments)
         {
             Hide();
-            if( Options.Player.MaxCharacters <= 1 )
+            if (Options.Player.MaxCharacters <= 1)
             {
                 //Logout
                 mMainMenu.Show();

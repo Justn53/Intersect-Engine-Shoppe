@@ -9,13 +9,13 @@ namespace Intersect.Client.Framework.Graphics
     public abstract class GameTexture : IAsset
     {
 
-        public string Name => GetName() ?? throw new ArgumentNullException( nameof( GetName ) );
+        public string Name => GetName() ?? throw new ArgumentNullException(nameof(GetName));
 
         public int Width => GetWidth();
 
         public int Height => GetHeight();
 
-        public Pointf Dimensions => new Pointf( Width, Height );
+        public Pointf Dimensions => new Pointf(Width, Height);
 
         public Pointf Center => Dimensions / 2;
 
@@ -31,11 +31,11 @@ namespace Intersect.Client.Framework.Graphics
 
         public abstract object GetTexture();
 
-        public abstract Color GetPixel( int x1, int y1 );
+        public abstract Color GetPixel(int x1, int y1);
 
         public abstract GameTexturePackFrame GetTexturePackFrame();
 
-        public static string ToString( GameTexture tex )
+        public static string ToString(GameTexture tex)
         {
             return tex?.GetName() ?? "";
         }

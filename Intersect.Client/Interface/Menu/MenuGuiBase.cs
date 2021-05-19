@@ -24,17 +24,17 @@ namespace Intersect.Client.Interface.Menu
 
         private bool mShouldReset;
 
-        public MenuGuiBase( Canvas myCanvas )
+        public MenuGuiBase(Canvas myCanvas)
         {
             mMenuCanvas = myCanvas;
-            MainMenu = new MainMenu( mMenuCanvas );
-            mServerStatusArea = new ImagePanel( mMenuCanvas, "ServerStatusArea" );
-            mServerStatusLabel = new Label( mServerStatusArea, "ServerStatusLabel" )
+            MainMenu = new MainMenu(mMenuCanvas);
+            mServerStatusArea = new ImagePanel(mMenuCanvas, "ServerStatusArea");
+            mServerStatusLabel = new Label(mServerStatusArea, "ServerStatusLabel")
             {
-                Text = Strings.Server.StatusLabel.ToString( MainMenu.ActiveNetworkStatus.ToLocalizedString() ),
+                Text = Strings.Server.StatusLabel.ToString(MainMenu.ActiveNetworkStatus.ToLocalizedString()),
             };
 
-            mServerStatusArea.LoadJsonUi( GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString() );
+            mServerStatusArea.LoadJsonUi(GameContentManager.UI.Menu, Graphics.Renderer.GetResolutionString());
             MainMenu.NetworkStatusChanged += HandleNetworkStatusChanged;
         }
 
@@ -47,12 +47,12 @@ namespace Intersect.Client.Interface.Menu
         private void HandleNetworkStatusChanged()
         {
             mServerStatusLabel.Text =
-                Strings.Server.StatusLabel.ToString( MainMenu.ActiveNetworkStatus.ToLocalizedString() );
+                Strings.Server.StatusLabel.ToString(MainMenu.ActiveNetworkStatus.ToLocalizedString());
         }
 
         public void Draw()
         {
-            if( mShouldReset )
+            if (mShouldReset)
             {
                 MainMenu.Reset();
                 mShouldReset = false;
@@ -77,20 +77,20 @@ namespace Intersect.Client.Interface.Menu
         public List<Base> Children => MainMenu.Children;
 
         /// <inheritdoc />
-        public TElement Create<TElement>( params object[] parameters ) where TElement : Base =>
-            MainMenu.Create<TElement>( parameters );
+        public TElement Create<TElement>(params object[] parameters) where TElement : Base =>
+            MainMenu.Create<TElement>(parameters);
 
         /// <inheritdoc />
-        public TElement Find<TElement>( string name = null, bool recurse = false ) where TElement : Base =>
-            MainMenu.Find<TElement>( name, recurse );
+        public TElement Find<TElement>(string name = null, bool recurse = false) where TElement : Base =>
+            MainMenu.Find<TElement>(name, recurse);
 
         /// <inheritdoc />
-        public IEnumerable<TElement> FindAll<TElement>( bool recurse = false ) where TElement : Base =>
-            MainMenu.FindAll<TElement>( recurse );
+        public IEnumerable<TElement> FindAll<TElement>(bool recurse = false) where TElement : Base =>
+            MainMenu.FindAll<TElement>(recurse);
 
         /// <inheritdoc />
-        public void Remove<TElement>( TElement element, bool dispose = false ) where TElement : Base =>
-            MainMenu.Remove( element, dispose );
+        public void Remove<TElement>(TElement element, bool dispose = false) where TElement : Base =>
+            MainMenu.Remove(element, dispose);
 
     }
 

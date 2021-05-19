@@ -3,11 +3,11 @@
 namespace Intersect.Extensions
 {
 
-    [AttributeUsage( AttributeTargets.Field, Inherited = false )]
+    [AttributeUsage(AttributeTargets.Field, Inherited = false)]
     public sealed class GameObjectInfoAttribute : Attribute
     {
 
-        public GameObjectInfoAttribute( Type type, string table )
+        public GameObjectInfoAttribute(Type type, string table)
         {
             Type = type;
             Table = table;

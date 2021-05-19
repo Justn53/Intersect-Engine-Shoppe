@@ -19,7 +19,7 @@ namespace Intersect.Core.ExperimentalFeatures
             JsonSerializer serializer
         )
         {
-            serializer.Serialize( writer, value );
+            serializer.Serialize(writer, value);
         }
 
         /// <inheritdoc />
@@ -31,7 +31,7 @@ namespace Intersect.Core.ExperimentalFeatures
             JsonSerializer serializer
         )
         {
-            serializer.Populate( reader, existingValue );
+            serializer.Populate(reader, existingValue);
 
             return existingValue;
         }

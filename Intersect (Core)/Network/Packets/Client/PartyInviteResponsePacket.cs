@@ -11,16 +11,16 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public PartyInviteResponsePacket( Guid partyId, bool accepting )
+        public PartyInviteResponsePacket(Guid partyId, bool accepting)
         {
             PartyId = partyId;
             AcceptingInvite = accepting;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid PartyId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public bool AcceptingInvite { get; set; }
 
     }

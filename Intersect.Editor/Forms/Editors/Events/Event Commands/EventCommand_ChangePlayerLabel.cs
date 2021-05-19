@@ -14,7 +14,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private ChangePlayerLabelCommand mMyCommand;
 
-        public EventCommandChangePlayerLabel( ChangePlayerLabelCommand refCommand, FrmEvent editor )
+        public EventCommandChangePlayerLabel(ChangePlayerLabelCommand refCommand, FrmEvent editor)
         {
             InitializeComponent();
             InitLocalization();
@@ -22,12 +22,12 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             mEventEditor = editor;
 
             var color = refCommand.Color;
-            if( color == null )
+            if (color == null)
             {
                 color = Color.White;
             }
 
-            pnlColor.BackColor = System.Drawing.Color.FromArgb( color.A, color.R, color.G, color.B );
+            pnlColor.BackColor = System.Drawing.Color.FromArgb(color.A, color.R, color.G, color.B);
             chkPlayerNameColor.Checked = refCommand.MatchNameColor;
             cmbPosition.SelectedIndex = refCommand.Position;
             txtLabel.Text = refCommand.Value;
@@ -46,13 +46,13 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
             lblPosition.Text = Strings.EventChangePlayerLabel.position;
             cmbPosition.Items.Clear();
-            foreach( var position in Strings.EventChangePlayerLabel.positions )
+            foreach (var position in Strings.EventChangePlayerLabel.positions)
             {
-                cmbPosition.Items.Add( position.Value );
+                cmbPosition.Items.Add(position.Value);
             }
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
             mMyCommand.Color = Color.FromArgb(
                 pnlColor.BackColor.A, pnlColor.BackColor.R, pnlColor.BackColor.G, pnlColor.BackColor.B
@@ -65,21 +65,21 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }
 
-        private void btnSelectLightColor_Click( object sender, EventArgs e )
+        private void btnSelectLightColor_Click(object sender, EventArgs e)
         {
             colorDialog.Color = pnlColor.BackColor;
-            if( colorDialog.ShowDialog() == DialogResult.OK )
+            if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 pnlColor.BackColor = colorDialog.Color;
             }
         }
 
-        private void lblStringTextVariables_Click( object sender, EventArgs e )
+        private void lblStringTextVariables_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(
                 "http://www.ascensiongamedev.com/community/topic/749-event-text-variables/"

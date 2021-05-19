@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public MoveRoutePacket( bool active )
+        public MoveRoutePacket(bool active)
         {
             Active = active;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public bool Active { get; set; }
 
     }

@@ -12,14 +12,14 @@ namespace Intersect.Server.Database.PlayerData.Players
     public class Variable : IPlayerOwned
     {
 
-        public Variable() : this( Guid.Empty ) { }
+        public Variable() : this(Guid.Empty) { }
 
-        public Variable( Guid id )
+        public Variable(Guid id)
         {
             VariableId = id;
         }
 
-        [DatabaseGenerated( DatabaseGeneratedOption.Identity ), JsonIgnore]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity), JsonIgnore]
         public Guid Id { get; protected set; }
 
         public Guid VariableId { get; protected set; }
@@ -29,17 +29,17 @@ namespace Intersect.Server.Database.PlayerData.Players
         public VariableValue Value { get; set; } = new VariableValue();
 
         [NotMapped]
-        [JsonProperty( "Value" )]
+        [JsonProperty("Value")]
         public dynamic ValueData => Value.Value;
 
-        [Column( nameof( Value ) )]
+        [Column(nameof(Value))]
         [JsonIgnore]
         public string Json
         {
-            get => Value.Json.ToString( Formatting.None );
+            get => Value.Json.ToString(Formatting.None);
             private set
             {
-                if( VariableValue.TryParse( value, out var json ) )
+                if (VariableValue.TryParse(value, out var json))
                 {
                     Value.Json = json;
                 }

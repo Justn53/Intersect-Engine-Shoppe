@@ -14,13 +14,13 @@ namespace Intersect.Server.Core.Commands
             LocaleCommand command,
             LocaleArgument argument,
             params ICommandArgument[] arguments
-        ) : base( command, argument, arguments )
+        ) : base(command, argument, arguments)
         {
         }
 
-        protected override User FindTarget( ServerContext context, ParserResult result, string targetName )
+        protected override User FindTarget(ServerContext context, ParserResult result, string targetName)
         {
-            return string.IsNullOrWhiteSpace( targetName ) ? null : User.Find( targetName );
+            return string.IsNullOrWhiteSpace(targetName) ? null : User.Find(targetName);
         }
 
     }

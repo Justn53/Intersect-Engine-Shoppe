@@ -15,7 +15,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private ReplaceItemCommand mMyCommand;
 
-        public EventCommandReplaceItem( ReplaceItemCommand refCommand, FrmEvent editor )
+        public EventCommandReplaceItem(ReplaceItemCommand refCommand, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
@@ -23,9 +23,9 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             InitLocalization();
             //Get items
             cmbItems.Items.Clear();
-            foreach( var item in ItemBase.ItemPairs )
+            foreach (var item in ItemBase.ItemPairs)
             {
-                cmbItems.Items.Add( item.Value );
+                cmbItems.Items.Add(item.Value);
             }
 
             lblReplaceWith.Text = Strings.EventRemoveItem.label;
@@ -39,14 +39,14 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             btnCancel.Text = Strings.EventWait.cancel;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            var selectedItem = ItemBase.Get( ItemBase.ItemPairs[cmbItems.SelectedIndex].Key );
+            var selectedItem = ItemBase.Get(ItemBase.ItemPairs[cmbItems.SelectedIndex].Key);
             mMyCommand.NewItem = selectedItem;
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }

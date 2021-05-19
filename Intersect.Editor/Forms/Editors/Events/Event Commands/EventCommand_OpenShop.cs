@@ -15,15 +15,15 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private OpenShopCommand mMyCommand;
 
-        public EventCommandOpenShop( OpenShopCommand refCommand, FrmEvent editor )
+        public EventCommandOpenShop(OpenShopCommand refCommand, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
             mEventEditor = editor;
             InitLocalization();
             cmbShop.Items.Clear();
-            cmbShop.Items.AddRange( ShopBase.Names );
-            cmbShop.SelectedIndex = ShopBase.ListIndex( mMyCommand.ShopId );
+            cmbShop.Items.AddRange(ShopBase.Names);
+            cmbShop.SelectedIndex = ShopBase.ListIndex(mMyCommand.ShopId);
         }
 
         private void InitLocalization()
@@ -34,17 +34,17 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             btnCancel.Text = Strings.EventOpenShop.cancel;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            if( cmbShop.SelectedIndex > -1 )
+            if (cmbShop.SelectedIndex > -1)
             {
-                mMyCommand.ShopId = ShopBase.IdFromList( cmbShop.SelectedIndex );
+                mMyCommand.ShopId = ShopBase.IdFromList(cmbShop.SelectedIndex);
             }
 
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }

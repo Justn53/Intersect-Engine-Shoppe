@@ -26,8 +26,8 @@ namespace Intersect.Network
         {
             get
             {
-                if( mCachedData == null )
-                    mCachedData = MessagePacker.Instance.Serialize( this ) ?? throw new Exception( "Failed to serialize packet." );
+                if (mCachedData == null)
+                    mCachedData = MessagePacker.Instance.Serialize(this) ?? throw new Exception("Failed to serialize packet.");
 
                 return mCachedData;
             }

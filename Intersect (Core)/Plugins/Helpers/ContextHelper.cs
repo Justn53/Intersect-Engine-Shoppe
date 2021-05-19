@@ -15,7 +15,7 @@
         /// Partially instantiates a <see cref="ContextHelper{TContext}"/>.
         /// </summary>
         /// <param name="context">the required <typeparamref name="TContext"/></param>
-        protected ContextHelper( TContext context )
+        protected ContextHelper(TContext context)
         {
             Context = context;
         }

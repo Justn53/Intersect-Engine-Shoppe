@@ -12,7 +12,7 @@ namespace Intersect.Server.Database
         {
         }
 
-        public Spell( Guid spellId )
+        public Spell(Guid spellId)
         {
             SpellId = spellId;
         }
@@ -25,7 +25,7 @@ namespace Intersect.Server.Database
         [JsonIgnore]
         public long SpellCd { get; set; }
 
-        public static Spell None => new Spell( Guid.Empty );
+        public static Spell None => new Spell(Guid.Empty);
 
         public Spell Clone()
         {
@@ -37,7 +37,7 @@ namespace Intersect.Server.Database
             return newSpell;
         }
 
-        public virtual void Set( Spell spell )
+        public virtual void Set(Spell spell)
         {
             SpellId = spell.SpellId;
         }

@@ -23,7 +23,7 @@ namespace Intersect.GameObjects.Events
         [JsonIgnore]
         public int ActionIndex { get; set; }
 
-        public void CopyFrom( EventMoveRoute route )
+        public void CopyFrom(EventMoveRoute route)
         {
             Target = route.Target;
             Complete = false;
@@ -31,9 +31,9 @@ namespace Intersect.GameObjects.Events
             IgnoreIfBlocked = route.IgnoreIfBlocked;
             RepeatRoute = route.RepeatRoute;
             Actions.Clear();
-            foreach( var action in route.Actions )
+            foreach (var action in route.Actions)
             {
-                Actions.Add( action.Copy() );
+                Actions.Add(action.Copy());
             }
         }
 

@@ -25,7 +25,7 @@ namespace Intersect.Client.Interface.Menu
 
             public Alignments GetAlignment()
             {
-                switch( Alignment )
+                switch (Alignment)
                 {
                     case "center":
                         return Alignments.CenterH;

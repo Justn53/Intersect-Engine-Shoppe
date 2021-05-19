@@ -20,40 +20,40 @@ namespace Intersect.Server.Database
         {
         }
 
-        public Item( Guid itemId, int quantity, bool incStatBuffs = true ) : this(
+        public Item(Guid itemId, int quantity, bool incStatBuffs = true) : this(
             itemId, quantity, null, null, incStatBuffs
         )
         {
         }
 
-        public Item( Guid itemId, int quantity, Guid? bagId, Bag bag, bool includeStatBuffs = true )
+        public Item(Guid itemId, int quantity, Guid? bagId, Bag bag, bool includeStatBuffs = true)
         {
             ItemId = itemId;
             Quantity = quantity;
             BagId = bagId;
             Bag = bag;
 
-            var descriptor = ItemBase.Get( ItemId );
-            if( descriptor == null || !includeStatBuffs )
+            var descriptor = ItemBase.Get(ItemId);
+            if (descriptor == null || !includeStatBuffs)
             {
                 return;
             }
 
-            if( descriptor.ItemType != ItemTypes.Equipment )
+            if (descriptor.ItemType != ItemTypes.Equipment)
             {
                 return;
             }
 
-            for( var i = 0; i < (int)Stats.StatCount; i++ )
+            for (var i = 0; i < (int)Stats.StatCount; i++)
             {
                 // TODO: What the fuck?
-                StatBuffs[i] = Randomization.Next( -descriptor.StatGrowth, descriptor.StatGrowth + 1 );
+                StatBuffs[i] = Randomization.Next(-descriptor.StatGrowth, descriptor.StatGrowth + 1);
             }
         }
 
-        public Item( Item item ) : this( item.ItemId, item.Quantity, item.BagId, item.Bag )
+        public Item(Item item) : this(item.ItemId, item.Quantity, item.BagId, item.Bag)
         {
-            for( var i = 0; i < (int)Stats.StatCount; i++ )
+            for (var i = 0; i < (int)Stats.StatCount; i++)
             {
                 StatBuffs[i] = item.StatBuffs[i];
             }
@@ -71,12 +71,12 @@ namespace Intersect.Server.Database
 
         public int Quantity { get; set; }
 
-        [Column( "StatBuffs" )]
+        [Column("StatBuffs")]
         [JsonIgnore]
         public string StatBuffsJson
         {
-            get => DatabaseUtils.SaveIntArray( StatBuffs, (int)Stats.StatCount );
-            set => StatBuffs = DatabaseUtils.LoadIntArray( value, (int)Stats.StatCount );
+            get => DatabaseUtils.SaveIntArray(StatBuffs, (int)Stats.StatCount);
+            set => StatBuffs = DatabaseUtils.LoadIntArray(value, (int)Stats.StatCount);
         }
 
         [NotMapped]
@@ -84,17 +84,17 @@ namespace Intersect.Server.Database
 
         [JsonIgnore]
         [NotMapped]
-        public ItemBase Descriptor => ItemBase.Get( ItemId );
+        public ItemBase Descriptor => ItemBase.Get(ItemId);
 
         public static Item None => new Item();
 
-        public virtual void Set( Item item )
+        public virtual void Set(Item item)
         {
             ItemId = item.ItemId;
             Quantity = item.Quantity;
             BagId = item.BagId;
             Bag = item.Bag;
-            for( var i = 0; i < (int)Stats.StatCount; i++ )
+            for (var i = 0; i < (int)Stats.StatCount; i++)
             {
                 StatBuffs[i] = item.StatBuffs[i];
             }
@@ -102,12 +102,12 @@ namespace Intersect.Server.Database
 
         public string Data()
         {
-            return JsonConvert.SerializeObject( this );
+            return JsonConvert.SerializeObject(this);
         }
 
         public Item Clone()
         {
-            return new Item( this );
+            return new Item(this);
         }
 
         /// <summary>
@@ -115,18 +115,18 @@ namespace Intersect.Server.Database
         /// </summary>
         /// <param name="bag">the bag if there is one associated with this <see cref="Item"/></param>
         /// <returns>if <paramref name="bag"/> is not <see langword="null"/></returns>
-        public bool TryGetBag( out Bag bag )
+        public bool TryGetBag(out Bag bag)
         {
             bag = Bag;
 
             // ReSharper disable once InvertIf Justification: Do not introduce two different return points that assert a value state
-            if( bag == null )
+            if (bag == null)
             {
                 var descriptor = Descriptor;
                 // ReSharper disable once InvertIf Justification: Do not introduce two different return points that assert a value state
-                if( descriptor?.ItemType == ItemTypes.Bag )
+                if (descriptor?.ItemType == ItemTypes.Bag)
                 {
-                    bag = Bag.GetBag( BagId ?? Guid.Empty );
+                    bag = Bag.GetBag(BagId ?? Guid.Empty);
                     bag?.ValidateSlots();
                 }
             }

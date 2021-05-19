@@ -16,7 +16,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private GiveExperienceCommand mMyCommand;
 
-        public EventCommandGiveExperience( GiveExperienceCommand refCommand, FrmEvent editor )
+        public EventCommandGiveExperience(GiveExperienceCommand refCommand, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
@@ -50,43 +50,43 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             btnCancel.Text = Strings.EventGiveExperience.cancel;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
             mMyCommand.Exp = (long)nudExperience.Value;
             mMyCommand.VariableType = rdoPlayerVariable.Checked ? VariableTypes.PlayerVariable : VariableTypes.ServerVariable;
             mMyCommand.UseVariable = !rdoManual.Checked;
-            mMyCommand.VariableId = rdoPlayerVariable.Checked ? PlayerVariableBase.IdFromList( cmbVariable.SelectedIndex, VariableDataTypes.Integer ) : ServerVariableBase.IdFromList( cmbVariable.SelectedIndex, VariableDataTypes.Integer );
+            mMyCommand.VariableId = rdoPlayerVariable.Checked ? PlayerVariableBase.IdFromList(cmbVariable.SelectedIndex, VariableDataTypes.Integer) : ServerVariableBase.IdFromList(cmbVariable.SelectedIndex, VariableDataTypes.Integer);
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }
 
-        private void rdoManual_CheckedChanged( object sender, EventArgs e )
+        private void rdoManual_CheckedChanged(object sender, EventArgs e)
         {
             SetupAmountInput();
         }
 
-        private void rdoVariable_CheckedChanged( object sender, EventArgs e )
+        private void rdoVariable_CheckedChanged(object sender, EventArgs e)
         {
             SetupAmountInput();
         }
 
-        private void rdoPlayerVariable_CheckedChanged( object sender, EventArgs e )
+        private void rdoPlayerVariable_CheckedChanged(object sender, EventArgs e)
         {
             SetupAmountInput();
         }
 
-        private void rdoGlobalVariable_CheckedChanged( object sender, EventArgs e )
+        private void rdoGlobalVariable_CheckedChanged(object sender, EventArgs e)
         {
             SetupAmountInput();
         }
 
         private void VariableBlank()
         {
-            if( cmbVariable.Items.Count > 0 )
+            if (cmbVariable.Items.Count > 0)
             {
                 cmbVariable.SelectedIndex = 0;
             }
@@ -103,14 +103,14 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             grpVariableAmount.Visible = !rdoManual.Checked;
 
             cmbVariable.Items.Clear();
-            if( rdoPlayerVariable.Checked )
+            if (rdoPlayerVariable.Checked)
             {
-                cmbVariable.Items.AddRange( PlayerVariableBase.GetNamesByType( VariableDataTypes.Integer ) );
+                cmbVariable.Items.AddRange(PlayerVariableBase.GetNamesByType(VariableDataTypes.Integer));
                 // Do not update if the wrong type of variable is saved
-                if( mMyCommand.VariableType == VariableTypes.PlayerVariable )
+                if (mMyCommand.VariableType == VariableTypes.PlayerVariable)
                 {
-                    var index = PlayerVariableBase.ListIndex( mMyCommand.VariableId, VariableDataTypes.Integer );
-                    if( index > -1 )
+                    var index = PlayerVariableBase.ListIndex(mMyCommand.VariableId, VariableDataTypes.Integer);
+                    if (index > -1)
                     {
                         cmbVariable.SelectedIndex = index;
                     }
@@ -126,12 +126,12 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             }
             else
             {
-                cmbVariable.Items.AddRange( ServerVariableBase.GetNamesByType( VariableDataTypes.Integer ) );
+                cmbVariable.Items.AddRange(ServerVariableBase.GetNamesByType(VariableDataTypes.Integer));
                 // Do not update if the wrong type of variable is saved
-                if( mMyCommand.VariableType == VariableTypes.ServerVariable )
+                if (mMyCommand.VariableType == VariableTypes.ServerVariable)
                 {
-                    var index = ServerVariableBase.ListIndex( mMyCommand.VariableId, VariableDataTypes.Integer );
-                    if( index > -1 )
+                    var index = ServerVariableBase.ListIndex(mMyCommand.VariableId, VariableDataTypes.Integer);
+                    if (index > -1)
                     {
                         cmbVariable.SelectedIndex = index;
                     }
@@ -146,7 +146,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
                 }
             }
 
-            nudExperience.Value = Math.Max( 1, mMyCommand.Exp );
+            nudExperience.Value = Math.Max(1, mMyCommand.Exp);
         }
     }
 }

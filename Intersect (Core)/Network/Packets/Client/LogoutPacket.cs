@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public LogoutPacket( bool returnToCharSelect )
+        public LogoutPacket(bool returnToCharSelect)
         {
             ReturningToCharSelect = returnToCharSelect;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public bool ReturningToCharSelect { get; set; }
 
     }

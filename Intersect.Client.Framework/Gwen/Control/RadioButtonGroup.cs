@@ -19,7 +19,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         /// <param name="parent">Parent control.</param>
         /// <param name="label">Label for the outlining GroupBox.</param>
-        public RadioButtonGroup( Base parent ) : base( parent )
+        public RadioButtonGroup(Base parent) : base(parent)
         {
             AutoSizeToContents = true;
             IsTabable = false;
@@ -45,7 +45,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <summary>
         ///     Index of the selected radio button.
         /// </summary>
-        public int SelectedIndex => Children.IndexOf( mSelected );
+        public int SelectedIndex => Children.IndexOf(mSelected);
 
         /// <summary>
         ///     Invoked when the selected option has changed.
@@ -57,9 +57,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         /// <param name="text">Option text.</param>
         /// <returns>Newly created control.</returns>
-        public virtual LabeledRadioButton AddOption( string text )
+        public virtual LabeledRadioButton AddOption(string text)
         {
-            return AddOption( text, String.Empty );
+            return AddOption(text, String.Empty);
         }
 
         /// <summary>
@@ -68,14 +68,14 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <param name="text">Option text.</param>
         /// <param name="optionName">Internal name.</param>
         /// <returns>Newly created control.</returns>
-        public virtual LabeledRadioButton AddOption( string text, string optionName )
+        public virtual LabeledRadioButton AddOption(string text, string optionName)
         {
-            var lrb = new LabeledRadioButton( this );
+            var lrb = new LabeledRadioButton(this);
             lrb.Name = optionName;
             lrb.Text = text;
             lrb.RadioButton.Checked += OnRadioClicked;
             lrb.Dock = Pos.Top;
-            lrb.Margin = new Margin( 0, 0, 0, 1 ); // 1 bottom
+            lrb.Margin = new Margin(0, 0, 0, 1); // 1 bottom
             lrb.KeyboardInputEnabled = false; // todo: true?
             lrb.IsTabable = true;
 
@@ -88,12 +88,12 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Handler for the option change.
         /// </summary>
         /// <param name="fromPanel">Event source.</param>
-        protected virtual void OnRadioClicked( Base fromPanel, EventArgs args )
+        protected virtual void OnRadioClicked(Base fromPanel, EventArgs args)
         {
             var @checked = fromPanel as RadioButton;
-            foreach( var rb in Children.OfType<LabeledRadioButton>() ) // todo: optimize
+            foreach (var rb in Children.OfType<LabeledRadioButton>()) // todo: optimize
             {
-                if( rb.RadioButton == @checked )
+                if (rb.RadioButton == @checked)
                 {
                     mSelected = rb;
                 }
@@ -103,7 +103,7 @@ namespace Intersect.Client.Framework.Gwen.Control
                 }
             }
 
-            OnChanged( mSelected );
+            OnChanged(mSelected);
         }
 
         /*
@@ -125,11 +125,11 @@ namespace Intersect.Client.Framework.Gwen.Control
             InvalidateParent();
         }
         */
-        protected virtual void OnChanged( Base newTarget )
+        protected virtual void OnChanged(Base newTarget)
         {
-            if( SelectionChanged != null )
+            if (SelectionChanged != null)
             {
-                SelectionChanged.Invoke( this, new ItemSelectedEventArgs( newTarget ) );
+                SelectionChanged.Invoke(this, new ItemSelectedEventArgs(newTarget));
             }
         }
 
@@ -137,14 +137,14 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Selects the specified option.
         /// </summary>
         /// <param name="index">Option to select.</param>
-        public void SetSelection( int index )
+        public void SetSelection(int index)
         {
-            if( index < 0 || index >= Children.Count )
+            if (index < 0 || index >= Children.Count)
             {
                 return;
             }
 
-            ( Children[index] as LabeledRadioButton ).RadioButton.Press();
+            (Children[index] as LabeledRadioButton).RadioButton.Press();
         }
 
     }

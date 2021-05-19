@@ -7,11 +7,11 @@ using Intersect.Network.Events;
 namespace Intersect.Network
 {
 
-    public delegate void HandlePacketAvailable( INetworkLayerInterface sender );
+    public delegate void HandlePacketAvailable(INetworkLayerInterface sender);
 
-    public delegate void HandleConnectionEvent( INetworkLayerInterface sender, ConnectionEventArgs connectionEventArgs );
+    public delegate void HandleConnectionEvent(INetworkLayerInterface sender, ConnectionEventArgs connectionEventArgs);
 
-    public delegate bool HandleConnectionRequest( INetworkLayerInterface sender, IConnection connection );
+    public delegate bool HandleConnectionRequest(INetworkLayerInterface sender, IConnection connection);
 
     public interface INetworkLayerInterface : IDisposable
     {
@@ -22,9 +22,9 @@ namespace Intersect.Network
 
         HandleConnectionEvent OnDisconnected { get; set; }
 
-        bool TryGetInboundBuffer( out IBuffer buffer, out IConnection connection );
+        bool TryGetInboundBuffer(out IBuffer buffer, out IConnection connection);
 
-        void ReleaseInboundBuffer( IBuffer buffer );
+        void ReleaseInboundBuffer(IBuffer buffer);
 
         bool SendPacket(
             IPacket packet,
@@ -40,13 +40,13 @@ namespace Intersect.Network
 
         void Start();
 
-        void Stop( string reason = "stopping" );
+        void Stop(string reason = "stopping");
 
         bool Connect();
 
-        void Disconnect( IConnection connection, string message );
+        void Disconnect(IConnection connection, string message);
 
-        void Disconnect( ICollection<IConnection> connections, string messages );
+        void Disconnect(ICollection<IConnection> connections, string messages);
 
     }
 

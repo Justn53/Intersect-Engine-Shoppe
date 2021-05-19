@@ -11,12 +11,12 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public CraftItemPacket( Guid craftId )
+        public CraftItemPacket(Guid craftId)
         {
             CraftId = craftId;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid CraftId { get; set; }
 
     }

@@ -12,14 +12,14 @@ namespace Intersect.Server.Core.CommandParsing.Arguments
 
         private readonly IList<object> mValues;
 
-        public ArgumentValues( string argumentName, params object[] values ) : this(
+        public ArgumentValues(string argumentName, params object[] values) : this(
             argumentName, values.AsEnumerable()
         )
         {
         }
 
-        public ArgumentValues( string argumentName, bool isImplicit, params object[] values ) :
-            this( argumentName, values.AsEnumerable(), isImplicit )
+        public ArgumentValues(string argumentName, bool isImplicit, params object[] values) :
+            this(argumentName, values.AsEnumerable(), isImplicit)
         {
         }
 
@@ -30,7 +30,7 @@ namespace Intersect.Server.Core.CommandParsing.Arguments
         )
         {
             ArgumentName = argumentName;
-            mValues = new List<object>( values ?? Array.Empty<object>() );
+            mValues = new List<object>(values ?? Array.Empty<object>());
             IsImplicit = isImplicit;
         }
 
@@ -54,19 +54,19 @@ namespace Intersect.Server.Core.CommandParsing.Arguments
             return GetEnumerator();
         }
 
-        public TValue ToTypedValue<TValue>( int index = 0 )
+        public TValue ToTypedValue<TValue>(int index = 0)
         {
-            if( mValues.ElementAtOrDefault( index ) is TValue typedValue )
+            if (mValues.ElementAtOrDefault(index) is TValue typedValue)
             {
                 return typedValue;
             }
 
-            return default( TValue );
+            return default(TValue);
         }
 
         public IList<TValue> ToTypedValues<TValue>()
         {
-            return mValues.Select( value => value is TValue typedValue ? typedValue : default( TValue ) ).ToImmutableList();
+            return mValues.Select(value => value is TValue typedValue ? typedValue : default(TValue)).ToImmutableList();
         }
 
     }

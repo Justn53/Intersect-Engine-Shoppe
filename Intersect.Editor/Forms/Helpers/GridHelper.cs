@@ -18,7 +18,7 @@ namespace Intersect.Editor.Forms.Helpers
 
         public Color? LabelColor { get; private set; }
 
-        public GridCell( int x, int y, Color? color = default, string label = null, Color? labelColor = default )
+        public GridCell(int x, int y, Color? color = default, string label = null, Color? labelColor = default)
         {
             X = x;
             Y = y;
@@ -27,48 +27,48 @@ namespace Intersect.Editor.Forms.Helpers
             LabelColor = labelColor;
         }
 
-        public GridCell At( int x, int y )
+        public GridCell At(int x, int y)
         {
-            if( X == x && Y == y )
+            if (X == x && Y == y)
             {
                 return this;
             }
 
-            return new GridCell( x, y, Color, Label );
+            return new GridCell(x, y, Color, Label);
         }
 
-        public GridCell WithColor( Color color )
+        public GridCell WithColor(Color color)
         {
-            if( Color == color )
+            if (Color == color)
             {
                 return this;
             }
 
-            return new GridCell( X, Y, color, Label );
+            return new GridCell(X, Y, color, Label);
         }
 
-        public GridCell WithLabel( string label )
+        public GridCell WithLabel(string label)
         {
-            if( String.Equals( Label, label, StringComparison.Ordinal ) )
+            if (String.Equals(Label, label, StringComparison.Ordinal))
             {
                 return this;
             }
 
-            return new GridCell( X, Y, Color, label );
+            return new GridCell(X, Y, Color, label);
         }
 
-        public GridCell WithLabelColor( Color labelColor )
+        public GridCell WithLabelColor(Color labelColor)
         {
-            if( LabelColor == labelColor )
+            if (LabelColor == labelColor)
             {
                 return this;
             }
 
-            return new GridCell( X, Y, Color, Label, labelColor );
+            return new GridCell(X, Y, Color, Label, labelColor);
         }
 
-        public static int CalculatePrecedenceKey( GridCell gridCell ) =>
-            ( String.IsNullOrEmpty( gridCell.Label ) ? 0 : 2 ) + ( gridCell.Color == null ? 0 : 1 );
+        public static int CalculatePrecedenceKey(GridCell gridCell) =>
+            (String.IsNullOrEmpty(gridCell.Label) ? 0 : 2) + (gridCell.Color == null ? 0 : 1);
     }
 
     /// <summary>
@@ -94,7 +94,7 @@ namespace Intersect.Editor.Forms.Helpers
         /// <summary>
         /// Mutable fallback font for text rendering on grids, default Arial 14pt.
         /// </summary>
-        public static Font DefaultFont { get; set; } = new Font( new FontFamily( "Arial" ), 14 );
+        public static Font DefaultFont { get; set; } = new Font(new FontFamily("Arial"), 14);
 
         /// <summary>
         /// Creates a bitmap of the given dimensions and renders a grid with the specified dimensions and optional cell contents.
@@ -112,7 +112,7 @@ namespace Intersect.Editor.Forms.Helpers
             int gridRows,
             params GridCell[] gridCells
         ) =>
-            DrawGrid( bitmapWidth, bitmapHeight, gridColumns, gridRows, DefaultFont, gridCells );
+            DrawGrid(bitmapWidth, bitmapHeight, gridColumns, gridRows, DefaultFont, gridCells);
 
         /// <summary>
         /// Creates a bitmap of the given dimensions and renders a grid with the specified dimensions and optional cell contents.
@@ -132,7 +132,7 @@ namespace Intersect.Editor.Forms.Helpers
             Font font,
             params GridCell[] gridCells
         ) =>
-            DrawGrid( new Bitmap( bitmapWidth, bitmapHeight ), gridColumns, gridRows, font, gridCells );
+            DrawGrid(new Bitmap(bitmapWidth, bitmapHeight), gridColumns, gridRows, font, gridCells);
 
         /// <summary>
         /// Renders a grid on the provided bitmap with the specified dimensions and optional cell contents.
@@ -142,8 +142,8 @@ namespace Intersect.Editor.Forms.Helpers
         /// <param name="gridRows">number of rows the grid should have</param>
         /// <param name="gridCells">the optional cell contents</param>
         /// <returns>a bitmap with the configured grid drawn on it</returns>
-        public static Bitmap DrawGrid( Bitmap bitmap, int gridColumns, int gridRows, params GridCell[] gridCells ) =>
-            DrawGrid( bitmap, gridColumns, gridRows, DefaultFont, gridCells );
+        public static Bitmap DrawGrid(Bitmap bitmap, int gridColumns, int gridRows, params GridCell[] gridCells) =>
+            DrawGrid(bitmap, gridColumns, gridRows, DefaultFont, gridCells);
 
         /// <summary>
         /// Renders a grid on the provided bitmap with the specified dimensions and optional cell contents.
@@ -162,9 +162,9 @@ namespace Intersect.Editor.Forms.Helpers
             params GridCell[] gridCells
         )
         {
-            if( bitmap == null )
+            if (bitmap == null)
             {
-                throw new ArgumentNullException( nameof( bitmap ) );
+                throw new ArgumentNullException(nameof(bitmap));
             }
 
             var gridWidth = bitmap.Width;
@@ -173,47 +173,47 @@ namespace Intersect.Editor.Forms.Helpers
             var gridHeight = bitmap.Height;
             var cellHeight = gridHeight / gridRows;
 
-            using( var graphics = Graphics.FromImage( bitmap ) )
+            using (var graphics = Graphics.FromImage(bitmap))
             {
-                graphics.Clear( ColorBackground );
+                graphics.Clear(ColorBackground);
 
                 // Draw the cell contents in order of precedence (color-only first, then text, so that text doesn't get rendered under background colors)
-                foreach( var gridCell in gridCells.OrderBy( GridCell.CalculatePrecedenceKey ) )
+                foreach (var gridCell in gridCells.OrderBy(GridCell.CalculatePrecedenceKey))
                 {
                     var x = gridCell.X * cellWidth;
                     var y = gridCell.Y * cellHeight;
 
                     // Draw the background color (if any for this cell)
-                    if( gridCell.Color != null && gridCell.Color != Color.Transparent && gridCell.Color.Value.A != 0 )
+                    if (gridCell.Color != null && gridCell.Color != Color.Transparent && gridCell.Color.Value.A != 0)
                     {
                         graphics.FillRectangle(
-                            new SolidBrush( ColorSelection ), new Rectangle( x, y, cellWidth, cellHeight )
+                            new SolidBrush(ColorSelection), new Rectangle(x, y, cellWidth, cellHeight)
                         );
                     }
 
                     // Draw the text (if any for this cell)
-                    if( !string.IsNullOrWhiteSpace( gridCell.Label ) )
+                    if (!string.IsNullOrWhiteSpace(gridCell.Label))
                     {
-                        var measurement = graphics.MeasureString( gridCell.Label, font );
+                        var measurement = graphics.MeasureString(gridCell.Label, font);
                         graphics.DrawString(
-                            gridCell.Label, font, new SolidBrush( gridCell.LabelColor ?? ColorForeground ),
-                            x + ( cellWidth - measurement.Width ) / 2, y + ( cellHeight - measurement.Height ) / 2
+                            gridCell.Label, font, new SolidBrush(gridCell.LabelColor ?? ColorForeground),
+                            x + (cellWidth - measurement.Width) / 2, y + (cellHeight - measurement.Height) / 2
                         );
                     }
                 }
 
                 // Draw separator lines (1 less than the number of columns/rows
                 // Columns and rows are combined into a single for-loop to reduce the number of iterations
-                for( var lineIndex = 1; lineIndex < Math.Max( gridColumns, gridRows ); ++lineIndex )
+                for (var lineIndex = 1; lineIndex < Math.Max(gridColumns, gridRows); ++lineIndex)
                 {
-                    if( lineIndex < gridColumns )
+                    if (lineIndex < gridColumns)
                     {
-                        graphics.DrawLine( Pens.Black, cellWidth * lineIndex, 0, cellWidth * lineIndex, gridHeight );
+                        graphics.DrawLine(Pens.Black, cellWidth * lineIndex, 0, cellWidth * lineIndex, gridHeight);
                     }
 
-                    if( lineIndex < gridRows )
+                    if (lineIndex < gridRows)
                     {
-                        graphics.DrawLine( Pens.Black, 0, cellHeight * lineIndex, gridWidth, cellHeight * lineIndex );
+                        graphics.DrawLine(Pens.Black, 0, cellHeight * lineIndex, gridWidth, cellHeight * lineIndex);
                     }
                 }
             }

@@ -22,16 +22,16 @@ namespace Intersect.Editor.Forms.DockingElements
             UpdatePropertiesDelegate = Update;
         }
 
-        public void Init( MapInstance map )
+        public void Init(MapInstance map)
         {
-            if( gridMapProperties.InvokeRequired )
+            if (gridMapProperties.InvokeRequired)
             {
-                gridMapProperties.Invoke( (MethodInvoker)delegate { Init( map ); } );
+                gridMapProperties.Invoke((MethodInvoker)delegate { Init(map); });
 
                 return;
             }
 
-            gridMapProperties.SelectedObject = new MapProperties( map );
+            gridMapProperties.SelectedObject = new MapProperties(map);
             InitLocalization();
         }
 

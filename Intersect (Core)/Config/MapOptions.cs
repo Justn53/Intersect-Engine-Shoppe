@@ -25,16 +25,16 @@ namespace Intersect.Config
         public LayerOptions Layers = new LayerOptions();
 
         [OnDeserialized]
-        internal void OnDeserializedMethod( StreamingContext context )
+        internal void OnDeserializedMethod(StreamingContext context)
         {
             Validate();
         }
 
         public void Validate()
         {
-            if( Width < 10 || Width > 64 || Height < 10 || Height > 64 )
+            if (Width < 10 || Width > 64 || Height < 10 || Height > 64)
             {
-                throw new Exception( "Config Error: Map size out of bounds! (All values should be > 10 and < 64)" );
+                throw new Exception("Config Error: Map size out of bounds! (All values should be > 10 and < 64)");
             }
         }
 

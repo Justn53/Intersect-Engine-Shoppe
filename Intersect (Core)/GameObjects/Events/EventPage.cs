@@ -15,11 +15,11 @@ namespace Intersect.GameObjects.Events
 
         public EventPage()
         {
-            CommandLists.Add( Guid.NewGuid(), new List<EventCommand>() );
+            CommandLists.Add(Guid.NewGuid(), new List<EventCommand>());
         }
 
         [JsonConstructor]
-        public EventPage( int ignoreThis )
+        public EventPage(int ignoreThis)
         {
         }
 

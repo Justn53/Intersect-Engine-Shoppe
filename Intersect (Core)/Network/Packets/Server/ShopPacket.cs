@@ -10,16 +10,16 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public ShopPacket( string shopData, bool close )
+        public ShopPacket(string shopData, bool close)
         {
             ShopData = shopData;
             Close = close;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public string ShopData { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public bool Close { get; set; }
 
     }

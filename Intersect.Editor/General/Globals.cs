@@ -157,9 +157,9 @@ namespace Intersect.Editor.General
 
         public static int WaterfallFrame = 0;
 
-        public static string IntToDir( int index )
+        public static string IntToDir(int index)
         {
-            switch( index )
+            switch (index)
             {
                 case 0:
                     return "Up";
@@ -174,14 +174,14 @@ namespace Intersect.Editor.General
             }
         }
 
-        public static string GetColorName( Color.ChatColor color )
+        public static string GetColorName(Color.ChatColor color)
         {
             return Strings.Colors.presets[(int)color];
         }
 
-        public static string GetStatName( int statnum )
+        public static string GetStatName(int statnum)
         {
-            switch( statnum )
+            switch (statnum)
             {
                 case (int)Stats.Attack:
                     return "Attack";

@@ -11,16 +11,16 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public ProjectileDeadPacket( Guid projectileId, int spawnId )
+        public ProjectileDeadPacket(Guid projectileId, int spawnId)
         {
             ProjectileId = projectileId;
             SpawnId = spawnId;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid ProjectileId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public int SpawnId { get; set; }
 
     }

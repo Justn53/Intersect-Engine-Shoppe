@@ -25,7 +25,7 @@ namespace Intersect.Core
         /// <summary>
         /// If the lifecycle stage is unknown.
         /// </summary>
-        [Obsolete( "This should only be used by ServiceLifecycleFailureException." )]
+        [Obsolete("This should only be used by ServiceLifecycleFailureException.")]
         Unknown
     }
 }

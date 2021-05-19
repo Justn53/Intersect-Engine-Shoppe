@@ -34,9 +34,9 @@ namespace Intersect.Client.Networking
             set => sPing = value;
         }
 
-        public static void InitNetwork( IClientContext context )
+        public static void InitNetwork(IClientContext context)
         {
-            if( Socket == null )
+            if (Socket == null)
             {
                 return;
             }
@@ -52,65 +52,65 @@ namespace Intersect.Client.Networking
         {
             sConnected = false;
             MainMenu.OnNetworkConnecting();
-            Socket?.Connect( ClientConfiguration.Instance.Host, ClientConfiguration.Instance.Port );
+            Socket?.Connect(ClientConfiguration.Instance.Host, ClientConfiguration.Instance.Port);
         }
 
-        private static void MySocket_OnConnectionFailed( INetworkLayerInterface sender, ConnectionEventArgs connectionEventArgs, bool denied )
+        private static void MySocket_OnConnectionFailed(INetworkLayerInterface sender, ConnectionEventArgs connectionEventArgs, bool denied)
         {
             sConnected = false;
-            if( !denied )
+            if (!denied)
             {
                 TryConnect();
             }
         }
 
-        private static void MySocket_OnDataReceived( IPacket packet )
+        private static void MySocket_OnDataReceived(IPacket packet)
         {
-            PacketHandler.HandlePacket( packet );
+            PacketHandler.HandlePacket(packet);
         }
 
-        private static void MySocket_OnDisconnected( INetworkLayerInterface sender, ConnectionEventArgs connectionEventArgs )
+        private static void MySocket_OnDisconnected(INetworkLayerInterface sender, ConnectionEventArgs connectionEventArgs)
         {
             //Not sure how to handle this yet!
             sConnected = false;
-            if( Globals.GameState == GameStates.InGame || Globals.GameState == GameStates.Loading )
+            if (Globals.GameState == GameStates.InGame || Globals.GameState == GameStates.Loading)
             {
                 Globals.ConnectionLost = true;
-                Socket?.Disconnect( "" );
+                Socket?.Disconnect("");
                 TryConnect();
             }
             else
             {
-                Socket?.Disconnect( "" );
+                Socket?.Disconnect("");
                 TryConnect();
             }
         }
 
-        private static void MySocket_OnConnected( INetworkLayerInterface sender, ConnectionEventArgs connectionEventArgs )
+        private static void MySocket_OnConnected(INetworkLayerInterface sender, ConnectionEventArgs connectionEventArgs)
         {
             //Not sure how to handle this yet!
             sConnected = true;
         }
 
-        public static void Close( string reason )
+        public static void Close(string reason)
         {
             try
             {
                 sConnected = false;
                 Connecting = false;
-                Socket?.Disconnect( reason );
+                Socket?.Disconnect(reason);
                 Socket?.Dispose();
                 Socket = null;
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                Log.Trace( exception );
+                Log.Trace(exception);
             }
         }
 
-        public static void SendPacket( IntersectPacket packet )
+        public static void SendPacket(IntersectPacket packet)
         {
-            Socket?.SendPacket( packet );
+            Socket?.SendPacket(packet);
         }
 
         public static void Update()

@@ -13,7 +13,7 @@
         ///     Initializes a new instance of the <see cref="Positioner" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Positioner( Base parent ) : base( parent )
+        public Positioner(Base parent) : base(parent)
         {
             Pos = Pos.Left | Pos.Top;
         }
@@ -31,11 +31,11 @@
         ///     Function invoked after layout.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void PostLayout( Skin.Base skin )
+        protected override void PostLayout(Skin.Base skin)
         {
-            foreach( var child in Children ) // ok?
+            foreach (var child in Children) // ok?
             {
-                child.Position( mPos );
+                child.Position(mPos);
             }
         }
 
@@ -51,7 +51,7 @@
         ///     Initializes a new instance of the <see cref="Center" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Center( Base parent ) : base( parent )
+        public Center(Base parent) : base(parent)
         {
             Pos = Pos.Center;
         }

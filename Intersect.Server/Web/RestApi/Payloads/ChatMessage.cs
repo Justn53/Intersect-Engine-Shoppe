@@ -23,24 +23,24 @@ namespace Intersect.Server.Web.RestApi.Payloads
         public class Converter : TypeConverter
         {
 
-            public override bool CanConvertFrom( ITypeDescriptorContext context, Type sourceType )
+            public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
             {
-                return typeof( string ) == sourceType;
+                return typeof(string) == sourceType;
             }
 
-            public override object ConvertFrom( ITypeDescriptorContext context, CultureInfo culture, object value )
+            public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
             {
-                if( value == null )
+                if (value == null)
                 {
-                    return default( ChatMessage );
+                    return default(ChatMessage);
                 }
 
-                if( typeof( string ) != value.GetType() )
+                if (typeof(string) != value.GetType())
                 {
                     throw new ArgumentException();
                 }
 
-                return JsonConvert.DeserializeObject<ChatMessage>( value as string );
+                return JsonConvert.DeserializeObject<ChatMessage>(value as string);
             }
 
         }
@@ -57,7 +57,7 @@ namespace Intersect.Server.Web.RestApi.Payloads
                 HttpRouteDirection routeDirection
             )
             {
-                return values.TryGetValue( parameterName, out var value ) && value != null;
+                return values.TryGetValue(parameterName, out var value) && value != null;
             }
 
         }

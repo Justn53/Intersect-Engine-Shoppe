@@ -11,8 +11,8 @@ namespace Intersect.Reflection
 {
     public static class TypeExtensions
     {
-        public static string QualifiedGenericName( [ValidatedNotNull] this Type type ) =>
-            $"{type.Name}<{string.Join( ", ", type.GenericTypeArguments.Select( parameterType => parameterType.Name ) )}>";
+        public static string QualifiedGenericName([ValidatedNotNull] this Type type) =>
+            $"{type.Name}<{string.Join(", ", type.GenericTypeArguments.Select(parameterType => parameterType.Name))}>";
 
         public static IEnumerable<ConstructorInfo> FindConstructors(
             this Type type,
@@ -22,26 +22,26 @@ namespace Intersect.Reflection
                 constructor =>
                 {
                     var constructorParameters = constructor.GetParameters();
-                    if( constructorParameters.Length < parameters.Length )
+                    if (constructorParameters.Length < parameters.Length)
                     {
                         return false;
                     }
 
-                    for( var index = 0; index < constructorParameters.Length; ++index )
+                    for (var index = 0; index < constructorParameters.Length; ++index)
                     {
                         var constructorParameter = constructorParameters[index];
-                        Debug.Assert( constructorParameter != null, nameof( constructorParameter ) + " != null" );
+                        Debug.Assert(constructorParameter != null, nameof(constructorParameter) + " != null");
 
-                        if( index >= parameters.Length )
+                        if (index >= parameters.Length)
                         {
                             return constructorParameter.IsOptional;
                         }
 
                         var parameter = parameters[index];
 
-                        if( parameter == null )
+                        if (parameter == null)
                         {
-                            if( constructorParameter.ParameterType.IsValueType )
+                            if (constructorParameter.ParameterType.IsValueType)
                             {
                                 return false;
                             }
@@ -50,7 +50,7 @@ namespace Intersect.Reflection
                         }
 
                         var parameterType = parameter.GetType();
-                        if( !constructorParameter.ParameterType.IsAssignableFrom( parameterType ) )
+                        if (!constructorParameter.ParameterType.IsAssignableFrom(parameterType))
                         {
                             return false;
                         }

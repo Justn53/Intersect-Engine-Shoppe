@@ -19,7 +19,7 @@
 
         private bool mIsLooping;
 
-        protected GameAudioInstance( GameAudioSource source )
+        protected GameAudioInstance(GameAudioSource source)
         {
             Source = source;
         }
@@ -46,7 +46,7 @@
 
         public abstract void Stop();
 
-        public abstract void SetVolume( int volume, bool isMusic = false );
+        public abstract void SetVolume(int volume, bool isMusic = false);
 
         public abstract int GetVolume();
 

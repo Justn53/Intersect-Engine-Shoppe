@@ -15,7 +15,7 @@ namespace Intersect.GameObjects
     {
 
         [JsonConstructor]
-        public ServerVariableBase( Guid id ) : base( id )
+        public ServerVariableBase(Guid id) : base(id)
         {
             Name = "New Global Variable";
         }
@@ -36,17 +36,17 @@ namespace Intersect.GameObjects
         public VariableValue Value { get; set; } = new VariableValue();
 
         [NotMapped]
-        [JsonProperty( "Value" )]
+        [JsonProperty("Value")]
         public dynamic ValueData { get => Value.Value; set => Value.Value = value; }
 
-        [Column( nameof( Value ) )]
+        [Column(nameof(Value))]
         [JsonIgnore]
         public string Json
         {
-            get => Value.Json.ToString( Formatting.None );
+            get => Value.Json.ToString(Formatting.None);
             private set
             {
-                if( VariableValue.TryParse( value, out var json ) )
+                if (VariableValue.TryParse(value, out var json))
                 {
                     Value.Json = json;
                 }
@@ -61,9 +61,9 @@ namespace Intersect.GameObjects
         /// </summary>
         /// <param name="dataType">The data type to retrieve names of.</param>
         /// <returns>Returns an array of names.</returns>
-        public static string[] GetNamesByType( VariableDataTypes dataType )
+        public static string[] GetNamesByType(VariableDataTypes dataType)
         {
-            return Lookup.KeyList.OrderBy( pairs => Lookup[pairs]?.TimeCreated ).Where( pairs => ( (ServerVariableBase)Lookup[pairs] ).Type == dataType ).Select( pairs => ( (ServerVariableBase)Lookup[pairs] ).Name ).ToArray();
+            return Lookup.KeyList.OrderBy(pairs => Lookup[pairs]?.TimeCreated).Where(pairs => ((ServerVariableBase)Lookup[pairs]).Type == dataType).Select(pairs => ((ServerVariableBase)Lookup[pairs]).Name).ToArray();
         }
 
         /// <summary>
@@ -72,9 +72,9 @@ namespace Intersect.GameObjects
         /// <param name="id">The Id to look up.</param>
         /// <param name="dataType">The data type to search up.</param>
         /// <returns>Returns the list Index of the provided Id.</returns>
-        public static int ListIndex( Guid id, VariableDataTypes dataType )
+        public static int ListIndex(Guid id, VariableDataTypes dataType)
         {
-            return Lookup.KeyList.OrderBy( pairs => Lookup[pairs]?.TimeCreated ).Where( pairs => ( (ServerVariableBase)Lookup[pairs] ).Type == dataType ).Select( pairs => ( (ServerVariableBase)Lookup[pairs] ).Id ).ToList().IndexOf( id );
+            return Lookup.KeyList.OrderBy(pairs => Lookup[pairs]?.TimeCreated).Where(pairs => ((ServerVariableBase)Lookup[pairs]).Type == dataType).Select(pairs => ((ServerVariableBase)Lookup[pairs]).Id).ToList().IndexOf(id);
         }
 
         /// <summary>
@@ -83,14 +83,14 @@ namespace Intersect.GameObjects
         /// <param name="listIndex">The list index to retrieve.</param>
         /// <param name="dataType">The data type to search up.</param>
         /// <returns>Returns the Id of the provided index.</returns>
-        public static Guid IdFromList( int listIndex, VariableDataTypes dataType )
+        public static Guid IdFromList(int listIndex, VariableDataTypes dataType)
         {
-            if( listIndex < 0 || listIndex > GetNamesByType( dataType ).Length )
+            if (listIndex < 0 || listIndex > GetNamesByType(dataType).Length)
             {
                 return Guid.Empty;
             }
 
-            return Lookup.KeyList.OrderBy( pairs => Lookup[pairs]?.TimeCreated ).Where( pairs => ( (ServerVariableBase)Lookup[pairs] ).Type == dataType ).Select( pairs => ( (ServerVariableBase)Lookup[pairs] ).Id ).ToArray()[listIndex];
+            return Lookup.KeyList.OrderBy(pairs => Lookup[pairs]?.TimeCreated).Where(pairs => ((ServerVariableBase)Lookup[pairs]).Type == dataType).Select(pairs => ((ServerVariableBase)Lookup[pairs]).Id).ToArray()[listIndex];
         }
     }
 

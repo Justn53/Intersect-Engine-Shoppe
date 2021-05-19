@@ -36,23 +36,23 @@ namespace Intersect.Editor.Forms
         {
             InitializeComponent();
             InitLocalization();
-            mapTreeList1.UpdateMapList( mCurrentMapId );
+            mapTreeList1.UpdateMapList(mCurrentMapId);
             pnlMap.Width = Options.TileWidth * Options.MapWidth;
             pnlMap.Height = Options.TileHeight * Options.MapHeight;
             pnlMap.BackColor = System.Drawing.Color.Black;
-            mapTreeList1.SetSelect( NodeDoubleClick );
+            mapTreeList1.SetSelect(NodeDoubleClick);
 
-            typeof( Panel ).InvokeMember(
+            typeof(Panel).InvokeMember(
                 "DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null,
                 pnlMap, new object[] { true }
             );
         }
 
-        public void InitForm( bool tileSelection = true, List<Guid> restrictMaps = null )
+        public void InitForm(bool tileSelection = true, List<Guid> restrictMaps = null)
         {
-            mapTreeList1.UpdateMapList( mCurrentMapId, restrictMaps );
+            mapTreeList1.UpdateMapList(mCurrentMapId, restrictMaps);
             mRestrictMaps = restrictMaps;
-            if( !tileSelection )
+            if (!tileSelection)
             {
                 mTileSelection = false;
                 Text = Strings.WarpSelection.mapselectiontitle;
@@ -69,22 +69,22 @@ namespace Intersect.Editor.Forms
             grpMapPreview.Text = Strings.WarpSelection.mappreview;
         }
 
-        private void NodeDoubleClick( object sender, TreeViewEventArgs e )
+        private void NodeDoubleClick(object sender, TreeViewEventArgs e)
         {
-            if( e.Node.Tag.GetType() == typeof( MapListMap ) )
+            if (e.Node.Tag.GetType() == typeof(MapListMap))
             {
-                SelectTile( ( (MapListMap)e.Node.Tag ).MapId, mCurrentX, mCurrentY );
+                SelectTile(((MapListMap)e.Node.Tag).MapId, mCurrentX, mCurrentY);
             }
         }
 
-        public void SelectTile( Guid mapId, int x, int y )
+        public void SelectTile(Guid mapId, int x, int y)
         {
-            if( mCurrentMapId != mapId || x != mCurrentX || y != mCurrentY )
+            if (mCurrentMapId != mapId || x != mCurrentX || y != mCurrentY)
             {
                 mCurrentMapId = mapId;
                 mCurrentX = x;
                 mCurrentY = y;
-                mapTreeList1.UpdateMapList( mapId, mRestrictMaps );
+                mapTreeList1.UpdateMapList(mapId, mRestrictMaps);
                 UpdatePreview();
             }
 
@@ -93,29 +93,29 @@ namespace Intersect.Editor.Forms
 
         private void UpdatePreview()
         {
-            if( mCurrentMapId != Guid.Empty )
+            if (mCurrentMapId != Guid.Empty)
             {
-                if( mCurrentMapId != mDrawnMap )
+                if (mCurrentMapId != mDrawnMap)
                 {
-                    var img = Database.LoadMapCacheLegacy( mCurrentMapId, -1 );
-                    if( img != null )
+                    var img = Database.LoadMapCacheLegacy(mCurrentMapId, -1);
+                    if (img != null)
                     {
                         mMapImage = img;
                     }
                     else
                     {
-                        if( MapInstance.Get( mCurrentMapId ) != null )
+                        if (MapInstance.Get(mCurrentMapId) != null)
                         {
-                            MapInstance.Get( mCurrentMapId ).Delete();
+                            MapInstance.Get(mCurrentMapId).Delete();
                         }
 
                         Globals.MapsToFetch = new List<Guid>() { mCurrentMapId };
-                        if( !Globals.MapsToScreenshot.Contains( mCurrentMapId ) )
+                        if (!Globals.MapsToScreenshot.Contains(mCurrentMapId))
                         {
-                            Globals.MapsToScreenshot.Add( mCurrentMapId );
+                            Globals.MapsToScreenshot.Add(mCurrentMapId);
                         }
 
-                        PacketSender.SendNeedMap( mCurrentMapId );
+                        PacketSender.SendNeedMap(mCurrentMapId);
                         pnlMap.BackgroundImage = null;
 
                         //Use a timer to check when we have the map.
@@ -125,17 +125,17 @@ namespace Intersect.Editor.Forms
                     }
                 }
 
-                var newBitmap = new Bitmap( pnlMap.Width, pnlMap.Height );
-                var g = Graphics.FromImage( newBitmap );
+                var newBitmap = new Bitmap(pnlMap.Width, pnlMap.Height);
+                var g = Graphics.FromImage(newBitmap);
                 g.DrawImage(
-                    mMapImage, new Rectangle( 0, 0, pnlMap.Width, pnlMap.Height ),
-                    new Rectangle( 0, 0, pnlMap.Width, pnlMap.Height ), GraphicsUnit.Pixel
+                    mMapImage, new Rectangle(0, 0, pnlMap.Width, pnlMap.Height),
+                    new Rectangle(0, 0, pnlMap.Width, pnlMap.Height), GraphicsUnit.Pixel
                 );
 
-                if( mTileSelection )
+                if (mTileSelection)
                 {
                     g.DrawRectangle(
-                        new Pen( System.Drawing.Color.White, 2f ),
+                        new Pen(System.Drawing.Color.White, 2f),
                         new Rectangle(
                             mCurrentX * Options.TileWidth, mCurrentY * Options.TileHeight, Options.TileWidth,
                             Options.TileHeight
@@ -156,24 +156,24 @@ namespace Intersect.Editor.Forms
             }
         }
 
-        private void chkChronological_CheckedChanged( object sender, EventArgs e )
+        private void chkChronological_CheckedChanged(object sender, EventArgs e)
         {
             mapTreeList1.Chronological = chkChronological.Checked;
-            mapTreeList1.UpdateMapList( mCurrentMapId, mRestrictMaps );
+            mapTreeList1.UpdateMapList(mCurrentMapId, mRestrictMaps);
         }
 
-        private void frmWarpSelection_Load( object sender, EventArgs e )
+        private void frmWarpSelection_Load(object sender, EventArgs e)
         {
-            mapTreeList1.BeginInvoke( mapTreeList1.MapListDelegate, mCurrentMapId, mRestrictMaps );
+            mapTreeList1.BeginInvoke(mapTreeList1.MapListDelegate, mCurrentMapId, mRestrictMaps);
             UpdatePreview();
         }
 
-        private void tmrMapCheck_Tick( object sender, EventArgs e )
+        private void tmrMapCheck_Tick(object sender, EventArgs e)
         {
-            if( mCurrentMapId != Guid.Empty )
+            if (mCurrentMapId != Guid.Empty)
             {
-                var img = Database.LoadMapCacheLegacy( mCurrentMapId, -1 );
-                if( img != null )
+                var img = Database.LoadMapCacheLegacy(mCurrentMapId, -1);
+                if (img != null)
                 {
                     UpdatePreview();
                     tmrMapCheck.Enabled = false;
@@ -186,31 +186,31 @@ namespace Intersect.Editor.Forms
             }
         }
 
-        private void pnlMap_MouseDown( object sender, MouseEventArgs e )
+        private void pnlMap_MouseDown(object sender, MouseEventArgs e)
         {
-            if( e.X >= pnlMap.Width || e.Y >= pnlMap.Height )
+            if (e.X >= pnlMap.Width || e.Y >= pnlMap.Height)
             {
                 return;
             }
 
-            if( e.X < 0 || e.Y < 0 )
+            if (e.X < 0 || e.Y < 0)
             {
                 return;
             }
 
-            mCurrentX = (int)Math.Floor( (double)e.X / Options.TileWidth );
-            mCurrentY = (int)Math.Floor( (double)e.Y / Options.TileHeight );
+            mCurrentX = (int)Math.Floor((double)e.X / Options.TileWidth);
+            mCurrentY = (int)Math.Floor((double)e.Y / Options.TileHeight);
             UpdatePreview();
         }
 
-        private void pnlMap_DoubleClick( object sender, EventArgs e )
+        private void pnlMap_DoubleClick(object sender, EventArgs e)
         {
-            btnOk_Click( null, null );
+            btnOk_Click(null, null);
         }
 
-        private void btnOk_Click( object sender, EventArgs e )
+        private void btnOk_Click(object sender, EventArgs e)
         {
-            if( mCurrentMapId != Guid.Empty )
+            if (mCurrentMapId != Guid.Empty)
             {
                 mResult = true;
             }
@@ -218,7 +218,7 @@ namespace Intersect.Editor.Forms
             Close();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             Close();
         }
@@ -243,12 +243,12 @@ namespace Intersect.Editor.Forms
             return mCurrentY;
         }
 
-        private void btnRefreshPreview_Click( object sender, EventArgs e )
+        private void btnRefreshPreview_Click(object sender, EventArgs e)
         {
-            if( mCurrentMapId != Guid.Empty )
+            if (mCurrentMapId != Guid.Empty)
             {
                 mDrawnMap = Guid.Empty;
-                Database.ClearMapCache( mCurrentMapId );
+                Database.ClearMapCache(mCurrentMapId);
                 UpdatePreview();
             }
         }

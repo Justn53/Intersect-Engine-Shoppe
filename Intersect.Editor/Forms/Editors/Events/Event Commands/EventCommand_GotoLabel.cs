@@ -14,7 +14,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private GoToLabelCommand mMyCommand;
 
-        public EventCommandGotoLabel( GoToLabelCommand refCommand, FrmEvent editor )
+        public EventCommandGotoLabel(GoToLabelCommand refCommand, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
@@ -31,13 +31,13 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             btnCancel.Text = Strings.EventGotoLabel.cancel;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
             mMyCommand.Label = txtGotoLabel.Text;
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }

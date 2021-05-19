@@ -18,18 +18,18 @@ namespace Intersect.Network
 
         private readonly List<INetworkLayerInterface> mNetworkLayerInterfaces;
 
-        protected AbstractNetwork( INetworkHelper networkHelper, NetworkConfiguration configuration )
+        protected AbstractNetwork(INetworkHelper networkHelper, NetworkConfiguration configuration)
         {
             mDisposed = false;
             mDisposeLock = new object();
 
-            Helper = networkHelper ?? throw new ArgumentNullException( nameof( networkHelper ) );
+            Helper = networkHelper ?? throw new ArgumentNullException(nameof(networkHelper));
 
             mNetworkLayerInterfaces = new List<INetworkLayerInterface>();
 
             ConnectionLookup = new ConcurrentDictionary<Guid, IConnection>();
 
-            if( configuration.Host?.ToLower() == "localhost" )
+            if (configuration.Host?.ToLower() == "localhost")
             {
                 configuration.Host = "127.0.0.1";
             }
@@ -53,26 +53,26 @@ namespace Intersect.Network
 
         public Guid Guid { get; protected set; }
 
-        public bool AddConnection( IConnection connection )
+        public bool AddConnection(IConnection connection)
         {
-            if( ConnectionLookup.ContainsKey( connection.Guid ) )
+            if (ConnectionLookup.ContainsKey(connection.Guid))
             {
                 return false;
             }
 
-            ConnectionLookup.Add( connection.Guid, connection );
+            ConnectionLookup.Add(connection.Guid, connection);
 
             return true;
         }
 
-        public bool RemoveConnection( IConnection connection ) =>
-            !connection.IsConnected && ConnectionLookup.Remove( connection.Guid );
+        public bool RemoveConnection(IConnection connection) =>
+            !connection.IsConnected && ConnectionLookup.Remove(connection.Guid);
 
         public void Dispose()
         {
-            lock( mDisposeLock )
+            lock (mDisposeLock)
             {
-                if( mDisposed )
+                if (mDisposed)
                 {
                     return;
                 }
@@ -80,143 +80,143 @@ namespace Intersect.Network
                 mDisposed = true;
             }
 
-            if( !Disconnect( NetworkStatus.Quitting.ToString() ) )
+            if (!Disconnect(NetworkStatus.Quitting.ToString()))
             {
-                Log.Error( "Error disconnecting while disposing." );
+                Log.Error("Error disconnecting while disposing.");
             }
 
-            mNetworkLayerInterfaces?.ForEach( networkLayerInterface => networkLayerInterface?.Dispose() );
+            mNetworkLayerInterfaces?.ForEach(networkLayerInterface => networkLayerInterface?.Dispose());
 
             ConnectionLookup.Clear();
         }
 
-        public bool Disconnect( string message = "" ) => Disconnect( Connections, message );
+        public bool Disconnect(string message = "") => Disconnect(Connections, message);
 
-        public bool Disconnect( Guid guid, string message = "" ) => Disconnect( FindConnection( guid ), message );
+        public bool Disconnect(Guid guid, string message = "") => Disconnect(FindConnection(guid), message);
 
-        public bool Disconnect( IConnection connection, string message = "" )
+        public bool Disconnect(IConnection connection, string message = "")
         {
-            return Disconnect( new[] { connection }, message );
+            return Disconnect(new[] { connection }, message);
         }
 
-        public bool Disconnect( ICollection<Guid> guids, string message = "" ) =>
-            Disconnect( FindConnections( guids ), message );
+        public bool Disconnect(ICollection<Guid> guids, string message = "") =>
+            Disconnect(FindConnections(guids), message);
 
-        public bool Disconnect( ICollection<IConnection> connections, string message = "" )
+        public bool Disconnect(ICollection<IConnection> connections, string message = "")
         {
             mNetworkLayerInterfaces?.ForEach(
-                networkLayerInterface => networkLayerInterface?.Disconnect( connections, message )
+                networkLayerInterface => networkLayerInterface?.Disconnect(connections, message)
             );
 
             return true;
         }
 
-        public abstract bool Send( IPacket packet, TransmissionMode mode = TransmissionMode.All );
+        public abstract bool Send(IPacket packet, TransmissionMode mode = TransmissionMode.All);
 
-        public bool Send( Guid guid, IPacket packet, TransmissionMode mode = TransmissionMode.All )
+        public bool Send(Guid guid, IPacket packet, TransmissionMode mode = TransmissionMode.All)
         {
-            var connection = FindConnection( guid );
+            var connection = FindConnection(guid);
 
-            return connection != null && Send( connection, packet, mode );
+            return connection != null && Send(connection, packet, mode);
         }
 
-        public abstract bool Send( IConnection connection, IPacket packet, TransmissionMode mode = TransmissionMode.All );
+        public abstract bool Send(IConnection connection, IPacket packet, TransmissionMode mode = TransmissionMode.All);
 
-        public bool Send( ICollection<Guid> guids, IPacket packet, TransmissionMode mode = TransmissionMode.All ) => Send( FindConnections( guids ), packet, mode );
+        public bool Send(ICollection<Guid> guids, IPacket packet, TransmissionMode mode = TransmissionMode.All) => Send(FindConnections(guids), packet, mode);
 
-        public abstract bool Send( ICollection<IConnection> connections, IPacket packet, TransmissionMode mode = TransmissionMode.All );
+        public abstract bool Send(ICollection<IConnection> connections, IPacket packet, TransmissionMode mode = TransmissionMode.All);
 
-        public IConnection FindConnection( Guid guid )
+        public IConnection FindConnection(Guid guid)
         {
-            if( ConnectionLookup.TryGetValue( guid, out var connection ) )
+            if (ConnectionLookup.TryGetValue(guid, out var connection))
             {
                 return connection;
             }
 
-            Log.Diagnostic( $"Could not find connection {guid}." );
+            Log.Diagnostic($"Could not find connection {guid}.");
 
             return null;
         }
 
-        public TConnection FindConnection<TConnection>( Guid guid ) where TConnection : class, IConnection =>
-            FindConnection( guid ) as TConnection;
+        public TConnection FindConnection<TConnection>(Guid guid) where TConnection : class, IConnection =>
+            FindConnection(guid) as TConnection;
 
-        public TConnection FindConnection<TConnection>( Func<TConnection, bool> selector )
+        public TConnection FindConnection<TConnection>(Func<TConnection, bool> selector)
             where TConnection : class, IConnection =>
-            FindConnections<TConnection>().FirstOrDefault( selector );
+            FindConnections<TConnection>().FirstOrDefault(selector);
 
-        public ICollection<IConnection> FindConnections( ICollection<Guid> guids )
+        public ICollection<IConnection> FindConnections(ICollection<Guid> guids)
         {
-            return guids.Select( FindConnection ).Where( connection => connection != null ).ToList();
+            return guids.Select(FindConnection).Where(connection => connection != null).ToList();
         }
 
         public ICollection<TConnection> FindConnections<TConnection>() where TConnection : class, IConnection =>
             Connections.OfType<TConnection>().ToList();
 
-        protected void AddNetworkLayerInterface( INetworkLayerInterface networkLayerInterface )
+        protected void AddNetworkLayerInterface(INetworkLayerInterface networkLayerInterface)
         {
-            if( mNetworkLayerInterfaces == null )
+            if (mNetworkLayerInterfaces == null)
             {
-                throw new ArgumentNullException( nameof( mNetworkLayerInterfaces ) );
+                throw new ArgumentNullException(nameof(mNetworkLayerInterfaces));
             }
 
-            if( networkLayerInterface == null )
+            if (networkLayerInterface == null)
             {
-                throw new ArgumentNullException( nameof( networkLayerInterface ) );
+                throw new ArgumentNullException(nameof(networkLayerInterface));
             }
 
             networkLayerInterface.OnPacketAvailable += HandleInboundMessageAvailable;
-            mNetworkLayerInterfaces.Add( networkLayerInterface );
+            mNetworkLayerInterfaces.Add(networkLayerInterface);
         }
 
-        private void HandleInboundMessageAvailable( INetworkLayerInterface sender )
+        private void HandleInboundMessageAvailable(INetworkLayerInterface sender)
         {
-            if( sender == null )
+            if (sender == null)
             {
-                throw new ArgumentNullException( nameof( sender ) );
+                throw new ArgumentNullException(nameof(sender));
             }
 
-            if( !sender.TryGetInboundBuffer( out var buffer, out var connection ) )
+            if (!sender.TryGetInboundBuffer(out var buffer, out var connection))
             {
                 //Log.Error("Failed to obtain packet when told a packet was available.");
 
                 return;
             }
 
-            HandleInboundData( buffer, connection );
+            HandleInboundData(buffer, connection);
 
-            sender.ReleaseInboundBuffer( buffer );
+            sender.ReleaseInboundBuffer(buffer);
         }
 
-        protected virtual void HandleConnectionApproved( IConnection connection )
+        protected virtual void HandleConnectionApproved(IConnection connection)
         {
         }
 
-        protected virtual void HandleConnected( IConnection connection )
+        protected virtual void HandleConnected(IConnection connection)
         {
             connection?.HandleConnected();
         }
 
-        protected virtual void HandleDisconnected( IConnection connection )
+        protected virtual void HandleDisconnected(IConnection connection)
         {
             connection?.HandleDisconnected();
         }
 
-        private void HandleInboundData( IBuffer buffer, IConnection connection )
+        private void HandleInboundData(IBuffer buffer, IConnection connection)
         {
-            if( buffer == default( IBuffer ) )
+            if (buffer == default(IBuffer))
             {
                 return;
             }
 
-            if( buffer.Length < 1 )
+            if (buffer.Length < 1)
             {
                 return;
             }
 
-            if( PreProcessHandler != null )
+            if (PreProcessHandler != null)
             {
-                if( !PreProcessHandler.Invoke( connection, buffer.Length ) )
+                if (!PreProcessHandler.Invoke(connection, buffer.Length))
                 {
                     return;
                 }
@@ -227,8 +227,8 @@ namespace Intersect.Network
 
             // Get Packet From Data using Ceras
             var sw = Stopwatch.StartNew();
-            var packet = (IPacket)MessagePacker.Instance.Deserialize( data );
-            if( sw.ElapsedMilliseconds > 10 )
+            var packet = (IPacket)MessagePacker.Instance.Deserialize(data);
+            if (sw.ElapsedMilliseconds > 10)
             {
                 Debug.WriteLine(
                     "Took " + sw.ElapsedMilliseconds + "ms to deserialize packet: " + packet.GetType().Name
@@ -238,14 +238,14 @@ namespace Intersect.Network
             // Handle any packet identification errors
 
             // Pass packet to handler.
-            Handler( connection, packet );
+            Handler(connection, packet);
         }
 
         protected abstract IDictionary<TKey, TValue> CreateDictionaryLegacy<TKey, TValue>();
 
         protected void StartInterfaces()
         {
-            mNetworkLayerInterfaces?.ForEach( networkLayerInterface => networkLayerInterface?.Start() );
+            mNetworkLayerInterfaces?.ForEach(networkLayerInterface => networkLayerInterface?.Start());
         }
 
         protected void SendPacket(
@@ -255,7 +255,7 @@ namespace Intersect.Network
         )
         {
             mNetworkLayerInterfaces?.ForEach(
-                networkLayerInterface => networkLayerInterface?.SendPacket( packet, connection, transmissionMode )
+                networkLayerInterface => networkLayerInterface?.SendPacket(packet, connection, transmissionMode)
             );
         }
 
@@ -266,13 +266,13 @@ namespace Intersect.Network
         )
         {
             mNetworkLayerInterfaces?.ForEach(
-                networkLayerInterface => networkLayerInterface?.SendPacket( packet, connections, transmissionMode )
+                networkLayerInterface => networkLayerInterface?.SendPacket(packet, connections, transmissionMode)
             );
         }
 
-        protected void StopInterfaces( string reason = "stopping" )
+        protected void StopInterfaces(string reason = "stopping")
         {
-            mNetworkLayerInterfaces?.ForEach( networkLayerInterface => networkLayerInterface?.Stop( reason ) );
+            mNetworkLayerInterfaces?.ForEach(networkLayerInterface => networkLayerInterface?.Stop(reason));
         }
     }
 }

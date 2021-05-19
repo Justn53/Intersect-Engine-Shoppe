@@ -8,55 +8,55 @@ namespace Intersect.Client.Framework.Content
 
     public enum ContentTypes
     {
-        [AssetType( typeof( GameTexture ) )]
+        [AssetType(typeof(GameTexture))]
         Animation,
 
-        [AssetType( typeof( GameTexture ) )]
+        [AssetType(typeof(GameTexture))]
         Entity,
 
-        [AssetType( typeof( GameTexture ) )]
+        [AssetType(typeof(GameTexture))]
         Face,
 
-        [AssetType( typeof( GameTexture ) )]
+        [AssetType(typeof(GameTexture))]
         Fog,
 
-        [AssetType( typeof( GameFont ) )]
+        [AssetType(typeof(GameFont))]
         Font,
 
-        [AssetType( typeof( GameTexture ) )]
+        [AssetType(typeof(GameTexture))]
         Image,
 
-        [AssetType( typeof( GameTexture ) )]
+        [AssetType(typeof(GameTexture))]
         Interface,
 
-        [AssetType( typeof( GameTexture ) )]
+        [AssetType(typeof(GameTexture))]
         Item,
 
-        [AssetType( typeof( GameTexture ) )]
+        [AssetType(typeof(GameTexture))]
         Miscellaneous,
 
-        [AssetType( typeof( GameAudioSource ) )]
+        [AssetType(typeof(GameAudioSource))]
         Music,
 
-        [AssetType( typeof( GameTexture ) )]
+        [AssetType(typeof(GameTexture))]
         Paperdoll,
 
-        [AssetType( typeof( GameTexture ) )]
+        [AssetType(typeof(GameTexture))]
         Resource,
 
-        [AssetType( typeof( GameShader ) )]
+        [AssetType(typeof(GameShader))]
         Shader,
 
-        [AssetType( typeof( GameAudioSource ) )]
+        [AssetType(typeof(GameAudioSource))]
         Sound,
 
-        [AssetType( typeof( GameTexture ) )]
+        [AssetType(typeof(GameTexture))]
         Spell,
 
-        [AssetType( typeof( GameTexture ) )]
+        [AssetType(typeof(GameTexture))]
         TexturePack,
 
-        [AssetType( typeof( GameTexture ) )]
+        [AssetType(typeof(GameTexture))]
         TileSet,
 
         [Obsolete] Gui = Interface

@@ -18,7 +18,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private StartQuestCommand mMyCommand;
 
-        public EventCommandStartQuest( StartQuestCommand refCommand, EventPage page, FrmEvent editor )
+        public EventCommandStartQuest(StartQuestCommand refCommand, EventPage page, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
@@ -26,8 +26,8 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             mEventEditor = editor;
             InitLocalization();
             cmbQuests.Items.Clear();
-            cmbQuests.Items.AddRange( QuestBase.Names );
-            cmbQuests.SelectedIndex = QuestBase.ListIndex( refCommand.QuestId );
+            cmbQuests.Items.AddRange(QuestBase.Names);
+            cmbQuests.SelectedIndex = QuestBase.ListIndex(refCommand.QuestId);
             chkShowOfferWindow.Checked = refCommand.Offer;
         }
 
@@ -40,14 +40,14 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             btnCancel.Text = Strings.EventStartQuest.cancel;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            mMyCommand.QuestId = QuestBase.IdFromList( cmbQuests.SelectedIndex );
+            mMyCommand.QuestId = QuestBase.IdFromList(cmbQuests.SelectedIndex);
             mMyCommand.Offer = chkShowOfferWindow.Checked;
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }

@@ -27,20 +27,20 @@ namespace Intersect.Plugins
         /// </summary>
         /// <param name="pluginKey">the plugin key string</param>
         /// <returns>if the plugin is enabled (false if it is not even registered)</returns>
-        bool IsPluginEnabled( string pluginKey );
+        bool IsPluginEnabled(string pluginKey);
 
         /// <summary>
         /// Enable the <see cref="Plugin"/> with the given key.
         /// </summary>
         /// <param name="pluginKey">the plugin key string</param>
         /// <returns>true if the plugin exists and is now enabled, false otherwise</returns>
-        bool EnablePlugin( string pluginKey );
+        bool EnablePlugin(string pluginKey);
 
         /// <summary>
         /// Disable the <see cref="Plugin"/> with the given key.
         /// </summary>
         /// <param name="pluginKey">the plugin key string</param>
         /// <returns>true if the plugin exists and is now disabled, false otherwise</returns>
-        bool DisablePlugin( string pluginKey );
+        bool DisablePlugin(string pluginKey);
     }
 }

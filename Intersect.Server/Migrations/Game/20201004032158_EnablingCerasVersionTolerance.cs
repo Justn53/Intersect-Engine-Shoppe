@@ -4,7 +4,7 @@ namespace Intersect.Server.Migrations.Game
 {
     public partial class EnablingCerasVersionTolerance : Migration
     {
-        protected override void Up( MigrationBuilder migrationBuilder )
+        protected override void Up(MigrationBuilder migrationBuilder)
         {
             //We are intentionally not doing anything here.
             //Do not delete this migration.

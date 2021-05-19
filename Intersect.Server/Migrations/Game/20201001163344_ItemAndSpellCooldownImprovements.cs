@@ -4,50 +4,50 @@ namespace Intersect.Server.Migrations.Game
 {
     public partial class ItemAndSpellCooldownImprovements : Migration
     {
-        protected override void Up( MigrationBuilder migrationBuilder )
+        protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
                 name: "CooldownGroup",
                 table: "Items",
                 nullable: false,
-                defaultValue: string.Empty );
+                defaultValue: string.Empty);
 
             migrationBuilder.AddColumn<bool>(
                 name: "IgnoreGlobalCooldown",
                 table: "Items",
                 nullable: false,
-                defaultValue: false );
+                defaultValue: false);
 
             migrationBuilder.AddColumn<string>(
                 name: "CooldownGroup",
                 table: "Spells",
                 nullable: false,
-                defaultValue: string.Empty );
+                defaultValue: string.Empty);
 
             migrationBuilder.AddColumn<bool>(
                 name: "IgnoreGlobalCooldown",
                 table: "Spells",
                 nullable: false,
-                defaultValue: false );
+                defaultValue: false);
         }
 
-        protected override void Down( MigrationBuilder migrationBuilder )
+        protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
                 name: "CooldownGroup",
-                table: "Items" );
+                table: "Items");
 
             migrationBuilder.DropColumn(
                 name: "IgnoreGlobalCooldown",
-                table: "Items" );
+                table: "Items");
 
             migrationBuilder.DropColumn(
                 name: "CooldownGroup",
-                table: "Spells" );
+                table: "Spells");
 
             migrationBuilder.DropColumn(
                 name: "IgnoreGlobalCooldown",
-                table: "Spells" );
+                table: "Spells");
         }
     }
 }

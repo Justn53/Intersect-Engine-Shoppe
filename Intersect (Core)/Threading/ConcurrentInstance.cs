@@ -23,58 +23,58 @@ namespace Intersect.Threading
 
         public TInstance Instance => mInstance ?? throw new InvalidOperationException();
 
-        public void ClearWith( TInstance instance, Action action )
+        public void ClearWith(TInstance instance, Action action)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            Log.Info( $@"Acquiring context lock... ({stopwatch.ElapsedMilliseconds}ms)" );
+            Log.Info($@"Acquiring context lock... ({stopwatch.ElapsedMilliseconds}ms)");
             Acquire();
-            Log.Info( $@"Acquired. ({stopwatch.ElapsedMilliseconds}ms)" );
+            Log.Info($@"Acquired. ({stopwatch.ElapsedMilliseconds}ms)");
 
-            if( mInstance != instance )
+            if (mInstance != instance)
             {
-                Log.Info( $@"Exiting lock... ({stopwatch.ElapsedMilliseconds}ms)" );
-                Monitor.Exit( mLock );
+                Log.Info($@"Exiting lock... ({stopwatch.ElapsedMilliseconds}ms)");
+                Monitor.Exit(mLock);
             }
 
             action.Invoke();
 
-            Log.Info( $@"Clearing instance... ({stopwatch.ElapsedMilliseconds}ms)" );
-            Clear( instance );
+            Log.Info($@"Clearing instance... ({stopwatch.ElapsedMilliseconds}ms)");
+            Clear(instance);
 
-            Log.Info( $@"Releasing context lock... ({stopwatch.ElapsedMilliseconds}ms)" );
+            Log.Info($@"Releasing context lock... ({stopwatch.ElapsedMilliseconds}ms)");
             Release();
-            Log.Info( $@"Released. ({stopwatch.ElapsedMilliseconds}ms)" );
+            Log.Info($@"Released. ({stopwatch.ElapsedMilliseconds}ms)");
         }
 
         public void Acquire()
         {
-            Monitor.Enter( mLock );
+            Monitor.Enter(mLock);
         }
 
         public void Release()
         {
-            if( !Monitor.IsEntered( mLock ) )
+            if (!Monitor.IsEntered(mLock))
             {
                 return;
             }
 
-            Monitor.Pulse( mLock );
-            Monitor.Exit( mLock );
+            Monitor.Pulse(mLock);
+            Monitor.Exit(mLock);
         }
 
-        public void Set( TInstance instance )
+        public void Set(TInstance instance)
         {
-            if( !Monitor.TryEnter( mLock, 1000 ) )
+            if (!Monitor.TryEnter(mLock, 1000))
             {
                 throw new InvalidOperationException();
             }
 
             try
             {
-                if( mInstance != null )
+                if (mInstance != null)
                 {
-                    Monitor.Wait( mLock );
+                    Monitor.Wait(mLock);
                 }
 
                 mInstance = instance;
@@ -85,15 +85,15 @@ namespace Intersect.Threading
             }
         }
 
-        public void Clear( TInstance instance )
+        public void Clear(TInstance instance)
         {
-            if( mInstance == instance )
+            if (mInstance == instance)
             {
                 mInstance = null;
             }
         }
 
-        public static implicit operator TInstance( ConcurrentInstance<TInstance> concurrentInstance )
+        public static implicit operator TInstance(ConcurrentInstance<TInstance> concurrentInstance)
         {
             return concurrentInstance.mInstance;
         }

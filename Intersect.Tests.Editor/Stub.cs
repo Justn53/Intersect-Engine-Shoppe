@@ -12,7 +12,7 @@ namespace Intersect.Tests.Editor
         {
             // Needed so NUnit doesn't return -2
             // TODO: Remove this when there are actual tests in this assembly
-            Assert.AreEqual( 0, 0 );
+            Assert.AreEqual(0, 0);
         }
 
     }

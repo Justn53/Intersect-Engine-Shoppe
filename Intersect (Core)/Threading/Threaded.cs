@@ -11,10 +11,10 @@ namespace Intersect.Threading
 
         private bool mDisposed;
 
-        protected Threaded( string name = null )
+        protected Threaded(string name = null)
         {
-            mThread = new Thread( ThreadStartWrapper );
-            if( !string.IsNullOrEmpty( name ) )
+            mThread = new Thread(ThreadStartWrapper);
+            if (!string.IsNullOrEmpty(name))
             {
                 mThread.Name = name;
             }
@@ -22,7 +22,7 @@ namespace Intersect.Threading
 
         public void Dispose()
         {
-            if( mDisposed )
+            if (mDisposed)
             {
                 return;
             }
@@ -32,16 +32,16 @@ namespace Intersect.Threading
             mDisposed = true;
         }
 
-        public Thread Start( params object[] args )
+        public Thread Start(params object[] args)
         {
-            mThread.Start( args );
+            mThread.Start(args);
 
             return mThread;
         }
 
-        private void ThreadStartWrapper( object args ) => ThreadStart( args as object[] );
+        private void ThreadStartWrapper(object args) => ThreadStart(args as object[]);
 
-        protected abstract void ThreadStart( params object[] args );
+        protected abstract void ThreadStart(params object[] args);
 
     }
 

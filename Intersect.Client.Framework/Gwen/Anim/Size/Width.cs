@@ -12,8 +12,8 @@ namespace Intersect.Client.Framework.Gwen.Anim.Size
 
         private int mStartSize;
 
-        public Width( int startSize, int endSize, float length, bool hide = false, float delay = 0.0f, float ease = 1.0f )
-            : base( length, delay, ease )
+        public Width(int startSize, int endSize, float length, bool hide = false, float delay = 0.0f, float ease = 1.0f)
+            : base(length, delay, ease)
         {
             mStartSize = startSize;
             mDelta = endSize - mStartSize;
@@ -26,10 +26,10 @@ namespace Intersect.Client.Framework.Gwen.Anim.Size
             mControl.Width = mStartSize;
         }
 
-        protected override void Run( float delta )
+        protected override void Run(float delta)
         {
-            base.Run( delta );
-            mControl.Width = (int)Math.Round( mStartSize + mDelta * delta );
+            base.Run(delta);
+            mControl.Width = (int)Math.Round(mStartSize + mDelta * delta);
         }
 
         protected override void OnFinish()

@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public PlayMusicPacket( string bgm )
+        public PlayMusicPacket(string bgm)
         {
             BGM = bgm;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public string BGM { get; set; }
 
     }

@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public BlockPacket( bool blocking )
+        public BlockPacket(bool blocking)
         {
             Blocking = blocking;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public bool Blocking { get; set; }
 
     }

@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public PartyPacket( PartyMemberPacket[] memberData )
+        public PartyPacket(PartyMemberPacket[] memberData)
         {
             MemberData = memberData;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public PartyMemberPacket[] MemberData { get; set; }
 
     }

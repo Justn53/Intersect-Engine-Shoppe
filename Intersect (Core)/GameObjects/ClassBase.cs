@@ -43,12 +43,12 @@ namespace Intersect.GameObjects
         [NotMapped] public int[] VitalRegen = new int[(int)Vitals.VitalCount];
 
         [JsonConstructor]
-        public ClassBase( Guid id ) : base( id )
+        public ClassBase(Guid id) : base(id)
         {
             Name = "New Class";
 
             ExperienceCurve = new ExperienceCurve();
-            ExperienceCurve.Calculate( 1 );
+            ExperienceCurve.Calculate(1);
             BaseExp = DEFAULT_BASE_EXPERIENCE;
             ExpIncrease = DEFAULT_EXPERIENCE_INCREASE;
         }
@@ -59,12 +59,12 @@ namespace Intersect.GameObjects
             Name = "New Class";
 
             ExperienceCurve = new ExperienceCurve();
-            ExperienceCurve.Calculate( 1 );
+            ExperienceCurve.Calculate(1);
             BaseExp = DEFAULT_BASE_EXPERIENCE;
             ExpIncrease = DEFAULT_EXPERIENCE_INCREASE;
         }
 
-        [Column( "AttackAnimation" )]
+        [Column("AttackAnimation")]
         [JsonProperty]
         public Guid AttackAnimationId { get; set; }
 
@@ -72,7 +72,7 @@ namespace Intersect.GameObjects
         [JsonIgnore]
         public AnimationBase AttackAnimation
         {
-            get => AnimationBase.Get( AttackAnimationId );
+            get => AnimationBase.Get(AttackAnimationId);
             set => AttackAnimationId = value?.Id ?? Guid.Empty;
         }
 
@@ -96,8 +96,8 @@ namespace Intersect.GameObjects
             get => mBaseExp;
             set
             {
-                mBaseExp = Math.Max( 0, value );
-                ExperienceCurve.BaseExperience = Math.Max( 1, mBaseExp );
+                mBaseExp = Math.Max(0, value);
+                ExperienceCurve.BaseExperience = Math.Max(1, mBaseExp);
             }
         }
 
@@ -106,7 +106,7 @@ namespace Intersect.GameObjects
             get => mExpIncrease;
             set
             {
-                mExpIncrease = Math.Max( 0, value );
+                mExpIncrease = Math.Max(0, value);
                 ExperienceCurve.Gain = 1 + value / 100.0;
             }
         }
@@ -128,7 +128,7 @@ namespace Intersect.GameObjects
         public int ScalingStat { get; set; }
 
         //Spawn Info
-        [Column( "SpawnMap" )]
+        [Column("SpawnMap")]
         [JsonProperty]
         public Guid SpawnMapId { get; set; }
 
@@ -136,7 +136,7 @@ namespace Intersect.GameObjects
         [JsonIgnore]
         public MapBase SpawnMap
         {
-            get => MapBase.Get( SpawnMapId );
+            get => MapBase.Get(SpawnMapId);
             set => SpawnMapId = value?.Id ?? Guid.Empty;
         }
 
@@ -147,86 +147,86 @@ namespace Intersect.GameObjects
         public int SpawnDir { get; set; }
 
         //Base Stats
-        [Column( "BaseStats" )]
+        [Column("BaseStats")]
         [JsonIgnore]
         public string JsonBaseStats
         {
-            get => DatabaseUtils.SaveIntArray( BaseStat, (int)Stats.StatCount );
-            set => BaseStat = DatabaseUtils.LoadIntArray( value, (int)Stats.StatCount );
+            get => DatabaseUtils.SaveIntArray(BaseStat, (int)Stats.StatCount);
+            set => BaseStat = DatabaseUtils.LoadIntArray(value, (int)Stats.StatCount);
         }
 
         //Base Vitals
-        [Column( "BaseVitals" )]
+        [Column("BaseVitals")]
         [JsonIgnore]
         public string JsonBaseVitals
         {
-            get => DatabaseUtils.SaveIntArray( BaseVital, (int)Vitals.VitalCount );
-            set => BaseVital = DatabaseUtils.LoadIntArray( value, (int)Vitals.VitalCount );
+            get => DatabaseUtils.SaveIntArray(BaseVital, (int)Vitals.VitalCount);
+            set => BaseVital = DatabaseUtils.LoadIntArray(value, (int)Vitals.VitalCount);
         }
 
         //Starting Items
-        [Column( "Items" )]
+        [Column("Items")]
         [JsonIgnore]
         public string JsonItems
         {
-            get => JsonConvert.SerializeObject( Items );
-            protected set => Items = JsonConvert.DeserializeObject<List<ClassItem>>( value );
+            get => JsonConvert.SerializeObject(Items);
+            protected set => Items = JsonConvert.DeserializeObject<List<ClassItem>>(value);
         }
 
         //Starting Spells
-        [Column( "Spells" )]
+        [Column("Spells")]
         [JsonIgnore]
         public string JsonSpells
         {
-            get => JsonConvert.SerializeObject( Spells );
-            protected set => Spells = JsonConvert.DeserializeObject<List<ClassSpell>>( value );
+            get => JsonConvert.SerializeObject(Spells);
+            protected set => Spells = JsonConvert.DeserializeObject<List<ClassSpell>>(value);
         }
 
         //Sprites
         [JsonIgnore]
-        [Column( "Sprites" )]
+        [Column("Sprites")]
         public string JsonSprites
         {
-            get => JsonConvert.SerializeObject( Sprites );
-            protected set => Sprites = JsonConvert.DeserializeObject<List<ClassSprite>>( value );
+            get => JsonConvert.SerializeObject(Sprites);
+            protected set => Sprites = JsonConvert.DeserializeObject<List<ClassSprite>>(value);
         }
 
         //Stat Increases (per level)
         [JsonIgnore]
-        [Column( "StatIncreases" )]
+        [Column("StatIncreases")]
         public string StatIncreaseJson
         {
-            get => DatabaseUtils.SaveIntArray( StatIncrease, (int)Stats.StatCount );
-            set => StatIncrease = DatabaseUtils.LoadIntArray( value, (int)Stats.StatCount );
+            get => DatabaseUtils.SaveIntArray(StatIncrease, (int)Stats.StatCount);
+            set => StatIncrease = DatabaseUtils.LoadIntArray(value, (int)Stats.StatCount);
         }
 
         //Vital Increases (per level0
         [JsonIgnore]
-        [Column( "VitalIncreases" )]
+        [Column("VitalIncreases")]
         public string VitalIncreaseJson
         {
-            get => DatabaseUtils.SaveIntArray( VitalIncrease, (int)Vitals.VitalCount );
-            set => VitalIncrease = DatabaseUtils.LoadIntArray( value, (int)Vitals.VitalCount );
+            get => DatabaseUtils.SaveIntArray(VitalIncrease, (int)Vitals.VitalCount);
+            set => VitalIncrease = DatabaseUtils.LoadIntArray(value, (int)Vitals.VitalCount);
         }
 
         //Vital Regen %
         [JsonIgnore]
-        [Column( "VitalRegen" )]
+        [Column("VitalRegen")]
         public string RegenJson
         {
-            get => DatabaseUtils.SaveIntArray( VitalRegen, (int)Vitals.VitalCount );
-            set => VitalRegen = DatabaseUtils.LoadIntArray( value, (int)Vitals.VitalCount );
+            get => DatabaseUtils.SaveIntArray(VitalRegen, (int)Vitals.VitalCount);
+            set => VitalRegen = DatabaseUtils.LoadIntArray(value, (int)Vitals.VitalCount);
         }
 
         [JsonIgnore]
-        [Column( "ExperienceOverrides" )]
+        [Column("ExperienceOverrides")]
         public string ExpOverridesJson
         {
-            get => JsonConvert.SerializeObject( ExperienceOverrides );
+            get => JsonConvert.SerializeObject(ExperienceOverrides);
             set
             {
-                ExperienceOverrides = JsonConvert.DeserializeObject<Dictionary<int, long>>( value ?? "" );
-                if( ExperienceOverrides == null )
+                ExperienceOverrides = JsonConvert.DeserializeObject<Dictionary<int, long>>(value ?? "");
+                if (ExperienceOverrides == null)
                 {
                     ExperienceOverrides = new Dictionary<int, long>();
                 }
@@ -236,14 +236,14 @@ namespace Intersect.GameObjects
         /// <inheritdoc />
         public string Folder { get; set; } = "";
 
-        public long ExperienceToNextLevel( int level )
+        public long ExperienceToNextLevel(int level)
         {
-            if( ExperienceOverrides.ContainsKey( level ) )
+            if (ExperienceOverrides.ContainsKey(level))
             {
                 return ExperienceOverrides[level];
             }
 
-            return ExperienceCurve.Calculate( level );
+            return ExperienceCurve.Calculate(level);
         }
 
     }
@@ -258,7 +258,7 @@ namespace Intersect.GameObjects
 
         public ItemBase Get()
         {
-            return ItemBase.Get( Id );
+            return ItemBase.Get(Id);
         }
 
     }
@@ -273,7 +273,7 @@ namespace Intersect.GameObjects
 
         public SpellBase Get()
         {
-            return SpellBase.Get( Id );
+            return SpellBase.Get(Id);
         }
 
     }

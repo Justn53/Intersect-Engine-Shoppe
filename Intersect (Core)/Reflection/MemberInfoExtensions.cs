@@ -7,9 +7,9 @@ namespace Intersect.Reflection
 {
     public static class MemberInfoExtensions
     {
-        public static string GetFullName( this MemberInfo memberInfo )
+        public static string GetFullName(this MemberInfo memberInfo)
         {
-            if( memberInfo is Type type )
+            if (memberInfo is Type type)
             {
                 return type.FullName;
             }
@@ -19,20 +19,20 @@ namespace Intersect.Reflection
             return declaringType == null ? memberInfo.Name : $@"{declaringType.FullName}.{memberInfo.Name}";
         }
 
-        public static string GetSignature( this MethodInfo methodInfo, bool fullyQualified = false )
+        public static string GetSignature(this MethodInfo methodInfo, bool fullyQualified = false)
         {
-            Debug.Assert( methodInfo != null );
+            Debug.Assert(methodInfo != null);
 
             var returnTypeName = fullyQualified ? methodInfo.ReturnType.FullName : methodInfo.ReturnType.Name;
             var declaringTypeName = fullyQualified ? methodInfo.DeclaringType.FullName : methodInfo.DeclaringType.Name;
-            var parameterTypes = methodInfo.GetParameters().Select( parameter => parameter.ParameterType );
+            var parameterTypes = methodInfo.GetParameters().Select(parameter => parameter.ParameterType);
             var parameterTypeNames = parameterTypes.Select(
                 parameterType => fullyQualified ? parameterType.FullName : parameterType.Name
             );
 
-            return $"{returnTypeName} {declaringTypeName}.{methodInfo.Name}({string.Join( ", ", parameterTypeNames )})";
+            return $"{returnTypeName} {declaringTypeName}.{methodInfo.Name}({string.Join(", ", parameterTypeNames)})";
         }
 
-        public static string GetFullSignature( this MethodInfo methodInfo ) => GetSignature( methodInfo, true );
+        public static string GetFullSignature(this MethodInfo methodInfo) => GetSignature(methodInfo, true);
     }
 }

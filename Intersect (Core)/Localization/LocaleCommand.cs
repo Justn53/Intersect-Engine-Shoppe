@@ -9,7 +9,7 @@ namespace Intersect.Localization
     public class LocaleCommand : LocaleDescribableToken
     {
 
-        [JsonProperty( nameof( Help ), NullValueHandling = NullValueHandling.Ignore )] private LocalizedString mHelp;
+        [JsonProperty(nameof(Help), NullValueHandling = NullValueHandling.Ignore)] private LocalizedString mHelp;
 
         public LocaleCommand()
         {
@@ -19,7 +19,7 @@ namespace Intersect.Localization
             string name,
             string description = null,
             string help = null
-        ) : base( name, description )
+        ) : base(name, description)
         {
             mHelp = help?.Trim();
         }
@@ -30,7 +30,7 @@ namespace Intersect.Localization
             get => mHelp ?? "";
             set
             {
-                if( mHelp == null )
+                if (mHelp == null)
                 {
                     mHelp = value;
                 }

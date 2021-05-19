@@ -13,7 +13,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Initializes a new instance of the <see cref="Highlight" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Highlight( Base parent ) : base( parent )
+        public Highlight(Base parent) : base(parent)
         {
         }
 
@@ -21,9 +21,9 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawHighlight( this );
+            skin.DrawHighlight(this);
         }
 
     }

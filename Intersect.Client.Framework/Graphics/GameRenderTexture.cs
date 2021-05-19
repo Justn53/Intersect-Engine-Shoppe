@@ -4,7 +4,7 @@
     public abstract class GameRenderTexture : GameTexture
     {
 
-        public GameRenderTexture( int width, int height )
+        public GameRenderTexture(int width, int height)
         {
         }
 
@@ -21,7 +21,7 @@
         /// </summary>
         public abstract void End();
 
-        public bool SetActive( bool active )
+        public bool SetActive(bool active)
         {
             return true;
         }
@@ -29,7 +29,7 @@
         /// <summary>
         ///     Clears everything off the render target with a specified color.
         /// </summary>
-        public abstract void Clear( Color color );
+        public abstract void Clear(Color color);
 
         public abstract override object GetTexture();
 

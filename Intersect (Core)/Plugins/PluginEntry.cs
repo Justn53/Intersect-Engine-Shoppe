@@ -10,26 +10,26 @@ namespace Intersect.Plugins
         private bool mDisposed;
 
         /// <inheritdoc />
-        public virtual void OnBootstrap( IPluginBootstrapContext context ) { }
+        public virtual void OnBootstrap(IPluginBootstrapContext context) { }
 
         /// <inheritdoc />
-        public virtual void OnStart( IPluginContext context ) { }
+        public virtual void OnStart(IPluginContext context) { }
 
         /// <inheritdoc />
-        public virtual void OnStop( IPluginContext context ) { }
+        public virtual void OnStop(IPluginContext context) { }
 
         /// <inheritdoc />
         public void Dispose()
         {
-            Dispose( true );
-            GC.SuppressFinalize( this );
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <inheritdoc cref="IDisposable.Dispose" />
         /// <param name="disposing">if it is disposing or finalizing</param>
-        protected virtual void Dispose( bool disposing )
+        protected virtual void Dispose(bool disposing)
         {
-            if( mDisposed )
+            if (mDisposed)
             {
                 return;
             }

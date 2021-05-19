@@ -16,70 +16,70 @@ namespace Intersect.Server.Web.RestApi.Authentication.OAuth.Providers
     internal class RefreshTokenProvider : AuthenticationTokenProvider
     {
 
-        public RefreshTokenProvider( ApiConfiguration configuration )
+        public RefreshTokenProvider(ApiConfiguration configuration)
         {
             Configuration = configuration;
         }
 
         private ApiConfiguration Configuration { get; }
 
-        public override async Task CreateAsync( AuthenticationTokenCreateContext context )
+        public override async Task CreateAsync(AuthenticationTokenCreateContext context)
         {
-            if( context.OwinContext == null )
+            if (context.OwinContext == null)
             {
                 return;
             }
 
             var properties = context.Ticket?.Properties;
-            if( properties == null )
+            if (properties == null)
             {
                 return;
             }
 
             var identity = context.Ticket.Identity;
-            if( identity == null )
+            if (identity == null)
             {
                 return;
             }
 
-            if( !Guid.TryParse( identity.FindFirst( IntersectClaimTypes.ClientId )?.Value, out var clientId ) )
+            if (!Guid.TryParse(identity.FindFirst(IntersectClaimTypes.ClientId)?.Value, out var clientId))
             {
                 Log.Diagnostic(
-                    "Received invalid client id '{0}'.", identity.FindFirst( IntersectClaimTypes.UserId )?.Value
+                    "Received invalid client id '{0}'.", identity.FindFirst(IntersectClaimTypes.UserId)?.Value
                 );
             }
 
-            var identifier = identity.FindFirst( IntersectClaimTypes.UserId )?.Value;
-            if( !Guid.TryParse( identifier, out var userId ) )
+            var identifier = identity.FindFirst(IntersectClaimTypes.UserId)?.Value;
+            if (!Guid.TryParse(identifier, out var userId))
             {
                 return;
             }
 
-            var userName = identity.FindFirst( IntersectClaimTypes.UserName )?.Value;
+            var userName = identity.FindFirst(IntersectClaimTypes.UserName)?.Value;
 
             var issued = DateTime.UtcNow;
-            var expires = issued.AddMinutes( Configuration.RefreshTokenLifetime );
+            var expires = issued.AddMinutes(Configuration.RefreshTokenLifetime);
 
-            var ticketId = context.OwinContext.Get<Guid>( "ticket_id" );
-            if( ticketId == Guid.Empty )
+            var ticketId = context.OwinContext.Get<Guid>("ticket_id");
+            if (ticketId == Guid.Empty)
             {
-                identity.FindAll( IntersectClaimTypes.TicketId )
+                identity.FindAll(IntersectClaimTypes.TicketId)
                     ?.ToList()
                     .ForEach(
                         claim =>
                         {
-                            if( !Guid.TryParse( claim?.Value, out var guid ) || guid == Guid.Empty )
+                            if (!Guid.TryParse(claim?.Value, out var guid) || guid == Guid.Empty)
                             {
-                                identity.TryRemoveClaim( claim );
+                                identity.TryRemoveClaim(claim);
                             }
                         }
                     );
 
-                var ticketIdClaim = identity.FindFirst( IntersectClaimTypes.TicketId );
-                if( ticketIdClaim == null || !Guid.TryParse( ticketIdClaim.Value, out ticketId ) )
+                var ticketIdClaim = identity.FindFirst(IntersectClaimTypes.TicketId);
+                if (ticketIdClaim == null || !Guid.TryParse(ticketIdClaim.Value, out ticketId))
                 {
                     ticketId = Guid.NewGuid();
-                    identity.AddClaim( new Claim( IntersectClaimTypes.TicketId, ticketId.ToString() ) );
+                    identity.AddClaim(new Claim(IntersectClaimTypes.TicketId, ticketId.ToString()));
                 }
             }
 
@@ -98,29 +98,29 @@ namespace Intersect.Server.Web.RestApi.Authentication.OAuth.Providers
 
             token.Ticket = context.SerializeTicket();
 
-            if( await RefreshToken.Add( token, true ) )
+            if (await RefreshToken.Add(token, true))
             {
-                context.SetToken( token.Id.ToString() );
+                context.SetToken(token.Id.ToString());
             }
         }
 
-        public override async Task ReceiveAsync( AuthenticationTokenReceiveContext context )
+        public override async Task ReceiveAsync(AuthenticationTokenReceiveContext context)
         {
-            if( !Guid.TryParse( context?.Token, out var refreshTokenId ) )
+            if (!Guid.TryParse(context?.Token, out var refreshTokenId))
             {
                 return;
             }
 
-            var refreshToken = RefreshToken.Find( refreshTokenId );
+            var refreshToken = RefreshToken.Find(refreshTokenId);
 
-            if( refreshToken == null )
+            if (refreshToken == null)
             {
                 return;
             }
 
             // TODO: Require username
 
-            context?.DeserializeTicket( refreshToken.Ticket );
+            context?.DeserializeTicket(refreshToken.Ticket);
         }
 
     }

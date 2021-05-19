@@ -12,7 +12,7 @@ namespace Intersect.Network.Packets.Editor
         {
         }
 
-        public MapUpdatePacket( Guid mapId, string jsonData, byte[] tileData, byte[] attributeData )
+        public MapUpdatePacket(Guid mapId, string jsonData, byte[] tileData, byte[] attributeData)
         {
             MapId = mapId;
             JsonData = jsonData;
@@ -20,16 +20,16 @@ namespace Intersect.Network.Packets.Editor
             AttributeData = attributeData;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid MapId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public string JsonData { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public byte[] TileData { get; set; }
 
-        [Key( 3 )]
+        [Key(3)]
         public byte[] AttributeData { get; set; }
 
     }

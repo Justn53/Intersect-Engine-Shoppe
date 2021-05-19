@@ -24,37 +24,37 @@ namespace Intersect.Models
         public static Dictionary<Type, GameObjectType> EnumMap => sEnumMap =
             sEnumMap ?? new Dictionary<Type, GameObjectType>();
 
-        public static DatabaseObjectLookup GetLookup( Type type )
+        public static DatabaseObjectLookup GetLookup(Type type)
         {
-            if( type == null )
+            if (type == null)
             {
-                throw new ArgumentNullException( nameof( type ) );
+                throw new ArgumentNullException(nameof(type));
             }
 
-            if( LookupMap == null )
+            if (LookupMap == null)
             {
-                throw new ArgumentNullException( nameof( LookupMap ) );
+                throw new ArgumentNullException(nameof(LookupMap));
             }
 
-            lock( Lock )
+            lock (Lock)
             {
                 try
                 {
-                    if( !LookupMap.ContainsKey( type ) )
+                    if (!LookupMap.ContainsKey(type))
                     {
-                        LookupMap[type] = new DatabaseObjectLookup( type );
+                        LookupMap[type] = new DatabaseObjectLookup(type);
                     }
                 }
-                catch( Exception exception )
+                catch (Exception exception)
                 {
-                    Log.Error( $"Impossible NPE... [LookupMap={LookupMap}, type={type}]" );
-                    if( exception.InnerException != null )
+                    Log.Error($"Impossible NPE... [LookupMap={LookupMap}, type={type}]");
+                    if (exception.InnerException != null)
                     {
-                        Log.Error( exception.InnerException );
+                        Log.Error(exception.InnerException);
                     }
 
-                    Log.Error( exception );
-                    Log.Error( $"{nameof( LookupMap )}={LookupMap},{nameof( type )}={type}" );
+                    Log.Error(exception);
+                    Log.Error($"{nameof(LookupMap)}={LookupMap},{nameof(type)}={type}");
 
                     throw;
                 }
@@ -63,32 +63,32 @@ namespace Intersect.Models
             }
         }
 
-        public static GameObjectType GetGameObjectType( Type type )
+        public static GameObjectType GetGameObjectType(Type type)
         {
-            if( type == null )
+            if (type == null)
             {
                 throw new ArgumentNullException();
             }
 
-            if( LookupMap == null )
+            if (LookupMap == null)
             {
                 throw new ArgumentNullException();
             }
 
-            if( EnumMap == null )
+            if (EnumMap == null)
             {
                 throw new ArgumentNullException();
             }
 
-            if( EnumMap.ContainsKey( type ) )
+            if (EnumMap.ContainsKey(type))
             {
                 return EnumMap[type];
             }
 
-            var values = Enum.GetValues( typeof( GameObjectType ) );
-            foreach( GameObjectType gameObjectType in values )
+            var values = Enum.GetValues(typeof(GameObjectType));
+            foreach (GameObjectType gameObjectType in values)
             {
-                if( type != gameObjectType.GetObjectType() )
+                if (type != gameObjectType.GetObjectType())
                 {
                     continue;
                 }
@@ -101,14 +101,14 @@ namespace Intersect.Models
             throw new ArgumentOutOfRangeException();
         }
 
-        public static string[] GetNameList( GameObjectType type )
+        public static string[] GetNameList(GameObjectType type)
         {
-            return GetNameList( type.GetObjectType() );
+            return GetNameList(type.GetObjectType());
         }
 
-        public static string[] GetNameList( Type type )
+        public static string[] GetNameList(Type type)
         {
-            return GetLookup( type )?.Select( pair => pair.Value?.Name ).ToArray();
+            return GetLookup(type)?.Select(pair => pair.Value?.Name).ToArray();
         }
 
     }

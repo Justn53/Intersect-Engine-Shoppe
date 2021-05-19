@@ -14,17 +14,17 @@ namespace Intersect.Extensions
         {
             get
             {
-                yield return new object[] { new DateTime( 0, DateTimeKind.Unspecified ) };
-                yield return new object[] { new DateTime( 0, DateTimeKind.Local ) };
-                yield return new object[] { new DateTime( 0, DateTimeKind.Utc ) };
+                yield return new object[] { new DateTime(0, DateTimeKind.Unspecified) };
+                yield return new object[] { new DateTime(0, DateTimeKind.Local) };
+                yield return new object[] { new DateTime(0, DateTimeKind.Utc) };
 
-                yield return new object[] { new DateTime( DateTime.MinValue.Ticks, DateTimeKind.Unspecified ) };
-                yield return new object[] { new DateTime( DateTime.MinValue.Ticks, DateTimeKind.Local ) };
-                yield return new object[] { new DateTime( DateTime.MinValue.Ticks, DateTimeKind.Utc ) };
+                yield return new object[] { new DateTime(DateTime.MinValue.Ticks, DateTimeKind.Unspecified) };
+                yield return new object[] { new DateTime(DateTime.MinValue.Ticks, DateTimeKind.Local) };
+                yield return new object[] { new DateTime(DateTime.MinValue.Ticks, DateTimeKind.Utc) };
 
-                yield return new object[] { new DateTime( DateTime.MaxValue.Ticks, DateTimeKind.Unspecified ) };
-                yield return new object[] { new DateTime( DateTime.MaxValue.Ticks, DateTimeKind.Local ) };
-                yield return new object[] { new DateTime( DateTime.MaxValue.Ticks, DateTimeKind.Utc ) };
+                yield return new object[] { new DateTime(DateTime.MaxValue.Ticks, DateTimeKind.Unspecified) };
+                yield return new object[] { new DateTime(DateTime.MaxValue.Ticks, DateTimeKind.Local) };
+                yield return new object[] { new DateTime(DateTime.MaxValue.Ticks, DateTimeKind.Utc) };
 
                 var random = new Random();
 
@@ -45,31 +45,31 @@ namespace Intersect.Extensions
             }
         }
 
-        [TestCaseSource( nameof( Data ) )]
-        public void TestClone( DateTime dateTime )
+        [TestCaseSource(nameof(Data))]
+        public void TestClone(DateTime dateTime)
         {
             var clone = dateTime.Clone();
-            Assert.AreEqual( dateTime.Ticks, clone.Ticks );
-            Assert.AreEqual( dateTime.Kind, clone.Kind );
+            Assert.AreEqual(dateTime.Ticks, clone.Ticks);
+            Assert.AreEqual(dateTime.Kind, clone.Kind);
         }
 
-        [Ignore( @"No working test implementation due to environment" )] // TODO: This entire test is a pain to implement
-        [TestCaseSource( nameof( Data ) )]
-        public void TestConvertKind( DateTime dateTime )
+        [Ignore(@"No working test implementation due to environment")] // TODO: This entire test is a pain to implement
+        [TestCaseSource(nameof(Data))]
+        public void TestConvertKind(DateTime dateTime)
         {
-            var convertedLocal = dateTime.ConvertKind( DateTimeKind.Local );
-            var convertedUnspecified = dateTime.ConvertKind( DateTimeKind.Unspecified );
-            var convertedUtc = dateTime.ConvertKind( DateTimeKind.Utc );
+            var convertedLocal = dateTime.ConvertKind(DateTimeKind.Local);
+            var convertedUnspecified = dateTime.ConvertKind(DateTimeKind.Unspecified);
+            var convertedUtc = dateTime.ConvertKind(DateTimeKind.Utc);
             var tickOffset = DateTimeOffset.Now.Offset.Ticks;
 
-            switch( dateTime.Kind )
+            switch (dateTime.Kind)
             {
                 case DateTimeKind.Local:
-                    Assert.AreEqual( dateTime, convertedLocal );
-                    Assert.AreEqual( DateTimeKind.Unspecified, convertedUnspecified.Kind );
-                    Assert.AreEqual( dateTime.Ticks, convertedUnspecified.Ticks );
-                    Assert.AreEqual( DateTimeKind.Utc, convertedUtc.Kind );
-                    Assert.AreEqual( dateTime.Ticks, convertedUnspecified.Ticks );
+                    Assert.AreEqual(dateTime, convertedLocal);
+                    Assert.AreEqual(DateTimeKind.Unspecified, convertedUnspecified.Kind);
+                    Assert.AreEqual(dateTime.Ticks, convertedUnspecified.Ticks);
+                    Assert.AreEqual(DateTimeKind.Utc, convertedUtc.Kind);
+                    Assert.AreEqual(dateTime.Ticks, convertedUnspecified.Ticks);
 
                     break;
 
@@ -83,11 +83,11 @@ namespace Intersect.Extensions
                     break;
 
                 case DateTimeKind.Utc:
-                    Assert.AreEqual( dateTime, convertedUtc );
-                    Assert.AreEqual( DateTimeKind.Local, convertedLocal.Kind );
-                    Assert.AreEqual( dateTime.Ticks, convertedLocal.Ticks );
-                    Assert.AreEqual( DateTimeKind.Unspecified, convertedUnspecified.Kind );
-                    Assert.AreEqual( dateTime.Ticks, convertedUnspecified.Ticks );
+                    Assert.AreEqual(dateTime, convertedUtc);
+                    Assert.AreEqual(DateTimeKind.Local, convertedLocal.Kind);
+                    Assert.AreEqual(dateTime.Ticks, convertedLocal.Ticks);
+                    Assert.AreEqual(DateTimeKind.Unspecified, convertedUnspecified.Kind);
+                    Assert.AreEqual(dateTime.Ticks, convertedUnspecified.Ticks);
 
                     break;
 
@@ -100,13 +100,13 @@ namespace Intersect.Extensions
         public void TestUnixEpoch()
         {
             var unixEpoch = DateTimeExtensions.UnixEpoch;
-            Assert.AreEqual( 1970, unixEpoch.Year );
-            Assert.AreEqual( 1, unixEpoch.Month );
-            Assert.AreEqual( 1, unixEpoch.Day );
-            Assert.AreEqual( 0, unixEpoch.Hour );
-            Assert.AreEqual( 0, unixEpoch.Minute );
-            Assert.AreEqual( 0, unixEpoch.Second );
-            Assert.AreEqual( 0, unixEpoch.Millisecond );
+            Assert.AreEqual(1970, unixEpoch.Year);
+            Assert.AreEqual(1, unixEpoch.Month);
+            Assert.AreEqual(1, unixEpoch.Day);
+            Assert.AreEqual(0, unixEpoch.Hour);
+            Assert.AreEqual(0, unixEpoch.Minute);
+            Assert.AreEqual(0, unixEpoch.Second);
+            Assert.AreEqual(0, unixEpoch.Millisecond);
         }
     }
 }

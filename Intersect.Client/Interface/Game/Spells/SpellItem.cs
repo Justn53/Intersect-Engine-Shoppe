@@ -50,7 +50,7 @@ namespace Intersect.Client.Interface.Game.Spells
 
         public ImagePanel Pnl;
 
-        public SpellItem( SpellsWindow spellWindow, int index )
+        public SpellItem(SpellsWindow spellWindow, int index)
         {
             mSpellWindow = spellWindow;
             mYindex = index;
@@ -58,69 +58,69 @@ namespace Intersect.Client.Interface.Game.Spells
 
         public void Setup()
         {
-            Pnl = new ImagePanel( Container, "SpellIcon" );
+            Pnl = new ImagePanel(Container, "SpellIcon");
             Pnl.HoverEnter += pnl_HoverEnter;
             Pnl.HoverLeave += pnl_HoverLeave;
             Pnl.RightClicked += pnl_RightClicked;
             Pnl.Clicked += pnl_Clicked;
-            mCooldownLabel = new Label( Pnl, "SpellCooldownLabel" );
+            mCooldownLabel = new Label(Pnl, "SpellCooldownLabel");
             mCooldownLabel.IsHidden = true;
-            mCooldownLabel.TextColor = new Color( 0, 255, 255, 255 );
+            mCooldownLabel.TextColor = new Color(0, 255, 255, 255);
         }
 
-        void pnl_Clicked( Base sender, ClickedEventArgs arguments )
+        void pnl_Clicked(Base sender, ClickedEventArgs arguments)
         {
             mClickTime = Globals.System.GetTimeMs() + 500;
         }
 
-        void pnl_RightClicked( Base sender, ClickedEventArgs arguments )
+        void pnl_RightClicked(Base sender, ClickedEventArgs arguments)
         {
-            Globals.Me.TryForgetSpell( mYindex );
+            Globals.Me.TryForgetSpell(mYindex);
         }
 
-        void pnl_HoverLeave( Base sender, EventArgs arguments )
+        void pnl_HoverLeave(Base sender, EventArgs arguments)
         {
             mMouseOver = false;
             mMouseX = -1;
             mMouseY = -1;
-            if( mDescWindow != null )
+            if (mDescWindow != null)
             {
                 mDescWindow.Dispose();
                 mDescWindow = null;
             }
         }
 
-        void pnl_HoverEnter( Base sender, EventArgs arguments )
+        void pnl_HoverEnter(Base sender, EventArgs arguments)
         {
-            if( InputHandler.MouseFocus != null )
+            if (InputHandler.MouseFocus != null)
             {
                 return;
             }
 
             mMouseOver = true;
             mCanDrag = true;
-            if( Globals.InputManager.MouseButtonDown( GameInput.MouseButtons.Left ) )
+            if (Globals.InputManager.MouseButtonDown(GameInput.MouseButtons.Left))
             {
                 mCanDrag = false;
 
                 return;
             }
 
-            if( mDescWindow != null )
+            if (mDescWindow != null)
             {
                 mDescWindow.Dispose();
                 mDescWindow = null;
             }
 
-            mDescWindow = new SpellDescWindow( Globals.Me.Spells[mYindex].SpellId, mSpellWindow.X, mSpellWindow.Y );
+            mDescWindow = new SpellDescWindow(Globals.Me.Spells[mYindex].SpellId, mSpellWindow.X, mSpellWindow.Y);
         }
 
         public FloatRect RenderBounds()
         {
             var rect = new FloatRect()
             {
-                X = Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).X,
-                Y = Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).Y,
+                X = Pnl.LocalPosToCanvas(new Point(0, 0)).X,
+                Y = Pnl.LocalPosToCanvas(new Point(0, 0)).Y,
                 Width = Pnl.Width,
                 Height = Pnl.Height
             };
@@ -130,35 +130,35 @@ namespace Intersect.Client.Interface.Game.Spells
 
         public void Update()
         {
-            var spell = SpellBase.Get( Globals.Me.Spells[mYindex].SpellId );
-            if( !IsDragging &&
-                ( mTexLoaded != "" && spell == null ||
+            var spell = SpellBase.Get(Globals.Me.Spells[mYindex].SpellId);
+            if (!IsDragging &&
+                (mTexLoaded != "" && spell == null ||
                  spell != null && mTexLoaded != spell.Icon ||
                  mCurrentSpellId != Globals.Me.Spells[mYindex].SpellId ||
                  mIconCd !=
-                 Globals.Me.GetSpellCooldown( Globals.Me.Spells[mYindex].SpellId ) > Globals.System.GetTimeMs() ||
-                 Globals.Me.GetSpellCooldown( Globals.Me.Spells[mYindex].SpellId ) > Globals.System.GetTimeMs() ) )
+                 Globals.Me.GetSpellCooldown(Globals.Me.Spells[mYindex].SpellId) > Globals.System.GetTimeMs() ||
+                 Globals.Me.GetSpellCooldown(Globals.Me.Spells[mYindex].SpellId) > Globals.System.GetTimeMs()))
             {
                 mCooldownLabel.IsHidden = true;
-                if( spell != null )
+                if (spell != null)
                 {
-                    var spellTex = Globals.ContentManager.GetTexture( GameContentManager.TextureType.Spell, spell.Icon );
-                    if( spellTex != null )
+                    var spellTex = Globals.ContentManager.GetTexture(GameContentManager.TextureType.Spell, spell.Icon);
+                    if (spellTex != null)
                     {
                         Pnl.Texture = spellTex;
-                        if( Globals.Me.GetSpellCooldown( Globals.Me.Spells[mYindex].SpellId ) >
-                            Globals.System.GetTimeMs() )
+                        if (Globals.Me.GetSpellCooldown(Globals.Me.Spells[mYindex].SpellId) >
+                            Globals.System.GetTimeMs())
                         {
-                            Pnl.RenderColor = new Color( 100, 255, 255, 255 );
+                            Pnl.RenderColor = new Color(100, 255, 255, 255);
                         }
                         else
                         {
-                            Pnl.RenderColor = new Color( 255, 255, 255, 255 );
+                            Pnl.RenderColor = new Color(255, 255, 255, 255);
                         }
                     }
                     else
                     {
-                        if( Pnl.Texture != null )
+                        if (Pnl.Texture != null)
                         {
                             Pnl.Texture = null;
                         }
@@ -166,32 +166,32 @@ namespace Intersect.Client.Interface.Game.Spells
 
                     mTexLoaded = spell.Icon;
                     mCurrentSpellId = Globals.Me.Spells[mYindex].SpellId;
-                    mIconCd = Globals.Me.GetSpellCooldown( Globals.Me.Spells[mYindex].SpellId ) >
+                    mIconCd = Globals.Me.GetSpellCooldown(Globals.Me.Spells[mYindex].SpellId) >
                               Globals.System.GetTimeMs();
 
-                    if( mIconCd )
+                    if (mIconCd)
                     {
                         mCooldownLabel.IsHidden = false;
                         var secondsRemaining =
-                            (float)( Globals.Me.GetSpellCooldown( Globals.Me.Spells[mYindex].SpellId ) -
-                                     Globals.System.GetTimeMs() ) /
+                            (float)(Globals.Me.GetSpellCooldown(Globals.Me.Spells[mYindex].SpellId) -
+                                     Globals.System.GetTimeMs()) /
                             1000f;
 
-                        if( secondsRemaining > 10f )
+                        if (secondsRemaining > 10f)
                         {
-                            mCooldownLabel.Text = Strings.Spells.cooldown.ToString( secondsRemaining.ToString( "N0" ) );
+                            mCooldownLabel.Text = Strings.Spells.cooldown.ToString(secondsRemaining.ToString("N0"));
                         }
                         else
                         {
                             mCooldownLabel.Text = Strings.Spells.cooldown.ToString(
-                                secondsRemaining.ToString( "N1" ).Replace( ".", Strings.Numbers.dec )
+                                secondsRemaining.ToString("N1").Replace(".", Strings.Numbers.dec)
                             );
                         }
                     }
                 }
                 else
                 {
-                    if( Pnl.Texture != null )
+                    if (Pnl.Texture != null)
                     {
                         Pnl.Texture = null;
                     }
@@ -200,44 +200,44 @@ namespace Intersect.Client.Interface.Game.Spells
                 }
             }
 
-            if( !IsDragging )
+            if (!IsDragging)
             {
-                if( mMouseOver )
+                if (mMouseOver)
                 {
-                    if( !Globals.InputManager.MouseButtonDown( GameInput.MouseButtons.Left ) )
+                    if (!Globals.InputManager.MouseButtonDown(GameInput.MouseButtons.Left))
                     {
                         mCanDrag = true;
                         mMouseX = -1;
                         mMouseY = -1;
-                        if( Globals.System.GetTimeMs() < mClickTime )
+                        if (Globals.System.GetTimeMs() < mClickTime)
                         {
-                            Globals.Me.TryUseSpell( mYindex );
+                            Globals.Me.TryUseSpell(mYindex);
                             mClickTime = 0;
                         }
                     }
                     else
                     {
-                        if( mCanDrag && Draggable.Active == null )
+                        if (mCanDrag && Draggable.Active == null)
                         {
-                            if( mMouseX == -1 || mMouseY == -1 )
+                            if (mMouseX == -1 || mMouseY == -1)
                             {
-                                mMouseX = InputHandler.MousePosition.X - Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).X;
-                                mMouseY = InputHandler.MousePosition.Y - Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).Y;
+                                mMouseX = InputHandler.MousePosition.X - Pnl.LocalPosToCanvas(new Point(0, 0)).X;
+                                mMouseY = InputHandler.MousePosition.Y - Pnl.LocalPosToCanvas(new Point(0, 0)).Y;
                             }
                             else
                             {
                                 var xdiff = mMouseX -
-                                            ( InputHandler.MousePosition.X - Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).X );
+                                            (InputHandler.MousePosition.X - Pnl.LocalPosToCanvas(new Point(0, 0)).X);
 
                                 var ydiff = mMouseY -
-                                            ( InputHandler.MousePosition.Y - Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).Y );
+                                            (InputHandler.MousePosition.Y - Pnl.LocalPosToCanvas(new Point(0, 0)).Y);
 
-                                if( Math.Sqrt( Math.Pow( xdiff, 2 ) + Math.Pow( ydiff, 2 ) ) > 5 )
+                                if (Math.Sqrt(Math.Pow(xdiff, 2) + Math.Pow(ydiff, 2)) > 5)
                                 {
                                     IsDragging = true;
                                     mDragIcon = new Draggable(
-                                        Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).X + mMouseX,
-                                        Pnl.LocalPosToCanvas( new Point( 0, 0 ) ).X + mMouseY, Pnl.Texture
+                                        Pnl.LocalPosToCanvas(new Point(0, 0)).X + mMouseX,
+                                        Pnl.LocalPosToCanvas(new Point(0, 0)).X + mMouseY, Pnl.Texture
                                     );
 
                                     mTexLoaded = "";
@@ -249,15 +249,15 @@ namespace Intersect.Client.Interface.Game.Spells
             }
             else
             {
-                if( mDragIcon.Update() )
+                if (mDragIcon.Update())
                 {
                     //Drug the item and now we stopped
                     IsDragging = false;
                     var dragRect = new FloatRect(
-                        mDragIcon.X - ( Container.Padding.Left + Container.Padding.Right ) / 2,
-                        mDragIcon.Y - ( Container.Padding.Top + Container.Padding.Bottom ) / 2,
-                        ( Container.Padding.Left + Container.Padding.Right ) / 2 + Pnl.Width,
-                        ( Container.Padding.Top + Container.Padding.Bottom ) / 2 + Pnl.Height
+                        mDragIcon.X - (Container.Padding.Left + Container.Padding.Right) / 2,
+                        mDragIcon.Y - (Container.Padding.Top + Container.Padding.Bottom) / 2,
+                        (Container.Padding.Left + Container.Padding.Right) / 2 + Pnl.Width,
+                        (Container.Padding.Top + Container.Padding.Bottom) / 2 + Pnl.Height
                     );
 
                     float bestIntersect = 0;
@@ -265,54 +265,54 @@ namespace Intersect.Client.Interface.Game.Spells
 
                     //So we picked up an item and then dropped it. Lets see where we dropped it to.
                     //Check spell first.
-                    if( mSpellWindow.RenderBounds().IntersectsWith( dragRect ) )
+                    if (mSpellWindow.RenderBounds().IntersectsWith(dragRect))
                     {
-                        for( var i = 0; i < Options.MaxInvItems; i++ )
+                        for (var i = 0; i < Options.MaxInvItems; i++)
                         {
-                            if( i < mSpellWindow.Items.Count &&
-                                mSpellWindow.Items[i].RenderBounds().IntersectsWith( dragRect ) )
+                            if (i < mSpellWindow.Items.Count &&
+                                mSpellWindow.Items[i].RenderBounds().IntersectsWith(dragRect))
                             {
-                                if( FloatRect.Intersect( mSpellWindow.Items[i].RenderBounds(), dragRect ).Width *
-                                    FloatRect.Intersect( mSpellWindow.Items[i].RenderBounds(), dragRect ).Height >
-                                    bestIntersect )
+                                if (FloatRect.Intersect(mSpellWindow.Items[i].RenderBounds(), dragRect).Width *
+                                    FloatRect.Intersect(mSpellWindow.Items[i].RenderBounds(), dragRect).Height >
+                                    bestIntersect)
                                 {
                                     bestIntersect =
-                                        FloatRect.Intersect( mSpellWindow.Items[i].RenderBounds(), dragRect ).Width *
-                                        FloatRect.Intersect( mSpellWindow.Items[i].RenderBounds(), dragRect ).Height;
+                                        FloatRect.Intersect(mSpellWindow.Items[i].RenderBounds(), dragRect).Width *
+                                        FloatRect.Intersect(mSpellWindow.Items[i].RenderBounds(), dragRect).Height;
 
                                     bestIntersectIndex = i;
                                 }
                             }
                         }
 
-                        if( bestIntersectIndex > -1 )
+                        if (bestIntersectIndex > -1)
                         {
-                            if( mYindex != bestIntersectIndex )
+                            if (mYindex != bestIntersectIndex)
                             {
                                 //Try to swap....
-                                PacketSender.SendSwapSpells( bestIntersectIndex, mYindex );
-                                Globals.Me.SwapSpells( bestIntersectIndex, mYindex );
+                                PacketSender.SendSwapSpells(bestIntersectIndex, mYindex);
+                                Globals.Me.SwapSpells(bestIntersectIndex, mYindex);
                             }
                         }
                     }
-                    else if( Interface.GameUi.Hotbar.RenderBounds().IntersectsWith( dragRect ) )
+                    else if (Interface.GameUi.Hotbar.RenderBounds().IntersectsWith(dragRect))
                     {
-                        for( var i = 0; i < Options.MaxHotbar; i++ )
+                        for (var i = 0; i < Options.MaxHotbar; i++)
                         {
-                            if( Interface.GameUi.Hotbar.Items[i].RenderBounds().IntersectsWith( dragRect ) )
+                            if (Interface.GameUi.Hotbar.Items[i].RenderBounds().IntersectsWith(dragRect))
                             {
-                                if( FloatRect.Intersect(
+                                if (FloatRect.Intersect(
                                             Interface.GameUi.Hotbar.Items[i].RenderBounds(), dragRect
                                         )
                                         .Width *
-                                    FloatRect.Intersect( Interface.GameUi.Hotbar.Items[i].RenderBounds(), dragRect )
+                                    FloatRect.Intersect(Interface.GameUi.Hotbar.Items[i].RenderBounds(), dragRect)
                                         .Height >
-                                    bestIntersect )
+                                    bestIntersect)
                                 {
                                     bestIntersect =
-                                        FloatRect.Intersect( Interface.GameUi.Hotbar.Items[i].RenderBounds(), dragRect )
+                                        FloatRect.Intersect(Interface.GameUi.Hotbar.Items[i].RenderBounds(), dragRect)
                                             .Width *
-                                        FloatRect.Intersect( Interface.GameUi.Hotbar.Items[i].RenderBounds(), dragRect )
+                                        FloatRect.Intersect(Interface.GameUi.Hotbar.Items[i].RenderBounds(), dragRect)
                                             .Height;
 
                                     bestIntersectIndex = i;
@@ -320,9 +320,9 @@ namespace Intersect.Client.Interface.Game.Spells
                             }
                         }
 
-                        if( bestIntersectIndex > -1 )
+                        if (bestIntersectIndex > -1)
                         {
-                            Globals.Me.AddToHotbar( (byte)bestIntersectIndex, 1, mYindex );
+                            Globals.Me.AddToHotbar((byte)bestIntersectIndex, 1, mYindex);
                         }
                     }
 

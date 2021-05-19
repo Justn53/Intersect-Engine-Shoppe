@@ -16,36 +16,36 @@ namespace Intersect.Server.Extensions
             IReadOnlyCollection<Sort> sort
         )
         {
-            if( sort == null || sort.Count < 1 )
+            if (sort == null || sort.Count < 1)
             {
                 return queryable;
             }
 
             var sorted = queryable;
             var orderedOnce = false;
-            foreach( var sortPair in sort )
+            foreach (var sortPair in sort)
             {
-                if( string.IsNullOrWhiteSpace( sortPair.By ) )
+                if (string.IsNullOrWhiteSpace(sortPair.By))
                 {
                     continue;
                 }
 
-                object OrderLambda( TValue entity )
+                object OrderLambda(TValue entity)
                 {
-                    return EF.Property<object>( entity, sortPair.By );
+                    return EF.Property<object>(entity, sortPair.By);
                 }
 
-                if( sortPair.Direction == SortDirection.Ascending )
+                if (sortPair.Direction == SortDirection.Ascending)
                 {
                     sorted = orderedOnce
-                        ? ( (IOrderedEnumerable<TValue>)sorted ).ThenBy( OrderLambda )
-                        : sorted.OrderBy( OrderLambda );
+                        ? ((IOrderedEnumerable<TValue>)sorted).ThenBy(OrderLambda)
+                        : sorted.OrderBy(OrderLambda);
                 }
                 else
                 {
                     sorted = orderedOnce
-                        ? ( (IOrderedEnumerable<TValue>)sorted ).ThenByDescending( OrderLambda )
-                        : sorted.OrderByDescending( OrderLambda );
+                        ? ((IOrderedEnumerable<TValue>)sorted).ThenByDescending(OrderLambda)
+                        : sorted.OrderByDescending(OrderLambda);
                 }
 
                 orderedOnce = true;

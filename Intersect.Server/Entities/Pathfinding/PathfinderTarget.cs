@@ -14,7 +14,7 @@ namespace Intersect.Server.Entities.Pathfinding
 
         public int TargetZ;
 
-        public PathfinderTarget( Guid mapId, int x, int y, int z )
+        public PathfinderTarget(Guid mapId, int x, int y, int z)
         {
             TargetMapId = mapId;
             TargetX = x;

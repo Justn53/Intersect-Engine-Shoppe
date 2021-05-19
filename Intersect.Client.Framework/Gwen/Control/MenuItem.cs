@@ -28,7 +28,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="MenuItem" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public MenuItem( Base parent ) : base( parent )
+        public MenuItem(Base parent) : base(parent)
         {
             AutoSizeToContents = true;
             mOnStrip = false;
@@ -36,7 +36,7 @@ namespace Intersect.Client.Framework.Gwen.Control
             IsCheckable = false;
             IsChecked = false;
 
-            mAccelerator = new Label( this );
+            mAccelerator = new Label(this);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         {
             get
             {
-                if( mMenu == null )
+                if (mMenu == null)
                 {
                     return false;
                 }
@@ -81,30 +81,30 @@ namespace Intersect.Client.Framework.Gwen.Control
             get => mChecked;
             set
             {
-                if( value == mChecked )
+                if (value == mChecked)
                 {
                     return;
                 }
 
                 mChecked = value;
 
-                if( CheckChanged != null )
+                if (CheckChanged != null)
                 {
-                    CheckChanged.Invoke( this, EventArgs.Empty );
+                    CheckChanged.Invoke(this, EventArgs.Empty);
                 }
 
-                if( value )
+                if (value)
                 {
-                    if( Checked != null )
+                    if (Checked != null)
                     {
-                        Checked.Invoke( this, EventArgs.Empty );
+                        Checked.Invoke(this, EventArgs.Empty);
                     }
                 }
                 else
                 {
-                    if( UnChecked != null )
+                    if (UnChecked != null)
                     {
-                        UnChecked.Invoke( this, EventArgs.Empty );
+                        UnChecked.Invoke(this, EventArgs.Empty);
                     }
                 }
             }
@@ -117,20 +117,20 @@ namespace Intersect.Client.Framework.Gwen.Control
         {
             get
             {
-                if( null == mMenu )
+                if (null == mMenu)
                 {
-                    mMenu = new Menu( GetCanvas() );
+                    mMenu = new Menu(GetCanvas());
                     mMenu.IsHidden = true;
 
-                    if( !mOnStrip )
+                    if (!mOnStrip)
                     {
-                        if( mSubmenuArrow != null )
+                        if (mSubmenuArrow != null)
                         {
                             mSubmenuArrow.Dispose();
                         }
 
-                        mSubmenuArrow = new RightArrow( this );
-                        mSubmenuArrow.SetSize( 15, 15 );
+                        mSubmenuArrow = new RightArrow(this);
+                        mSubmenuArrow.SetSize(15, 15);
                     }
 
                     Invalidate();
@@ -164,46 +164,46 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawMenuItem( this, IsMenuOpen, mCheckable ? mChecked : false );
+            skin.DrawMenuItem(this, IsMenuOpen, mCheckable ? mChecked : false);
         }
 
         /// <summary>
         ///     Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout( Skin.Base skin )
+        protected override void Layout(Skin.Base skin)
         {
-            if( mSubmenuArrow != null )
+            if (mSubmenuArrow != null)
             {
-                mSubmenuArrow.Position( Pos.Right | Pos.CenterV, 4, 0 );
+                mSubmenuArrow.Position(Pos.Right | Pos.CenterV, 4, 0);
             }
 
-            base.Layout( skin );
+            base.Layout(skin);
         }
 
         /// <summary>
         ///     Internal OnPressed implementation.
         /// </summary>
-        protected override void OnClicked( int x, int y )
+        protected override void OnClicked(int x, int y)
         {
-            if( mMenu != null )
+            if (mMenu != null)
             {
                 ToggleMenu();
             }
-            else if( !mOnStrip )
+            else if (!mOnStrip)
             {
                 IsChecked = !IsChecked;
-                if( Selected != null )
+                if (Selected != null)
                 {
-                    Selected.Invoke( this, new ItemSelectedEventArgs( this ) );
+                    Selected.Invoke(this, new ItemSelectedEventArgs(this));
                 }
 
                 GetCanvas().CloseMenus();
             }
 
-            base.OnClicked( x, y );
+            base.OnClicked(x, y);
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         public void ToggleMenu()
         {
-            if( IsMenuOpen )
+            if (IsMenuOpen)
             {
                 CloseMenu();
             }
@@ -226,7 +226,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         public void OpenMenu()
         {
-            if( null == mMenu )
+            if (null == mMenu)
             {
                 return;
             }
@@ -234,18 +234,18 @@ namespace Intersect.Client.Framework.Gwen.Control
             mMenu.IsHidden = false;
             mMenu.BringToFront();
 
-            var p = LocalPosToCanvas( Point.Empty );
+            var p = LocalPosToCanvas(Point.Empty);
 
             // Strip menus open downwards
-            if( mOnStrip )
+            if (mOnStrip)
             {
-                mMenu.SetPosition( p.X, p.Y + Height + 1 );
+                mMenu.SetPosition(p.X, p.Y + Height + 1);
             }
 
             // Submenus open sidewards
             else
             {
-                mMenu.SetPosition( p.X + Width, p.Y );
+                mMenu.SetPosition(p.X + Width, p.Y);
             }
 
             // TODO: Option this.
@@ -258,7 +258,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         public void CloseMenu()
         {
-            if( null == mMenu )
+            if (null == mMenu)
             {
                 return;
             }
@@ -270,14 +270,14 @@ namespace Intersect.Client.Framework.Gwen.Control
         public override void SizeToContents()
         {
             base.SizeToContents();
-            if( mAccelerator != null )
+            if (mAccelerator != null)
             {
                 mAccelerator.SizeToContents();
                 Width = Width + mAccelerator.Width;
                 mAccelerator.Alignment = Pos.Left;
             }
 
-            if( Width < Parent.Width )
+            if (Width < Parent.Width)
             {
                 Width = Parent.Width;
             }
@@ -288,9 +288,9 @@ namespace Intersect.Client.Framework.Gwen.Control
             GwenEventHandler<ItemSelectedEventArgs> selHandler
         )
         {
-            if( mAccelerator != null )
+            if (mAccelerator != null)
             {
-                AddAccelerator( mAccelerator.Text, handler );
+                AddAccelerator(mAccelerator.Text, handler);
             }
 
             Selected += selHandler;
@@ -298,24 +298,24 @@ namespace Intersect.Client.Framework.Gwen.Control
             return this;
         }
 
-        public void SetAccelerator( string acc )
+        public void SetAccelerator(string acc)
         {
-            if( mAccelerator != null )
+            if (mAccelerator != null)
             {
                 //m_Accelerator.DelayedDelete(); // to prevent double disposing
                 mAccelerator = null;
             }
 
-            if( acc == String.Empty )
+            if (acc == String.Empty)
             {
                 return;
             }
 
-            mAccelerator = new Label( this );
+            mAccelerator = new Label(this);
             mAccelerator.Dock = Pos.Right;
             mAccelerator.Alignment = Pos.Right | Pos.CenterV;
             mAccelerator.Text = acc;
-            mAccelerator.Margin = new Margin( 0, 0, 16, 0 );
+            mAccelerator.Margin = new Margin(0, 0, 16, 0);
 
             // todo
         }

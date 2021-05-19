@@ -17,14 +17,14 @@ namespace Intersect.Server.Core.CommandParsing
     public sealed class CommandParser
     {
 
-        public CommandParser() : this( ParserSettings.Default )
+        public CommandParser() : this(ParserSettings.Default)
         {
         }
 
-        public CommandParser( ParserSettings settings )
+        public CommandParser(ParserSettings settings)
         {
             Settings = settings;
-            Tokenizer = new Tokenizer( settings.TokenizerSettings );
+            Tokenizer = new Tokenizer(settings.TokenizerSettings);
             Lookup = new Dictionary<string, ICommand>();
         }
 
@@ -34,28 +34,28 @@ namespace Intersect.Server.Core.CommandParsing
 
         private IDictionary<string, ICommand> Lookup { get; }
 
-        public bool Register<TCommand>( params object[] args ) where TCommand : ICommand
+        public bool Register<TCommand>(params object[] args) where TCommand : ICommand
         {
-            var commandType = typeof( TCommand );
-            if( commandType.IsAbstract || commandType.IsInterface )
+            var commandType = typeof(TCommand);
+            if (commandType.IsAbstract || commandType.IsInterface)
             {
                 throw new InvalidOperationException(
                     $@"Cannot register abstract/interface command type {commandType.Name} ({commandType.FullName})."
                 );
             }
 
-            var constructorTypes = args?.Select( arg => arg?.GetType() ?? typeof( object ) ).ToArray() ?? Type.EmptyTypes;
-            var defaultConstructor = commandType.GetConstructor( constructorTypes );
-            if( defaultConstructor == null )
+            var constructorTypes = args?.Select(arg => arg?.GetType() ?? typeof(object)).ToArray() ?? Type.EmptyTypes;
+            var defaultConstructor = commandType.GetConstructor(constructorTypes);
+            if (defaultConstructor == null)
             {
                 throw new InvalidOperationException(
                     $@"No default constructor for command type {commandType.Name} ({commandType.FullName})."
                 );
             }
 
-            if( defaultConstructor.Invoke( args ?? Array.Empty<object>() ) is ICommand command )
+            if (defaultConstructor.Invoke(args ?? Array.Empty<object>()) is ICommand command)
             {
-                return Register( command );
+                return Register(command);
             }
 
             throw new InvalidOperationException(
@@ -63,89 +63,89 @@ namespace Intersect.Server.Core.CommandParsing
             );
         }
 
-        public bool Register( ICommand command )
+        public bool Register(ICommand command)
         {
-            if( Lookup.ContainsKey( command.Name ) )
+            if (Lookup.ContainsKey(command.Name))
             {
                 return false;
             }
 
-            Lookup.Add( command.Name, command );
+            Lookup.Add(command.Name, command);
 
             return true;
         }
 
-        public ICommand Find( string commandName )
+        public ICommand Find(string commandName)
         {
-            return !Lookup.TryGetValue( commandName, out var command ) ? null : command;
+            return !Lookup.TryGetValue(commandName, out var command) ? null : command;
         }
 
-        public ParserResult Parse( string line )
+        public ParserResult Parse(string line)
         {
-            var tokens = Tokenizer.Tokenize( line ).Select( token => token?.Trim() ).Where( token => token != null ).ToList();
+            var tokens = Tokenizer.Tokenize(line).Select(token => token?.Trim()).Where(token => token != null).ToList();
 
-            if( tokens.Count < 1 )
+            if (tokens.Count < 1)
             {
                 return new ParserError(
                     Settings.Localization.Errors.NoInput,
                     new ArgumentException(
-                        @"No argument values were provided so unable to find a command.", nameof( tokens )
+                        @"No argument values were provided so unable to find a command.", nameof(tokens)
                     )
                 ).AsResult();
             }
 
             var commandName = tokens[0];
-            var command = Find( commandName ?? throw new InvalidOperationException() );
-            if( command == null )
+            var command = Find(commandName ?? throw new InvalidOperationException());
+            if (command == null)
             {
-                return MissingCommandError.Create( commandName, Settings.Localization.Errors.CommandNotFound ).AsResult();
+                return MissingCommandError.Create(commandName, Settings.Localization.Errors.CommandNotFound).AsResult();
             }
 
             var positionalArguments = 0;
             var parsed = new Dictionary<ICommandArgument, ArgumentValues>();
             var errors = new List<ParserError>();
 
-            for( var tokenIndex = 1; tokenIndex < tokens.Count; ++tokenIndex )
+            for (var tokenIndex = 1; tokenIndex < tokens.Count; ++tokenIndex)
             {
                 var token = tokens[tokenIndex];
 
-                if( token == null )
+                if (token == null)
                 {
-                    throw new InvalidOperationException( @"None of the cleaned arguments should be null at this point." );
+                    throw new InvalidOperationException(@"None of the cleaned arguments should be null at this point.");
                 }
 
-                var canBeShortName = token.StartsWith( Settings.PrefixShort );
-                if( canBeShortName )
+                var canBeShortName = token.StartsWith(Settings.PrefixShort);
+                if (canBeShortName)
                 {
                     var expectedLength = Settings.PrefixShort.Length + 1;
-                    var actualLength = token.Contains( '=' ) ? token.IndexOf( '=' ) : token.Length;
+                    var actualLength = token.Contains('=') ? token.IndexOf('=') : token.Length;
                     canBeShortName = expectedLength == actualLength;
                 }
 
-                var canBeLongName = token.StartsWith( Settings.PrefixLong );
-                if( canBeLongName )
+                var canBeLongName = token.StartsWith(Settings.PrefixLong);
+                if (canBeLongName)
                 {
                     var actualLength = token.Length;
-                    var maximumInvalidLength = Settings.PrefixLong.Length + ( token.Contains( '=' ) ? 2 : 1 );
+                    var maximumInvalidLength = Settings.PrefixLong.Length + (token.Contains('=') ? 2 : 1);
                     canBeLongName = actualLength > maximumInvalidLength;
                 }
 
                 var isPositional = false;
-                if( !canBeShortName && !canBeLongName )
+                if (!canBeShortName && !canBeLongName)
                 {
-                    if( positionalArguments < command.PositionalArguments.Count )
+                    if (positionalArguments < command.PositionalArguments.Count)
                     {
                         isPositional = true;
                     }
                     else
                     {
-                        errors.Add( new ParserError( Settings.Localization.Errors.BadArgumentFormat.ToString( token ) ) );
+                        errors.Add(new ParserError(Settings.Localization.Errors.BadArgumentFormat.ToString(token)));
 
                         continue;
                     }
                 }
 
-                if( canBeShortName && canBeLongName )
+                if (canBeShortName && canBeLongName)
                 {
                     errors.Add(
                         new ParserError(
@@ -158,22 +158,22 @@ namespace Intersect.Server.Core.CommandParsing
                     continue;
                 }
 
-                var cleanArgParts = token.Split( '=' );
+                var cleanArgParts = token.Split('=');
                 var cleanArgName = cleanArgParts[0] ?? "";
-                var cleanArgValue = ( cleanArgParts.Length == 2 ? cleanArgParts[1] : null ) ?? "";
+                var cleanArgValue = (cleanArgParts.Length == 2 ? cleanArgParts[1] : null) ?? "";
 
-                if( isPositional )
+                if (isPositional)
                 {
                     cleanArgValue = cleanArgName;
                 }
 
                 var argument = isPositional ? command.PositionalArguments[positionalArguments] :
-                    canBeShortName ? command.FindArgument( cleanArgName[Settings.PrefixShort.Length] ) :
-                    command.FindArgument( cleanArgName.Substring( Settings.PrefixLong.Length ) );
+                    canBeShortName ? command.FindArgument(cleanArgName[Settings.PrefixShort.Length]) :
+                    command.FindArgument(cleanArgName.Substring(Settings.PrefixLong.Length));
 
-                if( argument == null )
+                if (argument == null)
                 {
-                    if( isPositional )
+                    if (isPositional)
                     {
                         errors.Add(
                             UnhandledArgumentError.Create(
@@ -197,19 +197,19 @@ namespace Intersect.Server.Core.CommandParsing
                 var argumentDisplayName = isPositional ? argument.Name : cleanArgName;
 
                 var typeName = argument.ValueType.Name;
-                if( Settings.Localization.TypeNames.TryGetValue( typeName, out var localizedType ) )
+                if (Settings.Localization.TypeNames.TryGetValue(typeName, out var localizedType))
                 {
                     typeName = localizedType;
                 }
 
                 List<object> values;
-                if( parsed.TryGetValue( argument, out var argumentValues ) )
+                if (parsed.TryGetValue(argument, out var argumentValues))
                 {
-                    if( !argument.AllowsMultiple )
+                    if (!argument.AllowsMultiple)
                     {
                         errors.Add(
                             new ParserError(
-                                Settings.Localization.Errors.DuplicateNamedArgument.ToString( argumentDisplayName ), false
+                                Settings.Localization.Errors.DuplicateNamedArgument.ToString(argumentDisplayName), false
                             )
                         );
 
@@ -223,42 +223,42 @@ namespace Intersect.Server.Core.CommandParsing
                     values = new List<object>();
                 }
 
-                if( argument.IsFlag )
+                if (argument.IsFlag)
                 {
-                    if( !string.IsNullOrEmpty( cleanArgValue ) )
+                    if (!string.IsNullOrEmpty(cleanArgValue))
                     {
                         errors.Add(
                             new ParserError(
-                                Settings.Localization.Errors.FlagArgumentsIgnoreValue.ToString( argumentDisplayName ),
+                                Settings.Localization.Errors.FlagArgumentsIgnoreValue.ToString(argumentDisplayName),
                                 false
                             )
                         );
                     }
 
-                    values.Add( true );
+                    values.Add(true);
                 }
-                else if( argument.IsCollection )
+                else if (argument.IsCollection)
                 {
-                    if( argument.Delimeter == null )
+                    if (argument.Delimeter == null)
                     {
                     }
                     else
                     {
                         var defaultValue = argument.ValueTypeDefault;
-                        var parsedPartValues = cleanArgValue.Split( new[] { argument.Delimeter }, StringSplitOptions.None )
+                        var parsedPartValues = cleanArgValue.Split(new[] { argument.Delimeter }, StringSplitOptions.None)
                             .Select(
                                 valuePart =>
                                 {
-                                    if( string.IsNullOrEmpty( valuePart ) )
+                                    if (string.IsNullOrEmpty(valuePart))
                                     {
                                         return defaultValue;
                                     }
 
-                                    if( TryParseArgument(
+                                    if (TryParseArgument(
                                         argument.ValueType, defaultValue, valuePart, out var parsedPart
-                                    ) )
+                                    ))
                                     {
-                                        if( !argument.IsValueAllowed( parsedPart ) )
+                                        if (!argument.IsValueAllowed(parsedPart))
                                         {
                                             errors.Add(
                                                 new ParserError(
@@ -272,7 +272,7 @@ namespace Intersect.Server.Core.CommandParsing
                                         return parsedPart;
                                     }
 
-                                    if( argument.ValueType != typeof( object ) )
+                                    if (argument.ValueType != typeof(object))
                                     {
                                         errors.Add(
                                             new ParserError(
@@ -297,14 +297,14 @@ namespace Intersect.Server.Core.CommandParsing
                                 }
                             );
 
-                        values.AddRange( parsedPartValues );
+                        values.AddRange(parsedPartValues);
                     }
                 }
                 else
                 {
-                    if( !TryParseArgument( argument.ValueType, argument.DefaultValue, cleanArgValue, out var value ) )
+                    if (!TryParseArgument(argument.ValueType, argument.DefaultValue, cleanArgValue, out var value))
                     {
-                        if( argument.ValueType != typeof( object ) )
+                        if (argument.ValueType != typeof(object))
                         {
                             errors.Add(
                                 new ParserError(
@@ -326,23 +326,23 @@ namespace Intersect.Server.Core.CommandParsing
                         }
                     }
 
-                    if( !argument.IsValueAllowed( value ) )
+                    if (!argument.IsValueAllowed(value))
                     {
                         errors.Add(
                             new ParserError(
 
                                 // TODO: DisallowedArgumentValue message instead
-                                Settings.Localization.Errors.InvalidArgumentValue.ToString( value, argumentDisplayName )
+                                Settings.Localization.Errors.InvalidArgumentValue.ToString(value, argumentDisplayName)
                             )
                         );
                     }
 
-                    values.Add( value );
+                    values.Add(value);
                 }
 
-                parsed[argument] = new ArgumentValues( argumentDisplayName, values );
+                parsed[argument] = new ArgumentValues(argumentDisplayName, values);
 
-                if( isPositional )
+                if (isPositional)
                 {
                     ++positionalArguments;
                 }
@@ -358,20 +358,20 @@ namespace Intersect.Server.Core.CommandParsing
 
             var omitted = new List<ICommandArgument>();
             var missing = new List<ICommandArgument>();
-            foreach( var argument in command.Arguments )
+            foreach (var argument in command.Arguments)
             {
-                if( !argument.IsRequired( parserContext ) || parsed.ContainsKey( argument ) )
+                if (!argument.IsRequired(parserContext) || parsed.ContainsKey(argument))
                 {
-                    if( !parsed.ContainsKey( argument ) )
+                    if (!parsed.ContainsKey(argument))
                     {
-                        parsed[argument] = ConstructDefaultArgument( argument, true );
-                        omitted.Add( argument );
+                        parsed[argument] = ConstructDefaultArgument(argument, true);
+                        omitted.Add(argument);
                     }
 
                     continue;
                 }
 
-                if( argument.IsPositional )
+                if (argument.IsPositional)
                 {
                     errors.Add(
                         MissingArgumentError.Create(
@@ -381,28 +381,28 @@ namespace Intersect.Server.Core.CommandParsing
                 }
                 else
                 {
-                    errors.Add( MissingArgumentError.Create( Settings.PrefixLong, argument.Name, commandName ) );
+                    errors.Add(MissingArgumentError.Create(Settings.PrefixLong, argument.Name, commandName));
                 }
 
-                missing.Add( argument );
+                missing.Add(argument);
             }
 
-            return new ParserResult( command, new ArgumentValuesMap( parsed ), errors, missing, omitted );
+            return new ParserResult(command, new ArgumentValuesMap(parsed), errors, missing, omitted);
         }
 
-        private ArgumentValuesMap ConstructDefaultArguments( IEnumerable<ICommandArgument> arguments )
+        private ArgumentValuesMap ConstructDefaultArguments(IEnumerable<ICommandArgument> arguments)
         {
             return new ArgumentValuesMap(
-                arguments.Where( argument => argument != null )
+                arguments.Where(argument => argument != null)
                     .Select(
                         argument => new KeyValuePair<ICommandArgument, ArgumentValues>(
-                            argument, ConstructDefaultArgument( argument )
+                            argument, ConstructDefaultArgument(argument)
                         )
                     )
             );
         }
 
-        private ArgumentValues ConstructDefaultArgument( ICommandArgument argument, bool isImplicit = false )
+        private ArgumentValues ConstructDefaultArgument(ICommandArgument argument, bool isImplicit = false)
         {
             var argumentName = argument.ShortName == '\0'
                 ? Settings.PrefixShort + argument.ShortName
@@ -410,9 +410,9 @@ namespace Intersect.Server.Core.CommandParsing
 
             return argument.ValueType.IsArray
                 ? new ArgumentValues(
-                    argumentName, ( argument.DefaultValue as IEnumerable )?.Cast<object>(), isImplicit: isImplicit
+                    argumentName, (argument.DefaultValue as IEnumerable)?.Cast<object>(), isImplicit: isImplicit
                 )
-                : new ArgumentValues( argumentName, isImplicit: isImplicit, values: argument.DefaultValue );
+                : new ArgumentValues(argumentName, isImplicit: isImplicit, values: argument.DefaultValue);
         }
 
         private bool TryParseArgument(
@@ -422,23 +422,23 @@ namespace Intersect.Server.Core.CommandParsing
             out object parsed
         )
         {
-            switch( defaultValue )
+            switch (defaultValue)
             {
                 case bool defaultParsed:
                     {
-                        var success = bool.TryParse( source, out var value );
-                        if( !success )
+                        var success = bool.TryParse(source, out var value);
+                        if (!success)
                         {
-                            if( string.Equals(
+                            if (string.Equals(
                                 Settings.Localization.ValueTrue.ToString(), source, StringComparison.OrdinalIgnoreCase
-                            ) )
+                            ))
                             {
                                 success = true;
                                 value = true;
                             }
-                            else if( string.Equals(
+                            else if (string.Equals(
                                 Settings.Localization.ValueFalse.ToString(), source, StringComparison.OrdinalIgnoreCase
-                            ) )
+                            ))
                             {
                                 success = true;
                                 value = false;
@@ -452,7 +452,7 @@ namespace Intersect.Server.Core.CommandParsing
 
                 case byte defaultParsed:
                     {
-                        var success = byte.TryParse( source, out var value );
+                        var success = byte.TryParse(source, out var value);
                         parsed = success ? value : defaultParsed;
 
                         return success;
@@ -460,7 +460,7 @@ namespace Intersect.Server.Core.CommandParsing
 
                 case sbyte defaultParsed:
                     {
-                        var success = sbyte.TryParse( source, out var value );
+                        var success = sbyte.TryParse(source, out var value);
                         parsed = success ? value : defaultParsed;
 
                         return success;
@@ -468,7 +468,7 @@ namespace Intersect.Server.Core.CommandParsing
 
                 case ushort defaultParsed:
                     {
-                        var success = ushort.TryParse( source, out var value );
+                        var success = ushort.TryParse(source, out var value);
                         parsed = success ? value : defaultParsed;
 
                         return success;
@@ -476,7 +476,7 @@ namespace Intersect.Server.Core.CommandParsing
 
                 case short defaultParsed:
                     {
-                        var success = short.TryParse( source, out var value );
+                        var success = short.TryParse(source, out var value);
                         parsed = success ? value : defaultParsed;
 
                         return success;
@@ -484,7 +484,7 @@ namespace Intersect.Server.Core.CommandParsing
 
                 case uint defaultParsed:
                     {
-                        var success = uint.TryParse( source, out var value );
+                        var success = uint.TryParse(source, out var value);
                         parsed = success ? value : defaultParsed;
 
                         return success;
@@ -492,7 +492,7 @@ namespace Intersect.Server.Core.CommandParsing
 
                 case int defaultParsed:
                     {
-                        var success = int.TryParse( source, out var value );
+                        var success = int.TryParse(source, out var value);
                         parsed = success ? value : defaultParsed;
 
                         return success;
@@ -500,7 +500,7 @@ namespace Intersect.Server.Core.CommandParsing
 
                 case ulong defaultParsed:
                     {
-                        var success = ulong.TryParse( source, out var value );
+                        var success = ulong.TryParse(source, out var value);
                         parsed = success ? value : defaultParsed;
 
                         return success;
@@ -508,7 +508,7 @@ namespace Intersect.Server.Core.CommandParsing
 
                 case long defaultParsed:
                     {
-                        var success = long.TryParse( source, out var value );
+                        var success = long.TryParse(source, out var value);
                         parsed = success ? value : defaultParsed;
 
                         return success;
@@ -516,7 +516,7 @@ namespace Intersect.Server.Core.CommandParsing
 
                 case float defaultParsed:
                     {
-                        var success = float.TryParse( source, out var value );
+                        var success = float.TryParse(source, out var value);
                         parsed = success ? value : defaultParsed;
 
                         return success;
@@ -524,7 +524,7 @@ namespace Intersect.Server.Core.CommandParsing
 
                 case double defaultParsed:
                     {
-                        var success = double.TryParse( source, out var value );
+                        var success = double.TryParse(source, out var value);
                         parsed = success ? value : defaultParsed;
 
                         return success;
@@ -532,7 +532,7 @@ namespace Intersect.Server.Core.CommandParsing
 
                 case decimal defaultParsed:
                     {
-                        var success = decimal.TryParse( source, out var value );
+                        var success = decimal.TryParse(source, out var value);
                         parsed = success ? value : defaultParsed;
 
                         return success;
@@ -540,7 +540,7 @@ namespace Intersect.Server.Core.CommandParsing
 
                 case char defaultParsed:
                     {
-                        var success = char.TryParse( source, out var value );
+                        var success = char.TryParse(source, out var value);
                         parsed = success ? value : defaultParsed;
 
                         return success;
@@ -548,7 +548,7 @@ namespace Intersect.Server.Core.CommandParsing
 
                 case string defaultParsed:
                     {
-                        parsed = string.IsNullOrWhiteSpace( source ) ? defaultParsed : source;
+                        parsed = string.IsNullOrWhiteSpace(source) ? defaultParsed : source;
 
                         return true;
                     }
@@ -557,11 +557,11 @@ namespace Intersect.Server.Core.CommandParsing
                     {
                         try
                         {
-                            parsed = Enum.Parse( type, source );
+                            parsed = Enum.Parse(type, source);
 
                             return true;
                         }
-                        catch( Exception )
+                        catch (Exception)
                         {
                             parsed = defaultParsed;
 
@@ -571,7 +571,7 @@ namespace Intersect.Server.Core.CommandParsing
 
                 default:
                     {
-                        return TryParseType( type, defaultValue, source, out parsed );
+                        return TryParseType(type, defaultValue, source, out parsed);
                     }
             }
         }
@@ -583,7 +583,7 @@ namespace Intersect.Server.Core.CommandParsing
             out object parsed
         )
         {
-            if( type == typeof( string ) )
+            if (type == typeof(string))
             {
                 parsed = source;
 
@@ -592,11 +592,11 @@ namespace Intersect.Server.Core.CommandParsing
 
             try
             {
-                parsed = JsonConvert.DeserializeObject( source );
+                parsed = JsonConvert.DeserializeObject(source);
 
                 return true;
             }
-            catch( Exception )
+            catch (Exception)
             {
                 parsed = defaultValue;
 

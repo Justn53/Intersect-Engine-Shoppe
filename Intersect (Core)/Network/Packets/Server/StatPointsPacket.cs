@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public StatPointsPacket( int points )
+        public StatPointsPacket(int points)
         {
             Points = points;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public int Points { get; set; }
 
     }

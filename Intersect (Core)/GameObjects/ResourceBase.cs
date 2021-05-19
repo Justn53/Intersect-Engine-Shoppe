@@ -41,7 +41,7 @@ namespace Intersect.GameObjects
         [NotMapped] public ConditionLists HarvestingRequirements = new ConditionLists();
 
         [JsonConstructor]
-        public ResourceBase( Guid id ) : base( id )
+        public ResourceBase(Guid id) : base(id)
         {
             Name = "New Resource";
             Initial = new ResourceState();
@@ -61,36 +61,36 @@ namespace Intersect.GameObjects
 
         public ResourceState Exhausted { get; set; }
 
-        [Column( "Animation" )]
+        [Column("Animation")]
         public Guid AnimationId { get; set; }
 
         [NotMapped]
         [JsonIgnore]
         public AnimationBase Animation
         {
-            get => AnimationBase.Get( AnimationId );
+            get => AnimationBase.Get(AnimationId);
             set => AnimationId = value?.Id ?? Guid.Empty;
         }
 
         // Drops
-        [Column( "Drops" )]
+        [Column("Drops")]
         [JsonIgnore]
         public string JsonDrops
         {
-            get => JsonConvert.SerializeObject( Drops );
-            set => Drops = JsonConvert.DeserializeObject<List<ResourceDrop>>( value );
+            get => JsonConvert.SerializeObject(Drops);
+            set => Drops = JsonConvert.DeserializeObject<List<ResourceDrop>>(value);
         }
 
         //Requirements
-        [Column( "HarvestingRequirements" )]
+        [Column("HarvestingRequirements")]
         [JsonIgnore]
         public string JsonHarvestingRequirements
         {
             get => HarvestingRequirements.Data();
-            set => HarvestingRequirements.Load( value );
+            set => HarvestingRequirements.Load(value);
         }
 
-        [Column( "Event" )]
+        [Column("Event")]
         [JsonProperty]
         public Guid EventId { get; set; }
 
@@ -98,7 +98,7 @@ namespace Intersect.GameObjects
         [JsonIgnore]
         public EventBase Event
         {
-            get => EventBase.Get( EventId );
+            get => EventBase.Get(EventId);
             set => EventId = value?.Id ?? Guid.Empty;
         }
 

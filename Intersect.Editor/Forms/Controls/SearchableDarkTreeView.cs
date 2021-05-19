@@ -34,7 +34,7 @@ namespace Intersect.Editor.Forms.Controls
         public Guid SelectedId
         {
             get => SelectedObject?.Id ?? Guid.Empty;
-            set => treeViewItems?.SelectNode( mIdNodeLookup.TryGetValue( value, out var node ) ? node : null );
+            set => treeViewItems?.SelectNode(mIdNodeLookup.TryGetValue(value, out var node) ? node : null);
         }
 
         public IGameObjectLookup<IDatabaseObject> ItemProvider
@@ -53,9 +53,9 @@ namespace Intersect.Editor.Forms.Controls
             get => txtSearch?.Text;
             set
             {
-                if( txtSearch == null )
+                if (txtSearch == null)
                 {
-                    throw new ArgumentNullException( nameof( txtSearch ) );
+                    throw new ArgumentNullException(nameof(txtSearch));
                 }
 
                 txtSearch.Text = value;
@@ -67,48 +67,48 @@ namespace Intersect.Editor.Forms.Controls
             UpdateNodes();
         }
 
-        public bool FilterBySearchText( IDatabaseObject databaseObject )
+        public bool FilterBySearchText(IDatabaseObject databaseObject)
         {
-            if( string.IsNullOrWhiteSpace( SearchText ) )
+            if (string.IsNullOrWhiteSpace(SearchText))
             {
                 return true;
             }
 
             var name = databaseObject?.Name;
-            if( string.IsNullOrWhiteSpace( name ) )
+            if (string.IsNullOrWhiteSpace(name))
             {
                 return false;
             }
 
             var searchText = SearchText.Trim();
-            if( searchText.Length > name.Length )
+            if (searchText.Length > name.Length)
             {
                 return false;
             }
 
-            return -1 < name.IndexOf( SearchText, StringComparison.OrdinalIgnoreCase );
+            return -1 < name.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase);
         }
 
-        protected virtual bool FilterBySearchText( KeyValuePair<Guid, IDatabaseObject> pair )
+        protected virtual bool FilterBySearchText(KeyValuePair<Guid, IDatabaseObject> pair)
         {
-            return FilterBySearchText( pair.Value );
+            return FilterBySearchText(pair.Value);
         }
 
-        protected virtual DarkTreeNode ObjectAsNode( IDatabaseObject databaseObject )
+        protected virtual DarkTreeNode ObjectAsNode(IDatabaseObject databaseObject)
         {
-            if( !mIdNodeLookup.TryGetValue( databaseObject.Id, out var node ) )
+            if (!mIdNodeLookup.TryGetValue(databaseObject.Id, out var node))
             {
-                node = new DarkTreeNode( databaseObject.Name ?? "NULL" );
+                node = new DarkTreeNode(databaseObject.Name ?? "NULL");
             }
 
             return node;
         }
 
-        protected virtual DarkTreeNode PairAsNode( KeyValuePair<Guid, IDatabaseObject> pair )
+        protected virtual DarkTreeNode PairAsNode(KeyValuePair<Guid, IDatabaseObject> pair)
         {
             return ObjectAsNode(
                 pair.Value ??
-                throw new ArgumentNullException( nameof( pair.Value ), $@"{pair.Key} has a null object associated." )
+                throw new ArgumentNullException(nameof(pair.Value), $@"{pair.Key} has a null object associated.")
             );
         }
 
@@ -119,28 +119,28 @@ namespace Intersect.Editor.Forms.Controls
             // TODO: Remove this when we fix DarkUI, which currently does not invalidate (and will show stale values when the list is emptied).
             treeViewItems?.Invalidate();
 
-            if( ItemProvider == null )
+            if (ItemProvider == null)
             {
                 return;
             }
 
             mPreviousSearchText = SearchText;
 
-            var filtered = string.IsNullOrWhiteSpace( SearchText )
+            var filtered = string.IsNullOrWhiteSpace(SearchText)
                 ? ItemProvider
-                : ItemProvider.Where( FilterBySearchText );
+                : ItemProvider.Where(FilterBySearchText);
 
-            var nodes = filtered.Select( PairAsNode ).ToList();
+            var nodes = filtered.Select(PairAsNode).ToList();
 
-            treeViewItems?.Nodes?.AddRange( nodes );
+            treeViewItems?.Nodes?.AddRange(nodes);
         }
 
-        private void txtSearch_TextChanged( object sender, EventArgs e )
+        private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             var searchText = SearchText?.Trim() ?? "";
             var previousSearchText = mPreviousSearchText?.Trim() ?? "";
 
-            if( string.Equals( searchText, previousSearchText, StringComparison.OrdinalIgnoreCase ) )
+            if (string.Equals(searchText, previousSearchText, StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }
@@ -148,7 +148,7 @@ namespace Intersect.Editor.Forms.Controls
             UpdateNodes();
         }
 
-        private void toolStripCreate_Click( object sender, EventArgs e )
+        private void toolStripCreate_Click(object sender, EventArgs e)
         {
         }
 

@@ -15,12 +15,12 @@ namespace Intersect.Plugins
         /// </summary>
         /// <param name="plugin">The plugin descriptor to create an instance for.</param>
         /// <returns>A <see cref="PluginInstance"/> for <paramref name="plugin"/>.</returns>
-        public static PluginInstance Create( [ValidatedNotNull] Plugin plugin )
+        public static PluginInstance Create([ValidatedNotNull] Plugin plugin)
         {
-            var bootstrapContext = FactoryRegistry<IPluginBootstrapContext>.Create( plugin );
-            var context = FactoryRegistry<IPluginContext>.Create( plugin );
+            var bootstrapContext = FactoryRegistry<IPluginBootstrapContext>.Create(plugin);
+            var context = FactoryRegistry<IPluginContext>.Create(plugin);
             var entry = plugin.Reference.CreateInstance();
-            return new PluginInstance( entry, bootstrapContext, context );
+            return new PluginInstance(entry, bootstrapContext, context);
         }
 
         /// <summary>

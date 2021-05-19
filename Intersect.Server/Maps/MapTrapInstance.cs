@@ -29,7 +29,7 @@ namespace Intersect.Server.Classes.Maps
 
         public byte Z;
 
-        public MapTrapInstance( Entity owner, SpellBase parentSpell, Guid mapId, byte x, byte y, byte z )
+        public MapTrapInstance(Entity owner, SpellBase parentSpell, Guid mapId, byte x, byte y, byte z)
         {
             Owner = owner;
             ParentSpell = parentSpell;
@@ -40,30 +40,30 @@ namespace Intersect.Server.Classes.Maps
             Z = z;
         }
 
-        public void CheckEntityHasDetonatedTrap( Entity entity )
+        public void CheckEntityHasDetonatedTrap(Entity entity)
         {
-            if( !Triggered )
+            if (!Triggered)
             {
-                if( entity.MapId == MapId && entity.X == X && entity.Y == Y && entity.Z == Z )
+                if (entity.MapId == MapId && entity.X == X && entity.Y == Y && entity.Z == Z)
                 {
-                    if( entity.GetType() == typeof( Player ) && Owner.GetType() == typeof( Player ) )
+                    if (entity.GetType() == typeof(Player) && Owner.GetType() == typeof(Player))
                     {
                         //Don't detonate on yourself and party members on non-friendly spells!
-                        if( Owner == entity || ( (Player)Owner ).InParty( (Player)entity ) )
+                        if (Owner == entity || ((Player)Owner).InParty((Player)entity))
                         {
-                            if( !ParentSpell.Combat.Friendly )
+                            if (!ParentSpell.Combat.Friendly)
                             {
                                 return;
                             }
                         }
                     }
 
-                    if( entity is EventPageInstance )
+                    if (entity is EventPageInstance)
                     {
                         return;
                     }
 
-                    Owner.TryAttack( entity, ParentSpell, false, true );
+                    Owner.TryAttack(entity, ParentSpell, false, true);
                     Triggered = true;
                 }
             }
@@ -71,14 +71,14 @@ namespace Intersect.Server.Classes.Maps
 
         public void Update()
         {
-            if( Triggered )
+            if (Triggered)
             {
-                MapInstance.Get( MapId ).RemoveTrap( this );
+                MapInstance.Get(MapId).RemoveTrap(this);
             }
 
-            if( Globals.Timing.Milliseconds > Duration )
+            if (Globals.Timing.Milliseconds > Duration)
             {
-                MapInstance.Get( MapId ).RemoveTrap( this );
+                MapInstance.Get(MapId).RemoveTrap(this);
             }
         }
 

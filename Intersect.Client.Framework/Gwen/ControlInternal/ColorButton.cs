@@ -17,7 +17,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Initializes a new instance of the <see cref="ColorButton" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ColorButton( Base parent ) : base( parent )
+        public ColorButton(Base parent) : base(parent)
         {
             mColor = Color.Black;
             Text = String.Empty;
@@ -36,10 +36,10 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
             skin.Renderer.DrawColor = mColor;
-            skin.Renderer.DrawFilledRect( RenderBounds );
+            skin.Renderer.DrawFilledRect(RenderBounds);
         }
 
     }

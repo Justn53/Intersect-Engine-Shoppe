@@ -15,7 +15,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private EquipItemCommand mMyCommand;
 
-        public EventCommandEquipItems( EquipItemCommand refCommand, FrmEvent editor )
+        public EventCommandEquipItems(EquipItemCommand refCommand, FrmEvent editor)
         {
             InitializeComponent();
             mMyCommand = refCommand;
@@ -23,8 +23,8 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
             InitLocalization();
             cmbItem.Items.Clear();
-            cmbItem.Items.AddRange( ItemBase.Names );
-            cmbItem.SelectedIndex = ItemBase.ListIndex( mMyCommand.ItemId );
+            cmbItem.Items.AddRange(ItemBase.Names);
+            cmbItem.SelectedIndex = ItemBase.ListIndex(mMyCommand.ItemId);
             chkUnequip.Checked = mMyCommand.Unequip;
         }
 
@@ -36,14 +36,14 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             btnCancel.Text = Strings.EventEquipItems.cancel;
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            mMyCommand.ItemId = ItemBase.IdFromList( cmbItem.SelectedIndex );
+            mMyCommand.ItemId = ItemBase.IdFromList(cmbItem.SelectedIndex);
             mMyCommand.Unequip = chkUnequip.Checked;
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }

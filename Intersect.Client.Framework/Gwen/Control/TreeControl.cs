@@ -19,28 +19,28 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="TreeControl" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public TreeControl( Base parent ) : base( parent )
+        public TreeControl(Base parent) : base(parent)
         {
             mTreeControl = this;
 
-            RemoveChild( mToggleButton, true );
+            RemoveChild(mToggleButton, true);
             mToggleButton = null;
-            RemoveChild( mTitle, true );
+            RemoveChild(mTitle, true);
             mTitle = null;
-            RemoveChild( mInnerPanel, true );
+            RemoveChild(mInnerPanel, true);
             mInnerPanel = null;
 
             mMultiSelect = false;
 
-            mScrollControl = new ScrollControl( this );
+            mScrollControl = new ScrollControl(this);
             mScrollControl.Dock = Pos.Fill;
-            mScrollControl.EnableScroll( false, true );
+            mScrollControl.EnableScroll(false, true);
             mScrollControl.AutoHideBars = true;
             mScrollControl.Margin = Margin.One;
 
             mInnerPanel = mScrollControl;
 
-            mScrollControl.SetInnerSize( 1000, 1000 ); // todo: why such arbitrary numbers?
+            mScrollControl.SetInnerSize(1000, 1000); // todo: why such arbitrary numbers?
 
             Dock = Pos.None;
         }
@@ -58,11 +58,11 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            if( ShouldDrawBackground )
+            if (ShouldDrawBackground)
             {
-                skin.DrawTreeControl( this );
+                skin.DrawTreeControl(this);
             }
         }
 
@@ -71,9 +71,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         /// <param name="oldChildBounds"></param>
         /// <param name="child"></param>
-        protected override void OnChildBoundsChanged( Rectangle oldChildBounds, Base child )
+        protected override void OnChildBoundsChanged(Rectangle oldChildBounds, Base child)
         {
-            if( mScrollControl != null )
+            if (mScrollControl != null)
             {
                 mScrollControl.UpdateScrollBars();
             }
@@ -91,7 +91,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Handler for node added event.
         /// </summary>
         /// <param name="node">Node added.</param>
-        public virtual void OnNodeAdded( TreeNode node )
+        public virtual void OnNodeAdded(TreeNode node)
         {
             node.LabelPressed += OnNodeSelected;
         }
@@ -100,9 +100,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Handler for node selected event.
         /// </summary>
         /// <param name="control">Node selected.</param>
-        protected virtual void OnNodeSelected( Base control, EventArgs args )
+        protected virtual void OnNodeSelected(Base control, EventArgs args)
         {
-            if( !mMultiSelect /*|| InputHandler.InputHandler.IsKeyDown(Key.Control)*/)
+            if (!mMultiSelect /*|| InputHandler.InputHandler.IsKeyDown(Key.Control)*/)
             {
                 UnselectAll();
             }

@@ -11,16 +11,16 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public PartyInvitePacket( string leaderName, Guid leaderId )
+        public PartyInvitePacket(string leaderName, Guid leaderId)
         {
             LeaderName = leaderName;
             LeaderId = leaderId;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public string LeaderName { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public Guid LeaderId { get; set; }
 
     }

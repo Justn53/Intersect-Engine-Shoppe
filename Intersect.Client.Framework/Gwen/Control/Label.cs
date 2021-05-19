@@ -55,14 +55,14 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="Label" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Label( Base parent, string name = "" ) : base( parent, name )
+        public Label(Base parent, string name = "") : base(parent, name)
         {
-            mText = new Text( this );
+            mText = new Text(this);
 
             //m_Text.Font = Skin.DefaultFont;
 
             MouseInputEnabled = false;
-            SetSize( 100, 10 );
+            SetSize(100, 10);
             Alignment = Pos.Left | Pos.Top;
 
             mAutoSizeToContents = true;
@@ -89,7 +89,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         public virtual string Text
         {
             get => mText?.String;
-            set => SetText( value );
+            set => SetText(value);
         }
 
         /// <summary>
@@ -100,15 +100,15 @@ namespace Intersect.Client.Framework.Gwen.Control
             get => mText?.Font;
             set
             {
-                if( value != null )
+                if (value != null)
                 {
-                    if( mText != null )
+                    if (mText != null)
                     {
                         mText.Font = value;
                         fontInfo = $"{value?.GetName()},{value?.GetSize()}";
                     }
 
-                    if( mAutoSizeToContents )
+                    if (mAutoSizeToContents)
                     {
                         SizeToContents();
                     }
@@ -124,7 +124,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         public string FontName
         {
             get => mText?.Font?.GetName() ?? "arial";
-            set => Font = GameContentManager.Current?.GetFont( value, FontSize );
+            set => Font = GameContentManager.Current?.GetFont(value, FontSize);
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         public int FontSize
         {
             get => mText?.Font?.GetSize() ?? 12;
-            set => Font = GameContentManager.Current?.GetFont( FontName, value );
+            set => Font = GameContentManager.Current?.GetFont(FontName, value);
         }
 
         /// <summary>
@@ -215,28 +215,28 @@ namespace Intersect.Client.Framework.Gwen.Control
         public override JObject GetJson()
         {
             var obj = base.GetJson();
-            if( this.GetType() == typeof( Label ) )
+            if (this.GetType() == typeof(Label))
             {
-                obj.Add( "BackgroundTemplate", mBackgroundTemplateFilename );
+                obj.Add("BackgroundTemplate", mBackgroundTemplateFilename);
             }
 
-            obj.Add( "TextColor", Color.ToString( TextColor ) );
-            obj.Add( "HoveredTextColor", Color.ToString( mHoverTextColor ) );
-            obj.Add( "ClickedTextColor", Color.ToString( mClickedTextColor ) );
-            obj.Add( "DisabledTextColor", Color.ToString( mDisabledTextColor ) );
-            obj.Add( "TextAlign", mAlign.ToString() );
-            obj.Add( "TextPadding", Padding.ToString( mTextPadding ) );
-            obj.Add( "AutoSizeToContents", mAutoSizeToContents );
-            obj.Add( "Font", fontInfo );
-            obj.Add( "TextScale", mText.GetScale() );
+            obj.Add("TextColor", Color.ToString(TextColor));
+            obj.Add("HoveredTextColor", Color.ToString(mHoverTextColor));
+            obj.Add("ClickedTextColor", Color.ToString(mClickedTextColor));
+            obj.Add("DisabledTextColor", Color.ToString(mDisabledTextColor));
+            obj.Add("TextAlign", mAlign.ToString());
+            obj.Add("TextPadding", Padding.ToString(mTextPadding));
+            obj.Add("AutoSizeToContents", mAutoSizeToContents);
+            obj.Add("Font", fontInfo);
+            obj.Add("TextScale", mText.GetScale());
 
-            return base.FixJson( obj );
+            return base.FixJson(obj);
         }
 
-        public override void LoadJson( JToken obj )
+        public override void LoadJson(JToken obj)
         {
-            base.LoadJson( obj );
-            if( this.GetType() == typeof( Label ) && obj["BackgroundTemplate"] != null )
+            base.LoadJson(obj);
+            if (this.GetType() == typeof(Label) && obj["BackgroundTemplate"] != null)
             {
                 SetBackgroundTemplate(
                     GameContentManager.Current.GetTexture(
@@ -245,48 +245,48 @@ namespace Intersect.Client.Framework.Gwen.Control
                 );
             }
 
-            if( obj["TextColor"] != null )
+            if (obj["TextColor"] != null)
             {
-                TextColor = Color.FromString( (string)obj["TextColor"] );
+                TextColor = Color.FromString((string)obj["TextColor"]);
             }
 
             mNormalTextColor = TextColor;
-            if( obj["HoveredTextColor"] != null )
+            if (obj["HoveredTextColor"] != null)
             {
-                mHoverTextColor = Color.FromString( (string)obj["HoveredTextColor"] );
+                mHoverTextColor = Color.FromString((string)obj["HoveredTextColor"]);
             }
 
-            if( obj["ClickedTextColor"] != null )
+            if (obj["ClickedTextColor"] != null)
             {
-                mClickedTextColor = Color.FromString( (string)obj["ClickedTextColor"] );
+                mClickedTextColor = Color.FromString((string)obj["ClickedTextColor"]);
             }
 
-            mDisabledTextColor = Color.FromString( (string)obj["DisabledTextColor"], new Color( 255, 90, 90, 90 ) );
-            if( obj["TextAlign"] != null )
+            mDisabledTextColor = Color.FromString((string)obj["DisabledTextColor"], new Color(255, 90, 90, 90));
+            if (obj["TextAlign"] != null)
             {
-                mAlign = (Pos)Enum.Parse( typeof( Pos ), (string)obj["TextAlign"] );
+                mAlign = (Pos)Enum.Parse(typeof(Pos), (string)obj["TextAlign"]);
             }
 
-            if( obj["TextPadding"] != null )
+            if (obj["TextPadding"] != null)
             {
-                TextPadding = Padding.FromString( (string)obj["TextPadding"] );
+                TextPadding = Padding.FromString((string)obj["TextPadding"]);
             }
 
-            if( obj["AutoSizeToContents"] != null )
+            if (obj["AutoSizeToContents"] != null)
             {
                 mAutoSizeToContents = (bool)obj["AutoSizeToContents"];
             }
 
-            if( obj["Font"] != null && obj["Font"].Type != JTokenType.Null )
+            if (obj["Font"] != null && obj["Font"].Type != JTokenType.Null)
             {
-                var fontArr = ( (string)obj["Font"] ).Split( ',' );
+                var fontArr = ((string)obj["Font"]).Split(',');
                 fontInfo = (string)obj["Font"];
-                Font = GameContentManager.Current.GetFont( fontArr[0], int.Parse( fontArr[1] ) );
+                Font = GameContentManager.Current.GetFont(fontArr[0], int.Parse(fontArr[1]));
             }
 
-            if( obj["TextScale"] != null )
+            if (obj["TextScale"] != null)
             {
-                mText.SetScale( (float)obj["TextScale"] );
+                mText.SetScale((float)obj["TextScale"]);
             }
         }
 
@@ -295,11 +295,11 @@ namespace Intersect.Client.Framework.Gwen.Control
             return mBackgroundTemplateTex;
         }
 
-        public void SetBackgroundTemplate( GameTexture texture, string fileName )
+        public void SetBackgroundTemplate(GameTexture texture, string fileName)
         {
-            if( texture == null && !string.IsNullOrWhiteSpace( fileName ) )
+            if (texture == null && !string.IsNullOrWhiteSpace(fileName))
             {
-                texture = GameContentManager.Current?.GetTexture( GameContentManager.TextureType.Gui, fileName );
+                texture = GameContentManager.Current?.GetTexture(GameContentManager.TextureType.Gui, fileName);
             }
 
             mBackgroundTemplateFilename = fileName;
@@ -388,9 +388,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        protected virtual Point GetClosestCharacter( int x, int y )
+        protected virtual Point GetClosestCharacter(int x, int y)
         {
-            return new Point( mText.GetClosestCharacter( mText.CanvasPosToLocal( new Point( x, y ) ) ), 0 );
+            return new Point(mText.GetClosestCharacter(mText.CanvasPosToLocal(new Point(x, y))), 0);
         }
 
         /// <summary>
@@ -398,9 +398,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        protected void SetTextPosition( int x, int y )
+        protected void SetTextPosition(int x, int y)
         {
-            mText.SetPosition( x, y );
+            mText.SetPosition(x, y);
         }
 
         /// <summary>
@@ -414,13 +414,13 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout( Skin.Base skin )
+        protected override void Layout(Skin.Base skin)
         {
-            base.Layout( skin );
+            base.Layout(skin);
 
             var align = mAlign;
 
-            if( mAutoSizeToContents )
+            if (mAutoSizeToContents)
             {
                 SizeToContents();
             }
@@ -428,39 +428,39 @@ namespace Intersect.Client.Framework.Gwen.Control
             var x = mTextPadding.Left + Padding.Left;
             var y = mTextPadding.Top + Padding.Top;
 
-            if( 0 != ( align & Pos.Right ) )
+            if (0 != (align & Pos.Right))
             {
                 x = Width - mText.Width - mTextPadding.Right - Padding.Right;
             }
 
-            if( 0 != ( align & Pos.CenterH ) )
+            if (0 != (align & Pos.CenterH))
             {
-                x = (int)( mTextPadding.Left +
+                x = (int)(mTextPadding.Left +
                            Padding.Left +
-                           ( Width -
+                           (Width -
                             mText.Width -
                             mTextPadding.Left -
                             Padding.Left -
                             mTextPadding.Right -
-                            Padding.Right ) *
-                           0.5f );
+                            Padding.Right) *
+                           0.5f);
             }
 
-            if( 0 != ( align & Pos.CenterV ) )
+            if (0 != (align & Pos.CenterV))
             {
-                y = (int)( mTextPadding.Top +
+                y = (int)(mTextPadding.Top +
                            Padding.Top +
-                           ( Height - mText.Height ) * 0.5f -
+                           (Height - mText.Height) * 0.5f -
                            mTextPadding.Bottom -
-                           Padding.Bottom );
+                           Padding.Bottom);
             }
 
-            if( 0 != ( align & Pos.Bottom ) )
+            if (0 != (align & Pos.Bottom))
             {
                 y = Height - mText.Height - mTextPadding.Bottom - Padding.Bottom;
             }
 
-            mText.SetPosition( x, y );
+            mText.SetPosition(x, y);
         }
 
         /// <summary>
@@ -468,15 +468,15 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         /// <param name="str">Text to set.</param>
         /// <param name="doEvents">Determines whether to invoke "text changed" event.</param>
-        public virtual void SetText( string str, bool doEvents = true )
+        public virtual void SetText(string str, bool doEvents = true)
         {
-            if( Text == str )
+            if (Text == str)
             {
                 return;
             }
 
             mText.String = str;
-            if( mAutoSizeToContents )
+            if (mAutoSizeToContents)
             {
                 SizeToContents();
             }
@@ -484,16 +484,16 @@ namespace Intersect.Client.Framework.Gwen.Control
             Invalidate();
             InvalidateParent();
 
-            if( doEvents )
+            if (doEvents)
             {
                 OnTextChanged();
             }
         }
 
-        public virtual void SetTextScale( float scale )
+        public virtual void SetTextScale(float scale)
         {
-            mText.SetScale( scale );
-            if( mAutoSizeToContents )
+            mText.SetScale(scale);
+            if (mAutoSizeToContents)
             {
                 SizeToContents();
             }
@@ -504,7 +504,7 @@ namespace Intersect.Client.Framework.Gwen.Control
 
         public virtual void SizeToContents()
         {
-            mText.SetPosition( mTextPadding.Left + Padding.Left, mTextPadding.Top + Padding.Top );
+            mText.SetPosition(mTextPadding.Left + Padding.Left, mTextPadding.Top + Padding.Top);
             mText.SizeToContents();
 
             SetSize(
@@ -521,20 +521,20 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         /// <param name="index">Character index.</param>
         /// <returns>Character coordinates (local).</returns>
-        public virtual Point GetCharacterPosition( int index )
+        public virtual Point GetCharacterPosition(int index)
         {
-            var p = mText.GetCharacterPosition( index );
+            var p = mText.GetCharacterPosition(index);
 
-            return new Point( p.X + mText.X, p.Y + mText.Y );
+            return new Point(p.X + mText.X, p.Y + mText.Y);
         }
 
         /// <summary>
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
-            skin.DrawLabel( this );
+            skin.DrawLabel(this);
         }
 
         /// <summary>
@@ -542,31 +542,31 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         public override void UpdateColors()
         {
-            var textColor = GetTextColor( ControlState.Normal );
-            if( IsDisabled && GetTextColor( ControlState.Disabled ) != null )
+            var textColor = GetTextColor(ControlState.Normal);
+            if (IsDisabled && GetTextColor(ControlState.Disabled) != null)
             {
-                textColor = GetTextColor( ControlState.Disabled );
+                textColor = GetTextColor(ControlState.Disabled);
             }
-            else if( IsHovered && GetTextColor( ControlState.Hovered ) != null )
+            else if (IsHovered && GetTextColor(ControlState.Hovered) != null)
             {
-                textColor = GetTextColor( ControlState.Hovered );
+                textColor = GetTextColor(ControlState.Hovered);
             }
 
-            if( textColor != null )
+            if (textColor != null)
             {
                 TextColor = textColor;
 
                 return;
             }
 
-            if( IsDisabled )
+            if (IsDisabled)
             {
                 TextColor = Skin.Colors.Button.Disabled;
 
                 return;
             }
 
-            if( IsHovered && ClickEventAssigned )
+            if (IsHovered && ClickEventAssigned)
             {
                 TextColor = Skin.Colors.Button.Hover;
 
@@ -576,9 +576,9 @@ namespace Intersect.Client.Framework.Gwen.Control
             TextColor = Skin.Colors.Button.Normal;
         }
 
-        public virtual void SetTextColor( Color clr, ControlState state )
+        public virtual void SetTextColor(Color clr, ControlState state)
         {
-            switch( state )
+            switch (state)
             {
                 case ControlState.Normal:
                     mNormalTextColor = clr;
@@ -597,15 +597,15 @@ namespace Intersect.Client.Framework.Gwen.Control
 
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException( nameof( state ), state, null );
+                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
             }
 
             UpdateColors();
         }
 
-        public virtual Color GetTextColor( ControlState state )
+        public virtual Color GetTextColor(ControlState state)
         {
-            switch( state )
+            switch (state)
             {
                 case ControlState.Normal:
                     return mNormalTextColor;

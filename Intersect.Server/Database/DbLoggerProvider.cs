@@ -10,16 +10,16 @@ namespace Intersect.Server.Database
 
         private DbLogger _logger;
 
-        public DbLoggerProvider( Intersect.Logging.Logger intersectLogger )
+        public DbLoggerProvider(Intersect.Logging.Logger intersectLogger)
         {
             _intersectLogger = intersectLogger;
         }
 
-        public ILogger CreateLogger( string categoryName )
+        public ILogger CreateLogger(string categoryName)
         {
-            if( _logger == null )
+            if (_logger == null)
             {
-                _logger = new DbLogger( _intersectLogger );
+                _logger = new DbLogger(_intersectLogger);
             }
 
             return _logger;

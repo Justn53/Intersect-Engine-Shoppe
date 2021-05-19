@@ -11,20 +11,20 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public HoldPlayerPacket( Guid eventId, Guid mapId, bool releasing )
+        public HoldPlayerPacket(Guid eventId, Guid mapId, bool releasing)
         {
             EventId = eventId;
             MapId = mapId;
             Releasing = releasing;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid EventId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public Guid MapId { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public bool Releasing { get; set; }
 
     }

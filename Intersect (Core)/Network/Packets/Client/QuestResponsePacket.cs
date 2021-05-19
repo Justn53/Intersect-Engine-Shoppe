@@ -11,16 +11,16 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public QuestResponsePacket( Guid questId, bool accepting )
+        public QuestResponsePacket(Guid questId, bool accepting)
         {
             QuestId = questId;
             AcceptingQuest = accepting;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid QuestId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public bool AcceptingQuest { get; set; }
 
     }

@@ -23,7 +23,7 @@ namespace Intersect.Server.Entities.Combat
 
         private Stats mStatType;
 
-        public Stat( Stats statType, Entity owner )
+        public Stat(Stats statType, Entity owner)
         {
             mOwner = owner;
             mStatType = statType;
@@ -42,23 +42,23 @@ namespace Intersect.Server.Entities.Combat
             var percentageStats = 0;
 
             // Add item buffs
-            if( mOwner is Player player )
+            if (mOwner is Player player)
             {
-                var statBuffs = player.GetItemStatBuffs( mStatType );
+                var statBuffs = player.GetItemStatBuffs(mStatType);
                 flatStats += statBuffs.Item1;
                 percentageStats += statBuffs.Item2;
             }
 
             //Add spell buffs
-            foreach( var buff in mCachedBuffs )
+            foreach (var buff in mCachedBuffs)
             {
                 flatStats += buff.FlatStatcount;
                 percentageStats += buff.PercentageStatcount;
             }
 
             // Calculate our final stat
-            var finalStat = (int)Math.Ceiling( flatStats + ( flatStats * ( percentageStats / 100f ) ) );
-            if( finalStat <= 0 )
+            var finalStat = (int)Math.Ceiling(flatStats + (flatStats * (percentageStats / 100f)));
+            if (finalStat <= 0)
             {
                 finalStat = 1; //No 0 or negative stats, will give errors elsewhere in the code (especially divide by 0 errors).
             }
@@ -69,15 +69,15 @@ namespace Intersect.Server.Entities.Combat
         public bool Update()
         {
             var changed = false;
-            foreach( var buff in mBuff )
+            foreach (var buff in mBuff)
             {
-                if( buff.Value.Duration <= Globals.Timing.Milliseconds )
+                if (buff.Value.Duration <= Globals.Timing.Milliseconds)
                 {
-                    changed |= mBuff.TryRemove( buff.Key, out Buff result );
+                    changed |= mBuff.TryRemove(buff.Key, out Buff result);
                 }
             }
 
-            if( changed )
+            if (changed)
             {
                 mCachedBuffs = mBuff.Values.ToArray();
             }
@@ -88,9 +88,9 @@ namespace Intersect.Server.Entities.Combat
             return changed;
         }
 
-        public void AddBuff( Buff buff )
+        public void AddBuff(Buff buff)
         {
-            mBuff.AddOrUpdate( buff.Spell, buff, ( key, val ) => buff );
+            mBuff.AddOrUpdate(buff.Spell, buff, (key, val) => buff);
             mCachedBuffs = mBuff.Values.ToArray();
             mChanged = true;
         }

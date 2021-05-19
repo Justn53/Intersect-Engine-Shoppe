@@ -8,7 +8,7 @@
 
         public T After { get; }
 
-        public SanitizedValue( T before, T after )
+        public SanitizedValue(T before, T after)
         {
             Before = before;
             After = after;

@@ -24,66 +24,66 @@ namespace Intersect.Editor.Forms
             pnlGeneral.Visible = true;
 
             // Load settings for the General tab
-            var suppressTilesetWarning = Preferences.LoadPreference( "SuppressTextureWarning" );
-            if( suppressTilesetWarning == "" )
+            var suppressTilesetWarning = Preferences.LoadPreference("SuppressTextureWarning");
+            if (suppressTilesetWarning == "")
             {
                 chkSuppressTilesetWarning.Checked = false;
             }
             else
             {
-                chkSuppressTilesetWarning.Checked = Convert.ToBoolean( suppressTilesetWarning );
+                chkSuppressTilesetWarning.Checked = Convert.ToBoolean(suppressTilesetWarning);
             }
 
-            var saveBeforeRun = Preferences.LoadPreference( "SaveBeforeRun" );
-            if( saveBeforeRun == "" )
+            var saveBeforeRun = Preferences.LoadPreference("SaveBeforeRun");
+            if (saveBeforeRun == "")
             {
                 chkSaveBeforeRun.Checked = false;
             }
             else
             {
-                chkSaveBeforeRun.Checked = Convert.ToBoolean( saveBeforeRun );
+                chkSaveBeforeRun.Checked = Convert.ToBoolean(saveBeforeRun);
             }
 
-            txtGamePath.Text = Preferences.LoadPreference( "ClientPath" );
+            txtGamePath.Text = Preferences.LoadPreference("ClientPath");
 
             // Load settings for the Update tab
-            var packageUpdateAssets = Preferences.LoadPreference( "PackageUpdateAssets" );
-            if( packageUpdateAssets == "" )
+            var packageUpdateAssets = Preferences.LoadPreference("PackageUpdateAssets");
+            if (packageUpdateAssets == "")
             {
                 chkPackageAssets.Checked = false;
             }
             else
             {
-                chkPackageAssets.Checked = Convert.ToBoolean( packageUpdateAssets );
+                chkPackageAssets.Checked = Convert.ToBoolean(packageUpdateAssets);
             }
 
-            var soundBatchSize = Preferences.LoadPreference( "SoundBatchSize" );
-            if( soundBatchSize != "" )
+            var soundBatchSize = Preferences.LoadPreference("SoundBatchSize");
+            if (soundBatchSize != "")
             {
-                nudSoundBatch.Value = Convert.ToInt32( soundBatchSize );
+                nudSoundBatch.Value = Convert.ToInt32(soundBatchSize);
             }
 
-            var musicBatchSize = Preferences.LoadPreference( "MusicBatchSize" );
-            if( musicBatchSize != "" )
+            var musicBatchSize = Preferences.LoadPreference("MusicBatchSize");
+            if (musicBatchSize != "")
             {
-                nudMusicBatch.Value = Convert.ToInt32( musicBatchSize );
+                nudMusicBatch.Value = Convert.ToInt32(musicBatchSize);
             }
 
-            var texturePackSize = Preferences.LoadPreference( "TexturePackSize" );
-            if( texturePackSize != "" )
+            var texturePackSize = Preferences.LoadPreference("TexturePackSize");
+            if (texturePackSize != "")
             {
-                cmbTextureSize.SelectedIndex = cmbTextureSize.FindStringExact( texturePackSize );
+                cmbTextureSize.SelectedIndex = cmbTextureSize.FindStringExact(texturePackSize);
             }
             else
             {
-                cmbTextureSize.SelectedIndex = cmbTextureSize.FindStringExact( "2048" );
+                cmbTextureSize.SelectedIndex = cmbTextureSize.FindStringExact("2048");
             }
         }
 
         private void InitLocalization()
         {
             Text = Strings.Options.title;
-            btnGeneralOptions.Text = Strings.Options.generaltab.ToString( Application.ProductVersion );
+            btnGeneralOptions.Text = Strings.Options.generaltab.ToString(Application.ProductVersion);
             chkSuppressTilesetWarning.Text = Strings.Options.tilesetwarning;
             grpClientPath.Text = Strings.Options.pathgroup;
             btnBrowseClient.Text = Strings.Options.browsebtn;
@@ -95,18 +95,18 @@ namespace Intersect.Editor.Forms
 
         }
 
-        private void frmOptions_FormClosing( object sender, FormClosingEventArgs e )
+        private void frmOptions_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Preferences.SavePreference( "SaveBeforeRun", chkSaveBeforeRun.Checked.ToString() );
-            Preferences.SavePreference( "SuppressTextureWarning", chkSuppressTilesetWarning.Checked.ToString() );
-            Preferences.SavePreference( "ClientPath", txtGamePath.Text );
-            Preferences.SavePreference( "PackageUpdateAssets", chkPackageAssets.Checked.ToString() );
-            Preferences.SavePreference( "SoundBatchSize", nudSoundBatch.Value.ToString() );
-            Preferences.SavePreference( "MusicBatchSize", nudMusicBatch.Value.ToString() );
-            Preferences.SavePreference( "TexturePackSize", cmbTextureSize.GetItemText( cmbTextureSize.SelectedItem ) );
+            Preferences.SavePreference("SaveBeforeRun", chkSaveBeforeRun.Checked.ToString());
+            Preferences.SavePreference("SuppressTextureWarning", chkSuppressTilesetWarning.Checked.ToString());
+            Preferences.SavePreference("ClientPath", txtGamePath.Text);
+            Preferences.SavePreference("PackageUpdateAssets", chkPackageAssets.Checked.ToString());
+            Preferences.SavePreference("SoundBatchSize", nudSoundBatch.Value.ToString());
+            Preferences.SavePreference("MusicBatchSize", nudMusicBatch.Value.ToString());
+            Preferences.SavePreference("TexturePackSize", cmbTextureSize.GetItemText(cmbTextureSize.SelectedItem));
         }
 
-        private void btnBrowseClient_Click( object sender, EventArgs e )
+        private void btnBrowseClient_Click(object sender, EventArgs e)
         {
             var dialogue = new OpenFileDialog()
             {
@@ -120,7 +120,7 @@ namespace Intersect.Editor.Forms
                 ShowReadOnly = true
             };
 
-            if( dialogue.ShowDialog() == DialogResult.OK )
+            if (dialogue.ShowDialog() == DialogResult.OK)
             {
                 txtGamePath.Text = dialogue.FileName;
             }
@@ -132,7 +132,7 @@ namespace Intersect.Editor.Forms
             pnlUpdate.Visible = false;
         }
 
-        private void btnGeneralOptions_Click( object sender, EventArgs e )
+        private void btnGeneralOptions_Click(object sender, EventArgs e)
         {
             // Hide other panels.
             HidePanels();
@@ -140,7 +140,7 @@ namespace Intersect.Editor.Forms
             pnlGeneral.Visible = true;
         }
 
-        private void btnUpdateOptions_Click( object sender, EventArgs e )
+        private void btnUpdateOptions_Click(object sender, EventArgs e)
         {
             // Hide other panels.
             HidePanels();

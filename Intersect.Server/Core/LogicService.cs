@@ -26,11 +26,11 @@ namespace Intersect.Server.Core
         public override bool IsEnabled => true;
 
         /// <inheritdoc />
-        protected override void TaskStart( IServerContext applicationContext ) =>
-            Thread = mLogicThread.Start( applicationContext );
+        protected override void TaskStart(IServerContext applicationContext) =>
+            Thread = mLogicThread.Start(applicationContext);
 
         /// <inheritdoc />
-        protected override void TaskStop( IServerContext applicationContext )
+        protected override void TaskStop(IServerContext applicationContext)
         {
             // Nothing to do, the thread already has a stopping condition
         }

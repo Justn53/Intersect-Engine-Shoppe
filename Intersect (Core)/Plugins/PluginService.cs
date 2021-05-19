@@ -17,23 +17,23 @@ namespace Intersect.Plugins
     /// </summary>
     internal sealed class PluginService : ApplicationService<IPluginService, PluginService>, IPluginService
     {
-        private static readonly string BuiltInPluginDirectory = Path.Combine( "resources", "plugins" );
+        private static readonly string BuiltInPluginDirectory = Path.Combine("resources", "plugins");
 
         /// <summary>
         /// Initializes the <see cref="PluginService"/>.
         /// </summary>
         public PluginService()
         {
-            if( FactoryRegistry<IPluginBootstrapContext>.Factory == null )
+            if (FactoryRegistry<IPluginBootstrapContext>.Factory == null)
             {
                 throw new InvalidOperationException(
-                    $@"Factory has not been registered for {nameof( IPluginBootstrapContext )}."
+                    $@"Factory has not been registered for {nameof(IPluginBootstrapContext)}."
                 );
             }
 
-            if( FactoryRegistry<IPluginContext>.Factory == null )
+            if (FactoryRegistry<IPluginContext>.Factory == null)
             {
-                throw new InvalidOperationException( $@"Factory has not been registered for {nameof( IPluginContext )}." );
+                throw new InvalidOperationException($@"Factory has not been registered for {nameof(IPluginContext)}.");
             }
 
             PluginDirectories = new List<string>
@@ -65,7 +65,7 @@ namespace Intersect.Plugins
         public override bool IsEnabled => true;
 
         /// <inheritdoc />
-        public override bool Bootstrap( IApplicationContext applicationContext )
+        public override bool Bootstrap(IApplicationContext applicationContext)
         {
             try
             {
@@ -75,40 +75,40 @@ namespace Intersect.Plugins
                 );
 
                 // Discover plugins
-                var discoveredPlugins = Loader.DiscoverPlugins( applicationContext, PluginDirectories );
+                var discoveredPlugins = Loader.DiscoverPlugins(applicationContext, PluginDirectories);
 
                 applicationContext.Logger.Info(
-                    $"Discovered {discoveredPlugins.Count} plugins:\n{string.Join( "\n", discoveredPlugins.Select( plugin => plugin.Key ) )}"
+                    $"Discovered {discoveredPlugins.Count} plugins:\n{string.Join("\n", discoveredPlugins.Select(plugin => plugin.Key))}"
                 );
 
                 // Load configuration for plugins
-                Loader.LoadConfigurations( applicationContext, discoveredPlugins.Values );
+                Loader.LoadConfigurations(applicationContext, discoveredPlugins.Values);
 
                 // Register discovered plugins
-                RegisterPlugins( discoveredPlugins );
+                RegisterPlugins(discoveredPlugins);
 
                 // Create plugin instances
                 CreateInstances();
 
                 // Run bootstrap plugin
-                RunOnAllInstances( applicationContext, OnBootstrap );
+                RunOnAllInstances(applicationContext, OnBootstrap);
 
                 return true;
             }
-            catch( Exception exception )
+            catch (Exception exception)
             {
-                throw new ServiceLifecycleFailureException( ServiceLifecycleStage.Bootstrap, Name, exception );
+                throw new ServiceLifecycleFailureException(ServiceLifecycleStage.Bootstrap, Name, exception);
             }
         }
 
         /// <inheritdoc />
-        protected override void TaskStart( IApplicationContext applicationContext ) =>
-            RunOnAllInstances( applicationContext, OnStart );
+        protected override void TaskStart(IApplicationContext applicationContext) =>
+            RunOnAllInstances(applicationContext, OnStart);
 
         /// <inheritdoc />
-        protected override void TaskStop( IApplicationContext applicationContext )
+        protected override void TaskStop(IApplicationContext applicationContext)
         {
-            RunOnAllInstances( applicationContext, OnStop );
+            RunOnAllInstances(applicationContext, OnStop);
 
             Instances.Clear();
             Plugins.Clear();
@@ -116,19 +116,19 @@ namespace Intersect.Plugins
 
         /// <inheritdoc />
         public Plugin this[string pluginKey] =>
-            Plugins.TryGetValue( pluginKey, out var plugin ) ? plugin : null;
+            Plugins.TryGetValue(pluginKey, out var plugin) ? plugin : null;
 
         /// <inheritdoc />
         public List<string> PluginDirectories { get; }
 
         /// <inheritdoc />
-        public bool IsPluginEnabled( string pluginKey ) => this[pluginKey]?.IsEnabled ?? false;
+        public bool IsPluginEnabled(string pluginKey) => this[pluginKey]?.IsEnabled ?? false;
 
         /// <inheritdoc />
-        public bool EnablePlugin( string pluginKey )
+        public bool EnablePlugin(string pluginKey)
         {
             var plugin = this[pluginKey];
-            if( plugin?.IsEnabled ?? true )
+            if (plugin?.IsEnabled ?? true)
             {
                 return plugin?.IsEnabled ?? false;
             }
@@ -137,41 +137,41 @@ namespace Intersect.Plugins
         }
 
         /// <inheritdoc />
-        public bool DisablePlugin( string pluginKey )
+        public bool DisablePlugin(string pluginKey)
         {
             var plugin = this[pluginKey];
-            if( !( plugin?.IsEnabled ?? false ) )
+            if (!(plugin?.IsEnabled ?? false))
             {
-                return !( plugin?.IsEnabled ?? false );
+                return !(plugin?.IsEnabled ?? false);
             }
 
             plugin.IsEnabled = false;
             return true;
         }
 
-        private void RegisterPlugins( IDictionary<string, Plugin> plugins )
+        private void RegisterPlugins(IDictionary<string, Plugin> plugins)
         {
-            foreach( var pluginEntry in plugins )
+            foreach (var pluginEntry in plugins)
             {
-                Debug.Assert( pluginEntry.Key != null, "pluginEntry.Key != null" );
-                if( !Plugins.TryAdd( pluginEntry.Key, pluginEntry.Value ) )
+                Debug.Assert(pluginEntry.Key != null, "pluginEntry.Key != null");
+                if (!Plugins.TryAdd(pluginEntry.Key, pluginEntry.Value))
                 {
-                    throw new Exception( $@"Failed to register plugin: {pluginEntry.Key}" );
+                    throw new Exception($@"Failed to register plugin: {pluginEntry.Key}");
                 }
             }
         }
 
         private void CreateInstances()
         {
-            foreach( var pluginEntry in Plugins )
+            foreach (var pluginEntry in Plugins)
             {
                 var plugin = pluginEntry.Value;
-                Debug.Assert( plugin != null, nameof( plugin ) + " != null" );
+                Debug.Assert(plugin != null, nameof(plugin) + " != null");
 
-                var instance = PluginInstance.Create( plugin );
-                if( !Instances.TryAdd( plugin, instance ) )
+                var instance = PluginInstance.Create(plugin);
+                if (!Instances.TryAdd(plugin, instance))
                 {
-                    throw new Exception( $@"Failed to add plugin instance: {plugin.Key}" );
+                    throw new Exception($@"Failed to add plugin instance: {plugin.Key}");
                 }
             }
         }
@@ -186,16 +186,16 @@ namespace Intersect.Plugins
             IApplicationContext applicationContext,
             Action<KeyValuePair<Plugin, PluginInstance>> action
         ) =>
-            Instances.Where( instance => instance.Key?.IsEnabled ?? false )
+            Instances.Where(instance => instance.Key?.IsEnabled ?? false)
                 .ToList()
                 .ForEach(
                     pair =>
                     {
                         try
                         {
-                            action( pair );
+                            action(pair);
                         }
-                        catch( Exception exception )
+                        catch (Exception exception)
                         {
                             // TODO: Implement something like this for displaying errors to the user
                             // var manifestName = pair.Key.Manifest.Name;
@@ -214,34 +214,34 @@ namespace Intersect.Plugins
                     }
                 );
 
-        private void OnBootstrap( KeyValuePair<Plugin, PluginInstance> instancePair )
+        private void OnBootstrap(KeyValuePair<Plugin, PluginInstance> instancePair)
         {
-            Debug.Assert( instancePair.Key != null, $@"{nameof( instancePair )}.Key != null" );
-            Debug.Assert( instancePair.Value != null, $@"{nameof( instancePair )}.Value != null" );
+            Debug.Assert(instancePair.Key != null, $@"{nameof(instancePair)}.Key != null");
+            Debug.Assert(instancePair.Value != null, $@"{nameof(instancePair)}.Value != null");
 
             var instance = instancePair.Value;
             var entry = instance.Entry;
-            entry.OnBootstrap( instance.BootstrapContext );
+            entry.OnBootstrap(instance.BootstrapContext);
         }
 
-        private void OnStart( KeyValuePair<Plugin, PluginInstance> instancePair )
+        private void OnStart(KeyValuePair<Plugin, PluginInstance> instancePair)
         {
-            Debug.Assert( instancePair.Key != null, $@"{nameof( instancePair )}.Key != null" );
-            Debug.Assert( instancePair.Value != null, $@"{nameof( instancePair )}.Value != null" );
+            Debug.Assert(instancePair.Key != null, $@"{nameof(instancePair)}.Key != null");
+            Debug.Assert(instancePair.Value != null, $@"{nameof(instancePair)}.Value != null");
 
             var instance = instancePair.Value;
             var entry = instance.Entry;
-            entry.OnStart( instance.Context );
+            entry.OnStart(instance.Context);
         }
 
-        private void OnStop( KeyValuePair<Plugin, PluginInstance> instancePair )
+        private void OnStop(KeyValuePair<Plugin, PluginInstance> instancePair)
         {
-            Debug.Assert( instancePair.Key != null, $@"{nameof( instancePair )}.Key != null" );
-            Debug.Assert( instancePair.Value != null, $@"{nameof( instancePair )}.Value != null" );
+            Debug.Assert(instancePair.Key != null, $@"{nameof(instancePair)}.Key != null");
+            Debug.Assert(instancePair.Value != null, $@"{nameof(instancePair)}.Value != null");
 
             var instance = instancePair.Value;
             var entry = instance.Entry;
-            entry.OnStop( instance.Context );
+            entry.OnStop(instance.Context);
         }
     }
 }

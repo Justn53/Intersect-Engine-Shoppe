@@ -32,10 +32,10 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="Canvas" /> class.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        public Canvas( Skin.Base skin, string name ) : base( null, name )
+        public Canvas(Skin.Base skin, string name) : base(null, name)
         {
-            SetBounds( 0, 0, 10000, 10000 );
-            SetSkin( skin );
+            SetBounds(0, 0, 10000, 10000);
+            SetSkin(skin);
             Scale = 1.0f;
             BackgroundColor = Color.White;
             ShouldDrawBackground = false;
@@ -51,14 +51,14 @@ namespace Intersect.Client.Framework.Gwen.Control
             get => mScale;
             set
             {
-                if( mScale == value )
+                if (mScale == value)
                 {
                     return;
                 }
 
                 mScale = value;
 
-                if( Skin != null && Skin.Renderer != null )
+                if (Skin != null && Skin.Renderer != null)
                 {
                     Skin.Renderer.Scale = mScale;
                 }
@@ -128,24 +128,24 @@ namespace Intersect.Client.Framework.Gwen.Control
 
             render.Begin();
 
-            RecurseLayout( Skin );
+            RecurseLayout(Skin);
 
             render.ClipRegion = Bounds;
 
             //render.RenderOffset = new Point(X,Y);
             render.Scale = Scale;
 
-            if( ShouldDrawBackground )
+            if (ShouldDrawBackground)
             {
                 render.DrawColor = mBackgroundColor;
-                render.DrawFilledRect( RenderBounds );
+                render.DrawFilledRect(RenderBounds);
             }
 
-            DoRender( Skin );
+            DoRender(Skin);
 
-            DragAndDrop.RenderOverlay( this, Skin );
+            DragAndDrop.RenderOverlay(this, Skin);
 
-            Gwen.ToolTip.RenderToolTip( Skin );
+            Gwen.ToolTip.RenderToolTip(Skin);
 
             render.EndClip();
 
@@ -156,10 +156,10 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
             //skin.Renderer.rnd = new Random(1);
-            base.Render( skin );
+            base.Render(skin);
             mNeedsRedraw = false;
         }
 
@@ -167,10 +167,10 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Handler invoked when control's bounds change.
         /// </summary>
         /// <param name="oldBounds">Old bounds.</param>
-        protected override void OnBoundsChanged( Rectangle oldBounds )
+        protected override void OnBoundsChanged(Rectangle oldBounds)
         {
-            base.OnBoundsChanged( oldBounds );
-            InvalidateChildren( true );
+            base.OnBoundsChanged(oldBounds);
+            InvalidateChildren(true);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         private void DoThink()
         {
-            if( IsHidden )
+            if (IsHidden)
             {
                 return;
             }
@@ -192,15 +192,15 @@ namespace Intersect.Client.Framework.Gwen.Control
             ProcessDelayedDeletes();
 
             // Check has focus etc..
-            RecurseLayout( Skin );
+            RecurseLayout(Skin);
 
             // If we didn't have a next tab, cycle to the start.
-            if( mNextTab == null )
+            if (mNextTab == null)
             {
                 mNextTab = mFirstTab;
             }
 
-            InputHandler.OnCanvasThink( this );
+            InputHandler.OnCanvasThink(this);
         }
 
         /// <summary>
@@ -208,17 +208,17 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     list.
         /// </summary>
         /// <param name="control">Control to delete.</param>
-        public void AddDelayedDelete( Base control )
+        public void AddDelayedDelete(Base control)
         {
-            if( !mDisposeQueue.Contains( control ) )
+            if (!mDisposeQueue.Contains(control))
             {
-                mDisposeQueue.Add( control );
-                RemoveChild( control, false );
+                mDisposeQueue.Add(control);
+                RemoveChild(control, false);
             }
 #if DEBUG
             else
             {
-                throw new InvalidOperationException( "Control deleted twice" );
+                throw new InvalidOperationException("Control deleted twice");
             }
 #endif
         }
@@ -227,7 +227,7 @@ namespace Intersect.Client.Framework.Gwen.Control
         {
             //if (m_DisposeQueue.Count > 0)
             //    System.Diagnostics.//debug.print("Canvas.ProcessDelayedDeletes: {0} items", m_DisposeQueue.Count);
-            foreach( var control in mDisposeQueue )
+            foreach (var control in mDisposeQueue)
             {
                 control.Dispose();
             }
@@ -239,41 +239,41 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Handles mouse movement events. Called from Input subsystems.
         /// </summary>
         /// <returns>True if handled.</returns>
-        public bool Input_MouseMoved( int x, int y, int dx, int dy )
+        public bool Input_MouseMoved(int x, int y, int dx, int dy)
         {
-            if( IsHidden )
+            if (IsHidden)
             {
                 return false;
             }
 
             // Todo: Handle scaling here..
             var fScale = 1.0f / Scale;
-            x = (int)( x * fScale );
-            y = (int)( y * fScale );
-            dx = (int)( dx * fScale );
-            dy = (int)( dy * fScale );
+            x = (int)(x * fScale);
+            y = (int)(y * fScale);
+            dx = (int)(dx * fScale);
+            dy = (int)(dy * fScale);
 
-            InputHandler.OnMouseMoved( this, x, y, dx, dy );
+            InputHandler.OnMouseMoved(this, x, y, dx, dy);
 
-            if( InputHandler.HoveredControl == null )
+            if (InputHandler.HoveredControl == null)
             {
                 return false;
             }
 
-            if( InputHandler.HoveredControl == this )
+            if (InputHandler.HoveredControl == this)
             {
                 return false;
             }
 
-            if( InputHandler.HoveredControl.GetCanvas() != this )
+            if (InputHandler.HoveredControl.GetCanvas() != this)
             {
                 return false;
             }
 
-            InputHandler.HoveredControl.InputMouseMoved( x, y, dx, dy );
+            InputHandler.HoveredControl.InputMouseMoved(x, y, dx, dy);
             InputHandler.HoveredControl.UpdateCursor();
 
-            DragAndDrop.OnMouseMoved( InputHandler.HoveredControl, x, y );
+            DragAndDrop.OnMouseMoved(InputHandler.HoveredControl, x, y);
 
             return true;
         }
@@ -282,124 +282,124 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Handles mouse button events. Called from Input subsystems.
         /// </summary>
         /// <returns>True if handled.</returns>
-        public bool Input_MouseButton( int button, bool down )
+        public bool Input_MouseButton(int button, bool down)
         {
-            if( IsHidden )
+            if (IsHidden)
             {
                 return false;
             }
 
-            return InputHandler.OnMouseClicked( this, button, down );
+            return InputHandler.OnMouseClicked(this, button, down);
         }
 
         /// <summary>
         ///     Handles mouse button events. Called from Input subsystems.
         /// </summary>
         /// <returns>True if handled.</returns>
-        public bool Input_MouseScroll( int deltaX, int deltaY )
+        public bool Input_MouseScroll(int deltaX, int deltaY)
         {
-            if( IsHidden )
+            if (IsHidden)
             {
                 return false;
             }
 
-            return InputHandler.OnMouseScroll( this, deltaX, deltaY );
+            return InputHandler.OnMouseScroll(this, deltaX, deltaY);
         }
 
         /// <summary>
         ///     Handles keyboard events. Called from Input subsystems.
         /// </summary>
         /// <returns>True if handled.</returns>
-        public bool Input_Key( Key key, bool down )
+        public bool Input_Key(Key key, bool down)
         {
-            if( IsHidden )
+            if (IsHidden)
             {
                 return false;
             }
 
-            if( key <= Key.Invalid )
+            if (key <= Key.Invalid)
             {
                 return false;
             }
 
-            if( key >= Key.Count )
+            if (key >= Key.Count)
             {
                 return false;
             }
 
-            return InputHandler.OnKeyEvent( this, key, down );
+            return InputHandler.OnKeyEvent(this, key, down);
         }
 
         /// <summary>
         ///     Handles keyboard events. Called from Input subsystems.
         /// </summary>
         /// <returns>True if handled.</returns>
-        public bool Input_Character( char chr )
+        public bool Input_Character(char chr)
         {
-            if( IsHidden )
+            if (IsHidden)
             {
                 return false;
             }
 
-            if( char.IsControl( chr ) )
+            if (char.IsControl(chr))
             {
                 return false;
             }
 
             //Handle Accelerators
-            if( InputHandler.HandleAccelerator( this, chr ) )
+            if (InputHandler.HandleAccelerator(this, chr))
             {
                 return true;
             }
 
             //Handle characters
-            if( InputHandler.KeyboardFocus == null )
+            if (InputHandler.KeyboardFocus == null)
             {
                 return false;
             }
 
-            if( InputHandler.KeyboardFocus.GetCanvas() != this )
+            if (InputHandler.KeyboardFocus.GetCanvas() != this)
             {
                 return false;
             }
 
-            if( !InputHandler.KeyboardFocus.IsVisible )
+            if (!InputHandler.KeyboardFocus.IsVisible)
             {
                 return false;
             }
 
             //if (InputHandler.IsControlDown) return false;
 
-            return InputHandler.KeyboardFocus.InputChar( chr );
+            return InputHandler.KeyboardFocus.InputChar(chr);
         }
 
         /// <summary>
         ///     Handles the mouse wheel events. Called from Input subsystems.
         /// </summary>
         /// <returns>True if handled.</returns>
-        public bool Input_MouseWheel( int val )
+        public bool Input_MouseWheel(int val)
         {
-            if( IsHidden )
+            if (IsHidden)
             {
                 return false;
             }
 
-            if( InputHandler.HoveredControl == null )
+            if (InputHandler.HoveredControl == null)
             {
                 return false;
             }
 
-            if( InputHandler.HoveredControl == this )
+            if (InputHandler.HoveredControl == this)
             {
                 return false;
             }
 
-            if( InputHandler.HoveredControl.GetCanvas() != this )
+            if (InputHandler.HoveredControl.GetCanvas() != this)
             {
                 return false;
             }
 
-            return InputHandler.HoveredControl.InputMouseWheeled( val );
+            return InputHandler.HoveredControl.InputMouseWheeled(val);
         }
 
     }

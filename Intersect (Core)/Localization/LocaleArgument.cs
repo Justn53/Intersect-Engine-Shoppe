@@ -11,10 +11,10 @@ namespace Intersect.Localization
     {
 
         [JsonProperty(
-            nameof( ShortName ), NullValueHandling = NullValueHandling.Ignore,
+            nameof(ShortName), NullValueHandling = NullValueHandling.Ignore,
             DefaultValueHandling = DefaultValueHandling.Ignore
         )]
-        [DefaultValue( char.MinValue )]
+        [DefaultValue(char.MinValue)]
         private char mShortName;
 
         public LocaleArgument()
@@ -25,7 +25,7 @@ namespace Intersect.Localization
             string name,
             char shortName = char.MinValue,
             string description = null
-        ) : base( name, description )
+        ) : base(name, description)
         {
             mShortName = shortName;
         }
@@ -36,7 +36,7 @@ namespace Intersect.Localization
             get => mShortName;
             set
             {
-                if( mShortName == char.MinValue )
+                if (mShortName == char.MinValue)
                 {
                     mShortName = value;
                 }

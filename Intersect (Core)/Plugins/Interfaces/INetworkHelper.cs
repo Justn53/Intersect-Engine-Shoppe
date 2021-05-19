@@ -21,16 +21,16 @@ namespace Intersect.Plugins.Interfaces
 
         bool TryRegisterPacketType<TPacket>() where TPacket : IPacket;
 
-        bool TryRegisterPacketPreprocessor<THandler, TPacket>( out THandler handler )
+        bool TryRegisterPacketPreprocessor<THandler, TPacket>(out THandler handler)
             where TPacket : IPacket where THandler : IPacketHandler<TPacket>;
 
-        bool TryRegisterPacketHandler<THandler, TPacket>( out THandler handler )
+        bool TryRegisterPacketHandler<THandler, TPacket>(out THandler handler)
             where TPacket : IPacket where THandler : IPacketHandler<TPacket>;
 
-        bool TryRegisterPacketPreHook<THandler, TPacket>( out THandler handler )
+        bool TryRegisterPacketPreHook<THandler, TPacket>(out THandler handler)
             where TPacket : IPacket where THandler : IPacketHandler<TPacket>;
 
-        bool TryRegisterPacketPostHook<THandler, TPacket>( out THandler handler )
+        bool TryRegisterPacketPostHook<THandler, TPacket>(out THandler handler)
             where TPacket : IPacket where THandler : IPacketHandler<TPacket>;
     }
 }

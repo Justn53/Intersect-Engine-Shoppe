@@ -30,31 +30,31 @@ namespace Intersect.Network.Packets.Server
             MaxVitals = maxVitals;
             StatusEffects = statusEffects;
 
-            if( combatTimeRemaining > 0 )
+            if (combatTimeRemaining > 0)
             {
                 CombatTimeRemaining = combatTimeRemaining;
             }
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid Id { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public EntityTypes Type { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public Guid MapId { get; set; }
 
-        [Key( 3 )]
+        [Key(3)]
         public int[] Vitals { get; set; }
 
-        [Key( 4 )]
+        [Key(4)]
         public int[] MaxVitals { get; set; }
 
-        [Key( 5 )]
+        [Key(5)]
         public StatusPacket[] StatusEffects { get; set; }
 
-        [Key( 6 )]
+        [Key(6)]
         public long CombatTimeRemaining { get; set; }
 
     }

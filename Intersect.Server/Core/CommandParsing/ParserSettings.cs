@@ -22,8 +22,8 @@ namespace Intersect.Server.Core.CommandParsing
             TokenizerSettings tokenizerSettings = null
         )
         {
-            PrefixShort = ValidatePrefix( prefixShort ?? DefaultPrefixShort );
-            PrefixLong = ValidatePrefix( prefixLong ?? DefaultPrefixLong );
+            PrefixShort = ValidatePrefix(prefixShort ?? DefaultPrefixShort);
+            PrefixLong = ValidatePrefix(prefixLong ?? DefaultPrefixLong);
             Localization = localization ?? DefaultLocalization;
             TokenizerSettings = tokenizerSettings ?? TokenizerSettings.Default;
         }
@@ -40,26 +40,26 @@ namespace Intersect.Server.Core.CommandParsing
 
         public TokenizerSettings TokenizerSettings { get; }
 
-        public static string ValidatePrefix( string prefix )
+        public static string ValidatePrefix(string prefix)
         {
-            if( string.IsNullOrWhiteSpace( prefix ) )
+            if (string.IsNullOrWhiteSpace(prefix))
             {
-                throw new ArgumentException( @"Prefix cannot be null, empty, or whitespace." );
+                throw new ArgumentException(@"Prefix cannot be null, empty, or whitespace.");
             }
 
-            if( prefix.Contains( '=' ) )
+            if (prefix.Contains('='))
             {
-                throw new ArgumentException( @"Prefixes cannot contain '='." );
+                throw new ArgumentException(@"Prefixes cannot contain '='.");
             }
 
-            if( prefix.Contains( ' ' ) || prefix.Contains( '\n' ) || prefix.Contains( '\r' ) || prefix.Contains( '\t' ) )
+            if (prefix.Contains(' ') || prefix.Contains('\n') || prefix.Contains('\r') || prefix.Contains('\t'))
             {
-                throw new ArgumentException( @"Prefixes cannot contain whitespace." );
+                throw new ArgumentException(@"Prefixes cannot contain whitespace.");
             }
 
-            if( prefix.Contains( '\0' ) )
+            if (prefix.Contains('\0'))
             {
-                throw new ArgumentException( @"Prefixes cannot contain the null character." );
+                throw new ArgumentException(@"Prefixes cannot contain the null character.");
             }
 
             return prefix;

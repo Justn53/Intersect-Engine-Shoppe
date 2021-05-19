@@ -11,12 +11,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public OpenEditorPacket( GameObjectType type )
+        public OpenEditorPacket(GameObjectType type)
         {
             Type = type;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public GameObjectType Type { get; set; }
 
     }

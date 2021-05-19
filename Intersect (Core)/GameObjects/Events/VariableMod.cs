@@ -21,7 +21,7 @@ namespace Intersect.GameObjects.Events
 
         public long HighValue { get; set; }
 
-        [JsonProperty( "DupVariableId" )]
+        [JsonProperty("DupVariableId")]
         public Guid DuplicateVariableId { get; set; }
 
     }
@@ -33,7 +33,7 @@ namespace Intersect.GameObjects.Events
 
         public VariableTypes DupVariableType { get; set; } = VariableTypes.PlayerVariable;
 
-        [JsonProperty( "DupVariableId" )]
+        [JsonProperty("DupVariableId")]
         public Guid DuplicateVariableId { get; set; }
 
     }

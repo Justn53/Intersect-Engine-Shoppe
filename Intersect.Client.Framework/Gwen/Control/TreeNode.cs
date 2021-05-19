@@ -33,22 +33,22 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Initializes a new instance of the <see cref="TreeNode" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public TreeNode( Base parent ) : base( parent )
+        public TreeNode(Base parent) : base(parent)
         {
-            mToggleButton = new TreeToggleButton( this );
-            mToggleButton.SetBounds( 0, 0, 15, 15 );
+            mToggleButton = new TreeToggleButton(this);
+            mToggleButton.SetBounds(0, 0, 15, 15);
             mToggleButton.Toggled += OnToggleButtonPress;
 
-            mTitle = new TreeNodeLabel( this );
+            mTitle = new TreeNodeLabel(this);
             mTitle.Dock = Pos.Top;
-            mTitle.Margin = new Margin( 16, 0, 0, 0 );
+            mTitle.Margin = new Margin(16, 0, 0, 0);
             mTitle.DoubleClicked += OnDoubleClickName;
             mTitle.Clicked += OnClickName;
 
-            mInnerPanel = new Base( this );
+            mInnerPanel = new Base(this);
             mInnerPanel.Dock = Pos.Top;
             mInnerPanel.Height = 100;
-            mInnerPanel.Margin = new Margin( TREE_INDENTATION, 1, 0, 0 );
+            mInnerPanel.Margin = new Margin(TREE_INDENTATION, 1, 0, 0);
             mInnerPanel.Hide();
 
             mRoot = parent is TreeControl;
@@ -93,56 +93,56 @@ namespace Intersect.Client.Framework.Gwen.Control
             get => mSelected;
             set
             {
-                if( !IsSelectable )
+                if (!IsSelectable)
                 {
                     return;
                 }
 
-                if( IsSelected == value )
+                if (IsSelected == value)
                 {
                     return;
                 }
 
                 mSelected = value;
 
-                if( mTitle != null )
+                if (mTitle != null)
                 {
                     mTitle.ToggleState = value;
                 }
 
-                if( SelectionChanged != null )
+                if (SelectionChanged != null)
                 {
-                    SelectionChanged.Invoke( this, EventArgs.Empty );
+                    SelectionChanged.Invoke(this, EventArgs.Empty);
                 }
 
                 // propagate to root parent (tree)
-                if( mTreeControl != null && mTreeControl.SelectionChanged != null )
+                if (mTreeControl != null && mTreeControl.SelectionChanged != null)
                 {
-                    mTreeControl.SelectionChanged.Invoke( this, EventArgs.Empty );
+                    mTreeControl.SelectionChanged.Invoke(this, EventArgs.Empty);
                 }
 
-                if( value )
+                if (value)
                 {
-                    if( Selected != null )
+                    if (Selected != null)
                     {
-                        Selected.Invoke( this, EventArgs.Empty );
+                        Selected.Invoke(this, EventArgs.Empty);
                     }
 
-                    if( mTreeControl != null && mTreeControl.Selected != null )
+                    if (mTreeControl != null && mTreeControl.Selected != null)
                     {
-                        mTreeControl.Selected.Invoke( this, EventArgs.Empty );
+                        mTreeControl.Selected.Invoke(this, EventArgs.Empty);
                     }
                 }
                 else
                 {
-                    if( Unselected != null )
+                    if (Unselected != null)
                     {
-                        Unselected.Invoke( this, EventArgs.Empty );
+                        Unselected.Invoke(this, EventArgs.Empty);
                     }
 
-                    if( mTreeControl != null && mTreeControl.Unselected != null )
+                    if (mTreeControl != null && mTreeControl.Unselected != null)
                     {
-                        mTreeControl.Unselected.Invoke( this, EventArgs.Empty );
+                        mTreeControl.Unselected.Invoke(this, EventArgs.Empty);
                     }
                 }
             }
@@ -163,20 +163,20 @@ namespace Intersect.Client.Framework.Gwen.Control
             {
                 var trees = new List<TreeNode>();
 
-                foreach( var child in Children )
+                foreach (var child in Children)
                 {
                     var node = child as TreeNode;
-                    if( node == null )
+                    if (node == null)
                     {
                         continue;
                     }
 
-                    trees.AddRange( node.SelectedChildren );
+                    trees.AddRange(node.SelectedChildren);
                 }
 
-                if( this.IsSelected )
+                if (this.IsSelected)
                 {
-                    trees.Add( this );
+                    trees.Add(this);
                 }
 
                 return trees;
@@ -217,17 +217,17 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render( Skin.Base skin )
+        protected override void Render(Skin.Base skin)
         {
             var bottom = 0;
-            if( mInnerPanel.Children.Count > 0 )
+            if (mInnerPanel.Children.Count > 0)
             {
                 bottom = mInnerPanel.Children.Last().Y + mInnerPanel.Y;
             }
 
             skin.DrawTreeNode(
                 this, mInnerPanel.IsVisible, IsSelected, mTitle.Height, mTitle.TextRight,
-                (int)( mToggleButton.Y + mToggleButton.Height * 0.5f ), bottom, mTreeControl == Parent
+                (int)(mToggleButton.Y + mToggleButton.Height * 0.5f), bottom, mTreeControl == Parent
             ); // IsRoot
 
             //[halfofastaple] HACK - The treenodes are taking two passes until their height is set correctly,
@@ -243,16 +243,16 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout( Skin.Base skin )
+        protected override void Layout(Skin.Base skin)
         {
-            if( mToggleButton != null )
+            if (mToggleButton != null)
             {
-                if( mTitle != null )
+                if (mTitle != null)
                 {
-                    mToggleButton.SetPosition( 0, ( mTitle.Height - mToggleButton.Height ) * 0.5f );
+                    mToggleButton.SetPosition(0, (mTitle.Height - mToggleButton.Height) * 0.5f);
                 }
 
-                if( mInnerPanel.Children.Count == 0 )
+                if (mInnerPanel.Children.Count == 0)
                 {
                     mToggleButton.Hide();
                     mToggleButton.ToggleState = false;
@@ -261,20 +261,20 @@ namespace Intersect.Client.Framework.Gwen.Control
                 else
                 {
                     mToggleButton.Show();
-                    mInnerPanel.SizeToChildren( false, true );
+                    mInnerPanel.SizeToChildren(false, true);
                 }
             }
 
-            base.Layout( skin );
+            base.Layout(skin);
         }
 
         /// <summary>
         ///     Function invoked after layout.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void PostLayout( Skin.Base skin )
+        protected override void PostLayout(Skin.Base skin)
         {
-            if( SizeToChildren( false, true ) )
+            if (SizeToChildren(false, true))
             {
                 InvalidateParent();
             }
@@ -285,9 +285,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         /// </summary>
         /// <param name="label">Node's label.</param>
         /// <returns>Newly created control.</returns>
-        public TreeNode AddNode( string label )
+        public TreeNode AddNode(string label)
         {
-            var node = new TreeNode( this );
+            var node = new TreeNode(this);
             node.Text = label;
 
             return node;
@@ -299,19 +299,19 @@ namespace Intersect.Client.Framework.Gwen.Control
         public void Open()
         {
             mInnerPanel.Show();
-            if( mToggleButton != null )
+            if (mToggleButton != null)
             {
                 mToggleButton.ToggleState = true;
             }
 
-            if( Expanded != null )
+            if (Expanded != null)
             {
-                Expanded.Invoke( this, EventArgs.Empty );
+                Expanded.Invoke(this, EventArgs.Empty);
             }
 
-            if( mTreeControl != null && mTreeControl.Expanded != null )
+            if (mTreeControl != null && mTreeControl.Expanded != null)
             {
-                mTreeControl.Expanded.Invoke( this, EventArgs.Empty );
+                mTreeControl.Expanded.Invoke(this, EventArgs.Empty);
             }
 
             Invalidate();
@@ -323,19 +323,19 @@ namespace Intersect.Client.Framework.Gwen.Control
         public void Close()
         {
             mInnerPanel.Hide();
-            if( mToggleButton != null )
+            if (mToggleButton != null)
             {
                 mToggleButton.ToggleState = false;
             }
 
-            if( Collapsed != null )
+            if (Collapsed != null)
             {
-                Collapsed.Invoke( this, EventArgs.Empty );
+                Collapsed.Invoke(this, EventArgs.Empty);
             }
 
-            if( mTreeControl != null && mTreeControl.Collapsed != null )
+            if (mTreeControl != null && mTreeControl.Collapsed != null)
             {
-                mTreeControl.Collapsed.Invoke( this, EventArgs.Empty );
+                mTreeControl.Collapsed.Invoke(this, EventArgs.Empty);
             }
 
             Invalidate();
@@ -347,10 +347,10 @@ namespace Intersect.Client.Framework.Gwen.Control
         public void ExpandAll()
         {
             Open();
-            foreach( var child in Children )
+            foreach (var child in Children)
             {
                 var node = child as TreeNode;
-                if( node == null )
+                if (node == null)
                 {
                     continue;
                 }
@@ -365,15 +365,15 @@ namespace Intersect.Client.Framework.Gwen.Control
         public void UnselectAll()
         {
             IsSelected = false;
-            if( mTitle != null )
+            if (mTitle != null)
             {
                 mTitle.ToggleState = false;
             }
 
-            foreach( var child in Children )
+            foreach (var child in Children)
             {
                 var node = child as TreeNode;
-                if( node == null )
+                if (node == null)
                 {
                     continue;
                 }
@@ -386,9 +386,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Handler for the toggle button.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnToggleButtonPress( Base control, EventArgs args )
+        protected virtual void OnToggleButtonPress(Base control, EventArgs args)
         {
-            if( mToggleButton.ToggleState )
+            if (mToggleButton.ToggleState)
             {
                 Open();
             }
@@ -402,9 +402,9 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Handler for label double click.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnDoubleClickName( Base control, EventArgs args )
+        protected virtual void OnDoubleClickName(Base control, EventArgs args)
         {
-            if( !mToggleButton.IsVisible )
+            if (!mToggleButton.IsVisible)
             {
                 return;
             }
@@ -416,73 +416,73 @@ namespace Intersect.Client.Framework.Gwen.Control
         ///     Handler for label click.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnClickName( Base control, EventArgs args )
+        protected virtual void OnClickName(Base control, EventArgs args)
         {
-            if( LabelPressed != null )
+            if (LabelPressed != null)
             {
-                LabelPressed.Invoke( this, EventArgs.Empty );
+                LabelPressed.Invoke(this, EventArgs.Empty);
             }
 
             IsSelected = !IsSelected;
         }
 
-        public void SetImage( GameTexture texture, string fileName = "" )
+        public void SetImage(GameTexture texture, string fileName = "")
         {
-            mTitle.SetImage( texture, fileName, Button.ControlState.Normal );
+            mTitle.SetImage(texture, fileName, Button.ControlState.Normal);
         }
 
-        protected override void OnChildAdded( Base child )
+        protected override void OnChildAdded(Base child)
         {
             var node = child as TreeNode;
-            if( node != null )
+            if (node != null)
             {
                 node.TreeControl = mTreeControl;
 
-                if( mTreeControl != null )
+                if (mTreeControl != null)
                 {
-                    mTreeControl.OnNodeAdded( node );
+                    mTreeControl.OnNodeAdded(node);
                 }
             }
 
-            base.OnChildAdded( child );
+            base.OnChildAdded(child);
         }
 
         public override event GwenEventHandler<ClickedEventArgs> Clicked
         {
-            add { mTitle.Clicked += delegate ( Base sender, ClickedEventArgs args ) { value( this, args ); }; }
-            remove { mTitle.Clicked -= delegate ( Base sender, ClickedEventArgs args ) { value( this, args ); }; }
+            add { mTitle.Clicked += delegate (Base sender, ClickedEventArgs args) { value(this, args); }; }
+            remove { mTitle.Clicked -= delegate (Base sender, ClickedEventArgs args) { value(this, args); }; }
         }
 
         public override event GwenEventHandler<ClickedEventArgs> DoubleClicked
         {
             add
             {
-                if( value != null )
+                if (value != null)
                 {
-                    mTitle.DoubleClicked += delegate ( Base sender, ClickedEventArgs args ) { value( this, args ); };
+                    mTitle.DoubleClicked += delegate (Base sender, ClickedEventArgs args) { value(this, args); };
                 }
             }
-            remove { mTitle.DoubleClicked -= delegate ( Base sender, ClickedEventArgs args ) { value( this, args ); }; }
+            remove { mTitle.DoubleClicked -= delegate (Base sender, ClickedEventArgs args) { value(this, args); }; }
         }
 
         public override event GwenEventHandler<ClickedEventArgs> RightClicked
         {
-            add { mTitle.RightClicked += delegate ( Base sender, ClickedEventArgs args ) { value( this, args ); }; }
-            remove { mTitle.RightClicked -= delegate ( Base sender, ClickedEventArgs args ) { value( this, args ); }; }
+            add { mTitle.RightClicked += delegate (Base sender, ClickedEventArgs args) { value(this, args); }; }
+            remove { mTitle.RightClicked -= delegate (Base sender, ClickedEventArgs args) { value(this, args); }; }
         }
 
         public override event GwenEventHandler<ClickedEventArgs> DoubleRightClicked
         {
             add
             {
-                if( value != null )
+                if (value != null)
                 {
-                    mTitle.DoubleRightClicked += delegate ( Base sender, ClickedEventArgs args ) { value( this, args ); };
+                    mTitle.DoubleRightClicked += delegate (Base sender, ClickedEventArgs args) { value(this, args); };
                 }
             }
             remove
             {
-                mTitle.DoubleRightClicked -= delegate ( Base sender, ClickedEventArgs args ) { value( this, args ); };
+                mTitle.DoubleRightClicked -= delegate (Base sender, ClickedEventArgs args) { value(this, args); };
             }
         }
 

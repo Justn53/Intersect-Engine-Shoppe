@@ -18,16 +18,16 @@ namespace Intersect.Logging.Formatting
             StringBuilder builder = null
         )
         {
-            if( builder == null )
+            if (builder == null)
             {
                 builder = new StringBuilder();
             }
 
             // ReSharper disable once InvertIf
-            if( !string.IsNullOrEmpty( configuration.Tag ) )
+            if (!string.IsNullOrEmpty(configuration.Tag))
             {
-                builder.Append( configuration.Tag );
-                builder.Append( ": " );
+                builder.Append(configuration.Tag);
+                builder.Append(": ");
             }
 
             return builder;

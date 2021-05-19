@@ -28,14 +28,14 @@ namespace Intersect.Client.Interface.Game.Inventory
         private List<Label> mValues = new List<Label>();
 
         //Init
-        public InventoryWindow( Canvas gameCanvas )
+        public InventoryWindow(Canvas gameCanvas)
         {
-            mInventoryWindow = new WindowControl( gameCanvas, Strings.Inventory.title, false, "InventoryWindow" );
+            mInventoryWindow = new WindowControl(gameCanvas, Strings.Inventory.title, false, "InventoryWindow");
             mInventoryWindow.DisableResizing();
 
-            mItemContainer = new ScrollControl( mInventoryWindow, "ItemsContainer" );
-            mItemContainer.EnableScroll( false, true );
-            mInventoryWindow.LoadJsonUi( GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString() );
+            mItemContainer = new ScrollControl(mInventoryWindow, "ItemsContainer");
+            mItemContainer.EnableScroll(false, true);
+            mInventoryWindow.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
         }
 
         //Location
@@ -47,36 +47,36 @@ namespace Intersect.Client.Interface.Game.Inventory
         //Methods
         public void Update()
         {
-            if( !mInitializedItems )
+            if (!mInitializedItems)
             {
                 mInitializedItems = true;
                 InitItemContainer();
             }
 
-            if( mInventoryWindow.IsHidden )
+            if (mInventoryWindow.IsHidden)
             {
                 return;
             }
 
             mInventoryWindow.IsClosable = Globals.CanCloseInventory;
 
-            for( var i = 0; i < Options.MaxInvItems; i++ )
+            for (var i = 0; i < Options.MaxInvItems; i++)
             {
-                var item = ItemBase.Get( Globals.Me.Inventory[i].ItemId );
-                if( item != null )
+                var item = ItemBase.Get(Globals.Me.Inventory[i].ItemId);
+                if (item != null)
                 {
                     Items[i].Pnl.IsHidden = false;
-                    if( item.IsStackable )
+                    if (item.IsStackable)
                     {
                         mValues[i].IsHidden = false;
-                        mValues[i].Text = Strings.FormatQuantityAbbreviated( Globals.Me.Inventory[i].Quantity );
+                        mValues[i].Text = Strings.FormatQuantityAbbreviated(Globals.Me.Inventory[i].Quantity);
                     }
                     else
                     {
                         mValues[i].IsHidden = true;
                     }
 
-                    if( Items[i].IsDragging )
+                    if (Items[i].IsDragging)
                     {
                         Items[i].Pnl.IsHidden = true;
                         mValues[i].IsHidden = true;
@@ -94,18 +94,18 @@ namespace Intersect.Client.Interface.Game.Inventory
 
         private void InitItemContainer()
         {
-            for( var i = 0; i < Options.MaxInvItems; i++ )
+            for (var i = 0; i < Options.MaxInvItems; i++)
             {
-                Items.Add( new InventoryItem( this, i ) );
-                Items[i].Container = new ImagePanel( mItemContainer, "InventoryItem" );
+                Items.Add(new InventoryItem(this, i));
+                Items[i].Container = new ImagePanel(mItemContainer, "InventoryItem");
                 Items[i].Setup();
 
-                mValues.Add( new Label( Items[i].Container, "InventoryItemValue" ) );
+                mValues.Add(new Label(Items[i].Container, "InventoryItemValue"));
                 mValues[i].Text = "";
 
-                Items[i].Container.LoadJsonUi( GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString() );
+                Items[i].Container.LoadJsonUi(GameContentManager.UI.InGame, Graphics.Renderer.GetResolutionString());
 
-                if( Items[i].EquipPanel.Texture == null )
+                if (Items[i].EquipPanel.Texture == null)
                 {
                     Items[i].EquipPanel.Texture = Graphics.Renderer.GetWhiteTexture();
                 }
@@ -115,12 +115,12 @@ namespace Intersect.Client.Interface.Game.Inventory
                 Items[i]
                     .Container.SetPosition(
                         i %
-                        ( mItemContainer.Width / ( Items[i].Container.Width + xPadding ) ) *
-                        ( Items[i].Container.Width + xPadding ) +
+                        (mItemContainer.Width / (Items[i].Container.Width + xPadding)) *
+                        (Items[i].Container.Width + xPadding) +
                         xPadding,
                         i /
-                        ( mItemContainer.Width / ( Items[i].Container.Width + xPadding ) ) *
-                        ( Items[i].Container.Height + yPadding ) +
+                        (mItemContainer.Width / (Items[i].Container.Width + xPadding)) *
+                        (Items[i].Container.Height + yPadding) +
                         yPadding
                     );
             }
@@ -138,7 +138,7 @@ namespace Intersect.Client.Interface.Game.Inventory
 
         public bool Hide()
         {
-            if( !Globals.CanCloseInventory )
+            if (!Globals.CanCloseInventory)
             {
                 return false;
             }
@@ -151,10 +151,10 @@ namespace Intersect.Client.Interface.Game.Inventory
         {
             var rect = new FloatRect()
             {
-                X = mInventoryWindow.LocalPosToCanvas( new Point( 0, 0 ) ).X -
-                    ( Items[0].Container.Padding.Left + Items[0].Container.Padding.Right ) / 2,
-                Y = mInventoryWindow.LocalPosToCanvas( new Point( 0, 0 ) ).Y -
-                    ( Items[0].Container.Padding.Top + Items[0].Container.Padding.Bottom ) / 2,
+                X = mInventoryWindow.LocalPosToCanvas(new Point(0, 0)).X -
+                    (Items[0].Container.Padding.Left + Items[0].Container.Padding.Right) / 2,
+                Y = mInventoryWindow.LocalPosToCanvas(new Point(0, 0)).Y -
+                    (Items[0].Container.Padding.Top + Items[0].Container.Padding.Bottom) / 2,
                 Width = mInventoryWindow.Width + Items[0].Container.Padding.Left + Items[0].Container.Padding.Right,
                 Height = mInventoryWindow.Height + Items[0].Container.Padding.Top + Items[0].Container.Padding.Bottom
             };

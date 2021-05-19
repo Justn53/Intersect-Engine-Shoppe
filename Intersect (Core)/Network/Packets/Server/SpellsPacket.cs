@@ -10,12 +10,12 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public SpellsPacket( SpellUpdatePacket[] slots )
+        public SpellsPacket(SpellUpdatePacket[] slots)
         {
             Slots = slots;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public SpellUpdatePacket[] Slots { get; set; }
 
     }

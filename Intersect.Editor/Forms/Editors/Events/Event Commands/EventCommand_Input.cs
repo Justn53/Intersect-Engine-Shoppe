@@ -17,7 +17,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
 
         private InputVariableCommand mMyCommand;
 
-        public EventCommandInput( InputVariableCommand refCommand, FrmEvent editor )
+        public EventCommandInput(InputVariableCommand refCommand, FrmEvent editor)
         {
             mLoading = true;
             InitializeComponent();
@@ -29,7 +29,7 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             nudMaxVal.Value = mMyCommand.Maximum;
             nudMinVal.Value = mMyCommand.Minimum;
 
-            if( mMyCommand.VariableType == Enums.VariableTypes.PlayerVariable )
+            if (mMyCommand.VariableType == Enums.VariableTypes.PlayerVariable)
             {
                 rdoPlayerVariables.Checked = true;
             }
@@ -58,40 +58,40 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
         private void LoadVariableList()
         {
             cmbVariable.Items.Clear();
-            if( rdoPlayerVariables.Checked )
+            if (rdoPlayerVariables.Checked)
             {
-                cmbVariable.Items.AddRange( PlayerVariableBase.Names );
-                cmbVariable.SelectedIndex = PlayerVariableBase.ListIndex( mMyCommand.VariableId );
+                cmbVariable.Items.AddRange(PlayerVariableBase.Names);
+                cmbVariable.SelectedIndex = PlayerVariableBase.ListIndex(mMyCommand.VariableId);
 
-                if( cmbVariable.SelectedIndex != -1 )
+                if (cmbVariable.SelectedIndex != -1)
                 {
                     UpdateMinMaxValues(
-                        PlayerVariableBase.Get( PlayerVariableBase.IdFromList( cmbVariable.SelectedIndex ) ).Type
+                        PlayerVariableBase.Get(PlayerVariableBase.IdFromList(cmbVariable.SelectedIndex)).Type
                     );
                 }
             }
             else
             {
-                cmbVariable.Items.AddRange( ServerVariableBase.Names );
-                cmbVariable.SelectedIndex = ServerVariableBase.ListIndex( mMyCommand.VariableId );
+                cmbVariable.Items.AddRange(ServerVariableBase.Names);
+                cmbVariable.SelectedIndex = ServerVariableBase.ListIndex(mMyCommand.VariableId);
 
-                if( cmbVariable.SelectedIndex != -1 )
+                if (cmbVariable.SelectedIndex != -1)
                 {
                     UpdateMinMaxValues(
-                        ServerVariableBase.Get( ServerVariableBase.IdFromList( cmbVariable.SelectedIndex ) ).Type
+                        ServerVariableBase.Get(ServerVariableBase.IdFromList(cmbVariable.SelectedIndex)).Type
                     );
                 }
             }
         }
 
-        private void UpdateMinMaxValues( Enums.VariableDataTypes type )
+        private void UpdateMinMaxValues(Enums.VariableDataTypes type)
         {
             lblMaxVal.Show();
             lblMinVal.Show();
             nudMaxVal.Show();
             nudMinVal.Show();
 
-            switch( type )
+            switch (type)
             {
                 case Enums.VariableDataTypes.Integer:
                 case Enums.VariableDataTypes.Number:
@@ -114,69 +114,69 @@ namespace Intersect.Editor.Forms.Editors.Events.Event_Commands
             }
         }
 
-        private void btnSave_Click( object sender, EventArgs e )
+        private void btnSave_Click(object sender, EventArgs e)
         {
             mMyCommand.Text = txtText.Text;
             mMyCommand.Title = txtTitle.Text;
             mMyCommand.Maximum = (int)nudMaxVal.Value;
             mMyCommand.Minimum = (int)nudMinVal.Value;
 
-            if( rdoPlayerVariables.Checked )
+            if (rdoPlayerVariables.Checked)
             {
                 mMyCommand.VariableType = Enums.VariableTypes.PlayerVariable;
-                mMyCommand.VariableId = PlayerVariableBase.IdFromList( cmbVariable.SelectedIndex );
+                mMyCommand.VariableId = PlayerVariableBase.IdFromList(cmbVariable.SelectedIndex);
             }
             else
             {
                 mMyCommand.VariableType = Enums.VariableTypes.ServerVariable;
-                mMyCommand.VariableId = ServerVariableBase.IdFromList( cmbVariable.SelectedIndex );
+                mMyCommand.VariableId = ServerVariableBase.IdFromList(cmbVariable.SelectedIndex);
             }
 
             mEventEditor.FinishCommandEdit();
         }
 
-        private void btnCancel_Click( object sender, EventArgs e )
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             mEventEditor.CancelCommandEdit();
         }
 
-        private void lblCommands_Click( object sender, EventArgs e )
+        private void lblCommands_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(
                 "http://www.ascensiongamedev.com/community/topic/749-event-text-variables/"
             );
         }
 
-        private void rdoGlobalVariables_CheckedChanged( object sender, EventArgs e )
+        private void rdoGlobalVariables_CheckedChanged(object sender, EventArgs e)
         {
             LoadVariableList();
-            if( !mLoading && cmbVariable.Items.Count > 0 )
+            if (!mLoading && cmbVariable.Items.Count > 0)
             {
                 cmbVariable.SelectedIndex = 0;
             }
         }
 
-        private void rdoPlayerVariables_CheckedChanged( object sender, EventArgs e )
+        private void rdoPlayerVariables_CheckedChanged(object sender, EventArgs e)
         {
             LoadVariableList();
-            if( !mLoading && cmbVariable.Items.Count > 0 )
+            if (!mLoading && cmbVariable.Items.Count > 0)
             {
                 cmbVariable.SelectedIndex = 0;
             }
         }
 
-        private void cmbVariable_SelectedIndexChanged( object sender, EventArgs e )
+        private void cmbVariable_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if( rdoPlayerVariables.Checked )
+            if (rdoPlayerVariables.Checked)
             {
                 UpdateMinMaxValues(
-                    PlayerVariableBase.Get( PlayerVariableBase.IdFromList( cmbVariable.SelectedIndex ) ).Type
+                    PlayerVariableBase.Get(PlayerVariableBase.IdFromList(cmbVariable.SelectedIndex)).Type
                 );
             }
             else
             {
                 UpdateMinMaxValues(
-                    ServerVariableBase.Get( ServerVariableBase.IdFromList( cmbVariable.SelectedIndex ) ).Type
+                    ServerVariableBase.Get(ServerVariableBase.IdFromList(cmbVariable.SelectedIndex)).Type
                 );
             }
         }

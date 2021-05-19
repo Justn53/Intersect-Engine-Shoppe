@@ -32,15 +32,15 @@ namespace Intersect.Server.Entities.Combat
             Direction = direction;
             Facing = (byte)en.Dir;
 
-            CalculateRange( en, range, blockPass, activeResourcePass, deadResourcePass, zdimensionPass );
-            if( Range <= 0 )
+            CalculateRange(en, range, blockPass, activeResourcePass, deadResourcePass, zdimensionPass);
+            if (Range <= 0)
             {
                 return;
             } //Remove dash instance if no where to dash
 
-            TransmittionTimer = Globals.Timing.Milliseconds + (long)( (float)Options.MaxDashSpeed / (float)Range );
+            TransmittionTimer = Globals.Timing.Milliseconds + (long)((float)Options.MaxDashSpeed / (float)Range);
             PacketSender.SendEntityDash(
-                en, en.MapId, (byte)en.X, (byte)en.Y, (int)( Options.MaxDashSpeed * ( Range / 10f ) ),
+                en, en.MapId, (byte)en.X, (byte)en.Y, (int)(Options.MaxDashSpeed * (Range / 10f)),
                 Direction == Facing ? (sbyte)Direction : (sbyte)-1
             );
 
@@ -59,40 +59,40 @@ namespace Intersect.Server.Entities.Combat
             var n = 0;
             en.MoveTimer = 0;
             Range = 0;
-            for( var i = 1; i <= range; i++ )
+            for (var i = 1; i <= range; i++)
             {
-                n = en.CanMove( Direction );
-                if( n == -5 ) //Check for out of bounds
+                n = en.CanMove(Direction);
+                if (n == -5) //Check for out of bounds
                 {
                     return;
                 } //Check for blocks
 
-                if( n == -2 && blockPass == false )
+                if (n == -2 && blockPass == false)
                 {
                     return;
                 } //Check for ZDimensionTiles
 
-                if( n == -3 && zdimensionPass == false )
+                if (n == -3 && zdimensionPass == false)
                 {
                     return;
                 } //Check for active resources
 
-                if( n == (int)EntityTypes.Resource && activeResourcePass == false )
+                if (n == (int)EntityTypes.Resource && activeResourcePass == false)
                 {
                     return;
                 } //Check for dead resources
 
-                if( n == (int)EntityTypes.Resource && deadResourcePass == false )
+                if (n == (int)EntityTypes.Resource && deadResourcePass == false)
                 {
                     return;
                 } //Check for players and solid events
 
-                if( n == (int)EntityTypes.Player || n == (int)EntityTypes.Event )
+                if (n == (int)EntityTypes.Player || n == (int)EntityTypes.Event)
                 {
                     return;
                 }
 
-                en.Move( Direction, null, true );
+                en.Move(Direction, null, true);
                 en.Dir = Facing;
 
                 Range = i;

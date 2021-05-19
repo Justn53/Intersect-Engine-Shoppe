@@ -8,7 +8,7 @@
 
         public byte Y;
 
-        public BytePoint( byte x, byte y )
+        public BytePoint(byte x, byte y)
         {
             X = x;
             Y = y;

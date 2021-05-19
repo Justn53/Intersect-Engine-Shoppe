@@ -8,27 +8,27 @@
         where TPluginContext : IPluginContext<TPluginContext>
     {
         /// <inheritdoc />
-        public override void OnStart( IPluginContext context )
+        public override void OnStart(IPluginContext context)
         {
-            if( context is TPluginContext typedPluginContext )
+            if (context is TPluginContext typedPluginContext)
             {
-                OnStart( typedPluginContext );
+                OnStart(typedPluginContext);
             }
         }
 
         /// <inheritdoc />
-        public override void OnStop( IPluginContext context )
+        public override void OnStop(IPluginContext context)
         {
-            if( context is TPluginContext typedPluginContext )
+            if (context is TPluginContext typedPluginContext)
             {
-                OnStop( typedPluginContext );
+                OnStop(typedPluginContext);
             }
         }
 
         /// <inheritdoc />
-        public abstract void OnStart( TPluginContext context );
+        public abstract void OnStart(TPluginContext context);
 
         /// <inheritdoc />
-        public abstract void OnStop( TPluginContext context );
+        public abstract void OnStop(TPluginContext context);
     }
 }

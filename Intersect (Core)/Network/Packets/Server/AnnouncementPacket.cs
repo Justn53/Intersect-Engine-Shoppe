@@ -18,13 +18,13 @@ namespace Intersect.Network.Packets.Server
         /// <summary>
         /// The announcement message to send.
         /// </summary>
-        [Key( 0 )]
+        [Key(0)]
         public string Message { get; set; }
 
         /// <summary>
         /// The time (in milliseconds) for the announcement to display.
         /// </summary>
-        [Key( 1 )]
+        [Key(1)]
         public long Duration { get; set; }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Intersect.Network.Packets.Server
         /// </summary>
         /// <param name="message">The message to send to the client.</param>
         /// <param name="duration">The duration for this message to appear for on the client.</param>
-        public AnnouncementPacket( string message, long duration )
+        public AnnouncementPacket(string message, long duration)
         {
             Message = message;
             Duration = duration;

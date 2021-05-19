@@ -31,7 +31,7 @@ namespace Intersect.GameObjects
         [NotMapped] public int[] VitalRegen = new int[(int)Vitals.VitalCount];
 
         [JsonConstructor]
-        public NpcBase( Guid id ) : base( id )
+        public NpcBase(Guid id) : base(id)
         {
             Name = "New Npc";
         }
@@ -42,12 +42,12 @@ namespace Intersect.GameObjects
             Name = "New Npc";
         }
 
-        [Column( "AggroList" )]
+        [Column("AggroList")]
         [JsonIgnore]
         public string JsonAggroList
         {
-            get => JsonConvert.SerializeObject( AggroList );
-            set => AggroList = JsonConvert.DeserializeObject<List<Guid>>( value );
+            get => JsonConvert.SerializeObject(AggroList);
+            set => AggroList = JsonConvert.DeserializeObject<List<Guid>>(value);
         }
 
         [NotMapped]
@@ -55,14 +55,14 @@ namespace Intersect.GameObjects
 
         public bool AttackAllies { get; set; }
 
-        [Column( "AttackAnimation" )]
+        [Column("AttackAnimation")]
         public Guid AttackAnimationId { get; set; }
 
         [NotMapped]
         [JsonIgnore]
         public AnimationBase AttackAnimation
         {
-            get => AnimationBase.Get( AttackAnimationId );
+            get => AnimationBase.Get(AttackAnimationId);
             set => AttackAnimationId = value?.Id ?? Guid.Empty;
         }
 
@@ -80,28 +80,28 @@ namespace Intersect.GameObjects
         public int ResetRadius { get; set; }
 
         //Conditions
-        [Column( "PlayerFriendConditions" )]
+        [Column("PlayerFriendConditions")]
         [JsonIgnore]
         public string PlayerFriendConditionsJson
         {
             get => PlayerFriendConditions.Data();
-            set => PlayerFriendConditions.Load( value );
+            set => PlayerFriendConditions.Load(value);
         }
 
-        [Column( "AttackOnSightConditions" )]
+        [Column("AttackOnSightConditions")]
         [JsonIgnore]
         public string AttackOnSightConditionsJson
         {
             get => AttackOnSightConditions.Data();
-            set => AttackOnSightConditions.Load( value );
+            set => AttackOnSightConditions.Load(value);
         }
 
-        [Column( "PlayerCanAttackConditions" )]
+        [Column("PlayerCanAttackConditions")]
         [JsonIgnore]
         public string PlayerCanAttackConditionsJson
         {
             get => PlayerCanAttackConditions.Data();
-            set => PlayerCanAttackConditions.Load( value );
+            set => PlayerCanAttackConditions.Load(value);
         }
 
         //Combat
@@ -118,35 +118,35 @@ namespace Intersect.GameObjects
         public int AttackSpeedValue { get; set; }
 
         //Common Events
-        [Column( "OnDeathEvent" )]
+        [Column("OnDeathEvent")]
         public Guid OnDeathEventId { get; set; }
 
         [NotMapped]
         [JsonIgnore]
         public EventBase OnDeathEvent
         {
-            get => EventBase.Get( OnDeathEventId );
+            get => EventBase.Get(OnDeathEventId);
             set => OnDeathEventId = value?.Id ?? Guid.Empty;
         }
 
-        [Column( "OnDeathPartyEvent" )]
+        [Column("OnDeathPartyEvent")]
         public Guid OnDeathPartyEventId { get; set; }
 
         [NotMapped]
         [JsonIgnore]
         public EventBase OnDeathPartyEvent
         {
-            get => EventBase.Get( OnDeathPartyEventId );
+            get => EventBase.Get(OnDeathPartyEventId);
             set => OnDeathPartyEventId = value?.Id ?? Guid.Empty;
         }
 
         //Drops
-        [Column( "Drops" )]
+        [Column("Drops")]
         [JsonIgnore]
         public string JsonDrops
         {
-            get => JsonConvert.SerializeObject( Drops );
-            set => Drops = JsonConvert.DeserializeObject<List<NpcDrop>>( value );
+            get => JsonConvert.SerializeObject(Drops);
+            set => Drops = JsonConvert.DeserializeObject<List<NpcDrop>>(value);
         }
 
         public long Experience { get; set; }
@@ -154,12 +154,12 @@ namespace Intersect.GameObjects
         public int Level { get; set; } = 1;
 
         //Vitals & Stats
-        [Column( "MaxVital" )]
+        [Column("MaxVital")]
         [JsonIgnore]
         public string JsonMaxVital
         {
-            get => DatabaseUtils.SaveIntArray( MaxVital, (int)Vitals.VitalCount );
-            set => DatabaseUtils.LoadIntArray( ref MaxVital, value, (int)Vitals.VitalCount );
+            get => DatabaseUtils.SaveIntArray(MaxVital, (int)Vitals.VitalCount);
+            set => DatabaseUtils.LoadIntArray(ref MaxVital, value, (int)Vitals.VitalCount);
         }
 
         //NPC vs NPC Combat
@@ -178,11 +178,11 @@ namespace Intersect.GameObjects
 
         //Spells
         [JsonIgnore]
-        [Column( "Spells" )]
+        [Column("Spells")]
         public string CraftsJson
         {
-            get => JsonConvert.SerializeObject( Spells, Formatting.None );
-            protected set => Spells = JsonConvert.DeserializeObject<DbList<SpellBase>>( value );
+            get => JsonConvert.SerializeObject(Spells, Formatting.None);
+            protected set => Spells = JsonConvert.DeserializeObject<DbList<SpellBase>>(value);
         }
 
         [NotMapped]
@@ -193,51 +193,51 @@ namespace Intersect.GameObjects
         /// <summary>
         /// The database compatible version of <see cref="Color"/>
         /// </summary>
-        [Column( "Color" )]
+        [Column("Color")]
         [JsonIgnore]
         public string JsonColor
         {
-            get => JsonConvert.SerializeObject( Color );
-            set => Color = JsonConvert.DeserializeObject<Color>( value );
+            get => JsonConvert.SerializeObject(Color);
+            set => Color = JsonConvert.DeserializeObject<Color>(value);
         }
 
         /// <summary>
         /// Defines the ARGB color settings for this Npc.
         /// </summary>
         [NotMapped]
-        public Color Color { get; set; } = new Color( 255, 255, 255, 255 );
+        public Color Color { get; set; } = new Color(255, 255, 255, 255);
 
-        [Column( "Stats" )]
+        [Column("Stats")]
         [JsonIgnore]
         public string JsonStat
         {
-            get => DatabaseUtils.SaveIntArray( Stats, (int)Enums.Stats.StatCount );
-            set => DatabaseUtils.LoadIntArray( ref Stats, value, (int)Enums.Stats.StatCount );
+            get => DatabaseUtils.SaveIntArray(Stats, (int)Enums.Stats.StatCount);
+            set => DatabaseUtils.LoadIntArray(ref Stats, value, (int)Enums.Stats.StatCount);
         }
 
         //Vital Regen %
         [JsonIgnore]
-        [Column( "VitalRegen" )]
+        [Column("VitalRegen")]
         public string RegenJson
         {
-            get => DatabaseUtils.SaveIntArray( VitalRegen, (int)Vitals.VitalCount );
-            set => VitalRegen = DatabaseUtils.LoadIntArray( value, (int)Vitals.VitalCount );
+            get => DatabaseUtils.SaveIntArray(VitalRegen, (int)Vitals.VitalCount);
+            set => VitalRegen = DatabaseUtils.LoadIntArray(value, (int)Vitals.VitalCount);
         }
 
         /// <inheritdoc />
         public string Folder { get; set; } = "";
 
-        public SpellBase GetRandomSpell( Random random )
+        public SpellBase GetRandomSpell(Random random)
         {
-            if( Spells == null || Spells.Count == 0 )
+            if (Spells == null || Spells.Count == 0)
             {
                 return null;
             }
 
-            var spellIndex = random.Next( 0, Spells.Count );
+            var spellIndex = random.Next(0, Spells.Count);
             var spellId = Spells[spellIndex];
 
-            return SpellBase.Get( spellId );
+            return SpellBase.Get(spellId);
         }
 
     }

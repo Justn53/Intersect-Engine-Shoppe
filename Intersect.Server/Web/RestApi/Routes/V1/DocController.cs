@@ -12,7 +12,7 @@ using Intersect.Server.Web.RestApi.Attributes;
 namespace Intersect.Server.Web.RestApi.Routes.V1
 {
 
-    [RoutePrefix( "doc" )]
+    [RoutePrefix("doc")]
     [ConfigurableAuthorize]
     public sealed class DocController : ApiController
     {
@@ -23,7 +23,7 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
         {
             get
             {
-                if( mDescriptions == null )
+                if (mDescriptions == null)
                 {
                     mDescriptions = ControllerContext?.Configuration?.Services.GetApiExplorer()?.ApiDescriptions;
                 }
@@ -32,54 +32,54 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
             }
         }
 
-        [Route( "{*path}" )]
+        [Route("{*path}")]
         [HttpGet]
-        public object Authorized( string path )
+        public object Authorized(string path)
         {
-            var segments = path?.Trim().Split( '/' ) ?? Array.Empty<string>();
+            var segments = path?.Trim().Split('/') ?? Array.Empty<string>();
 
             var pathSegments = new List<string>();
-            var descriptions = Descriptions.OrderBy( description => description?.RelativePath )
+            var descriptions = Descriptions.OrderBy(description => description?.RelativePath)
                 .Where(
                     description =>
                     {
-                        if( typeof( DemoController ) ==
-                            description?.ActionDescriptor?.ControllerDescriptor?.ControllerType )
+                        if (typeof(DemoController) ==
+                            description?.ActionDescriptor?.ControllerDescriptor?.ControllerType)
                         {
                             return false;
                         }
 
-                        if( string.IsNullOrWhiteSpace( description?.RelativePath ) )
+                        if (string.IsNullOrWhiteSpace(description?.RelativePath))
                         {
                             return false;
                         }
 
-                        if( Descriptions.Count() == 1 )
+                        if (Descriptions.Count() == 1)
                         {
                             return true;
                         }
 
-                        if( !description.RelativePath.StartsWith( path ?? "" ) )
+                        if (!description.RelativePath.StartsWith(path ?? ""))
                         {
                             return false;
                         }
 
-                        var descriptionSegments = description.RelativePath.Split( '/' );
-                        if( Math.Max( segments.Length, 1 ) + 1 >=
-                            descriptionSegments.Length - ( description.ParameterDescriptions?.Count ?? 0 ) )
+                        var descriptionSegments = description.RelativePath.Split('/');
+                        if (Math.Max(segments.Length, 1) + 1 >=
+                            descriptionSegments.Length - (description.ParameterDescriptions?.Count ?? 0))
                         {
-                            pathSegments.Add( description.RelativePath );
+                            pathSegments.Add(description.RelativePath);
 
                             return true;
                         }
 
                         var partialDescriptionPath = "";
-                        for( var segmentIndex = 0;
+                        for (var segmentIndex = 0;
                             segmentIndex < descriptionSegments.Length &&
-                            segmentIndex < Math.Max( segments.Length, 1 ) + 1;
-                            ++segmentIndex )
+                            segmentIndex < Math.Max(segments.Length, 1) + 1;
+                            ++segmentIndex)
                         {
-                            if( !string.IsNullOrWhiteSpace( partialDescriptionPath ) )
+                            if (!string.IsNullOrWhiteSpace(partialDescriptionPath))
                             {
                                 partialDescriptionPath += '/';
                             }
@@ -87,14 +87,14 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
                             partialDescriptionPath += descriptionSegments[segmentIndex];
                         }
 
-                        pathSegments.Add( partialDescriptionPath );
+                        pathSegments.Add(partialDescriptionPath);
 
                         return false;
                     }
                 )
                 .ToList();
 
-            var displaySegments = pathSegments.GroupBy( pathSegment => pathSegment )
+            var displaySegments = pathSegments.GroupBy(pathSegment => pathSegment)
                 .Select(
                     group =>
                     {
@@ -107,10 +107,10 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
                 )
                 .ToList();
 
-            switch( descriptions.Count )
+            switch (descriptions.Count)
             {
                 case 0:
-                    return pathSegments.Select( pathSegment => new { path = pathSegment } );
+                    return pathSegments.Select(pathSegment => new { path = pathSegment });
 
                 case 1:
                     return new[]
@@ -122,8 +122,8 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
                     // TODO: Make this not show detail if it has multiple differing branches (e.g. if looking at /api/v1/ don't show detail when there's /api/v1/doc/* and /api/v1/info/*)
                     var showDetail = descriptions.All(
                         description =>
-                            description?.RelativePath?.Split( '/' ).Length -
-                            ( description?.ParameterDescriptions?.Count + 1 ) <=
+                            description?.RelativePath?.Split('/').Length -
+                            (description?.ParameterDescriptions?.Count + 1) <=
                             segments.Length
                     );
 
@@ -131,11 +131,11 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
                     return displaySegments
                         .Concat(
                             descriptions.Select(
-                                description => description?.ToJson( parameters: showDetail, documentation: showDetail )
+                                description => description?.ToJson(parameters: showDetail, documentation: showDetail)
                             )
                         )
-                        .Where( displaySegment => displaySegment != null )
-                        .GroupBy( displaySegment => displaySegment.path )
+                        .Where(displaySegment => displaySegment != null)
+                        .GroupBy(displaySegment => displaySegment.path)
                         .SelectMany(
                             group => group.Select(
                                     member =>
@@ -144,12 +144,12 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
                                         var score = 0;
                                         var hasMethod = false;
 
-                                        if( lookup?.ContainsKey( "method" ) ?? false )
+                                        if (lookup?.ContainsKey("method") ?? false)
                                         {
                                             hasMethod = true;
                                             score = 1;
                                         }
-                                        else if( lookup?.ContainsKey( "children" ) ?? false )
+                                        else if (lookup?.ContainsKey("children") ?? false)
                                         {
                                             score = member.children;
                                         }
@@ -162,12 +162,12 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
                                         };
                                     }
                                 )
-                                .GroupBy( compound => compound.score )
-                                .Select( subgroup => subgroup.OrderByDescending( compound => compound.hasMethod ).First() )
-                                .OrderBy( compound => compound?.score )
+                                .GroupBy(compound => compound.score)
+                                .Select(subgroup => subgroup.OrderByDescending(compound => compound.hasMethod).First())
+                                .OrderBy(compound => compound?.score)
                         )
-                        .Select( compound => compound.member )
-                        .OrderBy( displaySegment => displaySegment?.path )
+                        .Select(compound => compound.member)
+                        .OrderBy(displaySegment => displaySegment?.path)
                         .ToArray();
             }
         }
@@ -177,7 +177,7 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
     internal static class ApiExtensions
     {
 
-        public static dynamic ToJson( this HttpParameterDescriptor descriptor )
+        public static dynamic ToJson(this HttpParameterDescriptor descriptor)
         {
             return new
             {
@@ -186,7 +186,7 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
             };
         }
 
-        public static dynamic ToJson( this ApiParameterDescription description )
+        public static dynamic ToJson(this ApiParameterDescription description)
         {
             return new
             {
@@ -208,19 +208,19 @@ namespace Intersect.Server.Web.RestApi.Routes.V1
 
             json.path = description.RelativePath;
 
-            if( method )
+            if (method)
             {
                 json.method = description.HttpMethod?.Method;
             }
 
-            if( documentation )
+            if (documentation)
             {
                 json.documentation = description.Documentation;
             }
 
-            if( parameters )
+            if (parameters)
             {
-                json.parameters = description.ParameterDescriptions?.Select( parameter => parameter?.ToJson() ) ??
+                json.parameters = description.ParameterDescriptions?.Select(parameter => parameter?.ToJson()) ??
                                   Array.Empty<object>();
             }
 

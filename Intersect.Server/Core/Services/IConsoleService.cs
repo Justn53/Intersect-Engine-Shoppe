@@ -5,7 +5,7 @@ namespace Intersect.Server.Core.Services
     internal interface IConsoleService : IThreadableApplicationService
     {
 
-        void Wait( bool doNotContinue = false );
+        void Wait(bool doNotContinue = false);
 
     }
 }

@@ -11,7 +11,7 @@ namespace Intersect.GameObjects
     {
 
         [JsonConstructor]
-        public TilesetBase( Guid id ) : base( id )
+        public TilesetBase(Guid id) : base(id)
         {
             Name = "";
         }

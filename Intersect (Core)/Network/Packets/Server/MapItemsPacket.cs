@@ -13,16 +13,16 @@ namespace Intersect.Network.Packets.Server
         }
 
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid MapId;
 
-        public MapItemsPacket( Guid mapId, MapItemUpdatePacket[] items )
+        public MapItemsPacket(Guid mapId, MapItemUpdatePacket[] items)
         {
             MapId = mapId;
             Items = items;
         }
 
-        [Key( 1 )]
+        [Key(1)]
         public MapItemUpdatePacket[] Items { get; set; }
 
     }

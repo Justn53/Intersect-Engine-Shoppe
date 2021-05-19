@@ -13,12 +13,12 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         ///     Initializes a new instance of the <see cref="CategoryHeaderButton" /> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public CategoryHeaderButton( Base parent ) : base( parent )
+        public CategoryHeaderButton(Base parent) : base(parent)
         {
             ShouldDrawBackground = false;
             IsToggle = true;
             Alignment = Pos.Center;
-            TextPadding = new Padding( 3, 0, 3, 0 );
+            TextPadding = new Padding(3, 0, 3, 0);
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace Intersect.Client.Framework.Gwen.ControlInternal
         /// </summary>
         public override void UpdateColors()
         {
-            if( IsDepressed || ToggleState )
+            if (IsDepressed || ToggleState)
             {
                 TextColor = Skin.Colors.Category.HeaderClosed;
             }

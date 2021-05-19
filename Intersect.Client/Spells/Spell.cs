@@ -18,7 +18,7 @@ namespace Intersect.Client.Spells
             return newSpell;
         }
 
-        public void Load( Guid spellId )
+        public void Load(Guid spellId)
         {
             SpellId = spellId;
         }

@@ -7,7 +7,7 @@ namespace Intersect.Network.Packets.Server
     public class ChatMsgPacket : IntersectPacket
     {
 
-        public ChatMsgPacket( string message, ChatMessageType type, Color color, string target )
+        public ChatMsgPacket(string message, ChatMessageType type, Color color, string target)
         {
             Message = message;
             Type = type;
@@ -15,16 +15,16 @@ namespace Intersect.Network.Packets.Server
             Target = target;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public string Message { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public ChatMessageType Type { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public Color Color { get; set; }
 
-        [Key( 3 )]
+        [Key(3)]
         public string Target { get; set; }
 
     }

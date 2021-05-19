@@ -5,7 +5,7 @@ namespace Intersect.Server.Database.Logging.Entities
 {
     public class UserActivityHistory
     {
-        [DatabaseGenerated( DatabaseGeneratedOption.Identity )] public Guid Id { get; private set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] public Guid Id { get; private set; }
 
         public DateTime TimeStamp { get; set; }
 

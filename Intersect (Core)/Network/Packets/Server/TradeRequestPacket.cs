@@ -11,16 +11,16 @@ namespace Intersect.Network.Packets.Server
         {
         }
 
-        public TradeRequestPacket( Guid partnerId, string partnerName )
+        public TradeRequestPacket(Guid partnerId, string partnerName)
         {
             PartnerId = partnerId;
             PartnerName = partnerName;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid PartnerId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public string PartnerName { get; set; }
 
     }

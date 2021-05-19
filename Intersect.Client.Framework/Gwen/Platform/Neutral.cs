@@ -19,7 +19,7 @@ namespace Intersect.Client.Framework.Gwen.Platform
         ///     Changes the mouse cursor.
         /// </summary>
         /// <param name="cursor">Cursor type.</param>
-        public static void SetCursor( Cursor cursor )
+        public static void SetCursor(Cursor cursor)
         {
             Cursor.Current = cursor;
         }
@@ -37,21 +37,21 @@ namespace Intersect.Client.Framework.Gwen.Platform
                 {
                     try
                     {
-                        if( GameClipboard.Instance == null || !GameClipboard.Instance.ContainsText() )
+                        if (GameClipboard.Instance == null || !GameClipboard.Instance.ContainsText())
                         {
                             return;
                         }
 
                         ret = GameClipboard.Instance.GetText();
                     }
-                    catch( Exception )
+                    catch (Exception)
                     {
                         return;
                     }
                 }
             );
 
-            staThread.SetApartmentState( ApartmentState.STA );
+            staThread.SetApartmentState(ApartmentState.STA);
             staThread.Start();
             staThread.Join();
 
@@ -64,7 +64,7 @@ namespace Intersect.Client.Framework.Gwen.Platform
         /// </summary>
         /// <param name="text">Text to set.</param>
         /// <returns>True if succeeded.</returns>
-        public static bool SetClipboardText( string text )
+        public static bool SetClipboardText(string text)
         {
             var ret = false;
             var staThread = new Thread(
@@ -72,21 +72,21 @@ namespace Intersect.Client.Framework.Gwen.Platform
                 {
                     try
                     {
-                        if( GameClipboard.Instance == null )
+                        if (GameClipboard.Instance == null)
                         {
                             return;
                         }
-                        GameClipboard.Instance.SetText( text );
+                        GameClipboard.Instance.SetText(text);
                         ret = true;
                     }
-                    catch( Exception )
+                    catch (Exception)
                     {
                         return;
                     }
                 }
             );
 
-            staThread.SetApartmentState( ApartmentState.STA );
+            staThread.SetApartmentState(ApartmentState.STA);
             staThread.Start();
             staThread.Join();
 
@@ -107,7 +107,7 @@ namespace Intersect.Client.Framework.Gwen.Platform
             //  which will grow stale (time difference > 1s) after ~3,168,888 years 
             //  (that's gotta be good enough, right?)
             //P.S. someone fix those numbers if I'm wrong.
-            return (float)( DateTime.Now - sFirstTime ).TotalSeconds;
+            return (float)(DateTime.Now - sFirstTime).TotalSeconds;
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace Intersect.Client.Framework.Gwen.Platform
         /// <param name="extension">File extension filter.</param>
         /// <param name="callback">Callback that is executed after the dialog completes.</param>
         /// <returns>True if succeeded.</returns>
-        public static bool FileOpen( string title, string startPath, string extension, Action<string> callback )
+        public static bool FileOpen(string title, string startPath, string extension, Action<string> callback)
         {
             var dialog = new OpenFileDialog
             {
@@ -130,18 +130,18 @@ namespace Intersect.Client.Framework.Gwen.Platform
                 Multiselect = false
             };
 
-            if( dialog.ShowDialog() == DialogResult.Ok )
+            if (dialog.ShowDialog() == DialogResult.Ok)
             {
-                if( callback != null )
+                if (callback != null)
                 {
-                    callback( dialog.FileName );
+                    callback(dialog.FileName);
                 }
             }
             else
             {
-                if( callback != null )
+                if (callback != null)
                 {
-                    callback( String.Empty );
+                    callback(String.Empty);
                 }
 
                 return false;
@@ -158,7 +158,7 @@ namespace Intersect.Client.Framework.Gwen.Platform
         /// <param name="extension">File extension filter.</param>
         /// <param name="callback">Callback that is executed after the dialog completes.</param>
         /// <returns>True if succeeded.</returns>
-        public static bool FileSave( string title, string startPath, string extension, Action<string> callback )
+        public static bool FileSave(string title, string startPath, string extension, Action<string> callback)
         {
             var dialog = new SaveFileDialog
             {
@@ -170,18 +170,18 @@ namespace Intersect.Client.Framework.Gwen.Platform
                 OverwritePrompt = true
             };
 
-            if( dialog.ShowDialog() == DialogResult.Ok )
+            if (dialog.ShowDialog() == DialogResult.Ok)
             {
-                if( callback != null )
+                if (callback != null)
                 {
-                    callback( dialog.FileName );
+                    callback(dialog.FileName);
                 }
             }
             else
             {
-                if( callback != null )
+                if (callback != null)
                 {
-                    callback( String.Empty );
+                    callback(String.Empty);
                 }
 
                 return false;

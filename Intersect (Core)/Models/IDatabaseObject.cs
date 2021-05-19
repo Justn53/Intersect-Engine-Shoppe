@@ -17,7 +17,7 @@ namespace Intersect.Models
 
         string JsonData { get; }
 
-        void Load( string json, bool keepCreationTime = false );
+        void Load(string json, bool keepCreationTime = false);
 
         void MakeBackup();
 
@@ -35,17 +35,17 @@ namespace Intersect.Models
         public List<T> GetAll()
         {
             var list = new List<T>();
-            foreach( var l in ToArray() )
+            foreach (var l in ToArray())
             {
-                list.Add( (T)LookupUtils.LookupMap[typeof( T )].Get( l ) );
+                list.Add((T)LookupUtils.LookupMap[typeof(T)].Get(l));
             }
 
             return list;
         }
 
-        public T Get( Guid id )
+        public T Get(Guid id)
         {
-            return (T)LookupUtils.LookupMap[typeof( T )].Get( id );
+            return (T)LookupUtils.LookupMap[typeof(T)].Get(id);
         }
 
     }

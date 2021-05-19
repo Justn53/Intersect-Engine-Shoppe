@@ -30,25 +30,25 @@ namespace Intersect.Network.Packets.Server
             Equipment = equipment;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid Id { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public string Name { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public string Sprite { get; set; }
 
-        [Key( 3 )]
+        [Key(3)]
         public string Face { get; set; }
 
-        [Key( 4 )]
+        [Key(4)]
         public int Level { get; set; }
 
-        [Key( 5 )]
+        [Key(5)]
         public string ClassName { get; set; }
 
-        [Key( 6 )]
+        [Key(6)]
         public string[] Equipment { get; set; }
 
     }

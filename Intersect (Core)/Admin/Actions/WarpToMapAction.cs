@@ -14,15 +14,15 @@ namespace Intersect.Admin.Actions
 
         }
 
-        public WarpToMapAction( Guid mapId )
+        public WarpToMapAction(Guid mapId)
         {
             MapId = mapId;
         }
 
-        [Key( 1 )]
+        [Key(1)]
         public override AdminActions Action { get; } = AdminActions.WarpTo;
 
-        [Key( 2 )]
+        [Key(2)]
         public Guid MapId { get; set; }
 
     }

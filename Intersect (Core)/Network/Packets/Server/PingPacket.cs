@@ -11,12 +11,12 @@ namespace Intersect.Network.Packets.Server
 
         }
 
-        public PingPacket( bool requestingReply )
+        public PingPacket(bool requestingReply)
         {
             RequestingReply = requestingReply;
         }
 
-        [Key( 3 )]
+        [Key(3)]
         public bool RequestingReply { get; set; }
 
     }

@@ -8,7 +8,7 @@
 
         private int mFontSize = 12;
 
-        public GameFont( string fontName, int fontSize )
+        public GameFont(string fontName, int fontSize)
         {
             mFontName = fontName;
             mFontSize = fontSize;
@@ -26,9 +26,9 @@
 
         public abstract object GetFont();
 
-        public static string ToString( GameFont font )
+        public static string ToString(GameFont font)
         {
-            if( font == null )
+            if (font == null)
             {
                 return "";
             }

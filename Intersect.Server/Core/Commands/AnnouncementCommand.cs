@@ -11,20 +11,20 @@ namespace Intersect.Server.Core.Commands
 
         public AnnouncementCommand() : base(
             Strings.Commands.Announcement,
-            new VariableArgument<string>( Strings.Commands.Arguments.AnnouncementMessage, RequiredIfNotHelp, true )
+            new VariableArgument<string>(Strings.Commands.Arguments.AnnouncementMessage, RequiredIfNotHelp, true)
         )
         {
         }
 
         private VariableArgument<string> Message => FindArgumentOrThrow<VariableArgument<string>>();
 
-        protected override void HandleValue( ServerContext context, ParserResult result )
+        protected override void HandleValue(ServerContext context, ParserResult result)
         {
-            PacketSender.SendGlobalMsg( result.Find( Message ) );
+            PacketSender.SendGlobalMsg(result.Find(Message));
 
-            if( Options.Chat.ShowAnnouncementBanners )
+            if (Options.Chat.ShowAnnouncementBanners)
             {
-                PacketSender.SendGameAnnouncement( result.Find( Message ), Options.Chat.AnnouncementDisplayDuration );
+                PacketSender.SendGameAnnouncement(result.Find(Message), Options.Chat.AnnouncementDisplayDuration);
             }
         }
 

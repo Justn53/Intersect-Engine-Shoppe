@@ -11,16 +11,16 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public EventResponsePacket( Guid eventId, byte response )
+        public EventResponsePacket(Guid eventId, byte response)
         {
             EventId = eventId;
             Response = response;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid EventId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public byte Response { get; set; }
 
     }

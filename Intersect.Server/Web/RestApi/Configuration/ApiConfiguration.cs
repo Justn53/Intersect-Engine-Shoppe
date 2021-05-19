@@ -76,56 +76,56 @@ namespace Intersect.Server.Web.RestApi.Configuration
 
         [JsonIgnore] private ImmutableArray<string> mHosts;
 
-        [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
-        [DefaultValue( new[] { "http://localhost:5400" } )]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [DefaultValue(new[] { "http://localhost:5400" })]
         public ImmutableArray<string> Hosts
         {
             get => mHosts;
-            set => mHosts = value.IsDefaultOrEmpty ? ImmutableArray.Create( new[] { "http://localhost:5400" } ) : value;
+            set => mHosts = value.IsDefaultOrEmpty ? ImmutableArray.Create(new[] { "http://localhost:5400" }) : value;
         }
 
         [JsonIgnore]
         public ImmutableArray<int> Ports
         {
-            get => Hosts.Select( host => new Uri( host?.Replace( "*", "localhost" ) ?? "http://localhost:5400" ).Port )
+            get => Hosts.Select(host => new Uri(host?.Replace("*", "localhost") ?? "http://localhost:5400").Port)
                 .ToImmutableArray();
-            set => Hosts = ImmutableArray.Create( value.Select( port => $@"http://localhost:{port}" )?.ToArray() );
+            set => Hosts = ImmutableArray.Create(value.Select(port => $@"http://localhost:{port}")?.ToArray());
         }
 
         [JsonIgnore] private ImmutableArray<CorsConfiguration> mCorsConfigurations;
 
-        [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ImmutableArray<CorsConfiguration> Cors
         {
             get => mCorsConfigurations;
             set => mCorsConfigurations = value.IsDefaultOrEmpty ? ImmutableArray.Create<CorsConfiguration>() : value;
         }
 
-        [JsonProperty( nameof( RouteAuthorization ), NullValueHandling = NullValueHandling.Ignore )]
+        [JsonProperty(nameof(RouteAuthorization), NullValueHandling = NullValueHandling.Ignore)]
         private Dictionary<string, object> mRouteAuthorization;
 
-        [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string DataProtectionKey { get; private set; }
 
         [JsonIgnore]
         public IReadOnlyDictionary<string, object> RouteAuthorization =>
-            new ReadOnlyDictionary<string, object>( mRouteAuthorization );
+            new ReadOnlyDictionary<string, object>(mRouteAuthorization);
 
-        [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool Enabled { get; private set; } = false;
 
-        [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool DebugMode { get; private set; } = false;
 
 #if DEBUG
-        [JsonProperty( NullValueHandling = NullValueHandling.Ignore )]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool SeedMode { get; private set; }
 #endif
 
         [JsonProperty(
             NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Include
         )]
-        [DefaultValue( DefaultRefreshTokenLifetime )]
+        [DefaultValue(DefaultRefreshTokenLifetime)]
         public uint RefreshTokenLifetime { get; private set; } = DefaultRefreshTokenLifetime;
 
         [JsonProperty(
@@ -136,18 +136,18 @@ namespace Intersect.Server.Web.RestApi.Configuration
         [JsonProperty(
             NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Include
         )]
-        [DefaultValue( IntersectThrottlingHandler.DefaultFallbackClientKey )]
+        [DefaultValue(IntersectThrottlingHandler.DefaultFallbackClientKey)]
         public string FallbackClientKey { get; private set; } = IntersectThrottlingHandler.DefaultFallbackClientKey;
 
         [JsonProperty(
             NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Include,
-            ItemConverterType = typeof( StringEnumConverter )
+            ItemConverterType = typeof(StringEnumConverter)
         )]
-        [DefaultValue( DefaultRequestLogLevel )]
+        [DefaultValue(DefaultRequestLogLevel)]
         public LogLevel RequestLogLevel { get; set; } = DefaultRequestLogLevel;
 
-        [JsonProperty( NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore )]
-        [DefaultValue( false )]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [DefaultValue(false)]
         public bool RequestLogging { get; set; }
 
         #endregion
@@ -158,14 +158,14 @@ namespace Intersect.Server.Web.RestApi.Configuration
         {
             mRouteAuthorization = new Dictionary<string, object>();
 
-            using( var csp = new AesCryptoServiceProvider() )
+            using (var csp = new AesCryptoServiceProvider())
             {
                 csp.KeySize = 256;
                 csp.GenerateKey();
-                DataProtectionKey = BitConverter.ToString( csp.Key ).Replace( "-", "" );
+                DataProtectionKey = BitConverter.ToString(csp.Key).Replace("-", "");
             }
 
-            Hosts = ImmutableArray.Create( new[] { "http://localhost:5400" } );
+            Hosts = ImmutableArray.Create(new[] { "http://localhost:5400" });
             Cors = ImmutableArray.Create<CorsConfiguration>();
         }
 
@@ -174,24 +174,24 @@ namespace Intersect.Server.Web.RestApi.Configuration
         #region I/O
 
         /// <inheritdoc />
-        public ApiConfiguration Load( string filePath = DefaultPath, bool failQuietly = false )
+        public ApiConfiguration Load(string filePath = DefaultPath, bool failQuietly = false)
         {
-            return ConfigurationHelper.Load( this, filePath, failQuietly );
+            return ConfigurationHelper.Load(this, filePath, failQuietly);
         }
 
         /// <inheritdoc />
-        public ApiConfiguration Save( string filePath = DefaultPath, bool failQuietly = false )
+        public ApiConfiguration Save(string filePath = DefaultPath, bool failQuietly = false)
         {
-            return ConfigurationHelper.Save( this, filePath, failQuietly );
+            return ConfigurationHelper.Save(this, filePath, failQuietly);
         }
 
         #endregion
 
-        public static ApiConfiguration Create( string filePath = DefaultPath )
+        public static ApiConfiguration Create(string filePath = DefaultPath)
         {
             var configuration = new ApiConfiguration();
 
-            ConfigurationHelper.LoadSafely( configuration, filePath );
+            ConfigurationHelper.LoadSafely(configuration, filePath);
 
             return configuration;
         }
