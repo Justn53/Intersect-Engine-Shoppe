@@ -224,9 +224,8 @@
         CreateGuild,
         DisbandGuild,
         OpenGuildBank,
-        SetGuildBankSlots
+        SetGuildBankSlots,
         //End Guilds
-
         //Item Control
         ReplaceItem,
         RemoveItem,
