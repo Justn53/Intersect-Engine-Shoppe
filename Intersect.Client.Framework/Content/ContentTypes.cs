@@ -14,6 +14,9 @@ namespace Intersect.Client.Framework.Content
         [AssetType( typeof( GameTexture ) )]
         Entity,
 
+        [AssetType(typeof(GameTexture))]
+        Hair,
+
         [AssetType( typeof( GameTexture ) )]
         Face,
 

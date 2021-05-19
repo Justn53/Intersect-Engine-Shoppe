@@ -886,6 +886,10 @@ Tick timer saved in server config.json.";
 
             public static LocalizedString undo = @"Undo Changes";
 
+            public static LocalizedString hairstyles = @"Hairstyles";
+
+            public static LocalizedString hair = @"Hair:";
+
             public static LocalizedString undoprompt =
                 @"Are you sure you want to undo changes made to this class? This action cannot be reverted!";
 

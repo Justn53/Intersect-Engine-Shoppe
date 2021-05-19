@@ -509,6 +509,12 @@
     <Compile Include="Entities\Pathfinding\SpatialAStar.cs" />
     <Compile Include="Entities\Pathfinding\PathfinderTarget.cs" />
     <Compile Include="Entities\Pathfinding\PriorityQueue.cs" />
+    <Compile Include="Migrations\20200402173703_PlayerHair_PlayerEdits.cs" />
+    <Compile Include="Migrations\20200402173703_PlayerHair_PlayerEdits.Designer.cs">
+      <DependentUpon>20200402173703_PlayerHair_PlayerEdits.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Game\20200402142818_PlayerHair_ClassEdits.cs" />
+    <Compile Include="Migrations\Game\20200402142818_PlayerHair_ClassEdits.Designer.cs" />
     <Compile Include="Migrations\Game\20201222164741_NpcResetRadius.cs" />
     <Compile Include="Migrations\Game\20201222164741_NpcResetRadius.designer.cs">
       <DependentUpon>20201222164741_NpcResetRadius.cs</DependentUpon>

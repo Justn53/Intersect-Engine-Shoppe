@@ -15,11 +15,12 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public CreateCharacterPacket( string name, Guid classId, int sprite )
+        public CreateCharacterPacket(string name, Guid classId, int sprite, int[] customSpriteLayers)
         {
             Name = name;
             ClassId = classId;
             Sprite = sprite;
+            CustomSpriteLayers = customSpriteLayers;
         }
 
         [Key( 0 )]
@@ -30,6 +31,9 @@ namespace Intersect.Network.Packets.Client
 
         [Key( 2 )]
         public int Sprite { get; set; }
+
+        [Key(3)]
+        public int[] CustomSpriteLayers { get; set; }
 
         public override Dictionary<string, SanitizedValue<object>> Sanitize()
         {
