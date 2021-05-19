@@ -17,13 +17,13 @@ namespace Intersect.Network.Packets.Client
             TileIndex = tileIndex;
         }
 
-        [Key( 0 )]
+        [Key(0)]
         public Guid UniqueId { get; set; }
 
-        [Key( 1 )]
+        [Key(1)]
         public Guid MapId { get; set; }
 
-        [Key( 2 )]
+        [Key(2)]
         public int TileIndex { get; set; }
     }
 }

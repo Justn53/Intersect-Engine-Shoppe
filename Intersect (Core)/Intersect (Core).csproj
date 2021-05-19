@@ -390,6 +390,7 @@
     <Compile Include="Network\Packets\Client\GuildLeavePacket.cs" />
     <Compile Include="Network\Packets\Client\HotbarSwapPacket.cs" />
     <Compile Include="Network\Packets\Client\HotbarUpdatePacket.cs" />
+    <Compile Include="Network\Packets\Client\InteractItemPacket.cs" />
     <Compile Include="Network\Packets\Client\LoginPacket.cs" />
     <Compile Include="Network\Packets\Client\RequestGuildPacket.cs" />
     <Compile Include="Network\Packets\Client\UpdateGuildMemberPacket.cs" />

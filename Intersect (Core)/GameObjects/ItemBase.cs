@@ -152,6 +152,9 @@ namespace Intersect.GameObjects
         [Column("DestroySpell")]
         public bool SingleUse { get; set; } = true;
 
+        [Column("InteractOnGround")]
+        public bool InteractOnGround { get; set; } = true;
+
         [Column("Event")]
         [JsonProperty]
         public Guid EventId { get; set; }

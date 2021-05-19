@@ -116,20 +116,26 @@ namespace Intersect.Client.Networking
             Network.SendPacket(new InteractItemPacket(mapId, tileIndex, uniqueId));
         }
 
+        public static void SendPickupItem(Guid mapId, int tileIndex, Guid uniqueId)
+        {
+            Network.SendPacket(new PickupItemPacket(mapId, tileIndex, uniqueId));
+        }
+
         public static void SendSwapInvItems(int item1, int item2)
         {
             Network.SendPacket(new SwapInvItemsPacket(item1, item2));
-        }
-
-        public static void SendDropItem(int slot, int amount)
-        {
-            Network.SendPacket(new DropItemPacket(slot, amount));
         }
 
         public static void SendDropItem(int slot, int amount, Guid mapId = new Guid(), int dropX = 0, int dropY = 0)
         {
             Network.SendPacket(new DropItemPacket(slot, amount, mapId, dropX, dropY));
         }
+
+        public static void SendUseItem(int slot, Guid targetId)
+        {
+            Network.SendPacket(new UseItemPacket(slot, targetId));
+        }
+
 
         public static void SendSwapSpells(int spell1, int spell2)
         {
