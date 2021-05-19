@@ -307,18 +307,6 @@ namespace Intersect.GameObjects.Events.Commands
 
     }
 
-    public class ReplaceItemCommand : EventCommand
-    {
-        public override EventCommandType Type { get; } = EventCommandType.ReplaceItem;
-
-        public ItemBase NewItem { get; set; }
-    }
-
-    public class RemoveItemCommand : EventCommand
-    {
-        public override EventCommandType Type { get; } = EventCommandType.RemoveItem;
-    }
-
     public class RestoreHpCommand : EventCommand
     {
 

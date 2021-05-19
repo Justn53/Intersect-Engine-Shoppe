@@ -41,15 +41,15 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode1,
             treeNode2,
             treeNode3,
-            treeNode4} );
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode( "Set Variable" );
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode( "Set Self Switch" );
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode( "Conditional Branch" );
-            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode( "Exit Event Process" );
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode( "Label" );
-            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode( "Go To Label" );
-            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode( "Start Common Event" );
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode( "Logic Flow", new System.Windows.Forms.TreeNode[] {
+            treeNode4});
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Set Variable");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Set Self Switch");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Conditional Branch");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Exit Event Process");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Label");
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Go To Label");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Start Common Event");
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Logic Flow", new System.Windows.Forms.TreeNode[] {
             treeNode6,
             treeNode7,
             treeNode8,
@@ -200,7 +200,7 @@ namespace Intersect.Editor.Forms.Editors.Events
             this.grpCreateCommands = new DarkUI.Controls.DarkGroupBox();
             this.btnSave = new DarkUI.Controls.DarkButton();
             this.btnCancel = new DarkUI.Controls.DarkButton();
-            this.commandMenu = new System.Windows.Forms.ContextMenuStrip( this.components );
+            this.commandMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.btnInsert = new System.Windows.Forms.ToolStripMenuItem();
             this.btnEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.btnCut = new System.Windows.Forms.ToolStripMenuItem();
@@ -238,52 +238,52 @@ namespace Intersect.Editor.Forms.Editors.Events
             // lblName
             // 
             this.lblName.AutoSize = true;
-            this.lblName.Location = new System.Drawing.Point( 6, 22 );
+            this.lblName.Location = new System.Drawing.Point(6, 22);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size( 38, 13 );
+            this.lblName.Size = new System.Drawing.Size(38, 13);
             this.lblName.TabIndex = 1;
             this.lblName.Text = "Name:";
             // 
             // txtEventname
             // 
-            this.txtEventname.BackColor = System.Drawing.Color.FromArgb( ( (int)( ( (byte)( 69 ) ) ) ), ( (int)( ( (byte)( 73 ) ) ) ), ( (int)( ( (byte)( 74 ) ) ) ) );
+            this.txtEventname.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
             this.txtEventname.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtEventname.ForeColor = System.Drawing.Color.FromArgb( ( (int)( ( (byte)( 220 ) ) ) ), ( (int)( ( (byte)( 220 ) ) ) ), ( (int)( ( (byte)( 220 ) ) ) ) );
-            this.txtEventname.Location = new System.Drawing.Point( 48, 19 );
+            this.txtEventname.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.txtEventname.Location = new System.Drawing.Point(48, 19);
             this.txtEventname.Name = "txtEventname";
-            this.txtEventname.Size = new System.Drawing.Size( 124, 20 );
+            this.txtEventname.Size = new System.Drawing.Size(124, 20);
             this.txtEventname.TabIndex = 2;
-            this.txtEventname.TextChanged += new System.EventHandler( this.txtEventname_TextChanged );
+            this.txtEventname.TextChanged += new System.EventHandler(this.txtEventname_TextChanged);
             // 
             // grpEntityOptions
             // 
-            this.grpEntityOptions.BackColor = System.Drawing.Color.FromArgb( ( (int)( ( (byte)( 45 ) ) ) ), ( (int)( ( (byte)( 45 ) ) ) ), ( (int)( ( (byte)( 48 ) ) ) ) );
-            this.grpEntityOptions.BorderColor = System.Drawing.Color.FromArgb( ( (int)( ( (byte)( 90 ) ) ) ), ( (int)( ( (byte)( 90 ) ) ) ), ( (int)( ( (byte)( 90 ) ) ) ) );
-            this.grpEntityOptions.Controls.Add( this.grpExtra );
-            this.grpEntityOptions.Controls.Add( this.grpInspector );
-            this.grpEntityOptions.Controls.Add( this.grpPreview );
-            this.grpEntityOptions.Controls.Add( this.grpMovement );
+            this.grpEntityOptions.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.grpEntityOptions.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpEntityOptions.Controls.Add(this.grpExtra);
+            this.grpEntityOptions.Controls.Add(this.grpInspector);
+            this.grpEntityOptions.Controls.Add(this.grpPreview);
+            this.grpEntityOptions.Controls.Add(this.grpMovement);
             this.grpEntityOptions.ForeColor = System.Drawing.Color.Gainsboro;
-            this.grpEntityOptions.Location = new System.Drawing.Point( 21, 150 );
+            this.grpEntityOptions.Location = new System.Drawing.Point(21, 150);
             this.grpEntityOptions.Name = "grpEntityOptions";
-            this.grpEntityOptions.Size = new System.Drawing.Size( 326, 423 );
+            this.grpEntityOptions.Size = new System.Drawing.Size(326, 423);
             this.grpEntityOptions.TabIndex = 12;
             this.grpEntityOptions.TabStop = false;
             this.grpEntityOptions.Text = "Entity Options";
             // 
             // grpExtra
             // 
-            this.grpExtra.BackColor = System.Drawing.Color.FromArgb( ( (int)( ( (byte)( 45 ) ) ) ), ( (int)( ( (byte)( 45 ) ) ) ), ( (int)( ( (byte)( 48 ) ) ) ) );
-            this.grpExtra.BorderColor = System.Drawing.Color.FromArgb( ( (int)( ( (byte)( 90 ) ) ) ), ( (int)( ( (byte)( 90 ) ) ) ), ( (int)( ( (byte)( 90 ) ) ) ) );
-            this.grpExtra.Controls.Add( this.chkInteractionFreeze );
-            this.grpExtra.Controls.Add( this.chkWalkingAnimation );
-            this.grpExtra.Controls.Add( this.chkDirectionFix );
-            this.grpExtra.Controls.Add( this.chkHideName );
-            this.grpExtra.Controls.Add( this.chkWalkThrough );
+            this.grpExtra.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.grpExtra.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpExtra.Controls.Add(this.chkInteractionFreeze);
+            this.grpExtra.Controls.Add(this.chkWalkingAnimation);
+            this.grpExtra.Controls.Add(this.chkDirectionFix);
+            this.grpExtra.Controls.Add(this.chkHideName);
+            this.grpExtra.Controls.Add(this.chkWalkThrough);
             this.grpExtra.ForeColor = System.Drawing.Color.Gainsboro;
-            this.grpExtra.Location = new System.Drawing.Point( 6, 297 );
+            this.grpExtra.Location = new System.Drawing.Point(6, 297);
             this.grpExtra.Name = "grpExtra";
-            this.grpExtra.Size = new System.Drawing.Size( 315, 64 );
+            this.grpExtra.Size = new System.Drawing.Size(315, 64);
             this.grpExtra.TabIndex = 9;
             this.grpExtra.TabStop = false;
             this.grpExtra.Text = "Extra";
@@ -291,52 +291,52 @@ namespace Intersect.Editor.Forms.Editors.Events
             // chkInteractionFreeze
             // 
             this.chkInteractionFreeze.AutoSize = true;
-            this.chkInteractionFreeze.Location = new System.Drawing.Point( 6, 41 );
+            this.chkInteractionFreeze.Location = new System.Drawing.Point(6, 41);
             this.chkInteractionFreeze.Name = "chkInteractionFreeze";
-            this.chkInteractionFreeze.Size = new System.Drawing.Size( 111, 17 );
+            this.chkInteractionFreeze.Size = new System.Drawing.Size(111, 17);
             this.chkInteractionFreeze.TabIndex = 6;
             this.chkInteractionFreeze.Text = "Interaction Freeze";
-            this.chkInteractionFreeze.CheckedChanged += new System.EventHandler( this.chkInteractionFreeze_CheckedChanged );
+            this.chkInteractionFreeze.CheckedChanged += new System.EventHandler(this.chkInteractionFreeze_CheckedChanged);
             // 
             // chkWalkingAnimation
             // 
             this.chkWalkingAnimation.AutoSize = true;
-            this.chkWalkingAnimation.Location = new System.Drawing.Point( 214, 19 );
+            this.chkWalkingAnimation.Location = new System.Drawing.Point(214, 19);
             this.chkWalkingAnimation.Name = "chkWalkingAnimation";
-            this.chkWalkingAnimation.Size = new System.Drawing.Size( 91, 17 );
+            this.chkWalkingAnimation.Size = new System.Drawing.Size(91, 17);
             this.chkWalkingAnimation.TabIndex = 5;
             this.chkWalkingAnimation.Text = "Walking Anim";
-            this.chkWalkingAnimation.CheckedChanged += new System.EventHandler( this.chkWalkingAnimation_CheckedChanged );
+            this.chkWalkingAnimation.CheckedChanged += new System.EventHandler(this.chkWalkingAnimation_CheckedChanged);
             // 
             // chkDirectionFix
             // 
             this.chkDirectionFix.AutoSize = true;
-            this.chkDirectionFix.Location = new System.Drawing.Point( 156, 19 );
+            this.chkDirectionFix.Location = new System.Drawing.Point(156, 19);
             this.chkDirectionFix.Name = "chkDirectionFix";
-            this.chkDirectionFix.Size = new System.Drawing.Size( 55, 17 );
+            this.chkDirectionFix.Size = new System.Drawing.Size(55, 17);
             this.chkDirectionFix.TabIndex = 4;
             this.chkDirectionFix.Text = "Dir Fix";
-            this.chkDirectionFix.CheckedChanged += new System.EventHandler( this.chkDirectionFix_CheckedChanged );
+            this.chkDirectionFix.CheckedChanged += new System.EventHandler(this.chkDirectionFix_CheckedChanged);
             // 
             // chkHideName
             // 
             this.chkHideName.AutoSize = true;
-            this.chkHideName.Location = new System.Drawing.Point( 75, 19 );
+            this.chkHideName.Location = new System.Drawing.Point(75, 19);
             this.chkHideName.Name = "chkHideName";
-            this.chkHideName.Size = new System.Drawing.Size( 79, 17 );
+            this.chkHideName.Size = new System.Drawing.Size(79, 17);
             this.chkHideName.TabIndex = 3;
             this.chkHideName.Text = "Hide Name";
-            this.chkHideName.CheckedChanged += new System.EventHandler( this.chkHideName_CheckedChanged );
+            this.chkHideName.CheckedChanged += new System.EventHandler(this.chkHideName_CheckedChanged);
             // 
             // chkWalkThrough
             // 
             this.chkWalkThrough.AutoSize = true;
-            this.chkWalkThrough.Location = new System.Drawing.Point( 6, 19 );
+            this.chkWalkThrough.Location = new System.Drawing.Point(6, 19);
             this.chkWalkThrough.Name = "chkWalkThrough";
-            this.chkWalkThrough.Size = new System.Drawing.Size( 69, 17 );
+            this.chkWalkThrough.Size = new System.Drawing.Size(69, 17);
             this.chkWalkThrough.TabIndex = 2;
             this.chkWalkThrough.Text = "Passable";
-            this.chkWalkThrough.CheckedChanged += new System.EventHandler( this.chkWalkThrough_CheckedChanged );
+            this.chkWalkThrough.CheckedChanged += new System.EventHandler(this.chkWalkThrough_CheckedChanged);
             // 
             // grpInspector
             // 
@@ -395,8 +395,8 @@ namespace Intersect.Editor.Forms.Editors.Events
             // 
             // cmbPreviewFace
             // 
-            this.cmbPreviewFace.BackColor = System.Drawing.Color.FromArgb( ( (int)( ( (byte)( 69 ) ) ) ), ( (int)( ( (byte)( 73 ) ) ) ), ( (int)( ( (byte)( 74 ) ) ) ) );
-            this.cmbPreviewFace.BorderColor = System.Drawing.Color.FromArgb( ( (int)( ( (byte)( 90 ) ) ) ), ( (int)( ( (byte)( 90 ) ) ) ), ( (int)( ( (byte)( 90 ) ) ) ) );
+            this.cmbPreviewFace.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbPreviewFace.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
             this.cmbPreviewFace.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
             this.cmbPreviewFace.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
             this.cmbPreviewFace.DrawDropdownHoverOutline = false;
