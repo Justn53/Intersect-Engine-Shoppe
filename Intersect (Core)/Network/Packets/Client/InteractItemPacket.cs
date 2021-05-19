@@ -10,7 +10,7 @@ namespace Intersect.Network.Packets.Client
         {
         }
 
-        public InteractItemPacket( Guid mapId, int tileIndex, Guid uniqueId )
+        public InteractItemPacket(Guid mapId, int tileIndex, Guid uniqueId)
         {
             MapId = mapId;
             UniqueId = uniqueId;
