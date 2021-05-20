@@ -89,6 +89,9 @@ namespace Intersect.Editor.Forms.Editors
             this.lblName = new System.Windows.Forms.Label();
             this.txtName = new DarkUI.Controls.DarkTextBox();
             this.grpEquipment = new DarkUI.Controls.DarkGroupBox();
+            this.grpEvent = new DarkUI.Controls.DarkGroupBox();
+            this.chkSingleUseEvent = new DarkUI.Controls.DarkCheckBox();
+            this.cmbEvent = new DarkUI.Controls.DarkComboBox();
             this.grpRegen = new DarkUI.Controls.DarkGroupBox();
             this.nudMpRegen = new DarkUI.Controls.DarkNumericUpDown();
             this.nudHPRegen = new DarkUI.Controls.DarkNumericUpDown();
@@ -173,9 +176,6 @@ namespace Intersect.Editor.Forms.Editors
             this.cmbToolType = new DarkUI.Controls.DarkComboBox();
             this.lblProjectile = new System.Windows.Forms.Label();
             this.lblDamage = new System.Windows.Forms.Label();
-            this.grpEvent = new DarkUI.Controls.DarkGroupBox();
-            this.chkSingleUseEvent = new DarkUI.Controls.DarkCheckBox();
-            this.cmbEvent = new DarkUI.Controls.DarkComboBox();
             this.chkInteractOnGround1 = new DarkUI.Controls.DarkCheckBox();
             this.grpConsumable = new DarkUI.Controls.DarkGroupBox();
             this.lblPercentage3 = new System.Windows.Forms.Label();
@@ -219,6 +219,7 @@ namespace Intersect.Editor.Forms.Editors
             ((System.ComponentModel.ISupportInitialize)(this.nudPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picItem)).BeginInit();
             this.grpEquipment.SuspendLayout();
+            this.grpEvent.SuspendLayout();
             this.grpRegen.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMpRegen)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudHPRegen)).BeginInit();
@@ -249,7 +250,6 @@ namespace Intersect.Editor.Forms.Editors
             ((System.ComponentModel.ISupportInitialize)(this.nudScaling)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCritChance)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDamage)).BeginInit();
-            this.grpEvent.SuspendLayout();
             this.grpConsumable.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudIntervalPercentage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudInterval)).BeginInit();
@@ -340,6 +340,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.grpGeneral.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpGeneral.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpGeneral.Controls.Add(this.grpEvent);
             this.grpGeneral.Controls.Add(this.chkDoesNotDespawn);
             this.grpGeneral.Controls.Add(this.nudBankStackLimit);
             this.grpGeneral.Controls.Add(this.nudInvStackLimit);
@@ -398,7 +399,7 @@ namespace Intersect.Editor.Forms.Editors
             // chkDoesNotDespawn
             // 
             this.chkDoesNotDespawn.AutoSize = true;
-            this.chkDoesNotDespawn.Location = new System.Drawing.Point(121, 241);
+            this.chkDoesNotDespawn.Location = new System.Drawing.Point(119, 234);
             this.chkDoesNotDespawn.Name = "chkDoesNotDespawn";
             this.chkDoesNotDespawn.Size = new System.Drawing.Size(119, 17);
             this.chkDoesNotDespawn.TabIndex = 87;
@@ -467,7 +468,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.nudDeathDropChance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
             this.nudDeathDropChance.ForeColor = System.Drawing.Color.Gainsboro;
-            this.nudDeathDropChance.Location = new System.Drawing.Point(154, 300);
+            this.nudDeathDropChance.Location = new System.Drawing.Point(154, 293);
             this.nudDeathDropChance.Name = "nudDeathDropChance";
             this.nudDeathDropChance.Size = new System.Drawing.Size(48, 20);
             this.nudDeathDropChance.TabIndex = 94;
@@ -481,7 +482,7 @@ namespace Intersect.Editor.Forms.Editors
             // lblDeathDropChance
             // 
             this.lblDeathDropChance.AutoSize = true;
-            this.lblDeathDropChance.Location = new System.Drawing.Point(12, 305);
+            this.lblDeathDropChance.Location = new System.Drawing.Point(12, 298);
             this.lblDeathDropChance.Name = "lblDeathDropChance";
             this.lblDeathDropChance.Size = new System.Drawing.Size(136, 13);
             this.lblDeathDropChance.TabIndex = 93;
@@ -490,7 +491,7 @@ namespace Intersect.Editor.Forms.Editors
             // chkCanSell
             // 
             this.chkCanSell.AutoSize = true;
-            this.chkCanSell.Location = new System.Drawing.Point(121, 281);
+            this.chkCanSell.Location = new System.Drawing.Point(119, 274);
             this.chkCanSell.Name = "chkCanSell";
             this.chkCanSell.Size = new System.Drawing.Size(71, 17);
             this.chkCanSell.TabIndex = 92;
@@ -500,7 +501,7 @@ namespace Intersect.Editor.Forms.Editors
             // chkCanTrade
             // 
             this.chkCanTrade.AutoSize = true;
-            this.chkCanTrade.Location = new System.Drawing.Point(13, 281);
+            this.chkCanTrade.Location = new System.Drawing.Point(11, 274);
             this.chkCanTrade.Name = "chkCanTrade";
             this.chkCanTrade.Size = new System.Drawing.Size(82, 17);
             this.chkCanTrade.TabIndex = 91;
@@ -510,7 +511,7 @@ namespace Intersect.Editor.Forms.Editors
             // chkCanBag
             // 
             this.chkCanBag.AutoSize = true;
-            this.chkCanBag.Location = new System.Drawing.Point(121, 261);
+            this.chkCanBag.Location = new System.Drawing.Point(119, 254);
             this.chkCanBag.Name = "chkCanBag";
             this.chkCanBag.Size = new System.Drawing.Size(73, 17);
             this.chkCanBag.TabIndex = 90;
@@ -520,7 +521,7 @@ namespace Intersect.Editor.Forms.Editors
             // chkCanBank
             // 
             this.chkCanBank.AutoSize = true;
-            this.chkCanBank.Location = new System.Drawing.Point(13, 261);
+            this.chkCanBank.Location = new System.Drawing.Point(11, 254);
             this.chkCanBank.Name = "chkCanBank";
             this.chkCanBank.Size = new System.Drawing.Size(79, 17);
             this.chkCanBank.TabIndex = 89;
@@ -811,7 +812,7 @@ namespace Intersect.Editor.Forms.Editors
             // 
             // btnEditRequirements
             // 
-            this.btnEditRequirements.Location = new System.Drawing.Point(13, 396);
+            this.btnEditRequirements.Location = new System.Drawing.Point(17, 401);
             this.btnEditRequirements.Name = "btnEditRequirements";
             this.btnEditRequirements.Padding = new System.Windows.Forms.Padding(5);
             this.btnEditRequirements.Size = new System.Drawing.Size(171, 23);
@@ -852,7 +853,7 @@ namespace Intersect.Editor.Forms.Editors
             // chkCanDrop
             // 
             this.chkCanDrop.AutoSize = true;
-            this.chkCanDrop.Location = new System.Drawing.Point(13, 241);
+            this.chkCanDrop.Location = new System.Drawing.Point(11, 234);
             this.chkCanDrop.Name = "chkCanDrop";
             this.chkCanDrop.Size = new System.Drawing.Size(77, 17);
             this.chkCanDrop.TabIndex = 26;
@@ -897,7 +898,7 @@ namespace Intersect.Editor.Forms.Editors
             this.txtDesc.Location = new System.Drawing.Point(12, 168);
             this.txtDesc.Multiline = true;
             this.txtDesc.Name = "txtDesc";
-            this.txtDesc.Size = new System.Drawing.Size(186, 67);
+            this.txtDesc.Size = new System.Drawing.Size(186, 62);
             this.txtDesc.TabIndex = 12;
             this.txtDesc.TextChanged += new System.EventHandler(this.txtDesc_TextChanged);
             // 
@@ -1022,7 +1023,6 @@ namespace Intersect.Editor.Forms.Editors
             // 
             this.grpEquipment.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
             this.grpEquipment.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.grpEquipment.Controls.Add(this.grpEvent);
             this.grpEquipment.Controls.Add(this.grpRegen);
             this.grpEquipment.Controls.Add(this.grpVitalBonuses);
             this.grpEquipment.Controls.Add(this.cmbEquipmentAnimation);
@@ -1049,6 +1049,55 @@ namespace Intersect.Editor.Forms.Editors
             this.grpEquipment.TabStop = false;
             this.grpEquipment.Text = "Equipment";
             this.grpEquipment.Visible = false;
+            // 
+            // grpEvent
+            // 
+            this.grpEvent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
+            this.grpEvent.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.grpEvent.Controls.Add(this.chkInteractOnGround);
+            this.grpEvent.Controls.Add(this.chkSingleUseEvent);
+            this.grpEvent.Controls.Add(this.cmbEvent);
+            this.grpEvent.ForeColor = System.Drawing.Color.Gainsboro;
+            this.grpEvent.Location = new System.Drawing.Point(11, 314);
+            this.grpEvent.Name = "grpEvent";
+            this.grpEvent.Size = new System.Drawing.Size(200, 82);
+            this.grpEvent.TabIndex = 42;
+            this.grpEvent.TabStop = false;
+            this.grpEvent.Text = "Event";
+            this.grpEvent.Visible = false;
+            // 
+            // chkSingleUseEvent
+            // 
+            this.chkSingleUseEvent.AutoSize = true;
+            this.chkSingleUseEvent.Checked = true;
+            this.chkSingleUseEvent.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkSingleUseEvent.Location = new System.Drawing.Point(9, 42);
+            this.chkSingleUseEvent.Name = "chkSingleUseEvent";
+            this.chkSingleUseEvent.Size = new System.Drawing.Size(83, 17);
+            this.chkSingleUseEvent.TabIndex = 29;
+            this.chkSingleUseEvent.Text = "Single Use?";
+            this.chkSingleUseEvent.CheckedChanged += new System.EventHandler(this.chkSingleUse_CheckedChanged);
+            // 
+            // cmbEvent
+            // 
+            this.cmbEvent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
+            this.cmbEvent.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.cmbEvent.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.cmbEvent.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
+            this.cmbEvent.DrawDropdownHoverOutline = false;
+            this.cmbEvent.DrawFocusRectangle = false;
+            this.cmbEvent.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbEvent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbEvent.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmbEvent.ForeColor = System.Drawing.Color.Gainsboro;
+            this.cmbEvent.FormattingEnabled = true;
+            this.cmbEvent.Location = new System.Drawing.Point(9, 15);
+            this.cmbEvent.Name = "cmbEvent";
+            this.cmbEvent.Size = new System.Drawing.Size(185, 21);
+            this.cmbEvent.TabIndex = 17;
+            this.cmbEvent.Text = null;
+            this.cmbEvent.TextPadding = new System.Windows.Forms.Padding(2);
+            this.cmbEvent.SelectedIndexChanged += new System.EventHandler(this.cmbEvent_SelectedIndexChanged);
             // 
             // grpRegen
             // 
@@ -2298,55 +2347,6 @@ namespace Intersect.Editor.Forms.Editors
             this.lblDamage.TabIndex = 11;
             this.lblDamage.Text = "Base Damage:";
             // 
-            // grpEvent
-            // 
-            this.grpEvent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(45)))), ((int)(((byte)(45)))), ((int)(((byte)(48)))));
-            this.grpEvent.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.grpEvent.Controls.Add(this.chkInteractOnGround);
-            this.grpEvent.Controls.Add(this.chkSingleUseEvent);
-            this.grpEvent.Controls.Add(this.cmbEvent);
-            this.grpEvent.ForeColor = System.Drawing.Color.Gainsboro;
-            this.grpEvent.Location = new System.Drawing.Point(12, 5);
-            this.grpEvent.Name = "grpEvent";
-            this.grpEvent.Size = new System.Drawing.Size(200, 102);
-            this.grpEvent.TabIndex = 42;
-            this.grpEvent.TabStop = false;
-            this.grpEvent.Text = "Event";
-            this.grpEvent.Visible = false;
-            // 
-            // chkSingleUseEvent
-            // 
-            this.chkSingleUseEvent.AutoSize = true;
-            this.chkSingleUseEvent.Checked = true;
-            this.chkSingleUseEvent.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSingleUseEvent.Location = new System.Drawing.Point(9, 42);
-            this.chkSingleUseEvent.Name = "chkSingleUseEvent";
-            this.chkSingleUseEvent.Size = new System.Drawing.Size(107, 17);
-            this.chkSingleUseEvent.TabIndex = 29;
-            this.chkSingleUseEvent.Text = "Destroy On Use?";
-            this.chkSingleUseEvent.CheckedChanged += new System.EventHandler(this.chkSingleUse_CheckedChanged);
-            // 
-            // cmbEvent
-            // 
-            this.cmbEvent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(69)))), ((int)(((byte)(73)))), ((int)(((byte)(74)))));
-            this.cmbEvent.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.cmbEvent.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
-            this.cmbEvent.ButtonColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(43)))), ((int)(((byte)(43)))));
-            this.cmbEvent.DrawDropdownHoverOutline = false;
-            this.cmbEvent.DrawFocusRectangle = false;
-            this.cmbEvent.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbEvent.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbEvent.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmbEvent.ForeColor = System.Drawing.Color.Gainsboro;
-            this.cmbEvent.FormattingEnabled = true;
-            this.cmbEvent.Location = new System.Drawing.Point(9, 15);
-            this.cmbEvent.Name = "cmbEvent";
-            this.cmbEvent.Size = new System.Drawing.Size(185, 21);
-            this.cmbEvent.TabIndex = 17;
-            this.cmbEvent.Text = null;
-            this.cmbEvent.TextPadding = new System.Windows.Forms.Padding(2);
-            this.cmbEvent.SelectedIndexChanged += new System.EventHandler(this.cmbEvent_SelectedIndexChanged);
-            // 
             // chkInteractOnGround1
             // 
             this.chkInteractOnGround1.AutoSize = true;
@@ -2740,10 +2740,10 @@ namespace Intersect.Editor.Forms.Editors
             this.chkInteractOnGround.AutoSize = true;
             this.chkInteractOnGround.Checked = true;
             this.chkInteractOnGround.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkInteractOnGround.Location = new System.Drawing.Point(9, 65);
+            this.chkInteractOnGround.Location = new System.Drawing.Point(9, 64);
             this.chkInteractOnGround.Name = "chkInteractOnGround";
             this.chkInteractOnGround.Size = new System.Drawing.Size(117, 17);
-            this.chkInteractOnGround.TabIndex = 31;
+            this.chkInteractOnGround.TabIndex = 32;
             this.chkInteractOnGround.Text = "Interact On Ground";
             // 
             // FrmItem
@@ -2783,6 +2783,8 @@ namespace Intersect.Editor.Forms.Editors
             ((System.ComponentModel.ISupportInitialize)(this.picItem)).EndInit();
             this.grpEquipment.ResumeLayout(false);
             this.grpEquipment.PerformLayout();
+            this.grpEvent.ResumeLayout(false);
+            this.grpEvent.PerformLayout();
             this.grpRegen.ResumeLayout(false);
             this.grpRegen.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMpRegen)).EndInit();
@@ -2818,8 +2820,6 @@ namespace Intersect.Editor.Forms.Editors
             ((System.ComponentModel.ISupportInitialize)(this.nudScaling)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCritChance)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudDamage)).EndInit();
-            this.grpEvent.ResumeLayout(false);
-            this.grpEvent.PerformLayout();
             this.grpConsumable.ResumeLayout(false);
             this.grpConsumable.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudIntervalPercentage)).EndInit();
