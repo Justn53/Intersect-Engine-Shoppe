@@ -232,9 +232,7 @@ namespace Intersect.Server.Migrations.Game
 
                     b.Property<string>("Description");
 
-                    b.Property<bool>("DoesNotDespawn")
-                        .HasColumnName("DoesNotDespawn");
-
+             
                     b.Property<int>("DropChanceOnDeath");
 
                     b.Property<Guid>("EquipmentAnimationId")
@@ -255,8 +253,6 @@ namespace Intersect.Server.Migrations.Game
 
                     b.Property<bool>("IgnoreGlobalCooldown");
 
-                    b.Property<bool>("InteractOnGround")
-                        .HasColumnName("InteractOnGround");
 
                     b.Property<int>("ItemType");
 

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Intersect.Server.Migrations.Game
 {
     [DbContext(typeof(GameContext))]
-    [Migration("20210520002332_AddInteractOnGroundToItemBase")]
-    partial class AddInteractOnGroundToItemBase
+    [Migration("20210520033550_AddDoesNotRespawnToItemBase")]
+    partial class AddDoesNotRespawnToItemBase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
