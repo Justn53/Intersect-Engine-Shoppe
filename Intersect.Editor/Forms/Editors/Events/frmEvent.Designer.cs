@@ -57,8 +57,8 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode10,
             treeNode11,
             treeNode12});
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Remove Item");
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Replace Item");
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Replace Item");
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Remove Item");
             System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Item Control", new System.Windows.Forms.TreeNode[] {
             treeNode14,
             treeNode15});
@@ -881,12 +881,12 @@ namespace Intersect.Editor.Forms.Editors.Events
             treeNode12.Text = "Start Common Event";
             treeNode13.Name = "logicflow";
             treeNode13.Text = "Logic Flow";
-            treeNode14.Name = "removeitem";
+            treeNode14.Name = "replaceitem";
             treeNode14.Tag = "57";
-            treeNode14.Text = "Remove Item";
-            treeNode15.Name = "replaceitem";
+            treeNode14.Text = "Replace Item";
+            treeNode15.Name = "removeitem";
             treeNode15.Tag = "58";
-            treeNode15.Text = "Replace Item";
+            treeNode15.Text = "Remove Item";
             treeNode16.Name = "itemcontrol";
             treeNode16.Text = "Item Control";
             treeNode17.Name = "restorehp";

@@ -228,7 +228,7 @@
         //End Guilds
         //Item Control
         ReplaceItem,
-        RemoveItem,
+        RemoveItem
     }
 
 }
