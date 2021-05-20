@@ -5346,6 +5346,7 @@ namespace Intersect.Server.Entities
                             stackInfo.WaitingOnCommand.Type == EventCommandType.ShowOptions)
                         {
                             var tmpStack = new CommandInstance(stackInfo.Page, stackInfo.BranchIds[responseId - 1]);
+                            EventPreProcessor.RemovedProcessedEventsExceptForCommandsInStack(tmpStack, this);
                             evt.Value.CallStack.Push(tmpStack);
                         }
 
@@ -5371,9 +5372,7 @@ namespace Intersect.Server.Entities
                         var stackInfo = evt.Value.CallStack.Peek();
                         if (stackInfo.WaitingForResponse != CommandInstance.EventResponse.Picture)
                         {
-                            var tmpStack = new CommandInstance( stackInfo.Page, stackInfo.BranchIds[responseId - 1] );
-                            EventPreProcessor.RemovedProcessedEventsExceptForCommandsInStack( tmpStack, this );
-                            evt.Value.CallStack.Push( tmpStack );
+                            return;
                         }
 
                         stackInfo.WaitingForResponse = CommandInstance.EventResponse.None;
